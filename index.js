@@ -52,8 +52,8 @@ app.get("*", function (req, res) {
 //     console.log("✔ Application Started");
 //   });
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 app.listen(port, () => {
   console.log(`server running at port:${port}`);
-});
+})
