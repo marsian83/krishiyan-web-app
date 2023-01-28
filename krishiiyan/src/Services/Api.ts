@@ -1,6 +1,8 @@
 import * as axios from "axios";
 
-const apiURL = "http://localhost:5000/api";
+const apiURL ="http://35.77.226.139:5001/api"
+
+// "http://localhost:5000/api";
 
 interface ResponseData {
   data: any;
