@@ -33,25 +33,6 @@ app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "./krishiiyan/build/index.html"));
 });
 
-//PORT
-// const config = require("./config").getConfig(),
-//   PORT = config.PORT;
-
-// console.log("✔ Bootstrapping Application");
-// console.log(`✔ Mode: ${config.MODE}`);
-// console.log(`✔ Port: ${PORT}`);
-
-// app
-//   .listen(PORT)
-//   .on("error", (err) => {
-//     console.log("✘ Application failed to start");
-//     console.error("✘", err.message);
-//     process.exit(0);
-//   })
-//   .on("listening", () => {
-//     console.log("✔ Application Started");
-//   });
-
 const port = process.env.PORT || 5001;
 
 app.listen(port, () => {
