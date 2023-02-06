@@ -14,8 +14,6 @@ const Production = () => {
   const [crop, setCrop] = useState("");
   const [variety, setVariety] = useState("");
 
-  console.log(crops,"crops__________")
-
   const [general, setGeneral] = useState(true);
   const [varietyTab, setVarietyTab] = useState(false);
   const [requirement, setRequirement] = useState(false);

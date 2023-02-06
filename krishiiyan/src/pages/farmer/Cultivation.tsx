@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../Components/layouts/Header";
-import Input from "../../Components/themes/Input";
 import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
+import { Autocomplete, TextField } from "@mui/material";
+import moment from "moment";
 
 const Cultivation = () => {
   const [openTab, setOpenTab] = useState("New");
@@ -34,33 +35,30 @@ const Cultivation = () => {
     }
   };
 
-  useEffect(() => {
-    const init = async () => {
-      await getFarmerById();
-    };
-    init();
-  }, [farmerID]);
+  // useEffect(() => {
+  //   const init = async () => {
+  //     await getFarmerById();
+  //   };
+  //   init();
+  // }, [farmerID]);
+
+  const onClickEnter = async () => {
+    await getFarmerById();
+  };
 
   //Cultivation form data
   const [area, setArea] = useState("");
-  const [areaCode, setAreaCode] = useState("");
-  const [areaType, setAreaType] = useState("");
   const [crop, setCrop] = useState("");
   const [variety, setVariety] = useState("");
   const [dateOfSowing, setDateOfSowing] = useState("");
-  const [adaptedSeason, setAdaptedSeason] = useState("");
-  const [currentStage, setCurrentStage] = useState("");
-  const [slotNumber, setSlotNumber] = useState("");
+  const [soilType, setSoilType] = useState("");
+  const [irrigationType, setIrrigationType] = useState("");
+  const [fertilizer, setFertilizer] = useState("");
 
   const onChangeArea = (e: any) => {
     setArea(e.target.value);
   };
-  const onChangeAreaCode = (e: any) => {
-    setAreaCode(e.target.value);
-  };
-  const onChangeAreaType = (e: any) => {
-    setAreaType(e.target.value);
-  };
+
   const onChangeCrop = (e: any) => {
     setCrop(e.target.value);
   };
@@ -68,30 +66,32 @@ const Cultivation = () => {
     setVariety(e.target.value);
   };
   const onChangedateOfSowing = (e: any) => {
-    setDateOfSowing(e.target.value);
+    let date = moment(e.target.value).toISOString(); //ISO 8601 format
+    setDateOfSowing(date);
   };
-  const onChangeadaptedSeason = (e: any) => {
-    setAdaptedSeason(e.target.value);
+
+  const onChangeSoilType = (e: any, val: any) => {
+    setSoilType(val.value);
   };
-  const onChangecurrentStage = (e: any) => {
-    setCurrentStage(e.target.value);
+
+  const onChangeIrrigationType = (e: any, val: any) => {
+    setIrrigationType(val.value);
   };
-  const onChangeCropslotNumber = (e: any) => {
-    setSlotNumber(e.target.value);
+
+  const onChangeFertilizer = (e: any, val: any) => {
+    setFertilizer(val.value);
   };
 
   const onSubmitHandler = async () => {
     const [err, res] = await Api.createFarmerCultivationData(
       farmerDetail?._id,
       area,
-      areaCode,
-      areaType,
       crop,
       variety,
       dateOfSowing,
-      adaptedSeason,
-      currentStage,
-      slotNumber
+      soilType,
+      irrigationType,
+      fertilizer
     );
     if (err) {
       toast.error(err.data, {
@@ -110,11 +110,11 @@ const Cultivation = () => {
     const init = async () => {
       const [err, res] = await Api.getFarmerCultivationData(farmerDetail?._id);
       if (res) {
-        let current_cultivation =
-          res?.data?.farmerCultivationData[
-            res?.data?.farmerCultivationData.length - 1
-          ];
-        setCurrentCultivation(current_cultivation);
+        // let current_cultivation =
+        //   res?.data?.farmerCultivationData[
+        //     res?.data?.farmerCultivationData.length - 1
+        //   ];
+        // setCurrentCultivation(current_cultivation);
         setOldCultivation(res?.data?.farmerCultivationData);
       }
     };
@@ -126,16 +126,23 @@ const Cultivation = () => {
       <Header title="Farmer" subtitle="Cultivation" />
       <section>
         <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
-          <form className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
+          <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
             <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
-              Mobile Number
+            Farmer Mobile Number
             </label>
             <input
               onChange={onChangeInput}
               type="text"
               className="bg-[#F3FFF1] h-8 lg:w-[86%] xl:w-[90%] lg:ml-2 xl:ml-[1%] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pr-3 pl-3"
             />
-          </form>
+            <button
+                type="submit"
+                onClick={onClickEnter}
+                className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
+              >
+                ENTER
+              </button>
+          </div>
           {farmerDetail ? (
             <div className="mt-6 leading-4">
               <p className="text-[#000000]">
@@ -170,16 +177,6 @@ const Cultivation = () => {
                 New
               </button>
               <button
-                className={`text-[#F3FFF1] flex justify-center shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] py-1 px-3 rounded mx-5 text-sm font-thin ${
-                  openTab === "Current" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
-                }`}
-                onClick={() => {
-                  setOpenTab("Current");
-                }}
-              >
-                Current
-              </button>
-              <button
                 className={`text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] py-1 px-3 rounded mx-5 text-sm font-thin 
           ${openTab === "Old" ? "bg-[#05AB2A]" : "bg-[#526D4E]"}`}
                 onClick={() => {
@@ -192,117 +189,215 @@ const Cultivation = () => {
 
             {/* //New Cultivation */}
             <div className={openTab === "New" ? "block" : "hidden"}>
-              <div className="grid grid-cols-[50%_34%] items-center mt-6 mb-5">
-                <div className=" grid grid-cols-[50%_34%] items-center">
-                  <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-                    Area
-                  </label>
-                  <input
-                    type="text"
-                    className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-                    onChange={onChangeArea}
-                  ></input>
+              <div className="w-full max-w-sm mt-10 mb-5 ml-80">
+                <div className="md:flex md:items-center mb-6">
+                  <div className="md:w-1/3">
+                    <label
+                      className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                      // for="inline-password"
+                    >
+                      Crop
+                    </label>
+                  </div>
+                  <div className="md:w-2/3">
+                    <input
+                      className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                      onChange={onChangeCrop}
+                      id="inline-password"
+                      type="text"
+                      placeholder="Crop"
+                    />
+                  </div>
                 </div>
 
-                <div className=" grid grid-cols-[50%_34%] items-center">
-                  <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-                    Area Code
-                  </label>
-                  <input
-                    type="text"
-                    className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-                    onChange={onChangeAreaCode}
-                  ></input>
+                <div className="md:flex md:items-center mb-6">
+                  <div className="md:w-1/3">
+                    <label
+                      className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                      // for="inline-password"
+                    >
+                      Variety
+                    </label>
+                  </div>
+                  <div className="md:w-2/3">
+                    <input
+                      className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                      onChange={onChangevariety}
+                      id="inline-password"
+                      type="text"
+                      placeholder="Variety"
+                    />
+                  </div>
                 </div>
 
-                <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-                  <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-                    Area Type
-                  </label>
-                  <input
-                    type="text"
-                    className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-                    onChange={onChangeAreaType}
-                  ></input>
+                <div className="md:flex md:items-center mb-6">
+                  <div className="md:w-1/3">
+                    <label
+                      className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                      // for="inline-password"
+                    >
+                      Date of sowing
+                    </label>
+                  </div>
+                  <div className="md:w-2/3">
+                    <input
+                      className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                      onChange={onChangedateOfSowing}
+                      id="inline-password"
+                      type="date"
+                      placeholder=""
+                    />
+                  </div>
                 </div>
 
-                <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-                  <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-                    Crop
-                  </label>
-                  <input
-                    type="text"
-                    className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-                    onChange={onChangeCrop}
-                  ></input>
+                <div className="md:flex md:items-center mb-6">
+                  <div className="md:w-1/3">
+                    <label
+                      className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                      // for="inline-password"
+                    >
+                      Plantation type
+                    </label>
+                  </div>
+                  <div className="md:w-2/3">
+                    <Autocomplete
+                      onChange={onChangeSoilType}
+                      id="plantation-select"
+                      sx={{ width: 260 }}
+                      options={[
+                        {
+                          value: "RED",
+                        },
+                        {
+                          value: "BLACK",
+                        },
+                      ]}
+                      autoHighlight
+                      getOptionLabel={(option) => option.value}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Choose plantation type"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: "new-password",
+                          }}
+                        />
+                      )}
+                    />
+                  </div>
                 </div>
 
-                <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-                  <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-                    Variety
-                  </label>
-                  <input
-                    type="text"
-                    className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-                    onChange={onChangevariety}
-                  ></input>
+                <div className="md:flex md:items-center mb-6">
+                  <div className="md:w-1/3">
+                    <label
+                      className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                      // for="inline-password"
+                    >
+                      Irrigation type
+                    </label>
+                  </div>
+                  <div className="md:w-2/3">
+                    <Autocomplete
+                      onChange={onChangeIrrigationType}
+                      id="plantation-select"
+                      sx={{ width: 260 }}
+                      options={[
+                        {
+                          value: "RAINFALL",
+                        },
+                        {
+                          value: "CANAL",
+                        },
+                      ]}
+                      autoHighlight
+                      getOptionLabel={(option) => option.value}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Choose irrigation type"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: "new-password",
+                          }}
+                        />
+                      )}
+                    />
+                  </div>
                 </div>
 
-                <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-                  <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-                    Date of sowing
-                  </label>
-                  <input
-                    type="text"
-                    className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-                    onChange={onChangedateOfSowing}
-                  ></input>
+                <div className="md:flex md:items-center mb-6">
+                  <div className="md:w-1/3">
+                    <label
+                      className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                      // for="inline-password"
+                    >
+                      Area(acres)
+                    </label>
+                  </div>
+                  <div className="md:w-2/3">
+                    <input
+                      className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                      onChange={onChangeArea}
+                      id="inline-password"
+                      type="text"
+                      placeholder="Area"
+                    />
+                  </div>
                 </div>
 
-                <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-                  <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-                    Adapted Season
-                  </label>
-                  <input
-                    type="text"
-                    className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-                    onChange={onChangeadaptedSeason}
-                  ></input>
+                <div className="md:flex md:items-center mb-6">
+                  <div className="md:w-1/3">
+                    <label
+                      className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                      // for="inline-password"
+                    >
+                      Fertilizer
+                    </label>
+                  </div>
+                  <div className="md:w-2/3">
+                    <Autocomplete
+                      onChange={onChangeFertilizer}
+                      id="plantation-select"
+                      sx={{ width: 260 }}
+                      options={[
+                        {
+                          value: "ORGANIC",
+                        },
+                        {
+                          value: "INORGANIC",
+                        },
+                        {
+                          value: "BOTH",
+                        },
+                      ]}
+                      autoHighlight
+                      getOptionLabel={(option) => option.value}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Fertilizer"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: "new-password",
+                          }}
+                        />
+                      )}
+                    />
+                  </div>
                 </div>
 
-                <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-                  <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-                    Current Stage
-                  </label>
-                  <input
-                    type="text"
-                    className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-                    onChange={onChangecurrentStage}
-                  ></input>
-                </div>
-
-                <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-                  <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-                    Slot Number
-                  </label>
-                  <input
-                    type="text"
-                    className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-                    onChange={onChangeCropslotNumber}
-                  ></input>
-                </div>
+                <button
+                  type="submit"
+                  onClick={onSubmitHandler}
+                  className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
+                >
+                  Submit
+                </button>
               </div>
-              <button
-                type="submit"
-                onClick={onSubmitHandler}
-                className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
-              >
-                Submit
-              </button>
             </div>
-
             {/* Current Cultivation */}
-            <div className={openTab === "Current" ? "block" : "hidden"}>
+            {/* <div className={openTab === "Current" ? "block" : "hidden"}>
               {currentCultivation ? (
                 <>
                   <table className="table-auto bg-[#6E776D] border-collapse border ml-[9%] w-[54vw] lg:w-[70vw] text-sm font-semibold mt-10">
@@ -363,7 +458,7 @@ const Cultivation = () => {
               ) : (
                 <></>
               )}
-            </div>
+            </div> */}
 
             {/* Old cultivation List */}
             <div className={openTab === "Old" ? "block" : "hidden"}>
@@ -372,22 +467,22 @@ const Cultivation = () => {
                   <table className="table-auto bg-[#6E776D] border-collapse border ml-[9%] w-[54vw] lg:w-[70vw] text-sm font-semibold mt-10">
                     <thead>
                       <tr className="text-[#FFFFFF] h-7 font-medium">
+                        <th className="border-r-4 border-[#6E776D]">Crop</th>
+                        {/* <th className="border-r-4 border-[#6E776D]">Area</th> */}
+                        <th>Variety</th>
+                        <th>Date</th>
+                        <th>Soil</th>
                         <th className="border-r-4 border-[#6E776D]">
-                          Slot Number
-                        </th>
-                        <th className="border-r-4 border-[#6E776D]">Area</th>
-                        <th>Area Code</th>
-                        <th>Area Type</th>
-                        <th>Major crop</th>
-                        <th className="border-r-4 border-[#6E776D]">Variety</th>
-                        <th className="border-r-4 border-[#6E776D]">
-                          Date of Sowing
+                          Irrigation
                         </th>
                         <th className="border-r-4 border-[#6E776D]">
-                          Adapted Season
+                          Area(acres)
                         </th>
                         <th className="border-r-4 border-[#6E776D]">
-                          Current Stage
+                          Fertilizer
+                        </th>
+                        <th className="border-r-4 border-[#6E776D]">
+                          Last visit
                         </th>
                       </tr>
                     </thead>
@@ -395,31 +490,30 @@ const Cultivation = () => {
                       {oldCultivation?.map((cultivation: any) => (
                         <tr className="bg-[#DEDEDE] h-10">
                           <td className="border-r-4 border-[#6E776D]">
-                            {cultivation?.slotNumber}
-                          </td>
-                          <td className="border-r-4 border-[#6E776D]">
-                            {cultivation?.area}
-                          </td>
-                          <td className="border-r-4 border-[#6E776D]">
-                            {cultivation?.areaCode}
-                          </td>
-                          <td className="border-r-4 border-[#6E776D]">
-                            {cultivation?.areaType}
-                          </td>
-                          <td className="border-r-4 border-[#6E776D]">
                             {cultivation?.crop}
                           </td>
                           <td className="border-r-4 border-[#6E776D]">
                             {cultivation?.variety}
                           </td>
                           <td className="border-r-4 border-[#6E776D]">
-                            {cultivation?.dateOfSowing}
+                            {moment(cultivation?.date).format("MM/DD/YYYY")}
                           </td>
                           <td className="border-r-4 border-[#6E776D]">
-                            {cultivation?.adoptedSeason}
+                            {cultivation?.soilType}
                           </td>
                           <td className="border-r-4 border-[#6E776D]">
-                            {cultivation?.currentStage}
+                            {cultivation?.irrigationType}
+                          </td>
+                          <td className="border-r-4 border-[#6E776D]">
+                            {cultivation?.area} acre
+                          </td>
+                          <td className="border-r-4 border-[#6E776D]">
+                            {cultivation?.fertilizer}
+                          </td>
+                          <td className="border-r-4 border-[#6E776D]">
+                            {moment(cultivation?.updatedAt).format(
+                              "MM/DD/YYYY"
+                            )}
                           </td>
                         </tr>
                       ))}

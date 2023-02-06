@@ -7,7 +7,23 @@ const Purchase = () => {
   <>
   <Header title="Farmer" subtitle="Purchase" />
     <section>
-            <Input />
+    <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
+            <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
+            Farmer Mobile Number
+            </label>
+            <input
+            //   onChange={onChangeInput}
+              type="text"
+              className="bg-[#F3FFF1] h-8 lg:w-[86%] xl:w-[90%] lg:ml-2 xl:ml-[1%] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pr-3 pl-3"
+            />
+            <button
+                type="submit"
+                // onClick={onClickEnter}
+                className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
+              >
+                ENTER
+              </button>
+          </div>
             <table className="bg-[#6E776D] border-collapse border table-auto mx-14 my-16 w-[70vw] h-[50%] text-sm font-semibold">
                 <thead>
                     <tr className='text-[#FFFFFF] h-7'>

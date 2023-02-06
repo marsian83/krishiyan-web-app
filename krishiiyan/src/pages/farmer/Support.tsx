@@ -10,7 +10,23 @@ const Support = () => {
     <>
       <Header title="Farmer" subtitle="Support" />
       <section>
-        <Input />
+      <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
+            <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
+            Farmer Mobile Number
+            </label>
+            <input
+              // onChange={onChangeInput}
+              type="text"
+              className="bg-[#F3FFF1] h-8 lg:w-[86%] xl:w-[90%] lg:ml-2 xl:ml-[1%] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pr-3 pl-3"
+            />
+            <button
+                type="submit"
+                // onClick={onClickEnter}
+                className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
+              >
+                ENTER
+              </button>
+          </div>
         <div className='my-10 flex justify-between w-[55%] ml-[6%]'>
           <button type='submit' className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${openTab === 'Crop Health' ? 'bg-[#05AB2A]' : 'bg-[#526D4E]'}`} onClick={() => { setOpenTab('Crop Health') }}>Crop Health</button>
           <button type='submit' className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${openTab === 'Soil Testing' ? 'bg-[#05AB2A]' : 'bg-[#526D4E]'}`} onClick={() => { setOpenTab('Soil Testing') }}>Soil Testing</button>

@@ -1,20 +1,39 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../Components/layouts/Header";
-import { Checkbox } from "@mui/material";
+import { Box, Checkbox } from "@mui/material";
 import { Input } from "@material-tailwind/react";
-import CultivationTable from "./CultivationTable";
 import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const NewRegistration = () => {
-  const [cultivationData, setCultivationData] = useState<any>();
+import Loader from "../../Components/themes/Loader";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import { log } from "console";
 
+const PlantationOptions = [
+  {
+    value: "ORGANIC",
+  },
+  {
+    value: "NON-ORGANIC",
+  },
+  {
+    value: "BOTH",
+  },
+];
+const NewRegistration = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState<any>();
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [zip, setZip] = useState("");
+  const [street, setStreet] = useState("");
   const [isWhatsapp, setIsWhatsapp] = useState(false);
+  const [totalLandArea, setTotalLandArea] = useState("");
+  const [dealerFarmerRel, setDealerFarmerRel] = useState("");
+  const [plantationType, setPlantationType] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   const onChangeName = (e: any) => {
     setName(e.target.value);
@@ -22,101 +41,80 @@ const NewRegistration = () => {
   const onChangePhone = (e: any) => {
     setPhone(e.target.value);
   };
-  const onChangeState = (e: any) => {
-    setState(e.target.value);
-  };
-  const onChangeCity = (e: any) => {
-    setCity(e.target.value);
-  };
   const onChangeZip = (e: any) => {
     setZip(e.target.value);
+  };
+  const onChangeStreet = (e: any) => {
+    setStreet(e.target.value);
   };
   const onChangeIsWhatsapp = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsWhatsapp(event.target.checked);
   };
 
-  //Cultivation form data
-  const [area, setArea] = useState("");
-  const [areaCode, setAreaCode] = useState("");
-  const [areaType, setAreaType] = useState("");
-  const [crop, setCrop] = useState("");
-  const [variety, setVariety] = useState("");
-  const [dateOfSowing, setDateOfSowing] = useState("");
-  const [adaptedSeason, setAdaptedSeason] = useState("");
-  const [currentStage, setCurrentStage] = useState("");
-  const [slotNumber, setSlotNumber] = useState("");
+  const onChangeTotalLandArea = (e: any) => {
+    setTotalLandArea(e.target.value)
+  };
+  const onChangeDealerFarmerRel = (e: any) => {
+    setDealerFarmerRel(e.target.value)
+  };
+  const onChangePlantationType = (e: any, value: any) => {
+    setPlantationType(value.value)
+  };
 
-  const onChangeArea = (e: any) => {
-    setArea(e.target.value);
-  };
-  const onChangeAreaCode = (e: any) => {
-    setAreaCode(e.target.value);
-  };
-  const onChangeAreaType = (e: any) => {
-    setAreaType(e.target.value);
-  };
-  const onChangeCrop = (e: any) => {
-    setCrop(e.target.value);
-  };
-  const onChangevariety = (e: any) => {
-    setVariety(e.target.value);
-  };
-  const onChangedateOfSowing = (e: any) => {
-    setDateOfSowing(e.target.value);
-  };
-  const onChangeadaptedSeason = (e: any) => {
-    setAdaptedSeason(e.target.value);
-  };
-  const onChangecurrentStage = (e: any) => {
-    setCurrentStage(e.target.value);
-  };
-  const onChangeCropslotNumber = (e: any) => {
-    setSlotNumber(e.target.value);
-  };
+  //Get farmer location
+  useEffect(() => {
+    async function getLoc() {
+      if (zip.length > 5) {
+        setLoading(true);
+        const [err, res] = await Api.getFarmerLocation(zip);
+        if (err) {
+          toast.error(err.data, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+        if (res) {
+          let state = res.data.PostOffice.map((o: any) => o?.State);
+          let city = res.data.PostOffice.map((o: any) => o?.District);
+          setState(state[0]);
+          setCity(city[0]);
+        }
+        setLoading(false);
+      }
+    }
+    getLoc();
+  }, [zip]);
 
   const onSubmitHandler = async () => {
-    const [error, response] = await Api.createFarmer(
-      name,
-      phone,
-      isWhatsapp,
-      state,
-      city,
-      zip,
-      cultivationData
-    );
-
-    if (error) {
-      console.log(error);
-      toast.error(error.data, {
-        position: toast.POSITION.TOP_RIGHT,
+    if (
+      state === "" ||
+      (state === undefined && city === "") ||
+      city === undefined
+    ) {
+      toast.error("Please enter valid Pincode", {
+        position: toast.POSITION.BOTTOM_LEFT,
       });
-    }
-    if (response) {
-      console.log(response);
-      toast.success("New farmer created!", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-
-      //call cultivation api
-      const [err, res] = await Api.createFarmerCultivationData(
-        response?.data?._id,
-        area,
-        areaCode,
-        areaType,
-        crop,
-        variety,
-        dateOfSowing,
-        adaptedSeason,
-        currentStage,
-        slotNumber
+    } else {
+      const [error, response] = await Api.createFarmer(
+        name,
+        phone,
+        isWhatsapp,
+        state,
+        city,
+        zip,
+        street,
+        totalLandArea,
+        dealerFarmerRel,
+        plantationType
       );
-      if (err) {
-        toast.error(err.data, {
+      if (error) {
+        // console.log(error.data);
+        toast.error(error.data.message, {
           position: toast.POSITION.TOP_RIGHT,
         });
       }
-      if (res) {
-        toast.success("New cultivation record created!", {
+      if (response) {
+        // console.log(response);
+        toast.success("New farmer created!", {
           position: toast.POSITION.TOP_RIGHT,
         });
       }
@@ -165,132 +163,74 @@ const NewRegistration = () => {
             Address
           </label>
           <div>
-            <div className="w-73">
-              <Input label="State" onChange={onChangeState} />
-            </div>
-            <div className="w-73 mt-2">
-              <Input label="City" onChange={onChangeCity} />
-            </div>
             <div className="w-73 mt-2">
               <Input label="Zip" onChange={onChangeZip} />
             </div>
+            <div className="flex w-73 mt-2 gap-2">
+              <Input label="State" value={state} disabled />{" "}
+              {loading ? <Loader /> : null}
+            </div>
+            <div className="flex w-73 mt-2 gap-2">
+              <Input label="City" value={city} disabled />{" "}
+              {loading ? <Loader /> : null}
+            </div>
+            <div className="w-73 mt-2">
+              <Input label="Street" onChange={onChangeStreet} />
+            </div>
           </div>
         </div>
-        <img src="Images/Line18.png" className="my-5" alt="line" />
 
-        {/* CULTIVATION */}
-
-        <h1 className="text-[#13490A] font-roboto text-center font-extrabold">
-          Cultivation
-        </h1>
-
-        <div className="grid grid-cols-[50%_34%] items-center mt-6 mb-5">
-          {/* <CultivationTable setCultivationData={setCultivationData} /> */}
-          <div className=" grid grid-cols-[50%_34%] items-center">
-            <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-              Area
-            </label>
-            <input
-              type="text"
-              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-              onChange={onChangeArea}
-            ></input>
-          </div>
-
-          <div className=" grid grid-cols-[50%_34%] items-center">
-            <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-              Area Code
-            </label>
-            <input
-              type="text"
-              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-              onChange={onChangeAreaCode}
-            ></input>
-          </div>
-
-          <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-            <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-              Area Type
-            </label>
-            <input
-              type="text"
-              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-              onChange={onChangeAreaType}
-            ></input>
-          </div>
-
-          <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-            <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-              Crop
-            </label>
-            <input
-              type="text"
-              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-              onChange={onChangeCrop}
-            ></input>
-          </div>
-
-          <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-            <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-              Variety
-            </label>
-            <input
-              type="text"
-              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-              onChange={onChangevariety}
-            ></input>
-          </div>
-
-          <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-            <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-              Date of sowing
-            </label>
-            <input
-              type="text"
-              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-              onChange={onChangedateOfSowing}
-            ></input>
-          </div>
-
-          <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-            <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-              Adapted Season
-            </label>
-            <input
-              type="text"
-              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-              onChange={onChangeadaptedSeason}
-            ></input>
-          </div>
-
-          <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-            <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-              Current Stage
-            </label>
-            <input
-              type="text"
-              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-              onChange={onChangecurrentStage}
-            ></input>
-          </div>
-
-          <div className=" grid grid-cols-[50%_34%] items-center mt-4">
-            <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-              Slot Number
-            </label>
-            <input
-              type="text"
-              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-              onChange={onChangeCropslotNumber}
-            ></input>
-          </div>
+        <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
+          <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
+            Total Land Area(Acre)
+          </label>
+          <input
+            type="text"
+            className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
+            onChange={onChangeTotalLandArea}
+          ></input>
         </div>
-        <div className="grid  justify-center w-[80%] lg:w-[88%] xl:w-[78%] 2xl:w-[65%]">
-          <div className="bg-pink-200"></div>
+
+        <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
+          <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
+            Dealer Farmer Relation
+          </label>
+          <input
+            type="text"
+            className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
+            onChange={onChangeDealerFarmerRel}
+          ></input>
+        </div>
+
+        <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
+          <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
+            Plantation type
+          </label>
+          <Autocomplete
+            onChange={onChangePlantationType}
+            id="plantation-select"
+            sx={{ width: 340 }}
+            options={PlantationOptions}
+            autoHighlight
+            getOptionLabel={(option) => option.value}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Choose plantation type"
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: "new-password",
+                }}
+              />
+            )}
+          />
+        </div>
+        <div className="grid grid-cols-[38%_27%] w-[80%] lg:w-[88%] xl:w-[78%] 2xl:w-[65%]">
+          <div className=""></div>
           <button
             onClick={onSubmitHandler}
             type="submit"
-            className="bg-[#05AB2A] text-[#F3FFF1] w-[8vw] h-8  mt-5 shadow-[0px_4px_3px_rgba(0,0,0,0.25)] rounded text-sm font-thin"
+            className="bg-[#05AB2A] text-[#F3FFF1] w-[8vw] h-8  mt-3 shadow-[0px_4px_3px_rgba(0,0,0,0.25)] rounded text-sm font-thin"
           >
             Submit
           </button>

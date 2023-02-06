@@ -1,8 +1,9 @@
 import * as axios from "axios";
 
-const apiURL ="http://35.77.226.139:5001/api"
+const apiURL = "http://localhost:5001/api";
 
-// "http://localhost:5000/api";
+// "http://localhost:5001/api";   localhost
+//http://35.77.226.139:5001/api   Production url
 
 interface ResponseData {
   data: any;
@@ -38,7 +39,10 @@ export async function createFarmer(
   state: string,
   city: string,
   zip: string,
-  cultivationData: []
+  street: string,
+  totalLandArea: string,
+  dealer_farmer_relation: string,
+  plantation_type: string
 ) {
   try {
     const axiosConfig: axios.AxiosRequestConfig = {
@@ -52,8 +56,11 @@ export async function createFarmer(
           state: state,
           city: city,
           zip: zip,
+          street: street,
         },
-        // cultivationData: cultivationData,
+        totalLandArea: totalLandArea,
+        dealer_farmer_relation: dealer_farmer_relation,
+        plantation_type: plantation_type,
       },
     };
     const response = await axios.default.request(axiosConfig);
@@ -83,20 +90,37 @@ export async function getFarmer(mobile: string) {
     return [errorObject, null];
   }
 }
+
+//Get farmer location
+export async function getFarmerLocation(pin: string) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/farmer/address`,
+      data: {
+        pincode: pin,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
 // ========================================== FARMER CULTIVATION =======================================================================
 
 //Create farmer cultivation data
 export async function createFarmerCultivationData(
   farmerId: string,
   area: string,
-  areaCode: string,
-  areaType: string,
   crop: string,
   variety: string,
   dateOfSowing: string,
-  adoptedSeason: string,
-  currentStage: string,
-  slotNumber: string
+  soilType:string,
+  irrigationType:string,
+  fertilizer:string
 ) {
   try {
     const axiosConfig: axios.AxiosRequestConfig = {
@@ -105,14 +129,12 @@ export async function createFarmerCultivationData(
       data: {
         farmerId: farmerId,
         area: area,
-        areaCode: areaCode,
-        areaType: areaType,
         crop: crop,
         variety: variety,
         dateOfSowing: dateOfSowing,
-        adoptedSeason: adoptedSeason,
-        currentStage: currentStage,
-        slotNumber: slotNumber,
+        soilType:soilType,
+        irrigationType:irrigationType,
+        fertilizer:fertilizer
       },
     };
     const response = await axios.default.request(axiosConfig);

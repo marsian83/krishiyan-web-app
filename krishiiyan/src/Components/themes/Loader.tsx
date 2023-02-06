@@ -1,18 +1,12 @@
 import React from 'react'
-import { Audio } from  'react-loader-spinner'
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const Loader = () => {
-    let radius:any = "9"
   return (
-    <Audio
-    height = "80"
-    width = "80"
-    // radius = {radius}
-    color = 'green'
-    ariaLabel = 'three-dots-loading'     
-    // wrapperStyle
-    // wrapperClass
-  />
+    <Box sx={{ display: 'flex' }}>
+    <CircularProgress />
+  </Box>
   )
 }
 

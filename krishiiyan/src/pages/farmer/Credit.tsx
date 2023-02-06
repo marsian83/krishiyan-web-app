@@ -92,6 +92,7 @@ const Credit = () => {
     const [err, res] = await Api.getFarmer(farmerMobile);
     if (res) {
       setFarmerDetails(res?.data);
+      setEligibleAmount(res?.data?.creditLimit)
     }
   };
 
@@ -109,9 +110,13 @@ const Credit = () => {
     }
   };
 
+  const onClickEnter = async () => {
+    await getFarmerByMobile();
+  };
+
   useEffect(() => {
     const init = async () => {
-      await getFarmerByMobile();
+      // await getFarmerByMobile();
       await getcreditamountInfo();
     };
     init();
@@ -130,7 +135,7 @@ const Credit = () => {
         farmerDetails._id
       );
 
-      if (err) { 
+      if (err) {
         toast.error(err?.data, {
           position: toast.POSITION.TOP_RIGHT,
         });
@@ -196,7 +201,7 @@ const Credit = () => {
       <section className="font-roboto">
         {/* Input Search box */}
         <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
-          <form className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
+          <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
             <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
               Farmer Mobile Number
             </label>
@@ -205,7 +210,14 @@ const Credit = () => {
               className="bg-[#F3FFF1] h-8 lg:w-[86%] xl:w-[90%] lg:ml-2 xl:ml-[1%] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
               onChange={onChangeMobile}
             />
-          </form>
+            <button
+              type="submit"
+              onClick={onClickEnter}
+              className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
+            >
+              ENTER
+            </button>
+          </div>
           {farmerDetails ? (
             <div className="mt-6 leading-4">
               <p className="text-[#000000] font-bold">
@@ -353,6 +365,7 @@ const Credit = () => {
                 className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
                 defaultValue={farmerDetails?.creditLimit}
                 onChange={onChangeAmount}
+                disabled
               />
               {/*  */}
             </div>

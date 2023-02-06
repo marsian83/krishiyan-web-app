@@ -4,12 +4,21 @@ const moment = require("moment");
 const Farmer = require("../models/farmer");
 const FarmerCultivation = require("../models/farmerCultivation");
 const Credit = require("../models/credit");
+const axios = require("axios");
 
 // ========================================== NEW FARMER REGISTRATION ====================================================================
 
 //Create a farmer
 router.post("/", async (req, res) => {
-  const { name, mobile, mobileIsWhatsapp, address } = req.body;
+  const {
+    name,
+    mobile,
+    mobileIsWhatsapp,
+    address,
+    totalLandArea,
+    dealer_farmer_relation,
+    plantation_type,
+  } = req.body;
   try {
     const oldFarmer = await Farmer.findOne({ mobile });
     console.log(oldFarmer);
@@ -20,6 +29,9 @@ router.post("/", async (req, res) => {
       mobile,
       mobileIsWhatsapp,
       address,
+      totalLandArea,
+      dealer_farmer_relation,
+      plantation_type,
     });
     const farmer = await newFarmer.save();
     res.json(farmer);
@@ -29,6 +41,29 @@ router.post("/", async (req, res) => {
       message: err,
     });
   }
+});
+
+//Get farmer address by its pincode  `http://postalpincode.in/api/pincode/${pincode}`
+router.post("/address", async (req, res) => {
+  const { pincode } = req.body;
+  const options = {
+    method: "GET",
+    url: `http://postalpincode.in/api/pincode/${pincode}`,
+    headers: {
+      "content-type": "application/json",
+      "Content-Type": "application/json",
+    },
+  };
+  axios
+    .request(options)
+    .then(function (response) {
+      res.send(response.data);
+    })
+    .catch(function (error) {
+      res.status(500).json({
+        message: error,
+      });
+    });
 });
 
 //Find farmer by mobile
@@ -50,15 +85,13 @@ router.post("/get-farmer-mobile", async (req, res) => {
 router.post("/cultivation", async (req, res) => {
   try {
     const {
-      slotNumber,
       area,
-      areaCode,
-      areaType,
       crop,
       variety,
       dateOfSowing,
-      adoptedSeason,
-      currentStage,
+      soilType,
+      irrigationType,
+      fertilizer,
       farmerId,
     } = req.body;
     const cultivationData = await Farmer.findById(farmerId);
@@ -66,15 +99,13 @@ router.post("/cultivation", async (req, res) => {
       return res.status(400).json({ msg: "Farmer does not exist." });
 
     const newcultivationData = new FarmerCultivation({
-      slotNumber,
       area,
-      areaCode,
-      areaType,
       crop,
       variety,
       dateOfSowing,
-      adoptedSeason,
-      currentStage,
+      soilType,
+      irrigationType,
+      fertilizer,
       farmerId,
     });
 
@@ -251,7 +282,7 @@ router.post("/credit-amount-info", async (req, res) => {
   }
 });
 
-//New credit
+//New credit {Sanction credit to farmer}
 router.post("/credit", async (req, res) => {
   try {
     const {
@@ -265,14 +296,13 @@ router.post("/credit", async (req, res) => {
       farmerId,
     } = req.body;
     const farmer = await Farmer.findById(farmerId);
-    if (!farmer) return res.status(400).json({ message: "Farmer does not exist." });
+    if (!farmer)
+      return res.status(400).json({ message: "Farmer does not exist." });
 
     if (farmer.creditLimit < eligibleAmount)
-      return res
-        .status(500)
-        .json({
-          message: `Your maximum credit limit is ${farmer.creditLimit}`,
-        });
+      return res.status(500).json({
+        message: `Your maximum credit limit is ${farmer.creditLimit}`,
+      });
     const bill_number = Math.floor(100000 + Math.random() * 900000);
 
     const newcreditData = new Credit({
@@ -409,6 +439,5 @@ router.post("/pay-credit", async (req, res) => {
     });
   }
 });
-
 
 module.exports = router;
