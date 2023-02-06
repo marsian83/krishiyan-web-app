@@ -189,7 +189,7 @@ const Dashboard = () => {
 
                     <tr className="bg-[#DEDEDE] h-8 flex justify-between text-[#13490A] text-sm font-semibold">
                       <td className="flex-1 w-10 border-r-4 border-[#6E776D]">
-                        {currentCultivation?.slotNumber}
+                        {/* {currentCultivation?.slotNumber} */}1
                       </td>
                       <td className="flex-[3] w-28 border-r-4 border-[#6E776D]">
                         {currentCultivation?.crop}
