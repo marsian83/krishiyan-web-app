@@ -58,7 +58,7 @@ const Dashboard = () => {
   }, [farmerID, farmerDetail]);
 
   return (
-    <>
+    <div>
       <Header title="Farmer" subtitle="Dashboard" />
       <section>
         <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
@@ -381,7 +381,7 @@ const Dashboard = () => {
           </>
         )}
       </section>
-    </>
+    </div>
   );
 };
 

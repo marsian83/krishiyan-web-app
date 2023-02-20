@@ -5,7 +5,7 @@ const Expert = () => {
   let col1: any = "2";
   let type: string = "text";
   return (
-    <>
+    <div>
       <Header title="Help" subtitle="Expert" />
       <section className="p-[2%] grid grid-rows-[60%_40%] box-border ">
         <div className=" flex flex-wrap gap-x-[10%] lg:gap-x-[8%] gap-y-[4%] ml-4">
@@ -85,7 +85,7 @@ const Expert = () => {
               </tr>
               <tr className="flex justify-end items-center">
                 <td className="flex justify-end items-center mx-[2%]">
-                  <img src="Images/Call.png" alt="Call"/>
+                  <img src="Images/Call.png" alt="Call" />
                 </td>
               </tr>
             </tbody>
@@ -150,7 +150,7 @@ const Expert = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

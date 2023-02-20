@@ -8,7 +8,7 @@ import Herbicide from "../../Components/layouts/Calculator(CropAdvisory)/Herbici
 import Pesticide from "../../Components/layouts/Calculator(CropAdvisory)/Pesticide";
 import Yield from "../../Components/layouts/Calculator(CropAdvisory)/Yield";
 
-const Calculator = () => {
+const FertiCal = () => {
   const [crops, setCrops] = useState<any>();
   const [type, setType] = useState("");
   const [crop, setCrop] = useState("");
@@ -82,8 +82,8 @@ const Calculator = () => {
   }, []);
 
   return (
-    <>
-      <Header title="Crop Advisary" subtitle="Calculator" />
+    <div>
+      <Header title="Crop Advisary" subtitle="Ferti Cal" />
       <section className="p-5">
         <div className="grid grid-cols-[30%_30%_30%_10%]">
           <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center">
@@ -165,8 +165,8 @@ const Calculator = () => {
             </>
           ))}
       </section>
-    </>
+    </div>
   );
 };
 
-export default Calculator;
+export default FertiCal;

@@ -3,11 +3,11 @@ import Inventory from "./pos/Inventory";
 import Purchase from "./pos/Purchase";
 import Report from "./pos/Report";
 import Accounting from "./pos/Accounting";
-import Production from "./crop_advisary/Production";
-import Calendar from "./crop_advisary/Calendar";
-import Health from "./crop_advisary/Health";
-import Calculator from "./crop_advisary/Calculator";
-import Market from "./crop_advisary/Market";
+import CropLibrary from "./crop_advisary/CropLibrary";
+import CropCalendar from "./crop_advisary/CropCalendar";
+import CropHealth from "./crop_advisary/CropHealth";
+import FertiCal from "./crop_advisary/FertiCal";
+import MandiPrices from "./crop_advisary/MandiPrices";
 import Dashboard from "./farmer/Dashboard";
 import Credit from "./farmer/Credit";
 import Cultivation from "./farmer/Cultivation";
@@ -31,11 +31,11 @@ const ContentToShow = (props: any) => {
       {props?.content?.accounting ? <Accounting /> : <></>}
 
       {/* Crop Advisary Content */}
-      {props?.content?.production ? <Production /> : <></>}
-      {props?.content?.calendar ? <Calendar /> : <></>}
-      {props?.content?.health ? <Health /> : <></>}
-      {props?.content?.calculator ? <Calculator /> : <></>}
-      {props?.content?.market ? <Market /> : <></>}
+      {props?.content?.production ? <CropLibrary /> : <></>}
+      {props?.content?.calendar ? <CropCalendar /> : <></>}
+      {props?.content?.health ? <CropHealth /> : <></>}
+      {props?.content?.calculator ? <FertiCal /> : <></>}
+      {props?.content?.market ? <MandiPrices /> : <></>}
 
       {/* Farmer Content */}
       {props?.content?.dashboard ? <Dashboard /> : <></>}

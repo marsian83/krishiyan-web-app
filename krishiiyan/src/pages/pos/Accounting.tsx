@@ -4,7 +4,7 @@ import Bargraph from '../../Components/themes/BarChart'
 
 const Accounting = () => {
   return (
-    <>
+    <div>
       <Header title='Pos' subtitle='Accounting' />
       <section className='grid grid-rows-[30%_70%] h-[88vh] p-3 gap-y-[2%]'>
         <div className='w-full flex flex-1 flex-wrap gap-x-[5%] px-[4%]'>
@@ -48,7 +48,7 @@ const Accounting = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }
 

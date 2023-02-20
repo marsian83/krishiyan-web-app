@@ -4,7 +4,7 @@ import Header from '../../Components/layouts/Header'
 
 const Inventory = () => {
     return (
-        <>
+        <div>
             <Header title="Pos" subtitle="Inventory" />
             <section className=' box-border p-[1.5%] '>
                 <div className='grid grid-cols-[25%_30%_auto] font-roboto mb-[1.5%]'>
@@ -186,7 +186,7 @@ const Inventory = () => {
                     </tr>
                 </table>
             </section>
-        </>
+        </div>
     )
 }
 
