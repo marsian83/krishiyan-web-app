@@ -122,7 +122,7 @@ const Cultivation = () => {
   }, [farmerID, farmerDetail]);
 
   return (
-    <>
+    <div>
       <Header title="Farmer" subtitle="Cultivation" />
       <section>
         <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
@@ -529,7 +529,7 @@ const Cultivation = () => {
           <></>
         )}
       </section>
-    </>
+    </div>
   );
 };
 

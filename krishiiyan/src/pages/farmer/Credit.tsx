@@ -196,7 +196,7 @@ const Credit = () => {
   // }, [farmerDetails,farmerMobile]);
 
   return (
-    <>
+    <div>
       <Header title="Farmer" subtitle="Credit" />
       <section className="font-roboto">
         {/* Input Search box */}
@@ -549,7 +549,7 @@ const Credit = () => {
       ) : (
         <></>
       )}
-    </>
+    </div>
   );
 };
 

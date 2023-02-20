@@ -10,7 +10,7 @@ const Guide = () => {
     const [faq, setFaq] = useState(1);
     const [trouble, setTrouble] = useState(1);
     return (
-        <>
+        <div>
             <Header title="Help" subtitle="Guide" />
             <section className='flex flex-col justify-center items-center'>
                 <div className='flex justify-center gap-x-4 w-full mt-[8vh] mb-[3vh]'>
@@ -126,7 +126,7 @@ const Guide = () => {
                     </div>
                 </div>
             </section>
-        </>
+        </div>
     )
 }
 

@@ -5,7 +5,21 @@ import { toast } from "react-toastify";
 import ProductionVarContent from "./ProductionVarContent";
 import ProductionReqContent from "./ProductionReqContent";
 import Stepper from "../../Components/themes/Stepper";
-const Production = () => {
+import { Autocomplete, TextField } from "@mui/material";
+
+const PlantationOptions = [
+  {
+    value: "Creals",
+  },
+  {
+    value: "Pulses",
+  },
+  {
+    value: "Maize",
+  },
+];
+
+const CropLibrary = () => {
   let Col: any = 2;
   let Col2: any = 5;
   let Row: any = 6;
@@ -17,6 +31,13 @@ const Production = () => {
   const [general, setGeneral] = useState(true);
   const [varietyTab, setVarietyTab] = useState(false);
   const [requirement, setRequirement] = useState(false);
+  const [plantationType, setPlantationType] = useState("");
+
+
+  const onChangePlantationType = (e: any, value: any) => {
+    setPlantationType(value.value)
+  };
+
 
   const onClickGeneral = () => {
     setGeneral(true);
@@ -44,7 +65,7 @@ const Production = () => {
     }
     if (res) {
       // ;
-      
+
       setCrops(res?.data);
     }
     // console.log(res?.data?.data,"crops....");
@@ -58,36 +79,47 @@ const Production = () => {
   }, []);
 
   return (
-    <>
-      <Header title="Crop Advisary" subtitle="Production" />
+    <div>
+      <Header title="Crop Advisary" subtitle="Crop Library" />
       <section className="p-5 grid grid-cols-[30%_30%_30%_10%]">
         <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center">
-          <label className="text-[#13490A] text-center">Type</label>
+          {/* <label className="text-[#13490A] text-center">Type</label>
           <input
             placeholder="Cereal"
             // defaultValue={type}
             type="text"
             className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
+          /> */}
+        </div>
+        <div className="font-extrabold grid grid-cols-[50%_70%] items-center">
+          <label className="text-[#13490A] text-center">Select your Crop</label>
+          <Autocomplete
+            onChange={onChangePlantationType}
+            id="plantation-select"
+            sx={{ width: '100%' }}
+            options={PlantationOptions}
+            autoHighlight
+            getOptionLabel={(option) => option.value}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Choose plantation type"
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: "new-password",
+                }}
+              />
+            )}
           />
         </div>
         <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center">
-          <label className="text-[#13490A] text-center">Crop</label>
-          <input
-            // defaultValue={crop}
-            placeholder="Crop"
-            onChange={(e: any) => setCrop(e.target.value)}
-            type="text"
-            className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
-          />
-        </div>
-        <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center">
-          <label className="text-[#13490A] text-center">Variety</label>
+          {/* <label className="text-[#13490A] text-center">Variety</label>
           <input
             placeholder="Variety"
             // defaultValue={variety}
             type="text"
             className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
-          />
+          /> */}
         </div>
       </section>
       {crops?.length > 0 &&
@@ -108,25 +140,25 @@ const Production = () => {
                   {obj?.localName}
                 </h2>
                 <div className="flex rounded-md mb-1 gap-2">
-              <button
-                onClick={onClickGeneral}
-                className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
-              >
-                General
-              </button>
-              <button
-                onClick={onClickvarietyTab}
-                className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
-              >
-                Variety
-              </button>
-              <button
-                onClick={onClickrequirement}
-                className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
-              >
-                Requirement
-              </button>
-            </div>
+                  <button
+                    onClick={onClickGeneral}
+                    className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+                  >
+                    General
+                  </button>
+                  <button
+                    onClick={onClickvarietyTab}
+                    className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+                  >
+                    Variety
+                  </button>
+                  <button
+                    onClick={onClickrequirement}
+                    className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+                  >
+                    Requirement
+                  </button>
+                </div>
                 <div className="p-4">
                   {general ? (
                     <>
@@ -218,7 +250,7 @@ const Production = () => {
                             ))} */}
                           </td>
                         </tr>
-                     
+
                         <tr className="h-10 border border-black">
                           <th
                             className="border border-black text-left"
@@ -256,11 +288,10 @@ const Production = () => {
                   )}
                 </div>
               </section>
-              
             </>
           ))}
-    </>
+    </div>
   );
 };
 
-export default Production;
+export default CropLibrary;

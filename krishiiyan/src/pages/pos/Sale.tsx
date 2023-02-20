@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../../Components/layouts/Header'
 const Sale = () => {
   return (
-    <>
+    <div>
       <Header title="Pos" subtitle="Sale" />
       <section className='flex border border-[#13490A] border-collapse font-roboto h-[88vh]'>
             <div className="flex flex-col flex-[4]">
@@ -73,7 +73,7 @@ const Sale = () => {
                
             </div>
         </section>
-    </>
+    </div>
 
   )
 }

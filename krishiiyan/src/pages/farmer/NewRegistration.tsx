@@ -122,7 +122,7 @@ const NewRegistration = () => {
   };
 
   return (
-    <>
+    <div>
       <Header title="Farmer" subtitle="New Registration" />
       <section>
         <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
@@ -236,7 +236,7 @@ const NewRegistration = () => {
           </button>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
