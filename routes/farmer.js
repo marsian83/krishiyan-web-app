@@ -199,8 +199,8 @@ router.post("/credit-eligible-amount", async (req, res) => {
     const farmer_current_cultivation_data = await FarmerCultivation.findById(
       farmer_current_cultivation_id
     );
-    let cost_of_cultivation = "20000"; //By crop db
-    let credit_score = 0.3; //Gave by dealer {0.1 - 1}
+    let cost_of_cultivation = "20000"; //By crop db // Need to make this value dynamic
+    let credit_score = 0.3; //Gave by dealer {0.1 - 1} // Need to make this value dynamic
 
     let eligible_amount = calculateCreditAmount(
       farmer_current_cultivation_data.area,
