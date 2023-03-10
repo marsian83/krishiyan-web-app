@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Menu = (props: any) => {
+  let navigate = useNavigate();
+
   //Pos state
   const [sale, setSale] = useState(true);
   const [inventory, setInventory] = useState(false);
@@ -9,14 +12,14 @@ const Menu = (props: any) => {
   const [accounting, setAccounting] = useState(false);
 
   //Crop Advisary state
-  const [production, setProduction] = useState(false);
+  const [production, setProduction] = useState(true);
   const [calendar, setCalendar] = useState(false);
   const [health, setHealth] = useState(false);
   const [calculator, setCalculator] = useState(false);
   const [market, setMarket] = useState(false);
 
   //Farmer state
-  const [dashboard, setDashboard] = useState(false);
+  const [dashboard, setDashboard] = useState(true);
   const [farmPurchase, setFarmPurchase] = useState(false);
   const [cultivation, setCultivation] = useState(false);
   const [credit, setCredit] = useState(false);
@@ -27,7 +30,7 @@ const Menu = (props: any) => {
   const [mgmtDashboard, setMgmtDashboard] = useState(false);
 
   //Help state
-  const [problem, setProblem] = useState(false);
+  const [problem, setProblem] = useState(true);
   const [expert, setExpert] = useState(false);
   const [guide, setGuide] = useState(false);
 
@@ -35,6 +38,7 @@ const Menu = (props: any) => {
   // Pos
   const onClickSale = () => {
     setSale(true);
+    navigate("/");
     setInventory(false);
     setReport(false);
     setPurchase(false);
@@ -59,6 +63,7 @@ const Menu = (props: any) => {
   };
 
   const onClickInventory = () => {
+    navigate("/inventory");
     setSale(false);
     setInventory(true);
     setReport(false);
@@ -84,6 +89,7 @@ const Menu = (props: any) => {
   };
 
   const onClickReport = () => {
+    navigate("/report");
     setSale(false);
     setInventory(false);
     setReport(true);
@@ -109,6 +115,7 @@ const Menu = (props: any) => {
   };
 
   const onClickPurchase = () => {
+    navigate("/purchase");
     setSale(false);
     setInventory(false);
     setReport(false);
@@ -134,12 +141,13 @@ const Menu = (props: any) => {
   };
 
   const onClickAccounting = () => {
+    navigate("/accounting");
     setSale(false);
     setInventory(false);
     setReport(false);
     setPurchase(false);
     setAccounting(true);
-    //set crop advisary state false
+    // set crop advisary state false
     setProduction(false);
     setCalendar(false);
     setHealth(false);
@@ -160,6 +168,7 @@ const Menu = (props: any) => {
 
   //Crop Advisary
   const onClickProduction = () => {
+    navigate("/crop_library");
     setProduction(true);
     setCalendar(false);
     setHealth(false);
@@ -185,6 +194,7 @@ const Menu = (props: any) => {
   };
 
   const onClickCalendar = () => {
+    navigate("/crop_calendar");
     setProduction(false);
     setCalendar(true);
     setHealth(false);
@@ -210,6 +220,7 @@ const Menu = (props: any) => {
   };
 
   const onClickHealth = () => {
+    navigate("/crop_health");
     setProduction(false);
     setCalendar(false);
     setHealth(true);
@@ -235,6 +246,7 @@ const Menu = (props: any) => {
   };
 
   const onClickCalculator = () => {
+    navigate("/fertical");
     setProduction(false);
     setCalendar(false);
     setHealth(false);
@@ -260,6 +272,7 @@ const Menu = (props: any) => {
   };
 
   const onClickMarket = () => {
+    navigate("/mandi_prices");
     setProduction(false);
     setCalendar(false);
     setHealth(false);
@@ -286,6 +299,7 @@ const Menu = (props: any) => {
 
   //Farmer
   const onClickDashboard = () => {
+    navigate("/dashboard");
     setDashboard(true);
     setFarmPurchase(false);
     setCultivation(false);
@@ -311,6 +325,7 @@ const Menu = (props: any) => {
   };
 
   const onClickFarmPurchase = () => {
+    navigate("/farm_purchase");
     setDashboard(false);
     setFarmPurchase(true);
     setCultivation(false);
@@ -336,6 +351,7 @@ const Menu = (props: any) => {
   };
 
   const onClickCultivation = () => {
+    navigate("/cultivation");
     setDashboard(false);
     setFarmPurchase(false);
     setCultivation(true);
@@ -360,6 +376,7 @@ const Menu = (props: any) => {
     setGuide(false);
   };
   const onClickCredit = () => {
+    navigate("/credit");
     setDashboard(false);
     setFarmPurchase(false);
     setCultivation(false);
@@ -384,6 +401,7 @@ const Menu = (props: any) => {
     setGuide(false);
   };
   const onClickSupport = () => {
+    navigate("/support");
     setDashboard(false);
     setFarmPurchase(false);
     setCultivation(false);
@@ -409,13 +427,14 @@ const Menu = (props: any) => {
   };
 
   const onClickNewRegistration = () => {
+    navigate("/new_registration");
     setDashboard(false);
     setFarmPurchase(false);
     setCultivation(false);
     setCredit(false);
     setSupport(false);
     setNewRegistration(true);
-    //set pos state false
+    // set pos state false
     setSale(false);
     setInventory(false);
     setReport(false);
@@ -434,9 +453,13 @@ const Menu = (props: any) => {
   };
 
   //Management
+  const onClickManageAccounting = () => {
+    navigate("/accounting");
+  };
 
   //Help
   const onClickProblem = () => {
+    navigate("/problem");
     setProblem(true);
     setExpert(false);
     setGuide(false);
@@ -461,6 +484,7 @@ const Menu = (props: any) => {
     setNewRegistration(false);
   };
   const onClickExpert = () => {
+    navigate("/expert");
     setProblem(false);
     setExpert(true);
     setGuide(false);
@@ -485,6 +509,7 @@ const Menu = (props: any) => {
     setNewRegistration(false);
   };
   const onClickGuide = () => {
+    navigate("/guide");
     setProblem(false);
     setExpert(false);
     setGuide(true);
@@ -509,58 +534,60 @@ const Menu = (props: any) => {
     setNewRegistration(false);
   };
 
-  useEffect(() => {
-    props.getContentToShowState(
-      sale,
-      inventory,
-      report,
-      purchase,
-      accounting,
+  // useEffect(() => {
+  //   props.getContentToShowState(
+  //     sale,
+  //     inventory,
+  //     report,
+  //     purchase,
+  //     accounting,
 
-      production,
-      calendar,
-      health,
-      calculator,
-      market,
+  //     production,
+  //     calendar,
+  //     health,
+  //     calculator,
+  //     market,
 
-      dashboard,
-      farmPurchase,
-      cultivation,
-      credit,
-      support,
-      newRegistration,
+  //     dashboard,
+  //     farmPurchase,
+  //     cultivation,
+  //     credit,
+  //     support,
+  //     newRegistration,
 
-      problem,
-      expert,
-      guide
-    );
-  }, [
-    sale,
-    inventory,
-    report,
-    purchase,
-    accounting,
-    production,
-    calendar,
-    health,
-    calculator,
-    market,
-    dashboard,
-    farmPurchase,
-    cultivation,
-    credit,
-    support,
-    newRegistration,
-    problem,
-    expert,
-    guide,
-  ]);
+  //     problem,
+  //     expert,
+  //     guide
+  //   );
+  // }, [
+  //   sale,
+  //   inventory,
+  //   report,
+  //   purchase,
+  //   accounting,
+  //   production,
+  //   calendar,
+  //   health,
+  //   calculator,
+  //   market,
+  //   dashboard,
+  //   farmPurchase,
+  //   cultivation,
+  //   credit,
+  //   support,
+  //   newRegistration,
+  //   problem,
+  //   expert,
+  //   guide,
+  // ]);
 
   return (
     <>
-      <menu className="bg-[#F3FFF1] w-[55%] lg:w-[12vw] xl:w-[55%] flex flex-col items-center h-screen shadow-[4px_4px_20px_rgba(0,0,0,0.1)]">
-        <h2 className="text-[#13490A] text-md xl:text-lg font-roboto font-extrabold my-[4%] leading-5 text-right
-        drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+      <menu className="bg-[#F3FFF1] w-[55%] lg:w-[12vw] xl:w-[55%] flex flex-col items-center h-screen shadow-[4px_4px_20px_rgba(0,0,0,0.1)] h-full">
+        <h2
+          className="text-[#13490A] text-md xl:text-lg font-roboto font-extrabold my-[4%] leading-5 text-right
+        drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
+        >
           {props.Heading}
         </h2>
         <div className="absolute top-16">
@@ -581,27 +608,46 @@ const Menu = (props: any) => {
               <ul className="text-center text-sm flex flex-col items-center">
                 <li
                   onClick={onClickSale}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${sale === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    sale === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+                  }`}
+                >
                   Sale
                 </li>
                 <li
                   onClick={onClickInventory}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${inventory === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    inventory === true
+                      ? "bg-[#526D4E] mix-blend-hard-light"
+                      : ""
+                  }`}
+                >
                   Inventory
                 </li>
                 <li
                   onClick={onClickReport}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${report === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    report === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+                  }`}
+                >
                   Report
                 </li>
                 <li
                   onClick={onClickPurchase}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${purchase === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    purchase === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+                  }`}
+                >
                   Purchase
                 </li>
                 <li
                   onClick={onClickAccounting}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${accounting === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    accounting === true
+                      ? "bg-[#526D4E] mix-blend-hard-light"
+                      : ""
+                  }`}
+                >
                   Accounting
                 </li>
               </ul>
@@ -615,28 +661,47 @@ const Menu = (props: any) => {
               <ul className="text-center text-sm flex flex-col items-center">
                 <li
                   onClick={onClickProduction}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${production === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
-                  Production
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    production === true
+                      ? "bg-[#526D4E] mix-blend-hard-light"
+                      : ""
+                  }`}
+                >
+                  Crop Library
                 </li>
                 <li
                   onClick={onClickCalendar}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${calendar === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`} >
-                  Calendar
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    calendar === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+                  }`}
+                >
+                  Crop Calendar
                 </li>
                 <li
                   onClick={onClickHealth}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${health === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
-                  Health
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    health === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+                  }`}
+                >
+                  Crop Health
                 </li>
                 <li
                   onClick={onClickCalculator}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${calculator === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
-                  Calculator
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    calculator === true
+                      ? "bg-[#526D4E] mix-blend-hard-light"
+                      : ""
+                  }`}
+                >
+                  FertiCal
                 </li>
                 <li
                   onClick={onClickMarket}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${market === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
-                  Market
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    market === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+                  }`}
+                >
+                  Mandi Prices
                 </li>
               </ul>
             </>
@@ -649,32 +714,58 @@ const Menu = (props: any) => {
               <ul className="text-center text-sm flex flex-col items-center">
                 <li
                   onClick={onClickDashboard}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${dashboard === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    dashboard === true
+                      ? "bg-[#526D4E] mix-blend-hard-light"
+                      : ""
+                  }`}
+                >
                   Dashboard
                 </li>
                 <li
                   onClick={onClickFarmPurchase}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${farmPurchase === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    farmPurchase === true
+                      ? "bg-[#526D4E] mix-blend-hard-light"
+                      : ""
+                  }`}
+                >
                   Purchase
                 </li>
                 <li
                   onClick={onClickCultivation}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${cultivation === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    cultivation === true
+                      ? "bg-[#526D4E] mix-blend-hard-light"
+                      : ""
+                  }`}
+                >
                   Cultivation
                 </li>
                 <li
                   onClick={onClickCredit}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${credit === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    credit === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+                  }`}
+                >
                   Credit
                 </li>
                 <li
                   onClick={onClickSupport}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${support === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    support === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+                  }`}
+                >
                   Support
                 </li>
                 <li
                   onClick={onClickNewRegistration}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${newRegistration === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    newRegistration === true
+                      ? "bg-[#526D4E] mix-blend-hard-light"
+                      : ""
+                  }`}
+                >
                   New Registration
                 </li>
               </ul>
@@ -687,8 +778,15 @@ const Menu = (props: any) => {
           {props?.manage ? (
             <>
               <ul className="text-center text-sm flex flex-col items-center">
-                <li className="text-[#13490A] font-bold font-roboto text-center text-xs cursor-pointer my-1 px-10 py-2 rounded-lg">
-                  Dashboard
+                <li
+                  onClick={onClickManageAccounting}
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    newRegistration === true
+                      ? "bg-[#526D4E] mix-blend-hard-light"
+                      : ""
+                  }`}
+                >
+                  Manage Accounting
                 </li>
               </ul>
             </>
@@ -702,17 +800,26 @@ const Menu = (props: any) => {
               <ul className="text-center text-sm flex flex-col items-center">
                 <li
                   onClick={onClickProblem}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${problem === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    problem === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+                  }`}
+                >
                   Problem
                 </li>
                 <li
                   onClick={onClickExpert}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${expert === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    expert === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+                  }`}
+                >
                   Expert
                 </li>
                 <li
                   onClick={onClickGuide}
-                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${guide === true ? "bg-[#526D4E] mix-blend-hard-light" : ""}`}>
+                  className={`text-[#13490A] w-full font-bold font-roboto text-xs cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                    guide === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+                  }`}
+                >
                   Guide
                 </li>
               </ul>

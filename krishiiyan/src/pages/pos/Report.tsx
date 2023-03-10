@@ -5,7 +5,7 @@ import Piegraph from '../../Components/themes/PieChart'
 
 const Report = () => {
   return (
-    <>
+    <div>
       <Header title="Pos" subtitle="Report" />
       <section className='grid grid-rows-[10%_28%_60%] h-[88vh]'>
         <div className='w-full flex items-center gap-x-[2%] pl-[24%]'>
@@ -53,8 +53,7 @@ const Report = () => {
           </div>
         </div>
       </section>
-    </>
-
+    </div>
   )
 }
 

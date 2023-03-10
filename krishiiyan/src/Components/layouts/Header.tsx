@@ -2,7 +2,7 @@ import React from 'react'
 
 const Header = (props: any) => {
     return (
-        <header className='bg-[#F3FFF1] h-[12vh] xl:h-[14vh] flex flex-row items-center rounded-2xl ml-1 shadow-[0_8px_16px_rgba(0,0,0,0.1)] 
+        <header className='bg-[#F3FFF1] w-full h-[12vh] xl:h-[14vh] flex flex-row items-center rounded-2xl ml-1 shadow-[0_8px_16px_rgba(0,0,0,0.1)] 
         pr-[1vw]'>
             <div className='text-[#13490A] text-center font-roboto font-black text-lg leading-7 mt-4 flex-[6] lg:text-sm xl:text-base'>
                 <h1>{props?.title}</h1>

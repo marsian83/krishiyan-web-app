@@ -1,16 +1,28 @@
 const express = require("express");
 const router = express.Router();
+const moment = require("moment");
 const Crop = require("../models/crop");
+const Pesticide = require("../models/pesticide");
+const Pest = require("../models/pest");
+const Herbicide = require("../models/herbicide");
+const Weeds = require("../models/weeds");
+const Disease = require("../models/disease");
+const Fungicide = require("../models/fungicide");
+const ObjectId = require("mongodb").ObjectId;
 
 // ===================================================== CROP ADVISORY =======================================================================
 
 //Create new crop
 router.post("/", async (req, res) => {
   const information = req.body;
-  const newCrop = new Crop({
-    ...information,
-  });
+
   try {
+    // const oldCrop = await Crop.findOne({ localName });
+    // if (oldCrop)
+    //   return res.status(400).json({ message: "crop already exists" });
+    const newCrop = new Crop({
+      ...information,
+    });
     await newCrop.save();
     res.status(201).json({
       message: "Crop created!",
@@ -26,6 +38,152 @@ router.get("/", async (req, res) => {
   try {
     const crops = await Crop.find({});
     res.status(200).json(crops);
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+});
+// fill data for pest
+// router.get("/fill-data", async (req, res) => {
+//   try {
+//     const pest = await new Pest({
+//       name: "Pest3 ",// pest 2
+//       pesticidesIds: [],
+//       cropsIds: [new ObjectId("63f73c50676f085c2f436f26")],
+//     }).save();
+//     const pesticide = new Pesticide({
+//       name: "Pesticide 3", // pe 2
+//       dosagePerAcre: "500",
+//       unit: "ml",// 'gram', 'kilogram','ml','litre'
+//       dilutionRatioPerAcre: "150-200",
+//       stage: "Stage 2", // Stage 1, Stage 2, Stage 3, Stage 4
+//       sprayingTime: "Sunlight", // Evening, Afternoon, Sunlight, Night
+//       applicationType: "Florial",// Basal
+//       frequency: "3 times for 2 weeks",// 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
+//       pestsIds: [pest._id],
+//     });
+//     await pesticide.save();
+//     pest.pesticidesIds.push(new ObjectId(pesticide._id));
+//     await pest.save();
+//     res.json({
+//       pest,
+//       pesticide,
+//     });
+//   } catch (error) {
+//     console.log(error, "ERROR");
+//   }
+// });
+
+// fill data for herbicide
+// router.get("/fill-data", async (req, res) => {
+//   try {
+//     const weed = await new Weeds({
+//       name: "Weed1 ",// pest 2
+//       herbicidesIds: [],
+//       cropsIds: [new ObjectId("63f347b63098d304b39aa5fb")],
+//     }).save();
+//     const herbicide = new Herbicide({
+//       name: "Herbicide1", // pe 2
+//       dosagePerAcre: "500",
+//       unit: "ml",// 'gram', 'kilogram','ml','litre'
+//       dilutionRatioPerAcre: "150-200",
+//       stage: "Stage 3", // Stage 1, Stage 2, Stage 3, Stage 4
+//       sprayingTime: "Evening", // Evening, Afternoon, Sunlight, Night
+//       applicationType: "Florial",// Basal
+//       frequency: "3 times for 2 weeks",// 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
+//       weedsIds: [weed._id],
+//     });
+//     await herbicide.save();
+//     weed.herbicidesIds.push(new ObjectId(herbicide._id));
+//     await weed.save();
+//     res.json({
+//       weed,
+//       herbicide,
+//     });
+//   } catch (error) {
+//     console.log(error, "ERROR");
+//   }
+// });
+
+//fill data for fungicide
+router.get("/fill-data", async (req, res) => {
+  try {
+    const disease = await new Disease({
+      name: "Disease3 ", // pest 2
+      fungicidesIds: [],
+      cropsIds: [new ObjectId("63f347b63098d304b39aa5fb")],
+    }).save();
+    const fungicide = new Fungicide({
+      name: "Fungicide3", // pe 2
+      dosagePerAcre: "500",
+      unit: "ml", // 'gram', 'kilogram','ml','litre'
+      dilutionRatioPerAcre: "150-200",
+      stage: "Stage 3", // Stage 1, Stage 2, Stage 3, Stage 4
+      sprayingTime: "Sunlight", // Evening, Afternoon, Sunlight, Night
+      applicationType: "Florial", // Basal
+      frequency: " times for 1 weeks", // 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
+      diseaseIds: [disease._id],
+    });
+    await fungicide.save();
+    disease.fungicidesIds.push(new ObjectId(fungicide._id));
+    await disease.save();
+    res.json({
+      disease,
+      fungicide,
+    });
+  } catch (error) {
+    console.log(error, "ERROR");
+  }
+});
+
+// Get crop by localName and scientificName
+router.post("/get-crop-name", async (req, res) => {
+  try {
+    // const { localName } = req.body;
+    const { localName, scientificName, dateOfSowing } = req.body;
+    // $or: [ {localName }, {scientificName} ]
+
+    const crop = await Crop.find({ $or: [{ localName }, { scientificName }] });
+    var day = 60 / 5;
+    if (dateOfSowing) {
+      return res.status(200).json(
+        crop.map((_crop) => ({
+          ..._crop._doc,
+          timeLine: {
+            "Basal(at Sowing)": moment(dateOfSowing).add(0, "days").toDate(),
+            "V4(four leaf stage)": moment(dateOfSowing)
+              .add(day * 2, "days")
+              .toDate(),
+            "V8(eight leaf stage)": moment(dateOfSowing)
+              .add(day * 3, "days")
+              .toDate(),
+            "VT(tasseling stage)": moment(dateOfSowing)
+              .add(day * 4, "days")
+              .toDate(),
+            "GF(grain filling stage)": moment(dateOfSowing)
+              .add(day * 5, "days")
+              .toDate(),
+          },
+        }))
+      );
+    }
+    res.status(200).json(crop);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: error,
+    });
+  }
+});
+
+// Get crop by localName and date
+router.post("/get-crop-calendar", async (req, res) => {
+  try {
+    const { localName, createdAt } = req.body;
+
+    const crop = await Crop.find({ $or: [{ localName }, { createdAt }] });
+    res.status(200).json(crop);
   } catch (error) {
     res.status(500).json({
       message: error,
@@ -68,7 +226,7 @@ const fertilizer = [
   },
 ];
 
-//Recommended fertilizer
+// //Recommended fertilizer
 let recomment_fertilizer_phosphorous = fertilizer.filter(
   (val) => val.phosphorusContain > "20"
 );
@@ -189,17 +347,17 @@ router.post("/calculator", async (req, res) => {
       STAGE1: {
         fertilizer: stage1_fertilizer_data,
         nutrients: ["Nitrogen", "Potassium", "Phosphorous", "Zinc"],
-        cropStage:'Basal'
+        cropStage: "Basal",
       },
       STAGE2: {
         fertilizer: stage2_fertilizer_data,
         nutrients: ["Nitrogen"],
-        cropStage:'V4'
+        cropStage: "V4",
       },
       STAGE3: {
         fertilizer: stage3_fertilizer_data,
         nutrients: ["Nitrogen"],
-        cropStage:'V8'
+        cropStage: "V8",
       },
     });
   } catch (error) {
@@ -209,4 +367,158 @@ router.post("/calculator", async (req, res) => {
   }
 });
 
+// ========================================pesticide CALCULATOR===========================================================
+
+// let recomment_fertilizer_phosphorous = fertilizer.filter(
+//   (val) => val.phosphorusContain > "20"
+// );
+
+// let recomment_fertilizer_nitrogen = fertilizer.filter(
+//   (val) => val.nitrogenContain > "20"
+// );
+
+// let recomment_fertilizer_potassium = fertilizer.filter(
+//   (val) => val.potassiumContain > "20"
+// );
+// let recomment_fertilizer_zinc = fertilizer.filter((val) => val.zinc > "20");
+
+// function nitrogen_calculator(
+//   required_nitrogen,
+//   recomment_fertilizer_nitrogen_contains
+// ) {
+//   return (required_nitrogen / recomment_fertilizer_nitrogen_contains) * 100;
+// }
+
+// let e1 = pesticide.filter(
+//   (val) => val.Maize.Pest1Pesticide1 > "250"
+// );
+
+// let e2 = pesticide.filter(
+//   (val) => val.Maize.Pest1Pesticide2 > "500"
+// );
+
+// let e3 = pesticide.filter(
+//   (val) => val.Maize.Pest1Pesticide3 > "250"
+// );
+// function pesticide1_calculator(){
+//   return(maize.pesticide1)*2
+// }
+
+const pesticide = [
+  {
+    name: "MaizePest1 Pesticide 1",
+    Dosage_per_acre: "250",
+    Dilution_Ratio: "150-200",
+  },
+  {
+    name: "MaizePest1 Pesticide 2",
+    Dosage_per_acre: "250",
+    Dilution_Ratio: "150-200",
+  },
+  {
+    name: "MaizePest1 Pesticide 3",
+    Dosage_per_acre: "250",
+    Dilution_Ratio: "150-200",
+  },
+];
+
+function pesticide1_calculator(crop, area) {
+  let Dosage = 250;
+  return {
+    quantity: Dosage * area,
+  };
+}
+function pesticide2_calculator(crop, area) {
+  let Dosage = 500;
+  return {
+    quantity: (Dosage * (area / 2)) / 2,
+  };
+}
+function pesticide3_calculator(crop, area) {
+  let Dosage = 500;
+  return {
+    quantity: (Dosage * area) / 2,
+  };
+}
+
+router.post("/pesticide-calculator", async (req, res) => {
+  try {
+    const { localName, area } = req.body;
+    const crop = await Crop.findOne({ localName });
+
+    let E1_pesticide_data = pesticide1_calculator(crop, area);
+    let E2_pesticide_data = pesticide2_calculator(crop, area);
+    let E3_pesticide_data = pesticide3_calculator(crop, area);
+
+    res.status(200).json({
+      DilutionRatio: {
+        water: "150-200",
+      },
+      E1: {
+        // pesticide: E1_pesticide_data,
+        cropStage: "MaizePest1Pesticde 1",
+        calculation: E1_pesticide_data,
+      },
+      E2: {
+        // pesticide: E2_pesticide_data,
+
+        cropStage: "MaizePest1Pesticde 2",
+        calculation: E2_pesticide_data,
+      },
+      E3: {
+        // pesticide: E3_pesticide_data,
+
+        cropStage: "MaizePest1Pesticde 3",
+        calculation: E3_pesticide_data,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+});
+
+router.get("/problems", (req, res) => {
+  try {
+    const [localName] = req.body;
+    const problems = Crop.find(localName);
+    res.json(problems);
+  } catch (error) {}
+});
+
+// fungicide and herbicide
+
+// function herbicide() {
+//   let herbicide = 250;
+//   return {
+//     quantity: herbicide * 2,
+//   };
+// }
+// router.post("/fungicide-herbicide", async (req, res) => {
+//   try {
+//     const { localName } = req.body;
+//     const crop = await Crop.findOne({ localName });
+
+//     res.status(200).json({
+//       // E1: {
+//       //   // pesticide: E1_pesticide_data,
+//       //   cropStage: "MaizePest1Pesticde 1",
+//       //   calculation:E1_pesticide_data
+//       // },
+//       // E2: {
+//       //   // pesticide: E2_pesticide_data,
+//       //   cropStage: "MaizePest1Pesticde 2",
+//       //   calculation:E2_pesticide_data
+//       // },
+//       // E3: {
+//       //   // pesticide: E3_pesticide_data,
+//       //   cropStage: "MaizePest1Pesticde 3",
+//       //   calculation:E3_pesticide_data
+//       // },
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 module.exports = router;

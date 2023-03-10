@@ -20,6 +20,12 @@ const cultivation_stage = {
       k: String,
       Zn: String,
     },
+    importantActivity: String,
+    diseaseManagement: String,
+
+    interculturalOperation: String,
+
+    synpfomImage: String,
   },
   V4: {
     description: String,
@@ -29,6 +35,12 @@ const cultivation_stage = {
       k: String,
       Zn: String,
     },
+    importantActivity: String,
+    diseaseManagement: String,
+
+    interculturalOperation: String,
+
+    synpfomImage: String,
   },
   V8: {
     description: String,
@@ -40,7 +52,15 @@ const cultivation_stage = {
     },
   },
   VT: String,
-  GF: String,
+  GF: {
+    //  description:String,
+    importantActivity: String,
+    diseaseManagement: String,
+
+    interculturalOperation: String,
+
+    synpfomImage: String,
+  },
 };
 
 const CropSchema = new mongoose.Schema(
@@ -135,6 +155,14 @@ const CropSchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
+    //snowming time
+    kharif: {
+      type: String,
+    },
+    rabi: {
+      type: String,
+    },
+
     pestMgmt: [
       {
         name: String,
@@ -161,7 +189,7 @@ const CropSchema = new mongoose.Schema(
         ], //recommended products
       },
     ],
-    cultivationStage: cultivation_stage,  //Cultivation Stages
+    cultivationStage: cultivation_stage, //Cultivation Stages
     rainfall: String,
     image: String,
     diseaseMgmt: [
@@ -181,10 +209,21 @@ const CropSchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
+    dateOfSowing: {
+      type: String,
+      // required: true,
+    },
     postHarvest: {
       type: String,
       // required: true,
     },
+    varitiesId: [
+      {
+        type: mongoose.Schema.ObjectId,
+        required: true,
+        ref: "Varities",
+      },
+    ],
   },
   { timestamps: true }
 );

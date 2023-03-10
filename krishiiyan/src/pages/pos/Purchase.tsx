@@ -3,7 +3,7 @@ import Header from '../../Components/layouts/Header'
 
 const Purchase = () => {
   return (
-    <>
+    <div>
       <Header title="Pos" subtitle="Purchase" />
       <section className='box-border '>
         <div className='my-[5%]'>
@@ -41,12 +41,8 @@ const Purchase = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }
 
 export default Purchase
-{/* <div className='grid grid-cols-[8%_10%] justify-center gap-x-[4%]  '>
-    <button className='bg-[#05AB2A] text-[#F3FFF1] font-light h-[5vh] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md'>Pay</button>
-    <button className='bg-[#05AB2A] text-[#F3FFF1] font-light h-[5vh] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md'>Purchase Slip</button>
-  </div> */}

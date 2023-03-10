@@ -8,7 +8,7 @@ import Herbicide from "../../Components/layouts/Calculator(CropAdvisory)/Herbici
 import Pesticide from "../../Components/layouts/Calculator(CropAdvisory)/Pesticide";
 import Yield from "../../Components/layouts/Calculator(CropAdvisory)/Yield";
 
-const Calculator = () => {
+const FertiCal = () => {
   const [crops, setCrops] = useState<any>();
   const [type, setType] = useState("");
   const [crop, setCrop] = useState("");
@@ -71,7 +71,6 @@ const Calculator = () => {
     if (res) {
       setCrops(res?.data);
     }
-
   };
 
   useEffect(() => {
@@ -82,18 +81,18 @@ const Calculator = () => {
   }, []);
 
   return (
-    <>
-      <Header title="Crop Advisary" subtitle="Calculator" />
+    <div>
+      <Header title="Crop Advisary" subtitle="Ferti Cal" />
       <section className="p-5">
         <div className="grid grid-cols-[30%_30%_30%_10%]">
-          <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center">
+          {/* <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center">
             <label className="text-[#13490A] text-center">Type</label>
             <input
               placeholder="Cereal"
               type="text"
               className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
             />
-          </div>
+          </div> */}
           <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center">
             <label className="text-[#13490A] text-center">Crop</label>
             <input
@@ -103,26 +102,26 @@ const Calculator = () => {
               className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
             />
           </div>
-          <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center">
+          {/* <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center">
             <label className="text-[#13490A] text-center">Variety</label>
             <input
               placeholder="Variety"
               type="text"
               className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
             />
-          </div>
+          </div> */}
         </div>
         {crops
           ?.filter((val: any) => {
             if (crop === "") {
-              return
+              return;
             } else if (
               val?.localName?.toLowerCase().includes(crop.toLowerCase())
             ) {
               return val;
             }
           })
-          .map((obj: any) => (
+          ?.map((obj: any) => (
             <>
               <div className="grid grid-cols-[12%_12%_12%_12%_12%] gap-[6%] mx-[10%] mt-6 mb-9">
                 <button
@@ -165,8 +164,8 @@ const Calculator = () => {
             </>
           ))}
       </section>
-    </>
+    </div>
   );
 };
 
-export default Calculator;
+export default FertiCal;

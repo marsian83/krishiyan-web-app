@@ -3,7 +3,7 @@ import Header from '../../Components/layouts/Header'
 
 const Problem = () => {
     return (
-        <>
+        <div>
             <Header title="Help" subtitle="Problem" />
             <section className='p-[1%] py-[2%]'>
                 <div className='flex justify-end gap-[5%] w-[45%] text-center '>
@@ -38,7 +38,7 @@ const Problem = () => {
                     </div>
                 </div>
             </section>
-        </>
+        </div>
     )
 }
 

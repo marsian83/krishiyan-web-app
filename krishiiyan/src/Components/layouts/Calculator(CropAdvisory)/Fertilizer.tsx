@@ -4,7 +4,6 @@ import * as Api from "../../../Services/Api";
 import { toast } from "react-toastify";
 
 const Fertilizer = (props: any) => {
-  console.log(props.crop.localName);
   const [fertilizer, setFertilizer] = useState<any>();
   const [area, setArea] = useState("");
 
@@ -59,7 +58,6 @@ const Fertilizer = (props: any) => {
               </tr>
             </thead>
             <tbody>
-
               {/* Stage1 */}
               <tr className="h-10 border-b border-black">
                 <td className="border-r border-black">
