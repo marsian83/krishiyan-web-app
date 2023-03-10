@@ -8,7 +8,6 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import moment from "moment";
 
-
 const PlantationOptions = [
   {
     value: "Creals",
@@ -21,24 +20,21 @@ const PlantationOptions = [
   },
 ];
 
-
 const CropCalendar = () => {
   const [crops, setCrops] = useState<any>();
-  const [type, setType] = useState("");
-  const [crop, setCrop] = useState("");
-  const [variety, setVariety] = useState("");
-  const [dateOfSowing, setDateOfSowing] = useState("");
-  const [plantationType, setPlantationType] = useState("");
-
+  const [localsName, setLocalsName] = useState<any>();
+  const [scientficCrop, setScientificCrop] = useState<any>("");
+  const [dateOfSowing, setDateOfSowing] = useState<any>("");
+  const [cropDetails, setCropDetails] = useState<any>();
+  const [loading, setLoading] = useState(false);
 
   const onChangePlantationType = (e: any, value: any) => {
-    setPlantationType(value.value)
+    setLocalsName(value.localName);
   };
-  
+
   const onChangedateOfSowing = (e: any) => {
-    let date = moment(e.target.value).toISOString(); //ISO 8601 format
+    let date = moment(e.target.value).toDate(); //ISO 8601 format
     setDateOfSowing(date);
-    console.log(e.target.value)
   };
 
   const getCrops = async () => {
@@ -54,6 +50,45 @@ const CropCalendar = () => {
     }
   };
 
+  const getcropCalender = async (
+    localName: any,
+    scientficCrop: any,
+    dateOfSowing: number | null = null
+  ) => {
+    if (localName || scientficCrop) {
+      setLoading(true);
+      const [err, res] = await Api.getCropsbyName(
+        localName,
+        scientficCrop,
+        dateOfSowing
+      );
+
+      if (err) {
+        console.log(err);
+        toast.error(err.data, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+      if (res) {
+        console.log(res);
+        if (res?.data === null) {
+          toast.error("crop not found!", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+        console.log(res, "Res");
+        setCropDetails(res?.data);
+      }
+
+      setLoading(false);
+    }
+  };
+  const onSubmit = async () => {
+    // const res = await Api.(localsName,scientficCrop );
+    const res = await getcropCalender(localsName, scientficCrop, dateOfSowing);
+    // await getcropName();
+  };
+
   useEffect(() => {
     const init = async () => {
       await getCrops();
@@ -64,8 +99,22 @@ const CropCalendar = () => {
     <div>
       <Header title="Crop Advisary" subtitle="Crop Calendar" />
       <section className="p-[1%]">
-        <div className="grid grid-cols-[50%_40%]">
-          <div className="font-extrabold grid grid-cols-[40%_40%] items-center">
+        {/* <div style={{width:"100%",height:"105px",backgroundColor:"red"}}>
+
+        </div> */}
+
+        <div
+          className=""
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "row",
+          }}
+        >
+          <div
+            className="font-extrabold grid grid-cols-[40%_40%] items-center"
+            style={{ width: "550px" }}
+          >
             <label className="text-[#13490A]">Select the Crop</label>
             {/* <input
               placeholder="Crop"
@@ -77,13 +126,13 @@ const CropCalendar = () => {
               onChange={onChangePlantationType}
               id="plantation-select"
               // sx={{ bgcolor: '#F3FFF1', boxShadow: '4px 4px 3px rgba(0,0,0,0.25)', borderRadius: '6px', textAlign: 'center', height: '2rem' }}
-              options={PlantationOptions}
+              options={crops}
               autoHighlight
-              getOptionLabel={(option) => option.value}
+              getOptionLabel={(crops) => crops?.localName}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Choose plantation type"
+                  label="Crop name"
                   inputProps={{
                     ...params.inputProps,
                     autoComplete: "new-password",
@@ -92,7 +141,10 @@ const CropCalendar = () => {
               )}
             />
           </div>
-          <div className="font-extrabold grid grid-cols-[50%_50%] items-center">
+          <div
+            className="font-extrabold grid grid-cols-[50%_50%] items-center"
+            style={{ width: "550px" }}
+          >
             <label className="text-[#13490A] text-center">Date of Sowing</label>
             <div className="md:w-2/3">
               <input
@@ -104,19 +156,42 @@ const CropCalendar = () => {
               />
             </div>
           </div>
+          <div style={{ marginRight: "25px", marginTop: "7px" }}>
+            {loading ? (
+              <button
+                style={{ marginLeft: "20px" }}
+                type="submit"
+                disabled={loading}
+                className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-full rounded text-sm font-thin"
+              >
+                {/* <Loader /> */}
+                Fetching Info...
+              </button>
+            ) : (
+              <button
+                style={{ padding: "9px" }}
+                type="submit"
+                onClick={onSubmit}
+                className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
+              >
+                Enter
+              </button>
+            )}
+          </div>
         </div>
+
         <div className="my-10">
-          {crops
-            ?.filter((val: any) => {
-              if (crop === "") {
-                return;
-              } else if (
-                val?.localName?.toLowerCase().includes(crop.toLowerCase())
-              ) {
-                return val;
-              }
-            })
-            .map((obj: any) => (
+          {cropDetails
+            // ?.filter((val: any) => {
+            //   if (crop === "") {
+            //     return;
+            //   } else if (
+            //     val?.localName?.toLowerCase().includes(crop.toLowerCase())
+            //   ) {
+            //     return val;
+            //   }
+            // })
+            ?.map((obj: any) => (
               <>
                 <h2 className="text-[#13490A] font-extrabold mb-3 text-center">
                   {obj?.localName}

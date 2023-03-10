@@ -22,6 +22,14 @@ dotenv.config();
 //Routes
 app.use("/api/farmer", require("./routes/farmer")); //Farmer Api
 app.use("/api/crop", require("./routes/crop")); //Crop Api
+app.use("/api/varitie", require("./routes/varities")); //varities Api
+app.use("/api/pest", require("./routes/pest")); //Pest Api
+app.use("/api/pesticide", require("./routes/pesticide")); //Pesticide Api
+app.use("/api/weed", require("./routes/weed")); //weed Api
+app.use("/api/herbicide", require("./routes/herbicide")); //herbicide Api
+app.use("/api/disease", require("./routes/disease"));
+app.use("/api/fungicide", require("./routes/fungicide"));
+app.use("/api/yield-crop", require("./routes/yieldCrop"));
 
 //Connect to DB.
 connectDB();
@@ -37,4 +45,4 @@ const port = process.env.PORT || 5001;
 
 app.listen(port, () => {
   console.log(`server running at port:${port}`);
-})
+});
