@@ -78,7 +78,7 @@ const Sale = () => {
                   className="bg-[#05AB2A] text-white font-thin tracking-wide w-20 h-9 flex items-center justify-center rounded-md text-base"
                   onClick={onClickEnter}
                 >
-                  Enter
+                  ENTER
                 </button>
                 <button className=" w-10 h-6 flex items-center justify-center rounded-md">
                   <img src="Images/plus.png" alt="plus" className="h-6 w-6" />
@@ -199,8 +199,12 @@ const Sale = () => {
               Pay by Credit
             </button>
           </div>
-          <div>
-            <img src="" alt="" />
+
+          <p className="flex justify-start mt-5 ml-2">Payment Method</p>
+          <div className="flex flex-row w-20 ml-2 mt-5 ">
+            <img src="/images/UPI.png" alt="upi" />
+            <img src="/images/Moneybundle.png" alt=" cash" />
+            <img src="/images/CreditCard.png" alt=" credit card" />
           </div>
         </div>
       </section>

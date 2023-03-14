@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import InputCal from "./InputCal";
 import * as Api from "../../../Services/Api";
 import { toast } from "react-toastify";
+import { getCrops } from "../../../Services/Api";
+import { MenuItem, TextField } from "@mui/material";
 
 const Fertilizer = (props: any) => {
+  const [crop, setCrop] = useState("");
+  const [allCrops, setAllCropes] = useState<any[]>([]);
   const [fertilizer, setFertilizer] = useState<any>();
   const [area, setArea] = useState("");
 
   const onClickCalculate = async () => {
     if (area !== "" && area !== undefined) {
-      const [err, res] = await Api.fertilizerCalculator(
-        props.crop.localName,
-        area
-      );
+      const [err, res] = await Api.fertilizerCalculator(crop, area);
 
       if (err) {
         toast.error(err?.data, {
@@ -25,10 +26,35 @@ const Fertilizer = (props: any) => {
       }
     }
   };
+  useEffect(() => {
+    const setCrops = async () => {
+      const crops: any[] = await getCrops();
+      setAllCropes(crops[1].data);
+    };
+    setCrops();
+  }, []);
 
   return (
     <>
       <section className="p-5">
+        <TextField
+          id="outlined-select-currency"
+          select
+          label="Select Crop"
+          sx={{
+            width: "200px",
+            display: "flex",
+            justifyContent: "start",
+          }}
+          value={crop}
+          onChange={(e) => setCrop(e.target.value)}
+        >
+          {allCrops.map((crop) => (
+            <MenuItem key={crop._id} value={crop._id}>
+              {crop.localName}
+            </MenuItem>
+          ))}
+        </TextField>
         <section className="p-5">
           <div className="font-extrabold grid grid-cols-[25%_40%_15%_25%] gap-[2%] mx-[20%] mb-[3%] items-center">
             <label className="text-center">Area</label>

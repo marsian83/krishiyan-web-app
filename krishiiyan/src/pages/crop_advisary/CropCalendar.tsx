@@ -174,7 +174,7 @@ const CropCalendar = () => {
                 onClick={onSubmit}
                 className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
               >
-                Enter
+                ENTER
               </button>
             )}
           </div>

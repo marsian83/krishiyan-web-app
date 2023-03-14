@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import Loader from "../../Components/themes/Loader";
 
 const Dashboard = () => {
+  const [search, setSearch] = useState("moradabad");
+  const [weather, setWeather] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const [farmerID, setFarmerID] = useState("");
   const [farmerDetail, setFarmerDetail] = useState<any>();
@@ -57,14 +59,61 @@ const Dashboard = () => {
     init();
   }, [farmerID, farmerDetail]);
 
+  const api = {
+    key: "72b05fdfa25a691624fb032c0b0aa2ec",
+    base: "https://api.openweathermap.org/data/2.5/",
+  };
+
+  // const searchPressed = () => {
+  //   fetch(`${api.base}weather?q=${search}&units=metric&APPID=${api.key}`)
+  //     .then((res) => res.json())
+  //     .then((result) => {
+  //       setWeather(result);
+  //     });
+  // };
+  // console.log(weather, "hi i am weather");
+
+  // const getWeather = async () => {
+  //   try {
+  //     const result = await fetch(
+  //       `${api.base}weather?q=${search}&units=metric&APPID=${api.key}`
+  //     )
+  //       .then((res) => res.json())
+  //       .then((result) => {
+  //         setWeather(result);
+  //       });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // useState(() => {
+  //   const init = async () => {
+  //     await searchPressed();
+  //   };
+  //   init();
+  // }, [1]);
   return (
     <div>
-      <Header title="Farmer" subtitle="Dashboard" />
+      <Header title="Farmer Relationship Management" subtitle="Dashboard" />
       <section>
+        {/* <div>
+          <p>{weather.name}</p>
+          <p>{weather.main.temp}°C</p>
+          <p>{weather.weather.description}</p>
+        </div> */}
+        {/* <div>
+          <input
+            type="text"
+            placeholder="enter city name"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <button onClick={searchPressed}> sumbit</button>
+        </div> */}
+
         <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
           <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
             <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
-             Farmer Mobile Number
+              Farmer Mobile Number
             </label>
             <input
               onChange={onChangeInput}
@@ -101,7 +150,7 @@ const Dashboard = () => {
                   {farmerDetail?.name}
                 </span>
               </p>
-              <p className="text-[#000000]">
+              <p className="text-[#000000] ml-4">
                 Area :{" "}
                 <span className="text-[#FB0404] font-bold">
                   {farmerDetail?.address?.street}
@@ -128,168 +177,159 @@ const Dashboard = () => {
               <div className="flex lg:gap-x-[5%] xl:gap-x-[5%] w-full">
                 {/* General Information */}
                 {farmerDetail ? (
-                  <div className="flex flex-col flex-1 lg:w-1/2 bg-pink-200">
-                    <h2 className="text-[#13490A] bg-[#C6EDC0] h-8 flex items-center justify-center font-bold text-base">
-                      <p className="">General</p>
-                    </h2>
-                    <div className="text-[#13490A] bg-[#DEDEDE] h-8 font-semibold text-sm flex items-center pl-4">
-                      <p className="flex flex-1 justify-around">
-                        Member Since :{" "}
-                        <span className="flex-1">
-                          {moment(farmerDetail?.createdAt).format(
-                            "MM/DD/YYYY"
-                          )}
-                        </span>
-                      </p>
-                    </div>
-                    <div className="text-[#13490A] bg-[#6E776D] h-8 font-semibold text-sm flex items-center pl-4">
-                      <p className="flex flex-1 justify-around">
-                        Total Farm Area(Acre) :{" "}
-                        <span className="flex-1">{farmerDetail?.totalLandArea}</span>
-                      </p>
-                    </div>
-                    <div className="text-[#13490A] bg-[#DEDEDE] h-8 font-semibold text-sm flex items-center pl-4">
-                      <p className="flex flex-1 justify-around">
-                        Soil test date :
-                        <span className="flex-1">
-                          {" "}
-                          {moment(farmerDetail?.updatedAt).format(
-                            "MM/DD/YYYY"
-                          )}
-                        </span>
-                      </p>
-                    </div>
-                    <div className="text-[#13490A] bg-[#6E776D] h-8 font-semibold text-sm flex items-center pl-4">
-                      <p className="flex flex-1 justify-around">
-                        Credit score :
-                        <span className="flex-1">
-                          {" "}
+                  <table className="table-auto border-collapse border border-black font-bold text-base w-[40%] mx-auto">
+                    <thead className="border-b border-black">
+                      <tr className="text-center ">
+                        <th
+                          className="border-b border-black py-[1.2%] "
+                          colSpan={2}
+                        >
+                          General
+                        </th>
+                      </tr>
+                      <tr className="text-center">
+                        <th className="border-r border-black py-[1.2%]">
+                          Member Since :
+                        </th>
+                        <th className="border-r border-black py-[1.2%]">
+                          {moment(farmerDetail?.createdAt).format("MM/DD/YYYY")}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Stage1 */}
+                      <tr className="h-10 border-b border-black">
+                        <td className="border-r border-black">
+                          Total Farm Area(Acre) :
+                        </td>
+
+                        <td className="border-r border-black">
+                          {farmerDetail?.totalLandArea}
+                        </td>
+                      </tr>
+                      <tr className="h-10 border-b border-black">
+                        <td className="border-r border-black">
+                          Soil test date :
+                        </td>
+
+                        <td className="border-r border-black">
+                          {moment(farmerDetail?.updatedAt).format("MM/DD/YYYY")}
+                        </td>
+                      </tr>
+                      <tr className="h-10 border-b border-black">
+                        <td className="border-r border-black">
+                          Credit score :
+                        </td>
+
+                        <td className="border-r border-black">
                           ₹{farmerDetail?.creditLimit?.toString()}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 ) : (
                   <></>
                 )}
 
                 {/* Current Cultivation */}
                 {currentCultivation ? (
-                  <table className="flex flex-col flex-1 bg-[#6E776D]">
-                    <tr className="text-[#13490A] bg-[#C6EDC0] h-8  flex items-center justify-center font-bold text-base">
-                      <th>Current Cultivation</th>
-                    </tr>
-                    <tr className="text-[#13490A] bg-[#6E776D] h-8 font-semibold text-sm flex items-center">
-                      <td className="flex-1">S.No</td>
-                      <td className="flex-[3]">Crop</td>
-                      <td className="flex-[2]">Area(Acre)</td>
-                      <td className="flex-[4]">Age(Date of sowing)</td>
-                      <td className="flex-[4]">Harvested</td>
-                    </tr>
+                  <table className="table-auto border-collapse border border-black font-bold text-base w-[50%] mx-auto">
+                    <thead className="border-b border-black">
+                      <tr className="text-center ">
+                        <th
+                          className="border-b border-black py-[1.2%] "
+                          colSpan={5}
+                        >
+                          Current Cultivation
+                        </th>
+                      </tr>
+                      <tr className="text-center">
+                        <th className="border-r border-black py-[1.2%]">
+                          S.No
+                        </th>
+                        <th className="border-r border-black py-[1.2%]">
+                          Crop
+                        </th>
+                        <th className="border-r border-black py-[1.2%]">
+                          Area(Acre)
+                        </th>
+                        <th className="border-r border-black py-[1.2%]">
+                          Age(Date of sowing)
+                        </th>
+                        <th className="border-r border-black py-[1.2%]">
+                          Harvested
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Stage1 */}
+                      <tr className="h-10 border-b border-black">
+                        <td className="border-r border-black">
+                          {/* {currentCultivation?.slotNumber} */}1
+                        </td>
 
-                    <tr className="bg-[#DEDEDE] h-8 flex justify-between text-[#13490A] text-sm font-semibold">
-                      <td className="flex-1 w-10 border-r-4 border-[#6E776D]">
-                        {/* {currentCultivation?.slotNumber} */}1
-                      </td>
-                      <td className="flex-[3] w-28 border-r-4 border-[#6E776D]">
-                        {currentCultivation?.crop}
-                      </td>
-                      <td className="flex-[2] w-20 border-r-4 border-[#6E776D]">
-                        {currentCultivation?.area}
-                      </td>
-                      <td className="flex-[4] w-40 border-r-4 border-[#6E776D]">
-                        {moment(currentCultivation?.dateOfSowing).format(
+                        <td className="border-r border-black">
+                          {currentCultivation?.crop}
+                        </td>
+                        <td className="border-r border-black">
+                          {currentCultivation?.area}
+                        </td>
+                        <td className="border-r border-black">
+                          {moment(currentCultivation?.dateOfSowing).format(
                             "MM/DD/YYYY"
                           )}
-                      </td>
-                      <td className="flex-[4] w-40">
-                       Yes
-                      </td>
-                    </tr>
+                        </td>
+                        <td className="border-r border-black">Yes</td>
+                      </tr>
+                    </tbody>
                   </table>
                 ) : (
                   <></>
                 )}
               </div>
 
-              <div className="flex lg:gap-x-[5%] xl:gap-x-[5%] w-full">
+              <div className="flex lg:gap-x-[5%] xl:gap-x-[5%] w-full ">
                 {/* History Of Purchase */}
                 {farmerDetail ? (
-                  <table className="flex flex-col flex-1 h-fit bg-[#6E776D]">
-                    <tr className="text-[#13490A] bg-[#C6EDC0] h-8  flex items-center justify-center font-bold text-base">
-                      <th>History of Purchase</th>
-                    </tr>
-                    <tr className="text-[#13490A] bg-[#6E776D] h-8 font-semibold text-sm flex items-center justify-center">
-                      <td className="flex-1">S.No</td>
-                      <td className="flex-[2]">Date</td>
-                      <td className="flex-[4]">Products</td>
-                      <td className="flex-[2]">Price</td>
-                      <td className="flex-[2]"></td>
-                    </tr>
-                    <tr className="bg-[#DEDEDE] h-8 flex  text-[#13490A] text-sm font-semibold justify-center">
-                      <td className="flex-1 border-r-4 border-[#6E776D]">01</td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                        12/03/22
-                      </td>
-                      <td className="flex-[4] border-r-4 border-[#6E776D]">
-                        Urea, Complex B
-                      </td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                        ₹803.00
-                      </td>
-                      <td className="flex-[2] flex justify-center items-center">
-                        <img
-                          src="Images/arrowr.png"
-                          alt="arrow"
-                          width="20rem"
-                        />
-                      </td>
-                    </tr>
-                    <tr className="text-[#13490A] bg-[#6E776D] h-8 font-semibold text-sm flex items-center justify-center">
-                      <td className="flex-1">02</td>
-                      <td className="flex-[2]">12/03/22</td>
-                      <td className="flex-[4]">Urea, Complex B</td>
-                      <td className="flex-[2]">₹803.00</td>
-                      <td className="flex-[2] flex justify-center">
-                        <img
-                          src="Images/arrowr.png"
-                          alt="arrow"
-                          width="20rem"
-                        />
-                      </td>
-                    </tr>
-                    <tr className="bg-[#DEDEDE] h-8 flex text-[#13490A] text-sm font-semibold justify-center">
-                      <td className="flex-1 border-r-4 border-[#6E776D]">03</td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                        12/03/22
-                      </td>
-                      <td className="flex-[4] border-r-4 border-[#6E776D]">
-                        Urea, Complex B
-                      </td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                        ₹803.00
-                      </td>
-                      <td className="flex-[2] flex justify-center items-center">
-                        <img
-                          src="Images/arrowr.png"
-                          alt="arrow"
-                          width="20rem"
-                        />
-                      </td>
-                    </tr>
-                    <tr className="text-[#13490A] bg-[#6E776D] h-8 font-semibold text-sm flex items-center justify-center">
-                      <td className="flex-1">04</td>
-                      <td className="flex-[2]">12/03/22</td>
-                      <td className="flex-[4]">Urea, Complex B</td>
-                      <td className="flex-[2]">₹803.00</td>
-                      <td className="flex-[2] flex justify-center items-center">
-                        <img
-                          src="Images/arrowr.png"
-                          alt="arrow"
-                          width="20rem"
-                        />
-                      </td>
-                    </tr>
+                  <table className="table-auto border-collapse border border-black font-bold text-base w-[40%] mx-auto ml-3">
+                    <thead className="border-b border-black">
+                      <tr className="text-center ">
+                        <th
+                          className="border-b border-black py-[1.2%] "
+                          colSpan={5}
+                        >
+                          History of Purchase
+                        </th>
+                      </tr>
+                      <tr className="text-center">
+                        <th className="border-r border-black py-[1.2%]">
+                          S.No
+                        </th>
+                        <th className="border-r border-black py-[1.2%]">
+                          Date
+                        </th>
+                        <th className="border-r border-black py-[1.2%]">
+                          Products
+                        </th>
+                        <th className="border-r border-black py-[1.2%]">
+                          Price
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Stage1 */}
+                      <tr className="h-10 border-b border-black">
+                        <td className="border-r border-black">
+                          {/* {currentCultivation?.slotNumber} */}02
+                        </td>
+
+                        <td className="border-r border-black">12/03/22</td>
+                        <td className="border-r border-black">
+                          Urea, Complex B
+                        </td>
+                        <td className="border-r border-black">₹803.00</td>
+                      </tr>
+                    </tbody>
                   </table>
                 ) : (
                   <></>
@@ -298,80 +338,52 @@ const Dashboard = () => {
                 {/* Issues Resolved */}
                 {farmerDetail ? (
                   <div className="flex flex-col flex-1 h-fit text-center">
-                     {farmerDetail ? (
-                  <table className="flex flex-col flex-1 h-fit bg-[#6E776D]">
-                    <tr className="text-[#13490A] bg-[#C6EDC0] h-8  flex items-center justify-center font-bold text-base">
-                      <th>Issues resolved</th>
-                    </tr>
-                    <tr className="text-[#13490A] bg-[#6E776D] h-8 font-semibold text-sm flex items-center justify-center">
-                      <td className="flex-1">S.No</td>
-                      <td className="flex-[2]">Date</td>
-                      <td className="flex-[4]">Crop</td>
-                      <td className="flex-[2]">Issue Status</td>
-                      <td className="flex-[2]">Suggestion</td>
-                    </tr>
-                    <tr className="bg-[#DEDEDE] h-8 flex  text-[#13490A] text-sm font-semibold justify-center">
-                      <td className="flex-1 border-r-4 border-[#6E776D]">01</td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                        12/03/22
-                      </td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                       maize
-                      </td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                       Resolved
-                      </td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                        test...
-                      </td>
-                    </tr>
+                    {farmerDetail ? (
+                      <table className="table-auto border-collapse border border-black font-bold text-base w-[85%] mx-auto">
+                        <thead className="border-b border-black">
+                          <tr className="text-center ">
+                            <th
+                              className="border-b border-black py-[1.2%] "
+                              colSpan={5}
+                            >
+                              Issues resolved
+                            </th>
+                          </tr>
+                          <tr className="text-center">
+                            <th className="border-r border-black py-[1.2%]">
+                              S.No
+                            </th>
+                            <th className="border-r border-black py-[1.2%]">
+                              Date
+                            </th>
+                            <th className="border-r border-black py-[1.2%]">
+                              Crop
+                            </th>
+                            <th className="border-r border-black py-[1.2%]">
+                              Issue
+                            </th>
+                            <th className="border-r border-black py-[1.2%]">
+                              Suggestion
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {/* Stage1 */}
+                          <tr className="h-10 border-b border-black">
+                            <td className="border-r border-black">
+                              {/* {currentCultivation?.slotNumber} */}01
+                            </td>
 
-
-                    <tr className="text-[#13490A] bg-[#6E776D] h-8 font-semibold text-sm flex items-center justify-center">
-                      <td className="flex-1">02</td>
-                      <td className="flex-[2]">12/03/22</td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                       paddy
-                      </td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                        Pending
-                      </td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                        test...
-                      </td>
-                    </tr>
-
-                    <tr className="text-[#13490A] bg-[#6E776D] h-8 font-semibold text-sm flex items-center justify-center">
-                      <td className="flex-1">03</td>
-                      <td className="flex-[2]">12/03/22</td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                       paddy
-                      </td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                        Pending
-                      </td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                        test...
-                      </td>
-                    </tr>
-
-                    <tr className="text-[#13490A] bg-[#6E776D] h-8 font-semibold text-sm flex items-center justify-center">
-                      <td className="flex-1">04</td>
-                      <td className="flex-[2]">12/03/22</td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                       paddy
-                      </td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                        Pending
-                      </td>
-                      <td className="flex-[2] border-r-4 border-[#6E776D]">
-                        test...
-                      </td>
-                    </tr>
-                  </table>
-                ) : (
-                  <></>
-                )}
+                            <td className="border-r border-black">12/03/22</td>
+                            <td className="border-r border-black">Maize</td>
+                            <td className="border-r border-black">Resolved</td>
+                            <td className="border-r border-black">test...</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 ) : (
                   <></>

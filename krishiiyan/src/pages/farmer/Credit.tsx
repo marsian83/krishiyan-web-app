@@ -92,7 +92,7 @@ const Credit = () => {
     const [err, res] = await Api.getFarmer(farmerMobile);
     if (res) {
       setFarmerDetails(res?.data);
-      setEligibleAmount(res?.data?.creditLimit)
+      setEligibleAmount(res?.data?.creditLimit);
     }
   };
 
@@ -197,7 +197,7 @@ const Credit = () => {
 
   return (
     <div>
-      <Header title="Farmer" subtitle="Credit" />
+      <Header title="Farmer Relationship Management" subtitle="Credit" />
       <section className="font-roboto">
         {/* Input Search box */}
         <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
