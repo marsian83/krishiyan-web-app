@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { Autocomplete, MenuItem, TextField } from "@mui/material";
 import { getCrops, getvariteyByCropId } from "../../Services/Api";
 import moment from "moment";
+import Weather from "./Weather";
 
 const Cultivation = () => {
   const [openTab, setOpenTab] = useState("New");
@@ -162,6 +163,7 @@ const Cultivation = () => {
             >
               ENTER
             </button>
+            <Weather />
           </div>
           {farmerDetail ? (
             <div className="mt-6 leading-4">
