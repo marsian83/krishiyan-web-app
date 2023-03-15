@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import Header from "../../Components/layouts/Header";
 import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, MenuItem, TextField } from "@mui/material";
+import { getCrops, getvariteyByCropId } from "../../Services/Api";
 import moment from "moment";
 
 const Cultivation = () => {
@@ -48,6 +49,9 @@ const Cultivation = () => {
 
   //Cultivation form data
   const [area, setArea] = useState("");
+  const [problem, setProblem] = useState("");
+  const [allPests, setAllPests] = useState<any[]>([]);
+  const [allCrops, setAllCropes] = useState<any[]>([]);
   const [crop, setCrop] = useState("");
   const [variety, setVariety] = useState("");
   const [dateOfSowing, setDateOfSowing] = useState("");
@@ -121,14 +125,30 @@ const Cultivation = () => {
     init();
   }, [farmerID, farmerDetail]);
 
+  useEffect(() => {
+    const setCrops = async () => {
+      const crops: any[] = await getCrops();
+      setAllCropes(crops[1].data);
+    };
+    setCrops();
+  }, []);
+  useEffect(() => {
+    const setPests = async (crop: string) => {
+      const pests: any[] = await getvariteyByCropId(crop);
+      setAllPests(pests[1].data);
+    };
+    if (!!crop) setPests(crop);
+    else setAllPests([]);
+  }, [crop]);
+
   return (
     <div>
-      <Header title="Farmer" subtitle="Cultivation" />
+      <Header title="Farmer Relationship Management" subtitle="Cultivation" />
       <section>
         <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
           <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
             <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
-            Farmer Mobile Number
+              Farmer Mobile Number
             </label>
             <input
               onChange={onChangeInput}
@@ -136,12 +156,12 @@ const Cultivation = () => {
               className="bg-[#F3FFF1] h-8 lg:w-[86%] xl:w-[90%] lg:ml-2 xl:ml-[1%] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pr-3 pl-3"
             />
             <button
-                type="submit"
-                onClick={onClickEnter}
-                className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
-              >
-                ENTER
-              </button>
+              type="submit"
+              onClick={onClickEnter}
+              className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
+            >
+              ENTER
+            </button>
           </div>
           {farmerDetail ? (
             <div className="mt-6 leading-4">
@@ -151,7 +171,7 @@ const Cultivation = () => {
                   {farmerDetail?.name}
                 </span>
               </p>
-              <p className="text-[#000000]">
+              <p className="text-[#000000] ml-8">
                 Area :{" "}
                 <span className="text-[#FB0404] font-bold">
                   {farmerDetail?.address?.state}
@@ -200,13 +220,22 @@ const Cultivation = () => {
                     </label>
                   </div>
                   <div className="md:w-2/3">
-                    <input
-                      className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                      onChange={onChangeCrop}
-                      id="inline-password"
-                      type="text"
-                      placeholder="Crop"
-                    />
+                    <TextField
+                      id="outlined-select-currency"
+                      select
+                      label="Select Crop"
+                      sx={{
+                        width: 260,
+                      }}
+                      value={crop}
+                      onChange={(e) => setCrop(e.target.value)}
+                    >
+                      {allCrops.map((crop) => (
+                        <MenuItem key={crop._id} value={crop._id}>
+                          {crop.localName}
+                        </MenuItem>
+                      ))}
+                    </TextField>
                   </div>
                 </div>
 
@@ -220,13 +249,20 @@ const Cultivation = () => {
                     </label>
                   </div>
                   <div className="md:w-2/3">
-                    <input
-                      className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                      onChange={onChangevariety}
-                      id="inline-password"
-                      type="text"
-                      placeholder="Variety"
-                    />
+                    <TextField
+                      id="outlined-select-currency"
+                      select
+                      label="Select Variety"
+                      sx={{ width: 260 }}
+                      value={problem}
+                      onChange={(e) => setProblem(e.target.value)}
+                    >
+                      {allPests.map((pest) => (
+                        <MenuItem key={pest._id} value={pest._id}>
+                          {pest.nameOfvariety}
+                        </MenuItem>
+                      ))}
+                    </TextField>
                   </div>
                 </div>
 
@@ -304,10 +340,10 @@ const Cultivation = () => {
                       sx={{ width: 260 }}
                       options={[
                         {
-                          value: "RAINFALL",
+                          value: "Rain fed land,",
                         },
                         {
-                          value: "CANAL",
+                          value: "Wetland",
                         },
                       ]}
                       autoHighlight
@@ -464,53 +500,64 @@ const Cultivation = () => {
             <div className={openTab === "Old" ? "block" : "hidden"}>
               {oldCultivation ? (
                 <>
-                  <table className="table-auto bg-[#6E776D] border-collapse border ml-[9%] w-[54vw] lg:w-[70vw] text-sm font-semibold mt-10">
-                    <thead>
-                      <tr className="text-[#FFFFFF] h-7 font-medium">
-                        <th className="border-r-4 border-[#6E776D]">Crop</th>
-                        {/* <th className="border-r-4 border-[#6E776D]">Area</th> */}
-                        <th>Variety</th>
-                        <th>Date</th>
-                        <th>Soil</th>
-                        <th className="border-r-4 border-[#6E776D]">
+                  <table className="table-auto border-collapse border border-black font-bold text-base w-[80%] mx-auto mt-10">
+                    <thead className="border-b border-black">
+                      <tr className="text-center">
+                        <th className="border-r border-black py-[1.2%]">
+                          Crop
+                        </th>
+                        <th className="border-r border-black py-[1.2%]">
+                          Variety
+                        </th>
+                        <th className="border-r border-black py-[1.2%]">
+                          Date
+                        </th>
+                        <th className="border-r border-black py-[1.2%]">
+                          Soil
+                        </th>
+                        <th className="border-r border-black py-[1.2%]">
                           Irrigation
                         </th>
-                        <th className="border-r-4 border-[#6E776D]">
+                        <th className="border-r border-black py-[1.2%]">
                           Area(acres)
                         </th>
-                        <th className="border-r-4 border-[#6E776D]">
+                        <th className="border-r border-black py-[1.2%]">
                           Fertilizer
                         </th>
-                        <th className="border-r-4 border-[#6E776D]">
+                        <th className="border-r border-black py-[1.2%]">
                           Last visit
                         </th>
                       </tr>
                     </thead>
                     <tbody>
+                      {/* Stage1 */}
                       {oldCultivation?.map((cultivation: any) => (
-                        <tr className="bg-[#DEDEDE] h-10">
-                          <td className="border-r-4 border-[#6E776D]">
+                        <tr className="h-10 border-b border-black">
+                          <td className="border-r border-black">
                             {cultivation?.crop}
                           </td>
-                          <td className="border-r-4 border-[#6E776D]">
+
+                          <td className="border-r border-black">
                             {cultivation?.variety}
                           </td>
-                          <td className="border-r-4 border-[#6E776D]">
+                          <td className="border-r border-black">
                             {moment(cultivation?.date).format("MM/DD/YYYY")}
                           </td>
-                          <td className="border-r-4 border-[#6E776D]">
+
+                          <td className="border-r border-black">
                             {cultivation?.soilType}
                           </td>
-                          <td className="border-r-4 border-[#6E776D]">
+                          <td className="border-r border-black">
                             {cultivation?.irrigationType}
                           </td>
-                          <td className="border-r-4 border-[#6E776D]">
+                          <td className="border-r border-black">
                             {cultivation?.area} acre
                           </td>
-                          <td className="border-r-4 border-[#6E776D]">
+
+                          <td className="border-r border-black">
                             {cultivation?.fertilizer}
                           </td>
-                          <td className="border-r-4 border-[#6E776D]">
+                          <td className="border-r border-black">
                             {moment(cultivation?.updatedAt).format(
                               "MM/DD/YYYY"
                             )}

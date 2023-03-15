@@ -30,6 +30,7 @@ app.use("/api/herbicide", require("./routes/herbicide")); //herbicide Api
 app.use("/api/disease", require("./routes/disease"));
 app.use("/api/fungicide", require("./routes/fungicide"));
 app.use("/api/yield-crop", require("./routes/yieldCrop"));
+app.use("/api/add-inventory", require("./routes/inventory"));
 
 //Connect to DB.
 connectDB();

@@ -4,8 +4,11 @@ const BasalStep = (props: any) => {
   return (
     <>
       <div
-        className="text-[#13490A] font-extrabold mt-4"
-        style={{ display: "flex", textAlign: "left" }}
+        className="text-[#13490A] font-extrabold mt-4 "
+        style={{
+          display: "flex",
+          textAlign: "left",
+        }}
       >
         <div>
           <p>
@@ -16,31 +19,39 @@ const BasalStep = (props: any) => {
           <p>NutrientContains: </p>
           <br />
           <p>
-          Nitrogen: {props?.cropDetails?.cultivationStage?.basal?.nutrientContains?.n}
+            Nitrogen:{" "}
+            {props?.cropDetails?.cultivationStage?.basal?.nutrientContains?.n}
           </p>
           <p>
-          Phosphorus: {props?.cropDetails?.cultivationStage?.basal?.nutrientContains?.p}
+            Phosphorus:{" "}
+            {props?.cropDetails?.cultivationStage?.basal?.nutrientContains?.p}
           </p>
           <p>
-          Potassium: {props?.cropDetails?.cultivationStage?.basal?.nutrientContains?.k}
+            Potassium:{" "}
+            {props?.cropDetails?.cultivationStage?.basal?.nutrientContains?.k}
           </p>
           <p>
-            Zinc: {props?.cropDetails?.cultivationStage?.basal?.nutrientContains?.Zn}
+            Zinc:{" "}
+            {props?.cropDetails?.cultivationStage?.basal?.nutrientContains?.Zn}
           </p>
           <p>
-            ImportantActivity: {props?.cropDetails?.cultivationStage?.basal?.importantActivity}
+            ImportantActivity:{" "}
+            {props?.cropDetails?.cultivationStage?.basal?.importantActivity}
           </p>
           <p>
-            DiseaseManagement:  {props?.cropDetails?.cultivationStage?.basal?.diseaseManagement}
+            DiseaseManagement:{" "}
+            {props?.cropDetails?.cultivationStage?.basal?.diseaseManagement}
           </p>
           <p>
-            InterculturalOperation: {
+            InterculturalOperation:{" "}
+            {
               props?.cropDetails?.cultivationStage?.basal
                 ?.interculturalOperation
             }
           </p>
           <p>
-            SynpfomImage: {props?.cropDetails?.cultivationStage?.basal?.synpfomImage}
+            SynpfomImage:{" "}
+            {props?.cropDetails?.cultivationStage?.basal?.synpfomImage}
           </p>
           <br />
         </div>
@@ -68,22 +79,20 @@ const BasalStep = (props: any) => {
         </figure>
 
         <figure>
-        <img
+          <img
             src="/images/pottasium.png"
             style={{ width: "250px", height: "190px", marginLeft: "25px" }}
           />
-        <figcaption>Potassium Deficiency</figcaption>
-        </figure>
-        
-        <figure>
-        <img
-          src="/images/zinc.png"
-          style={{ width: "250px", height: "190px", marginLeft: "25px" }}
-        />
-        <figcaption>Zinc Deficiency</figcaption>
+          <figcaption>Potassium Deficiency</figcaption>
         </figure>
 
-        
+        <figure>
+          <img
+            src="/images/zinc.png"
+            style={{ width: "250px", height: "190px", marginLeft: "25px" }}
+          />
+          <figcaption>Zinc Deficiency</figcaption>
+        </figure>
       </div>
     </>
   );

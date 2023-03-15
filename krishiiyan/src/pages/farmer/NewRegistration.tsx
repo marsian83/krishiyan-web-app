@@ -52,13 +52,13 @@ const NewRegistration = () => {
   };
 
   const onChangeTotalLandArea = (e: any) => {
-    setTotalLandArea(e.target.value)
+    setTotalLandArea(e.target.value);
   };
   const onChangeDealerFarmerRel = (e: any) => {
-    setDealerFarmerRel(e.target.value)
+    setDealerFarmerRel(e.target.value);
   };
   const onChangePlantationType = (e: any, value: any) => {
-    setPlantationType(value.value)
+    setPlantationType(value.value);
   };
 
   //Get farmer location
@@ -164,7 +164,7 @@ const NewRegistration = () => {
           </label>
           <div>
             <div className="w-73 mt-2">
-              <Input label="Zip" onChange={onChangeZip} />
+              <Input label="Pin Code" onChange={onChangeZip} />
             </div>
             <div className="flex w-73 mt-2 gap-2">
               <Input label="State" value={state} disabled />{" "}

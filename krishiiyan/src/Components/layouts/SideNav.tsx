@@ -85,7 +85,7 @@ const SideNav = () => {
               pos === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >
-            PoS
+            Pos
           </li>
           <li
             onClick={cropClick}
@@ -101,7 +101,7 @@ const SideNav = () => {
               farm === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >
-            Farmer
+            FRM
           </li>
           <li
             onClick={manageClick}
@@ -125,7 +125,6 @@ const SideNav = () => {
         Number="4"
         Heading={Heading}
         Address="Pune, Maharashtra"
-        Date="17,August,2022"
         pos={pos}
         crop={crop}
         farm={farm}
