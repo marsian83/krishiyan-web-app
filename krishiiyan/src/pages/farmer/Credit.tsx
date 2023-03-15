@@ -3,6 +3,7 @@ import Header from "../../Components/layouts/Header";
 import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
 import moment from "moment";
+import Weather from "./Weather";
 
 const Credit = () => {
   let row: any = "5";
@@ -217,6 +218,7 @@ const Credit = () => {
             >
               ENTER
             </button>
+            <Weather />
           </div>
           {farmerDetails ? (
             <div className="mt-6 leading-4">

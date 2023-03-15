@@ -1,8 +1,10 @@
 import React from "react";
 import styles from "./Inventory.module.css";
 import Header from "../../Components/layouts/Header";
+import { useNavigate } from "react-router-dom";
 
 const Inventory = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <Header title="Pos" subtitle="Inventory" />
@@ -31,9 +33,15 @@ const Inventory = () => {
             />
             <img src="Images/Search.png" alt="searchbar" />
           </div>
-          <div className="flex justify-end">
-            <button className="bg-[#05AB2A] text-[#F3FFF1] font-light w-[20%] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-lg">
-              ADD
+          <div className="flex justify-end ">
+            <button className="bg-[#05AB2A] text-[#F3FFF1] font-light w-[20%] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-lg mr-2">
+              Download
+            </button>
+            <button
+              className="bg-[#05AB2A] text-[#F3FFF1] font-light w-[20%] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-lg"
+              onClick={() => navigate("/add-product")}
+            >
+              Upload
             </button>
           </div>
         </div>

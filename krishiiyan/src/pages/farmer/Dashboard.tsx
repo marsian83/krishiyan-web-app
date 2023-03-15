@@ -4,10 +4,9 @@ import * as Api from "../../Services/Api";
 import moment from "moment";
 import { toast } from "react-toastify";
 import Loader from "../../Components/themes/Loader";
+import Weather from "./Weather";
 
 const Dashboard = () => {
-  const [search, setSearch] = useState("moradabad");
-  const [weather, setWeather] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const [farmerID, setFarmerID] = useState("");
   const [farmerDetail, setFarmerDetail] = useState<any>();
@@ -59,57 +58,11 @@ const Dashboard = () => {
     init();
   }, [farmerID, farmerDetail]);
 
-  const api = {
-    key: "72b05fdfa25a691624fb032c0b0aa2ec",
-    base: "https://api.openweathermap.org/data/2.5/",
-  };
-
-  // const searchPressed = () => {
-  //   fetch(`${api.base}weather?q=${search}&units=metric&APPID=${api.key}`)
-  //     .then((res) => res.json())
-  //     .then((result) => {
-  //       setWeather(result);
-  //     });
-  // };
-  // console.log(weather, "hi i am weather");
-
-  // const getWeather = async () => {
-  //   try {
-  //     const result = await fetch(
-  //       `${api.base}weather?q=${search}&units=metric&APPID=${api.key}`
-  //     )
-  //       .then((res) => res.json())
-  //       .then((result) => {
-  //         setWeather(result);
-  //       });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // useState(() => {
-  //   const init = async () => {
-  //     await searchPressed();
-  //   };
-  //   init();
-  // }, [1]);
   return (
     <div>
       <Header title="Farmer Relationship Management" subtitle="Dashboard" />
-      <section>
-        {/* <div>
-          <p>{weather.name}</p>
-          <p>{weather.main.temp}°C</p>
-          <p>{weather.weather.description}</p>
-        </div> */}
-        {/* <div>
-          <input
-            type="text"
-            placeholder="enter city name"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <button onClick={searchPressed}> sumbit</button>
-        </div> */}
 
+      <section>
         <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
           <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
             <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
@@ -139,6 +92,7 @@ const Dashboard = () => {
                 ENTER
               </button>
             )}
+            <Weather />
           </div>
 
           {/* Farmer Info */}
