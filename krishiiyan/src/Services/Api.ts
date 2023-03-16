@@ -548,3 +548,40 @@ export async function getvariteyByCropId(cropId: string) {
     return [errorObject, null];
   }
 }
+
+// =================add new product for inventory==========================
+export async function addNewProduct(
+  name: string,
+  category: string,
+  measurement: string,
+  volume: string,
+  discription: string,
+  hsn: string,
+  tax: string,
+  date_of_purchase: string,
+  expiry_date: String
+) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/add-inventory/`,
+      data: {
+        name: name,
+        category: category,
+        measurement: measurement,
+        volume: volume,
+        discription: discription,
+        hsn: hsn,
+        tax: tax,
+        date_of_purchase: date_of_purchase,
+        expiry_date: expiry_date,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
