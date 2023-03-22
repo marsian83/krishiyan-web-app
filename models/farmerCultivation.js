@@ -9,25 +9,25 @@ const FarmerCultivationSchema = new mongoose.Schema(
     crop: String,
     variety: String,
     dateOfSowing: { type: Date },
-    soilType:{
+    soilType: {
       type: String,
-      enum: ["RED","BLACK"],
+      enum: ["RED", "BLACK"],
       default: "BLACK",
     },
-    irrigationType:{
+    irrigationType: {
       type: String,
-      enum: ["RAINFALL","CANAL"],
+      enum: ["RAINFALL", "CANAL", "Wetland", "Rain fed land"],
       default: "RAINFALL",
     },
-    fertilizer:{
+    fertilizer: {
       type: String,
-      enum: ["ORGANIC","INORGANIC","HYBRID"],
+      enum: ["ORGANIC", "INORGANIC", "HYBRID", "BOTH"],
       default: "RAINFALL",
     },
     // adoptedSeason: String,
     // currentStage: String,
     farmer: { type: mongoose.Schema.Types.ObjectId, ref: "farmer" },
-    farmerId: mongoose.Types.ObjectId
+    farmerId: mongoose.Types.ObjectId,
   },
   { timestamps: true }
 );

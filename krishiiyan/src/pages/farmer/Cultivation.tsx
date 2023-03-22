@@ -91,8 +91,8 @@ const Cultivation = () => {
     const [err, res] = await Api.createFarmerCultivationData(
       farmerDetail?._id,
       area,
-      crop,
-      variety,
+      allCrops.find((c) => c._id === crop).localName,
+      allPests.find((v) => v._id === variety).nameOfvariety,
       dateOfSowing,
       soilType,
       irrigationType,
@@ -142,6 +142,8 @@ const Cultivation = () => {
     else setAllPests([]);
   }, [crop]);
 
+  console.log(oldCultivation, "hi i m cultivation");
+
   return (
     <div>
       <Header title="Farmer Relationship Management" subtitle="Cultivation" />
@@ -163,17 +165,16 @@ const Cultivation = () => {
             >
               ENTER
             </button>
-            <Weather />
           </div>
           {farmerDetail ? (
-            <div className="mt-6 leading-4">
-              <p className="text-[#000000]">
+            <div className="mt-6 leading-4 ml-16">
+              <p className="text-[#000000]  text-start">
                 Name:{" "}
                 <span className="text-[#FB0404] font-bold">
                   {farmerDetail?.name}
                 </span>
               </p>
-              <p className="text-[#000000] ml-8">
+              <p className="text-[#000000]   text-start">
                 Area :{" "}
                 <span className="text-[#FB0404] font-bold">
                   {farmerDetail?.address?.state}
@@ -191,7 +192,7 @@ const Cultivation = () => {
             <div className="mt-10 flex mx-[6%]">
               <button
                 className={`text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] py-1 px-3 rounded mx-5 text-sm font-thin
-          ${openTab === "New" ? "bg-[#05AB2A]" : "bg-[#526D4E]"}`}
+                 ${openTab === "New" ? "bg-[#05AB2A]" : "bg-[#526D4E]"}`}
                 onClick={() => {
                   setOpenTab("New");
                 }}
@@ -230,7 +231,7 @@ const Cultivation = () => {
                         width: 260,
                       }}
                       value={crop}
-                      onChange={(e) => setCrop(e.target.value)}
+                      onChange={onChangeCrop}
                     >
                       {allCrops.map((crop) => (
                         <MenuItem key={crop._id} value={crop._id}>
@@ -256,8 +257,8 @@ const Cultivation = () => {
                       select
                       label="Select Variety"
                       sx={{ width: 260 }}
-                      value={problem}
-                      onChange={(e) => setProblem(e.target.value)}
+                      value={variety}
+                      onChange={onChangevariety}
                     >
                       {allPests.map((pest) => (
                         <MenuItem key={pest._id} value={pest._id}>
@@ -274,7 +275,7 @@ const Cultivation = () => {
                       className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
                       // for="inline-password"
                     >
-                      Date of sowing
+                      Date of Sowing
                     </label>
                   </div>
                   <div className="md:w-2/3">
@@ -294,7 +295,7 @@ const Cultivation = () => {
                       className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
                       // for="inline-password"
                     >
-                      Plantation type
+                      Soil Type
                     </label>
                   </div>
                   <div className="md:w-2/3">
@@ -315,7 +316,7 @@ const Cultivation = () => {
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="Choose plantation type"
+                          label="Soil Type"
                           inputProps={{
                             ...params.inputProps,
                             autoComplete: "new-password",
@@ -332,7 +333,7 @@ const Cultivation = () => {
                       className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
                       // for="inline-password"
                     >
-                      Irrigation type
+                      Irrigation Type
                     </label>
                   </div>
                   <div className="md:w-2/3">
@@ -342,7 +343,7 @@ const Cultivation = () => {
                       sx={{ width: 260 }}
                       options={[
                         {
-                          value: "Rain fed land,",
+                          value: "Rain fed land",
                         },
                         {
                           value: "Wetland",
@@ -370,7 +371,7 @@ const Cultivation = () => {
                       className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
                       // for="inline-password"
                     >
-                      Area(acres)
+                      Area(Acre)
                     </label>
                   </div>
                   <div className="md:w-2/3">
@@ -506,35 +507,39 @@ const Cultivation = () => {
                     <thead className="border-b border-black">
                       <tr className="text-center">
                         <th className="border-r border-black py-[1.2%]">
+                          S.No
+                        </th>
+                        <th className="border-r border-black py-[1.2%]">
                           Crop
                         </th>
                         <th className="border-r border-black py-[1.2%]">
                           Variety
                         </th>
                         <th className="border-r border-black py-[1.2%]">
-                          Date
+                          Date of Sowing
                         </th>
                         <th className="border-r border-black py-[1.2%]">
-                          Soil
+                          Soil Type
                         </th>
                         <th className="border-r border-black py-[1.2%]">
                           Irrigation
                         </th>
                         <th className="border-r border-black py-[1.2%]">
-                          Area(acres)
+                          Area (Acre)
                         </th>
                         <th className="border-r border-black py-[1.2%]">
                           Fertilizer
                         </th>
                         <th className="border-r border-black py-[1.2%]">
-                          Last visit
+                          Harvest status
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {/* Stage1 */}
-                      {oldCultivation?.map((cultivation: any) => (
+                      {oldCultivation?.map((cultivation: any, index: any) => (
                         <tr className="h-10 border-b border-black">
+                          <td className="border-r border-black">{index + 1}</td>
                           <td className="border-r border-black">
                             {cultivation?.crop}
                           </td>
@@ -558,11 +563,6 @@ const Cultivation = () => {
 
                           <td className="border-r border-black">
                             {cultivation?.fertilizer}
-                          </td>
-                          <td className="border-r border-black">
-                            {moment(cultivation?.updatedAt).format(
-                              "MM/DD/YYYY"
-                            )}
                           </td>
                         </tr>
                       ))}

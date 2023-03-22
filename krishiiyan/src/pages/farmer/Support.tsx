@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Header from "../../Components/layouts/Header";
 import Input from "../../Components/themes/Input";
+import CropHealth from "./CropHealth";
+import SupportCredit from "./SupportCredit";
+import SupportQury from "./SupportQury";
 
 const Support = () => {
   const [openTab, setOpenTab] = useState("Soil Testing");
@@ -10,7 +13,7 @@ const Support = () => {
     <div>
       <Header title="Farmer Relationship Management" subtitle="Support" />
       <section>
-        <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
+        {/* <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
           <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
             Farmer Mobile Number
           </label>
@@ -26,7 +29,7 @@ const Support = () => {
           >
             ENTER
           </button>
-        </div>
+        </div> */}
         <div className="my-10 flex justify-between w-[55%] ml-[6%]">
           <button
             type="submit"
@@ -74,7 +77,7 @@ const Support = () => {
           </button>
         </div>
         <div className={openTab === "Crop Health" ? "block" : "hidden"}>
-          Crop Health Content
+          <CropHealth />
         </div>
         <form className={openTab === "Soil Testing" ? "block" : "hidden"}>
           <div className="grid grid-cols-[25%_28%] text-center items-center">
@@ -138,10 +141,10 @@ const Support = () => {
           </div>
         </form>
         <div className={openTab === "Credit" ? "block" : "hidden"}>
-          Credit Content
+          <SupportCredit />
         </div>
         <div className={openTab === "Query" ? "block" : "hidden"}>
-          Query Content
+          <SupportQury />
         </div>
       </section>
     </div>

@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Menu from "./Menu";
 
 const SideNav = () => {
-  let navigate = useNavigate();
-
   const [pos, setPos] = useState(true);
   const [crop, setCrop] = useState(false);
   const [farm, setFarm] = useState(false);
@@ -14,6 +12,7 @@ const SideNav = () => {
   const [Heading, setHeading] = useState("");
 
   const [content, setContent] = useState<any>();
+  // let navigate = useNavigate();
 
   useEffect(() => {
     if (pos === true) {
@@ -30,7 +29,7 @@ const SideNav = () => {
   }, [pos, crop, farm, manage, help]);
 
   const posClick = () => {
-    navigate("/");
+    // navigate("/");
     setPos(true);
     setCrop(false);
     setFarm(false);
@@ -38,7 +37,7 @@ const SideNav = () => {
     setHelp(false);
   };
   const cropClick = () => {
-    navigate("/crop_library");
+    // navigate("/crop_library");
     setPos(false);
     setCrop(true);
     setFarm(false);
@@ -46,7 +45,7 @@ const SideNav = () => {
     setHelp(false);
   };
   const farmClick = () => {
-    navigate("/dashboard");
+    // navigate("/dashboard");
     setPos(false);
     setCrop(false);
     setFarm(true);
@@ -54,7 +53,7 @@ const SideNav = () => {
     setHelp(false);
   };
   const manageClick = () => {
-    navigate("/manage_accounting");
+    // navigate("/manage_accounting");
     setPos(false);
     setCrop(false);
     setFarm(false);
@@ -62,7 +61,7 @@ const SideNav = () => {
     setHelp(false);
   };
   const helpClick = () => {
-    navigate("/problem");
+    // navigate("/problem");
     setPos(false);
     setCrop(false);
     setFarm(false);

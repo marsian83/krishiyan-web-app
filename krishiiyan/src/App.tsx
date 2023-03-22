@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import Header from "./Components/layouts/Header";
 import SideNav from "./Components/layouts/SideNav";
@@ -30,6 +30,7 @@ import Expert from "./pages/help/Expert";
 import Guide from "./pages/help/Guide";
 import ManageAccounting from "./pages/management/Accounting";
 import ProductAdd from "./pages/pos/ProductAdd";
+import FPurchase from "./pages/farmer/Purchase";
 
 function App() {
   // const [content, setContent] = useState<any>()
@@ -88,7 +89,7 @@ function App() {
           <Route path="/fertical" element={<FertiCal />} />
           <Route path="/mandi_prices" element={<MandiPrices />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/farm_purchase" element={<Purchase />} />
+          <Route path="/farm_purchase" element={<FPurchase />} />
           <Route path="/cultivation" element={<Cultivation />} />
           <Route path="/credit" element={<Credit />} />
           <Route path="/support" element={<Support />} />

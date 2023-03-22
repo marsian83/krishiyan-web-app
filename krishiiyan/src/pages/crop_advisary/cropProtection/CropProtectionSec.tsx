@@ -11,6 +11,7 @@ const ProductionReqContent = (props: any) => {
   const [soil, setSoil] = useState(false);
   const [WeedManagement, setWeedManagement] = useState(false);
   const [weather, setWeather] = useState(false);
+  const [openTab, setOpenTab] = useState("Pest Management");
 
   const onClickLand = () => {
     setLand(true);
@@ -65,34 +66,61 @@ const ProductionReqContent = (props: any) => {
     <section>
       <div className="flex rounded-md mb-1 gap-2 btn">
         <button
-          onClick={onClickLand}
-          className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+          onClick={() => {
+            onClickLand();
+            setOpenTab("Pest Management");
+          }}
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+            openTab === "Pest Management" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+          }`}
         >
           Pest Management
         </button>
         <button
-          onClick={onClickSeed}
-          className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+          onClick={() => {
+            onClickSeed();
+            setOpenTab("Disease Management");
+          }}
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+            openTab === "Disease Management" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+          }`}
         >
-          disease Management
+          Disease Management
         </button>
         <button
-          onClick={onClickInterculteral}
-          className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+          onClick={() => {
+            onClickInterculteral();
+            setOpenTab("Deficiency Management");
+          }}
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+            openTab === "Deficiency Management"
+              ? "bg-[#526D4E]"
+              : "bg-[#05AB2A]"
+          }`}
         >
           Deficiency Management
         </button>
         <button
-          onClick={onClickWeedManagement}
-          className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+          onClick={() => {
+            onClickWeedManagement();
+            setOpenTab("weed Management");
+          }}
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+            openTab === "weed Management" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+          }`}
         >
-          weed Management
+          Weed Management
         </button>
         <button
-          onClick={onClickWeather}
-          className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+          onClick={() => {
+            onClickWeather();
+            setOpenTab("weather Injuses");
+          }}
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+            openTab === "weather Injuses" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+          }`}
         >
-          weather Injuses
+          Weather Injuses
         </button>
       </div>
       <br />

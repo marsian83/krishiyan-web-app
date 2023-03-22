@@ -32,7 +32,7 @@ const CropLibrary = () => {
   const [scientficCrop, setScientificCrop] = useState<any>();
   const [cropDetails, setCropDetails] = useState<any>();
   const [loading, setLoading] = useState(false);
-
+  const [openTab, setOpenTab] = useState("Genral");
   const [general, setGeneral] = useState(true);
   const [varietyTab, setVarietyTab] = useState(false);
   const [requirement, setRequirement] = useState(false);
@@ -267,50 +267,96 @@ const CropLibrary = () => {
                 </h2>
                 <div className="flex rounded-md mb-1 gap-2 btn">
                   <button
-                    onClick={onClickGeneral}
-                    className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+                    onClick={() => {
+                      onClickGeneral();
+                      setOpenTab("Genral");
+                    }}
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
+                      openTab === "Genral" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                    }`}
                   >
                     General
                   </button>
                   <button
-                    onClick={onClickvarietyTab}
-                    className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+                    onClick={() => {
+                      onClickvarietyTab();
+                      setOpenTab("Variety");
+                    }}
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
+                      openTab === "Variety" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                    }`}
                   >
                     Variety
                   </button>
                   <button
-                    onClick={onClickrequirement}
-                    className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+                    onClick={() => {
+                      onClickrequirement();
+                      setOpenTab("Pre Sowing practius");
+                    }}
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1  rounded text-sm font-thin ${
+                      openTab === "Pre Sowing practius"
+                        ? "bg-[#526D4E]"
+                        : "bg-[#05AB2A]"
+                    }`}
                   >
-                    Pre Sowing practius
+                    Pre Sowing Practius
                   </button>
                   <button
-                    onClick={onClicknitrient}
-                    className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+                    onClick={() => {
+                      onClicknitrient();
+                      setOpenTab("Natrient Management");
+                    }}
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+                      openTab === "Natrient Management"
+                        ? "bg-[#526D4E]"
+                        : "bg-[#05AB2A]"
+                    }`}
                   >
                     Natrient Management
                   </button>
                   <button
-                    onClick={onClicCropProtection}
-                    className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+                    onClick={() => {
+                      onClicCropProtection();
+                      setOpenTab("crop protection");
+                    }}
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+                      openTab === "crop protection"
+                        ? "bg-[#526D4E]"
+                        : "bg-[#05AB2A]"
+                    }`}
                   >
-                    crop protection
+                    Crop Protection
                   </button>
                   <button
-                    onClick={onClickIrrigation}
-                    className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+                    onClick={() => {
+                      onClickIrrigation();
+                      setOpenTab("Irrigation");
+                    }}
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+                      openTab === "Irrigation" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                    }`}
                   >
                     Irrigation
                   </button>
                   <button
-                    onClick={onClickIrrigation}
-                    className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+                    onClick={() => {
+                      onClickIrrigation();
+                      setOpenTab("Harvest");
+                    }}
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+                      openTab === "Harvest" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                    }`}
                   >
                     Harvest
                   </button>
                   <button
-                    onClick={onClickrequirement}
-                    className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+                    onClick={() => {
+                      onClickrequirement();
+                      setOpenTab("FAQ");
+                    }}
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+                      openTab === "FAQ" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                    }`}
                   >
                     FAQ
                   </button>
@@ -352,16 +398,6 @@ const CropLibrary = () => {
                           marginRight: "20px",
                         }}
                       >
-                        {/* {obj.Images?.map((url: any) => (
-                          <>
-                          <img
-                          src={url}
-                          alt="maize"
-                          style={{ width: "20%", height: "20%" }}
-                        /> 
-                           </>
-                        ))} */}
-
                         <img
                           src={"Images/Maize01.png"}
                           alt="maize"
