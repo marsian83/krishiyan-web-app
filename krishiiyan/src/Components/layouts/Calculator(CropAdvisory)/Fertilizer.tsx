@@ -50,17 +50,16 @@ const Fertilizer = (props: any) => {
           onChange={(e) => setCrop(e.target.value)}
         >
           {allCrops.map((crop) => (
-            <MenuItem key={crop._id} value={crop._id}>
+            <MenuItem key={crop._id} value={crop.localName}>
               {crop.localName}
             </MenuItem>
           ))}
         </TextField>
         <section className="p-5">
           <div className="font-extrabold grid grid-cols-[25%_40%_15%_25%] gap-[2%] mx-[20%] mb-[3%] items-center">
-            <label className="text-center">Area</label>
+            <label className="text-center">Area(Acre)</label>
             <input
               type="text"
-              placeholder="hectare"
               className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
               onChange={(e: any) => setArea(e.target.value)}
             />

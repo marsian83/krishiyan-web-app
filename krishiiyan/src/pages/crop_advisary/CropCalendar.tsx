@@ -142,7 +142,7 @@ const CropCalendar = () => {
             />
           </div>
           <div
-            className="font-extrabold grid grid-cols-[50%_50%] items-center"
+            className="font-extrabold grid grid-cols-[30%_20%] items-center"
             style={{ width: "550px" }}
           >
             <label className="text-[#13490A] text-center">Date of Sowing</label>
@@ -156,10 +156,10 @@ const CropCalendar = () => {
               />
             </div>
           </div>
-          <div style={{ marginRight: "25px", marginTop: "7px" }}>
+          <div style={{ marginRight: "300px", marginTop: "7px" }}>
             {loading ? (
               <button
-                style={{ marginLeft: "20px" }}
+                style={{ marginLeft: "2px" }}
                 type="submit"
                 disabled={loading}
                 className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-full rounded text-sm font-thin"

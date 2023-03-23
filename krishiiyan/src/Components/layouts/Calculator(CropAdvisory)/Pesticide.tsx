@@ -48,7 +48,6 @@ const Pesticide = (props: any) => {
     console.log(value, "value");
     setLocalsName(value.localName);
   };
-  console.log(allCrops, crop);
   return (
     <section className="p-5">
       <div style={{ display: "flex", flexDirection: "row" }}>

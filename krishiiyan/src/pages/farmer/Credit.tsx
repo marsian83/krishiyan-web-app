@@ -4,6 +4,7 @@ import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
 import moment from "moment";
 import Weather from "./Weather";
+import { MenuItem, TextField } from "@mui/material";
 
 const Credit = () => {
   let row: any = "5";
@@ -218,15 +219,14 @@ const Credit = () => {
             >
               ENTER
             </button>
-            <Weather />
           </div>
           {farmerDetails ? (
-            <div className="mt-6 leading-4">
-              <p className="text-[#000000] font-bold">
+            <div className="mt-6 leading-4 ml-24">
+              <p className="text-[#000000] font-bold text-start">
                 Name:{" "}
                 <span className="text-[#FB0404]">{farmerDetails?.name}</span>
               </p>
-              <p className="text-[#000000] font-bold">
+              <p className="text-[#000000] font-bold text-start">
                 Area :{" "}
                 <span className="text-[#FB0404]">
                   {farmerDetails?.address?.state}
@@ -289,63 +289,99 @@ const Credit = () => {
                 onChange={onChangeCreditNum}
               />
             </form> */}
-            <section className="grid grid-cols-[25%_28%] text-center items-center my-4">
+            <section className="mt-20">
               {farmerCredits ? (
-                <table className="table-auto bg-[#6E776D] border-collapse border ml-[21%] w-[74vw] lg:w-[70vw] text-sm font-semibold mt-10">
-                  <thead>
-                    <tr className="text-[#FFFFFF] h-7 font-medium">
-                      <th className="border-r-4 border-[#6E776D]">
-                        Credit Date
+                <table className="table-auto border-collapse border border-black font-bold text-base w-[96%] mx-auto">
+                  <thead className="border-b border-black">
+                    <tr className="text-center">
+                      <th className="border-r border-black py-[1.2%]">S.No</th>
+                      <th className="border-r border-black py-[1.2%]">
+                        Credit number
                       </th>
-                      <th className="border-r-4 border-[#6E776D]">
-                        Eligible Amount
+                      <th className="border-r border-black py-[1.2%]">
+                        Reason
                       </th>
-                      <th>Credit Number</th>
-                      <th>Credit Period</th>
-                      <th>Interest Rate</th>
-                      <th>Interest Amount</th>
-                      <th>Total Payable Amount</th>
-                      <th>Due Date</th>
-                      <th>Payment Status</th>
-                      <th>Remaining Payable Amount</th>
+                      <th className="border-r border-black py-[1.2%]">
+                        Credit Amount
+                      </th>
+                      {/* <th className="border-r border-black py-[1.2%]">
+                        Credit Number
+                      </th> */}
+                      <th className="border-r border-black py-[1.2%]">
+                        Credit Period
+                      </th>
+                      <th className="border-r border-black py-[1.2%]">
+                        Interest Rate
+                      </th>
+                      <th className="border-r border-black py-[1.2%]">
+                        Interest Amount
+                      </th>
+                      <th className="border-r border-black py-[1.2%]">
+                        Total Payable Amount
+                      </th>
+                      <th className="border-r border-black py-[1.2%]">
+                        Due Date
+                      </th>
+                      <th className="border-r border-black py-[1.2%]">
+                        Payment Status
+                      </th>
+                      <th className="border-r border-black py-[1.2%]">
+                        Remaining Payable Amount
+                      </th>
+                      <th className="border-r border-black py-[1.2%]">
+                        Paid Amount
+                      </th>
+                      <th className="border-r border-black py-[1.2%]">
+                        Payment Date
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {farmerCredits?.map((credit: any) => (
-                      <tr className="bg-[#DEDEDE] h-10">
-                        <td className="border-r-4 border-[#6E776D]">
-                          {moment(credit?.createdAt).format("DD/MM/YYYY")}
-                        </td>
-                        <td className="border-r-4 border-[#6E776D]">
-                          {credit?.eligibleAmount}
-                        </td>
-                        <td className="border-r-4 border-[#6E776D]">
+                    {farmerCredits?.map((credit: any, index: any) => (
+                      <tr className="h-10 border-b border-black">
+                        <td className="border-r border-black">{index + 1}</td>
+                        <td className="border-r border-black">
                           {credit?.billNumber}
                         </td>
-                        <td className="border-r-4 border-[#6E776D]">
+                        <td className="border-r border-black">
+                          {credit?.reason}
+                        </td>
+                        <td className="border-r border-black">
+                          {credit?.eligibleAmount}
+                        </td>
+
+                        {/* <td className="border-r border-black">
+                          {moment(credit?.createdAt).format("DD/MM/YYYY")}
+                        </td> */}
+                        <td className="border-r border-black">
                           {credit?.creditPeriod} months
                         </td>
-                        <td className="border-r-4 border-[#6E776D]">
+                        <td className="border-r border-black">
                           {credit?.interestRate} %
                         </td>
-                        <td className="border-r-4 border-[#6E776D]">
+                        <td className="border-r border-black">
                           {credit?.interestAmount}
                         </td>
-                        <td className="border-r-4 border-[#6E776D]">
+                        <td className="border-r border-black">
                           {credit?.totalPayableAmount}
                         </td>
-                        <td className="border-r-4 border-[#6E776D]">
+                        <td className="border-r border-black">
                           {credit?.dueDate}
                         </td>
-                        <td className="border-r-4 border-[#6E776D]">
+                        <td className="border-r border-black">
                           {credit?.paymentStatus}
                         </td>
                         {credit?.remainingPayableAmount !== "" &&
                         credit?.remainingPayableAmount !== undefined ? (
-                          <td>{credit?.remainingPayableAmount}</td>
+                          <td className="border-r border-black">
+                            {credit?.remainingPayableAmount}
+                          </td>
                         ) : (
                           <></>
                         )}
+
+                        <td className="border-r border-black">-</td>
+                        <td className="border-r border-black">-</td>
                       </tr>
                     ))}
                   </tbody>
@@ -358,26 +394,6 @@ const Credit = () => {
 
           {/* Credit */}
           <div className={openTab === "New" ? "block" : "hidden"}>
-            <div className="grid grid-cols-[25%_28%] text-center items-center my-4">
-              <label className="text-[#13490A] font-extrabold text-sm mx-5">
-                Eligible Amount
-              </label>
-              <input
-                type="text"
-                className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
-                defaultValue={farmerDetails?.creditLimit}
-                onChange={onChangeAmount}
-                disabled
-              />
-              {/*  */}
-            </div>
-            <div className="grid grid-cols-[70%_28%_15%] text-center items-center my-2">
-              {Number(eligibleAmount) > Number(farmerDetails?.creditLimit) ? (
-                <p className="text-center font-extrabold text-md text-[#ff0000]">
-                  Maximum credit limit is {farmerDetails?.creditLimit}.
-                </p>
-              ) : null}
-            </div>
             <div className="grid grid-cols-[25%_28%_15%] text-center items-center my-4">
               <label className="text-[#13490A] font-extrabold text-sm mx-5">
                 Reason
@@ -388,6 +404,38 @@ const Credit = () => {
                 onChange={onChangeReason}
               />
             </div>
+            <div className="grid grid-cols-[25%_28%] text-center items-center my-4">
+              <label className="text-[#13490A] font-extrabold text-sm mx-5">
+                Credit Eligible Amount
+              </label>
+              <input
+                type="text"
+                className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
+                defaultValue={farmerDetails?.creditLimit}
+                onChange={onChangeAmount}
+                disabled
+              />
+              {/*  */}
+            </div>
+            <div className="grid grid-cols-[25%_28%_15%] text-center items-center my-4">
+              <label className="text-[#13490A] font-extrabold text-sm mx-5">
+                Credit Amount
+              </label>
+              <input
+                type="text"
+                className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
+                onChange={onChangeReason}
+              />
+            </div>
+
+            <div className="grid grid-cols-[70%_28%_15%] text-center items-center my-2">
+              {Number(eligibleAmount) > Number(farmerDetails?.creditLimit) ? (
+                <p className="text-center font-extrabold text-md text-[#ff0000]">
+                  Maximum credit limit is {farmerDetails?.creditLimit}.
+                </p>
+              ) : null}
+            </div>
+
             <div className="grid grid-cols-[53%_47%] my-4">
               <div className="grid grid-cols-[47%_53%] text-center items-center">
                 <label className="text-[#13490A] font-extrabold text-sm mx-5">
@@ -479,6 +527,20 @@ const Credit = () => {
                   onChange={onChangeCreditNum}
                 />
               </div>
+              {/* <TextField
+                id="outlined-select-currency"
+                select
+                label="Select Credit Number"
+                sx={{ width: "200px", marginLeft: "20px" }}
+                // value={credit_details}
+                onChange={onChangeCreditNum}
+              >
+                {farmerCredits.map((credit: any) => (
+                  <MenuItem key={credit._id} value={credit._id}>
+                    {credit?.billNumber}
+                  </MenuItem>
+                ))}
+              </TextField> */}
               {credit_details ? (
                 <>
                   <div className="grid grid-cols-[25%_28%] text-center items-center my-4">

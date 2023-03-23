@@ -58,7 +58,7 @@ const CropHealth = () => {
     // navigate("/support")
   };
   const onChangechooseType = (e: any, value: any) => {
-    navigate("/support");
+    // navigate("/support");
   };
 
   const getCrops = async () => {
@@ -120,7 +120,7 @@ const CropHealth = () => {
   return (
     <div>
       <Header title="Crop Advisary" subtitle="Crop Health" />
-      <section className="p-[1%] grid gap-y-2">
+      <section className="p-[1%] grid gap-y-1 mt-5">
         <div
           className=" "
           style={{
@@ -133,7 +133,7 @@ const CropHealth = () => {
             className="font-extrabold grid grid-cols-[50%_40%] items-center"
             style={{ width: "550px" }}
           >
-            <label className="text-[#13490A] text-center">
+            <label className="text-[#13490A] text-end mr-3">
               Select your Crop
             </label>
             <Autocomplete
@@ -156,10 +156,10 @@ const CropHealth = () => {
             />
           </div>
           <div
-            className="font-extrabold ml-10 grid grid-cols-[30%_40%] items-center"
+            className="font-extrabold ml-10 grid grid-cols-[20%_40%] items-center"
             style={{ width: "450px" }}
           >
-            <label className="text-[#13490A] text-center">Issues:</label>
+            <label className="text-[#13490A] text-end mr-3">Issues</label>
             <Autocomplete
               onChange={onChangechooseType}
               id="plantation-select"
@@ -179,7 +179,7 @@ const CropHealth = () => {
               )}
             />
           </div>
-          <div style={{ marginRight: "25px" }}>
+          <div style={{ marginRight: "25px", marginTop: "5px" }}>
             {loading ? (
               <button
                 style={{ marginLeft: "20px" }}
@@ -192,12 +192,12 @@ const CropHealth = () => {
               </button>
             ) : (
               <button
-                style={{ padding: "10px" }}
+                style={{ padding: "10px", marginTop: "5px" }}
                 type="submit"
                 onClick={onSubmit}
                 className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
               >
-                submit
+                Submit
               </button>
             )}
           </div>

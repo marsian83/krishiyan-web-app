@@ -8,9 +8,11 @@ import Weather from "./Weather";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
+  const [receivedData, setReceivedData] = useState(false);
   const [farmerID, setFarmerID] = useState("");
   const [farmerDetail, setFarmerDetail] = useState<any>();
   const [currentCultivation, setCurrentCultivation] = useState<any>();
+  const [dasTable, setDasTable] = useState(false);
 
   const onChangeInput = (e: any) => {
     setFarmerID(e.target.value);
@@ -28,10 +30,13 @@ const Dashboard = () => {
       if (res) {
         console.log(res);
         if (res?.data === null) {
-          toast.error("Farmer not found!", {
+          setLoading(false);
+          setReceivedData(false);
+          return toast.error("Farmer not found!", {
             position: toast.POSITION.TOP_RIGHT,
           });
         }
+        setReceivedData(true);
         setFarmerDetail(res?.data);
       }
 
@@ -92,19 +97,18 @@ const Dashboard = () => {
                 ENTER
               </button>
             )}
-            <Weather />
           </div>
 
           {/* Farmer Info */}
           {farmerDetail ? (
             <div className="mt-6 leading-4">
-              <p className="text-[#000000]">
+              <p className="text-[#000000] text-start">
                 Name:{" "}
                 <span className="text-[#FB0404] font-bold">
                   {farmerDetail?.name}
                 </span>
               </p>
-              <p className="text-[#000000] ml-4">
+              <p className="text-[#000000] text-start">
                 Area :{" "}
                 <span className="text-[#FB0404] font-bold">
                   {farmerDetail?.address?.street}
@@ -126,225 +130,232 @@ const Dashboard = () => {
             </div>
           </>
         ) : (
-          <>
-            <div className="flex flex-col items-center mx-[5%] gap-y-8 mt-5">
-              <div className="flex lg:gap-x-[5%] xl:gap-x-[5%] w-full">
-                {/* General Information */}
-                {farmerDetail ? (
-                  <table className="table-auto border-collapse border border-black font-bold text-base w-[40%] mx-auto">
-                    <thead className="border-b border-black">
-                      <tr className="text-center ">
-                        <th
-                          className="border-b border-black py-[1.2%] "
-                          colSpan={2}
-                        >
-                          General
-                        </th>
-                      </tr>
-                      <tr className="text-center">
-                        <th className="border-r border-black py-[1.2%]">
-                          Member Since :
-                        </th>
-                        <th className="border-r border-black py-[1.2%]">
-                          {moment(farmerDetail?.createdAt).format("MM/DD/YYYY")}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {/* Stage1 */}
-                      <tr className="h-10 border-b border-black">
-                        <td className="border-r border-black">
-                          Total Farm Area(Acre) :
-                        </td>
+          receivedData && (
+            <>
+              <div className="flex flex-col items-center mx-[5%] gap-y-8 mt-5">
+                <div className="flex lg:gap-x-[5%] xl:gap-x-[5%] w-full">
+                  {/* General Information */}
+                  {
+                    <table className="table-auto border-collapse border border-black font-bold text-base w-[40%] mx-auto">
+                      <thead className="border-b border-black">
+                        <tr className="text-center ">
+                          <th
+                            className="border-b border-black py-[1.2%] "
+                            colSpan={2}
+                          >
+                            General Information
+                          </th>
+                        </tr>
+                        <tr className="text-center">
+                          <th className="border-r border-black py-[1.2%] text-start">
+                            Member Since
+                          </th>
+                          <th className="border-r border-black py-[1.2%]">
+                            {farmerDetail
+                              ? moment(farmerDetail?.createdAt).format(
+                                  "MM/DD/YYYY"
+                                )
+                              : "-"}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Stage1 */}
+                        <tr className="h-10 border-b border-black">
+                          <td className="border-r border-black text-start">
+                            Total Farm Area(Acre)
+                          </td>
 
-                        <td className="border-r border-black">
-                          {farmerDetail?.totalLandArea}
-                        </td>
-                      </tr>
-                      <tr className="h-10 border-b border-black">
-                        <td className="border-r border-black">
-                          Soil test date :
-                        </td>
+                          <td className="border-r border-black">
+                            {farmerDetail?.totalLandArea || "-"}
+                          </td>
+                        </tr>
+                        <tr className="h-10 border-b border-black">
+                          <td className="border-r border-black text-start">
+                            Last soil Tested Date
+                          </td>
 
-                        <td className="border-r border-black">
-                          {moment(farmerDetail?.updatedAt).format("MM/DD/YYYY")}
-                        </td>
-                      </tr>
-                      <tr className="h-10 border-b border-black">
-                        <td className="border-r border-black">
-                          Credit score :
-                        </td>
+                          <td className="border-r border-black">
+                            {farmerDetail
+                              ? moment(farmerDetail?.updatedAt).format(
+                                  "MM/DD/YYYY"
+                                )
+                              : "-"}
+                          </td>
+                        </tr>
+                        <tr className="h-10 border-b border-black">
+                          <td className="border-r border-black text-start">
+                            Credit Eligible Amount
+                          </td>
 
-                        <td className="border-r border-black">
-                          ₹{farmerDetail?.creditLimit?.toString()}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                ) : (
-                  <></>
-                )}
+                          <td className="border-r border-black">
+                            {farmerDetail
+                              ? `₹${farmerDetail?.creditLimit?.toString()}`
+                              : "-"}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  }
 
-                {/* Current Cultivation */}
-                {currentCultivation ? (
-                  <table className="table-auto border-collapse border border-black font-bold text-base w-[50%] mx-auto">
-                    <thead className="border-b border-black">
-                      <tr className="text-center ">
-                        <th
-                          className="border-b border-black py-[1.2%] "
-                          colSpan={5}
-                        >
-                          Current Cultivation
-                        </th>
-                      </tr>
-                      <tr className="text-center">
-                        <th className="border-r border-black py-[1.2%]">
-                          S.No
-                        </th>
-                        <th className="border-r border-black py-[1.2%]">
-                          Crop
-                        </th>
-                        <th className="border-r border-black py-[1.2%]">
-                          Area(Acre)
-                        </th>
-                        <th className="border-r border-black py-[1.2%]">
-                          Age(Date of sowing)
-                        </th>
-                        <th className="border-r border-black py-[1.2%]">
-                          Harvested
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {/* Stage1 */}
-                      <tr className="h-10 border-b border-black">
-                        <td className="border-r border-black">
-                          {/* {currentCultivation?.slotNumber} */}1
-                        </td>
+                  {/* Current Cultivation */}
 
-                        <td className="border-r border-black">
-                          {currentCultivation?.crop}
-                        </td>
-                        <td className="border-r border-black">
-                          {currentCultivation?.area}
-                        </td>
-                        <td className="border-r border-black">
-                          {moment(currentCultivation?.dateOfSowing).format(
-                            "MM/DD/YYYY"
-                          )}
-                        </td>
-                        <td className="border-r border-black">Yes</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                ) : (
-                  <></>
-                )}
+                  {
+                    <table className="table-auto border-collapse border border-black font-bold text-base w-[50%] mx-auto">
+                      <thead className="border-b border-black">
+                        <tr className="text-center ">
+                          <th
+                            className="border-b border-black py-[1.2%] "
+                            colSpan={5}
+                          >
+                            Cultivation
+                          </th>
+                        </tr>
+                        <tr className="text-center">
+                          <th className="border-r border-black py-[1.2%]">
+                            S.No
+                          </th>
+                          <th className="border-r border-black py-[1.2%]">
+                            Crop
+                          </th>
+                          <th className="border-r border-black py-[1.2%]">
+                            Area(Acre)
+                          </th>
+                          <th className="border-r border-black py-[1.2%]">
+                            Age(Date of sowing)
+                          </th>
+                          <th className="border-r border-black py-[1.2%]">
+                            Harvested Status
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Stage1 */}
+                        <tr className="h-10 border-b border-black">
+                          <td className="border-r border-black">
+                            {currentCultivation ? 1 : "-"}
+                          </td>
+
+                          <td className="border-r border-black">
+                            {currentCultivation?.crop || "-"}
+                          </td>
+                          <td className="border-r border-black">
+                            {currentCultivation?.area || "-"}
+                          </td>
+                          <td className="border-r border-black">
+                            {currentCultivation?.dateOfSowing
+                              ? moment(currentCultivation?.dateOfSowing).format(
+                                  "MM/DD/YYYY"
+                                )
+                              : "-"}
+                          </td>
+                          <td className="border-r border-black">
+                            {currentCultivation ? "YES" : "-"}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  }
+                </div>
+
+                <div className="flex lg:gap-x-[5%] xl:gap-x-[5%] w-full ">
+                  {/* History Of Purchase */}
+                  {farmerDetail ? (
+                    <table className="table-auto border-collapse border border-black font-bold text-base w-[40%] mx-auto ml-3">
+                      <thead className="border-b border-black">
+                        <tr className="text-center ">
+                          <th
+                            className="border-b border-black py-[1.2%] "
+                            colSpan={5}
+                          >
+                            History of Purchase
+                          </th>
+                        </tr>
+                        <tr className="text-center">
+                          <th className="border-r border-black py-[1.2%]">
+                            S.No
+                          </th>
+                          <th className="border-r border-black py-[1.2%]">
+                            Date
+                          </th>
+                          <th className="border-r border-black py-[1.2%]">
+                            Products
+                          </th>
+                          <th className="border-r border-black py-[1.2%]">
+                            Amount
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Stage1 */}
+                        <tr className="h-10 border-b border-black">
+                          <td className="border-r border-black">
+                            {/* {currentCultivation?.slotNumber} */}01
+                          </td>
+
+                          <td className="border-r border-black">12/03/22</td>
+                          <td className="border-r border-black">
+                            Urea, Complex B
+                          </td>
+                          <td className="border-r border-black">₹803.00</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ) : (
+                    <></>
+                  )}
+
+                  {/* Issues Resolved */}
+                  {farmerDetail ? (
+                    <table className="table-auto border-collapse border border-black font-bold text-base w-[50%] mx-auto">
+                      <thead className="border-b border-black">
+                        <tr className="text-center ">
+                          <th
+                            className="border-b border-black py-[1.2%] "
+                            colSpan={5}
+                          >
+                            Issues resolved
+                          </th>
+                        </tr>
+                        <tr className="text-center">
+                          <th className="border-r border-black py-[1.2%]">
+                            S.No
+                          </th>
+                          <th className="border-r border-black py-[1.2%]">
+                            Date
+                          </th>
+                          <th className="border-r border-black py-[1.2%]">
+                            Crop
+                          </th>
+                          <th className="border-r border-black py-[1.2%]">
+                            Issue Status
+                          </th>
+                          <th className="border-r border-black py-[1.2%]">
+                            Suggestion
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Stage1 */}
+                        <tr className="h-10 border-b border-black">
+                          <td className="border-r border-black">
+                            {/* {currentCultivation?.slotNumber} */}01
+                          </td>
+
+                          <td className="border-r border-black">12/03/22</td>
+                          <td className="border-r border-black">Maize</td>
+                          <td className="border-r border-black">Resolved</td>
+                          <td className="border-r border-black">test...</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ) : (
+                    <></>
+                  )}
+                </div>
               </div>
-
-              <div className="flex lg:gap-x-[5%] xl:gap-x-[5%] w-full ">
-                {/* History Of Purchase */}
-                {farmerDetail ? (
-                  <table className="table-auto border-collapse border border-black font-bold text-base w-[40%] mx-auto ml-3">
-                    <thead className="border-b border-black">
-                      <tr className="text-center ">
-                        <th
-                          className="border-b border-black py-[1.2%] "
-                          colSpan={5}
-                        >
-                          History of Purchase
-                        </th>
-                      </tr>
-                      <tr className="text-center">
-                        <th className="border-r border-black py-[1.2%]">
-                          S.No
-                        </th>
-                        <th className="border-r border-black py-[1.2%]">
-                          Date
-                        </th>
-                        <th className="border-r border-black py-[1.2%]">
-                          Products
-                        </th>
-                        <th className="border-r border-black py-[1.2%]">
-                          Price
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {/* Stage1 */}
-                      <tr className="h-10 border-b border-black">
-                        <td className="border-r border-black">
-                          {/* {currentCultivation?.slotNumber} */}02
-                        </td>
-
-                        <td className="border-r border-black">12/03/22</td>
-                        <td className="border-r border-black">
-                          Urea, Complex B
-                        </td>
-                        <td className="border-r border-black">₹803.00</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                ) : (
-                  <></>
-                )}
-
-                {/* Issues Resolved */}
-                {farmerDetail ? (
-                  <div className="flex flex-col flex-1 h-fit text-center">
-                    {farmerDetail ? (
-                      <table className="table-auto border-collapse border border-black font-bold text-base w-[85%] mx-auto">
-                        <thead className="border-b border-black">
-                          <tr className="text-center ">
-                            <th
-                              className="border-b border-black py-[1.2%] "
-                              colSpan={5}
-                            >
-                              Issues resolved
-                            </th>
-                          </tr>
-                          <tr className="text-center">
-                            <th className="border-r border-black py-[1.2%]">
-                              S.No
-                            </th>
-                            <th className="border-r border-black py-[1.2%]">
-                              Date
-                            </th>
-                            <th className="border-r border-black py-[1.2%]">
-                              Crop
-                            </th>
-                            <th className="border-r border-black py-[1.2%]">
-                              Issue
-                            </th>
-                            <th className="border-r border-black py-[1.2%]">
-                              Suggestion
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {/* Stage1 */}
-                          <tr className="h-10 border-b border-black">
-                            <td className="border-r border-black">
-                              {/* {currentCultivation?.slotNumber} */}01
-                            </td>
-
-                            <td className="border-r border-black">12/03/22</td>
-                            <td className="border-r border-black">Maize</td>
-                            <td className="border-r border-black">Resolved</td>
-                            <td className="border-r border-black">test...</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    ) : (
-                      <></>
-                    )}
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </div>
-            </div>
-          </>
+            </>
+          )
         )}
       </section>
     </div>

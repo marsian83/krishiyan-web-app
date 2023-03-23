@@ -4,7 +4,7 @@ const addressInfo = {
   state: String,
   city: String,
   zip: String,
-  street: String
+  street: String,
 };
 
 const FarmerSchema = new mongoose.Schema(
@@ -24,37 +24,37 @@ const FarmerSchema = new mongoose.Schema(
       default: false,
     },
     address: addressInfo,
-    totalLandArea:{
+    totalLandArea: {
       type: Number,
       required: true,
     },
-    dealer_farmer_relation:{
+    dealer_farmer_relation: {
       type: Number,
       required: true,
     },
     plantation_type: {
       type: String,
-      enum: ["ORGANIC","NON-ORGANIC","BOTH"],
+      enum: ["ORGANIC", "NON-ORGANIC", "BOTH"],
       default: "NON-ORGANIC",
     },
     cultivationData: [
-        {
-          type: mongoose.Schema.ObjectId,
-          required: true,
-          ref: "FarmerCultivation",
-        },
-      ],
+      {
+        type: mongoose.Schema.ObjectId,
+        required: true,
+        ref: "FarmerCultivation",
+      },
+    ],
     creditData: [
-        {
-          type: mongoose.Schema.ObjectId,
-          required: true,
-          ref: "Credit",
-        },
-      ],
-    creditLimit:{
-      type:Number,
-      default:0
-    }
+      {
+        type: mongoose.Schema.ObjectId,
+        required: true,
+        ref: "Credit",
+      },
+    ],
+    creditLimit: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

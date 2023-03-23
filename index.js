@@ -31,6 +31,7 @@ app.use("/api/disease", require("./routes/disease"));
 app.use("/api/fungicide", require("./routes/fungicide"));
 app.use("/api/yield-crop", require("./routes/yieldCrop"));
 app.use("/api/add-inventory", require("./routes/inventory"));
+app.use("/api/credit", require("./routes/credit"));
 
 //Connect to DB.
 connectDB();

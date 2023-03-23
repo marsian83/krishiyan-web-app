@@ -6,6 +6,7 @@ const ProductionReqContent = (props: any) => {
   const [seedTab, setSeedTab] = useState(false);
   const [interculteral, setinterculteral] = useState(false);
   const [soil, setSoil] = useState(false);
+  const [openTab, setOpenTab] = useState("Land Prepation");
 
   const onClickLand = () => {
     setLand(true);
@@ -36,28 +37,50 @@ const ProductionReqContent = (props: any) => {
     <section>
       <div className="flex rounded-md mb-1 gap-2 btn">
         <button
-          onClick={onClickLand}
-          className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+          onClick={() => {
+            onClickLand();
+            setOpenTab("Land Prepation");
+          }}
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+            openTab === "Land Prepation" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+          }`}
         >
           Land Prepation
         </button>
         <button
-          onClick={onClickSeed}
-          className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+          onClick={() => {
+            onClickSeed();
+            setOpenTab("Seed treatment");
+          }}
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+            openTab === "Seed treatment" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+          }`}
         >
-          Seed treatment
+          Seed Treatment
         </button>
         <button
-          onClick={onClickInterculteral}
-          className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+          onClick={() => {
+            onClickInterculteral();
+            setOpenTab("Interculteral operation");
+          }}
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+            openTab === "Interculteral operation"
+              ? "bg-[#526D4E]"
+              : "bg-[#05AB2A]"
+          }`}
         >
-          Interculteral operation
+          Interculteral Operation
         </button>
         <button
-          onClick={onClickSoiltab}
-          className="bg-[#05AB2A] text-[#F3FFF1] rounded-md h-[4.5vh] w-[6vw] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-sm"
+          onClick={() => {
+            onClickSoiltab();
+            setOpenTab("Soil condition");
+          }}
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+            openTab === "Soil condition" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+          }`}
         >
-          Soil condition
+          Soil Condition
         </button>
       </div>
       <br />

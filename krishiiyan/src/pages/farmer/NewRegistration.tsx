@@ -21,6 +21,29 @@ const PlantationOptions = [
     value: "BOTH",
   },
 ];
+const PlantationOption = [
+  {
+    value: "Average",
+  },
+  {
+    value: "Good",
+  },
+  {
+    value: "Excellent",
+  },
+];
+
+const PlantationType = [
+  {
+    value: "Organic",
+  },
+  {
+    value: "In Organic",
+  },
+  {
+    value: "Both",
+  },
+];
 const NewRegistration = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState<any>();
@@ -175,14 +198,14 @@ const NewRegistration = () => {
               {loading ? <Loader /> : null}
             </div>
             <div className="w-73 mt-2">
-              <Input label="Street" onChange={onChangeStreet} />
+              <Input label="Area" onChange={onChangeStreet} />
             </div>
           </div>
         </div>
 
         <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
           <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-            Total Land Area(Acre)
+            Total Farm Area(Acre)
           </label>
           <input
             type="text"
@@ -195,11 +218,29 @@ const NewRegistration = () => {
           <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
             Dealer Farmer Relation
           </label>
-          <input
+          <Autocomplete
+            onChange={onChangeDealerFarmerRel}
+            id="plantation-select"
+            sx={{ width: 340 }}
+            options={PlantationOption}
+            autoHighlight
+            getOptionLabel={(option) => option.value}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Choose Dealer Farmer Relation"
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: "new-password",
+                }}
+              />
+            )}
+          />
+          {/* <input
             type="text"
             className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
             onChange={onChangeDealerFarmerRel}
-          ></input>
+          ></input> */}
         </div>
 
         <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
@@ -217,6 +258,29 @@ const NewRegistration = () => {
               <TextField
                 {...params}
                 label="Choose plantation type"
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: "new-password",
+                }}
+              />
+            )}
+          />
+        </div>
+        <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
+          <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
+            Type
+          </label>
+          <Autocomplete
+            // onChange={onChangePlantationType}
+            id="plantation-select"
+            sx={{ width: 340 }}
+            options={PlantationType}
+            autoHighlight
+            getOptionLabel={(option) => option.value}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Choose Type"
                 inputProps={{
                   ...params.inputProps,
                   autoComplete: "new-password",
