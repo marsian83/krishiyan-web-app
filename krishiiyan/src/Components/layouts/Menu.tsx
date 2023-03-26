@@ -36,6 +36,72 @@ const Menu = (props: any) => {
 
   //OnClick Handler
   // Pos
+
+  useEffect(() => {
+    switch (props.submenu) {
+      case "sale":
+        onClickSale();
+        break;
+      case "inventory":
+        onClickInventory();
+        break;
+      case "report":
+        onClickReport();
+        break;
+      case "purchase":
+        onClickPurchase();
+        break;
+      case "accounting":
+        onClickAccounting();
+        break;
+      case "crop_library":
+        onClickProduction();
+        break;
+      case "crop_calendar":
+        onClickCalendar();
+        break;
+      case "crop_health":
+        onClickHealth();
+        break;
+      case "fertical":
+        onClickCalculator();
+        break;
+      case "mandi_prices":
+        onClickMarket();
+        break;
+      case "dashboard":
+        onClickDashboard();
+        break;
+      case "farm_purchase":
+        onClickFarmPurchase();
+        break;
+      case "cultivation":
+        onClickCultivation();
+        break;
+      case "credit":
+        onClickCredit();
+        break;
+      case "support":
+        onClickSupport();
+        break;
+      case "new_registration":
+        onClickNewRegistration();
+        break;
+      case "manage_accounting":
+        onClickManageAccounting();
+        break;
+      case "problem":
+        onClickProblem();
+        break;
+      case "expert":
+        onClickExpert();
+        break;
+      case "guide":
+        onClickGuide();
+        break;
+    }
+  }, [props.submenu]);
+
   const onClickSale = () => {
     setSale(true);
     navigate("/");
