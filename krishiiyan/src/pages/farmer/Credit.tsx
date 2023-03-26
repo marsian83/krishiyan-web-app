@@ -36,9 +36,11 @@ const Credit = () => {
   const [interestRate, setInterestRate] = useState("");
 
   const [reason, setReason] = useState(" ");
-  const [total_payable_amount, set_total_payable_amount] = useState("");
+  const [reasond, setReasond] = useState(" ");
+  const [total_payable_amount, set_total_payable_amount] = useState("0");
   const [interest_amount, set_interest_amount] = useState("");
   const [due_date, set_due_date] = useState("");
+  const [oldCultivation, setOldCultivation] = useState<any>();
 
   console.log({ total_payable_amount, interest_amount, due_date });
 
@@ -77,6 +79,9 @@ const Credit = () => {
     set_credit_id(e.target.value);
   };
 
+  const onChangeCreditReason = (e: any) => {
+    setReasond(e.target.value);
+  };
   //Pay Credit
   const [amn_payable, set_amn_payable] = useState("");
   const [payment_method, set_payment_method] = useState("cash");
@@ -106,6 +111,7 @@ const Credit = () => {
       interestRate
     );
     if (res) {
+      // set_total_payable_amount(res?.data?.TotalPayableAmount);
       set_total_payable_amount(res?.data?.TotalPayableAmount);
       set_interest_amount(res?.data?.InterestAmount);
       set_due_date(res?.data?.DueDate);
@@ -123,6 +129,23 @@ const Credit = () => {
     };
     init();
   }, [farmerMobile, eligibleAmount, creditPeriod, interestRate]);
+
+  //Get Farmer Cultivations
+  useEffect(() => {
+    const init = async () => {
+      const [err, res] = await Api.getFarmerCultivationData(farmerDetails?._id);
+      if (res) {
+        // let current_cultivation =
+        //   res?.data?.farmerCultivationData[
+        //     res?.data?.farmerCultivationData.length - 1
+        //   ];
+        // setCurrentCultivation(current_cultivation);
+        setOldCultivation(res?.data?.farmerCultivationData);
+      }
+    };
+    init();
+  }, [farmerMobile]);
+  console.log(oldCultivation, "This is a oldcultivation data");
 
   const sanctionCredit = async () => {
     if (farmerDetails && eligibleAmount) {
@@ -398,11 +421,16 @@ const Credit = () => {
               <label className="text-[#13490A] font-extrabold text-sm mx-5">
                 Reason
               </label>
-              <input
-                type="text"
-                className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
+              <select
+                id="countries"
+                className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 onChange={onChangeReason}
-              />
+              >
+                <option selected>Choose Reason</option>
+                {/* {oldCultivation[0]?.map((crop: any) => (
+                  <option value={credit_details}>{crop?.crop}</option>
+                ))} */}
+              </select>
             </div>
             <div className="grid grid-cols-[25%_28%] text-center items-center my-4">
               <label className="text-[#13490A] font-extrabold text-sm mx-5">
@@ -468,18 +496,20 @@ const Credit = () => {
                   type="text"
                   className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
                   onChange={onChangeRate}
+                  // defaultValue={farmerCredits[0]?.interestRate}
                 />
               </div>
-              <div className="grid grid-cols-[45%_50%] items-center">
+              {/* <div className="grid grid-cols-[45%_50%] items-center">
                 <label className="text-[#13490A] flex-[1] text-cente font-extrabold text-sm mx-5">
                   Total Payable Amount
                 </label>
                 <input
                   type="text"
                   className="bg-[#F3FFF1]  h-8 w-35 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
-                  value={total_payable_amount}
+                  // defaultValue={farmerDetails[0]?.billNumber}
+                  // defaultValue={farmerCredits[0]?.totalPayableAmount}
                 />
-              </div>
+              </div> */}
             </div>
             <div className="grid grid-cols-[53%_47%] my-4">
               <div className="grid grid-cols-[47%_53%] text-center items-center">
@@ -490,6 +520,8 @@ const Credit = () => {
                   type="text"
                   className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
                   value={total_payable_amount}
+                  // {currentCultivation?.crop || "-"}
+                  // defaultValue={farmerCredits[0]?.totalPayableAmount}
                 />
               </div>
               <div className="grid grid-cols-[45%_50%] items-center">
@@ -521,27 +553,19 @@ const Credit = () => {
                 <label className="text-[#13490A]  font-roboto font-extrabold text-sm mx-5">
                   Credit Number
                 </label>
-                <input
-                  type="text"
-                  className="bg-[#F3FFF1]  h-8  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
+                <select
+                  id="countries"
+                  className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   onChange={onChangeCreditNum}
-                />
+                >
+                  <option selected>Choose Credit Number</option>
+                  {farmerCredits?.map((credit: any) => (
+                    <option value={credit_details}>{credit?.billNumber}</option>
+                  ))}
+                </select>
               </div>
-              {/* <TextField
-                id="outlined-select-currency"
-                select
-                label="Select Credit Number"
-                sx={{ width: "200px", marginLeft: "20px" }}
-                // value={credit_details}
-                onChange={onChangeCreditNum}
-              >
-                {farmerCredits.map((credit: any) => (
-                  <MenuItem key={credit._id} value={credit._id}>
-                    {credit?.billNumber}
-                  </MenuItem>
-                ))}
-              </TextField> */}
-              {credit_details ? (
+
+              {credit_details && credit_id ? (
                 <>
                   <div className="grid grid-cols-[25%_28%] text-center items-center my-4">
                     <label className="text-[#13490A]  font-roboto font-extrabold text-sm mx-5">
@@ -583,12 +607,23 @@ const Credit = () => {
                     <label className="text-[#13490A]  font-roboto font-extrabold text-sm mx-5">
                       Payment Method
                     </label>
-                    <input
+                    {/* <input
                       type="text"
                       value={payment_method}
                       className="bg-[#F3FFF1] h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
                       onChange={onChangePaymentMethod}
-                    />
+                    /> */}
+
+                    <select
+                      id="countries"
+                      className="bg-[#F3FFF1] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      onChange={onChangePaymentMethod}
+                    >
+                      <option selected>Choose Payment Method</option>
+                      <option value="US">CASH</option>
+                      <option value="CA">UPI</option>
+                      <option value="FR">CARD</option>
+                    </select>
                     {/* <img
                       src="Images/Dropdown.png"
                       className="ml-4 text-center rounded-full"

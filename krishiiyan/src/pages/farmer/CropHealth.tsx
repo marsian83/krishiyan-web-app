@@ -35,22 +35,16 @@ const CropHealth = () => {
             </label>
           </div>
           <div className="md:w-2/3">
-            <TextField
-              id="outlined-select-currency"
-              select
-              label="Select Crop"
-              style={{
-                width: 260,
-              }}
-              value={crop}
+            <select
+              id="countries"
+              className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               onChange={onChangeCrop}
             >
-              {allCrops.map((crop) => (
-                <MenuItem key={crop._id} value={crop._id}>
-                  {crop.localName}
-                </MenuItem>
+              <option selected>Select Crop </option>
+              {allCrops?.map((crop: any) => (
+                <option value={crop._id}>{crop.localName}</option>
               ))}
-            </TextField>
+            </select>
           </div>
         </div>
 
@@ -64,8 +58,7 @@ const CropHealth = () => {
             </label>
           </div>
           <div className="md:w-2/3">
-            <Autocomplete
-              //   onChange={onChangeFertilizer}
+            {/* <Autocomplete
               id="plantation-select"
               sx={{ width: 260 }}
               options={[
@@ -94,7 +87,19 @@ const CropHealth = () => {
                   }}
                 />
               )}
-            />
+            /> */}
+
+            <select
+              id="countries"
+              className="bg-[#F3FFF1] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              // onChange={onChangePaymentMethod}
+            >
+              <option selected>Choose Category</option>
+              <option value="US">Pest</option>
+              <option value="CA">Disease</option>
+              <option value="FR">Weed</option>
+              <option value="FR">Deficiency</option>
+            </select>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6">
@@ -108,7 +113,7 @@ const CropHealth = () => {
           </div>
           <div className="md:w-2/3">
             <textarea
-              className=" appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 h-24"
+              className=" bg-[#F3FFF1] appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-400 h-24"
               //   onChange={onChangeArea}
               id="inline-password"
               //   type="text"

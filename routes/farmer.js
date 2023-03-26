@@ -5,6 +5,7 @@ const Farmer = require("../models/farmer");
 const FarmerCultivation = require("../models/farmerCultivation");
 const Credit = require("../models/credit");
 const axios = require("axios");
+const credit = require("../models/credit");
 
 // ========================================== NEW FARMER REGISTRATION ====================================================================
 
@@ -254,10 +255,11 @@ const calculateMonthlyInterest = function (p, r, n) {
 
 //Calculate Interest rate amount on eligible amount
 router.post("/credit-amount-info", async (req, res) => {
-  const { amount, period, rate } = req.body;
+  const { amount, period, rate, reason } = req.body;
   try {
     // let total_payable_amount = calculateInterestAmount(amount, period, rate, 3);
     // let interest_amount = total_payable_amount - amount;
+    const status = await Farmer.findOne({ reason });
 
     let InterestInfo = calculateMonthlyInterest(amount, rate, period);
 

@@ -142,8 +142,6 @@ const Cultivation = () => {
     else setAllPests([]);
   }, [crop]);
 
-  console.log(oldCultivation, "hi i m cultivation");
-
   return (
     <div>
       <Header title="Farmer Relationship Management" subtitle="Cultivation" />

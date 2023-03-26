@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Menu from "./Menu";
 
-const SideNav = () => {
+const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
   const [pos, setPos] = useState(true);
   const [crop, setCrop] = useState(false);
   const [farm, setFarm] = useState(false);
@@ -12,7 +12,7 @@ const SideNav = () => {
   const [Heading, setHeading] = useState("");
 
   const [content, setContent] = useState<any>();
-  // let navigate = useNavigate();
+  let navigate = useNavigate();
 
   useEffect(() => {
     if (pos === true) {
@@ -27,6 +27,29 @@ const SideNav = () => {
       setHeading("Krishiyan Clinic");
     }
   }, [pos, crop, farm, manage, help]);
+
+  useEffect(() => {
+    switch (menu) {
+      case "pos":
+        posClick();
+        break;
+      case "crop_advisory":
+        cropClick();
+        break;
+      case "frm":
+        farmClick();
+        break;
+      case "management":
+        manageClick();
+        break;
+      case "help":
+        helpClick();
+        break;
+      case "crop_advisory":
+        helpClick();
+        break;
+    }
+  }, [menu, submenu]);
 
   const posClick = () => {
     // navigate("/");
@@ -45,7 +68,7 @@ const SideNav = () => {
     setHelp(false);
   };
   const farmClick = () => {
-    // navigate("/dashboard");
+    // navigate(" /dashboard");
     setPos(false);
     setCrop(false);
     setFarm(true);
@@ -129,6 +152,7 @@ const SideNav = () => {
         farm={farm}
         manage={manage}
         help={help}
+        submenu={submenu}
       />
     </div>
   );

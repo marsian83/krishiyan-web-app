@@ -327,36 +327,23 @@ const Purchase = () => {
   return (
     <div>
       <Header title="Farmer Relationship Management" subtitle="Cultivation" />
-      <div className="grid grid-cols-[40%_30%_10%_2%] mt-7 flex-row items-center w-full">
-        <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
-          Farmer Mobile Number
-        </label>
-        <input
-          onChange={onChangeInput}
-          // value={farmerID}
-          type="text"
-          className="bg-[#F3FFF1] h-8 lg:w-[86%] xl:w-[90%] lg:ml-2 xl:ml-[1%] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pr-3 pl-3"
-        />
-        {loading ? (
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-full rounded text-sm font-thin"
-          >
-            {/* <Loader /> */}
-            Fetching Info...
-          </button>
-        ) : (
-          <button
-            type="submit"
-            onClick={onClickEnter}
-            className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
-          >
-            ENTER
-          </button>
-        )}
+      <div className="grid grid-cols-[90%_30%] items-center box-border w-full">
+        <div className="mt-6 leading-4 ml-16">
+          <p className="text-[#000000]  text-end">
+            Name:{" "}
+            <span className="text-[#FB0404] font-bold">
+              {/* {farmerDetail?.nam  e} */}
+            </span>
+          </p>
+          <p className="text-[#000000]   text-end">
+            Area :{" "}
+            <span className="text-[#FB0404] font-bold">
+              {/* {farmerDetail?.address?.state} */}
+            </span>
+          </p>
+        </div>
       </div>
-      <section className="mt-20">
+      <section className="mt-10">
         {/* {farmerCredits ? ( */}
         <table className="table-auto border-collapse border border-black font-bold text-base w-[80%] mx-auto">
           <thead className="border-b border-black">
