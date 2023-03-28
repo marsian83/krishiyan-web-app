@@ -562,6 +562,17 @@ const Cultivation = () => {
                           <td className="border-r border-black">
                             {cultivation?.fertilizer}
                           </td>
+                          <td className="border-r border-black">
+                            <select
+                              id="countries"
+                              className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) text-black w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 text-sm font-thin"
+                              // onChange={onChangeCreditNum}
+                            >
+                              <option selected>Done</option>
+
+                              <option>In-progress</option>
+                            </select>
+                          </td>
                         </tr>
                       ))}
                     </tbody>

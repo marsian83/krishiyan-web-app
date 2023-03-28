@@ -135,16 +135,11 @@ const Credit = () => {
     const init = async () => {
       const [err, res] = await Api.getFarmerCultivationData(farmerDetails?._id);
       if (res) {
-        // let current_cultivation =
-        //   res?.data?.farmerCultivationData[
-        //     res?.data?.farmerCultivationData.length - 1
-        //   ];
-        // setCurrentCultivation(current_cultivation);
         setOldCultivation(res?.data?.farmerCultivationData);
       }
     };
     init();
-  }, [farmerMobile]);
+  }, [farmerMobile, farmerDetails]);
   console.log(oldCultivation, "This is a oldcultivation data");
 
   const sanctionCredit = async () => {
@@ -383,10 +378,10 @@ const Credit = () => {
                           {credit?.interestRate} %
                         </td>
                         <td className="border-r border-black">
-                          {credit?.interestAmount}
+                          {parseFloat(credit?.interestAmount).toFixed(2)}
                         </td>
                         <td className="border-r border-black">
-                          {credit?.totalPayableAmount}
+                          {parseFloat(credit?.totalPayableAmount).toFixed(2)}
                         </td>
                         <td className="border-r border-black">
                           {credit?.dueDate}
@@ -397,7 +392,9 @@ const Credit = () => {
                         {credit?.remainingPayableAmount !== "" &&
                         credit?.remainingPayableAmount !== undefined ? (
                           <td className="border-r border-black">
-                            {credit?.remainingPayableAmount}
+                            {parseFloat(credit?.remainingPayableAmount).toFixed(
+                              2
+                            )}
                           </td>
                         ) : (
                           <></>
@@ -427,9 +424,9 @@ const Credit = () => {
                 onChange={onChangeReason}
               >
                 <option selected>Choose Reason</option>
-                {/* {oldCultivation[0]?.map((crop: any) => (
+                {oldCultivation?.map((crop: any) => (
                   <option value={credit_details}>{crop?.crop}</option>
-                ))} */}
+                ))}
               </select>
             </div>
             <div className="grid grid-cols-[25%_28%] text-center items-center my-4">
@@ -450,9 +447,11 @@ const Credit = () => {
                 Credit Amount
               </label>
               <input
+                min="1"
+                max="20000"
                 type="text"
                 className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
-                onChange={onChangeReason}
+                onChange={onChangeAmount}
               />
             </div>
 
@@ -496,20 +495,8 @@ const Credit = () => {
                   type="text"
                   className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
                   onChange={onChangeRate}
-                  // defaultValue={farmerCredits[0]?.interestRate}
                 />
               </div>
-              {/* <div className="grid grid-cols-[45%_50%] items-center">
-                <label className="text-[#13490A] flex-[1] text-cente font-extrabold text-sm mx-5">
-                  Total Payable Amount
-                </label>
-                <input
-                  type="text"
-                  className="bg-[#F3FFF1]  h-8 w-35 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
-                  // defaultValue={farmerDetails[0]?.billNumber}
-                  // defaultValue={farmerCredits[0]?.totalPayableAmount}
-                />
-              </div> */}
             </div>
             <div className="grid grid-cols-[53%_47%] my-4">
               <div className="grid grid-cols-[47%_53%] text-center items-center">
@@ -580,13 +567,18 @@ const Credit = () => {
                         Due Date : {credit_details?.dueDate}
                       </h1>
                       <h1 className="text-start font-bold">
-                        Amount : {credit_details?.totalPayableAmount}
+                        Amount :{" "}
+                        {parseFloat(credit_details?.totalPayableAmount).toFixed(
+                          2
+                        )}
                       </h1>
                       {credit_details?.remainingPayableAmount !== "" &&
                       credit_details?.remainingPayableAmount !== undefined ? (
                         <h1 className="text-start font-bold">
                           Remaining Payable Amount:{" "}
-                          {credit_details?.remainingPayableAmount}
+                          {parseFloat(
+                            credit_details?.remainingPayableAmount
+                          ).toFixed(2)}
                         </h1>
                       ) : (
                         <></>
@@ -607,20 +599,13 @@ const Credit = () => {
                     <label className="text-[#13490A]  font-roboto font-extrabold text-sm mx-5">
                       Payment Method
                     </label>
-                    {/* <input
-                      type="text"
-                      value={payment_method}
-                      className="bg-[#F3FFF1] h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
-                      onChange={onChangePaymentMethod}
-                    /> */}
-
                     <select
                       id="countries"
                       className="bg-[#F3FFF1] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       onChange={onChangePaymentMethod}
                     >
                       <option selected>Choose Payment Method</option>
-                      <option value="US">CASH</option>
+                      <option value={amn_payable}>CASH</option>
                       <option value="CA">UPI</option>
                       <option value="FR">CARD</option>
                     </select>
@@ -632,7 +617,7 @@ const Credit = () => {
                   <div className="w-[78%] flex justify-center">
                     <button
                       onClick={payCredit}
-                      className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-16 py-1 px-4 rounded text-sm font-thin"
+                      className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-16 py-1  text-sm font-thin"
                     >
                       Pay
                     </button>

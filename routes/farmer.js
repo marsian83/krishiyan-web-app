@@ -79,25 +79,38 @@ router.post("/get-farmer-mobile", async (req, res) => {
     });
   }
 });
+router.get("/get-farmer", async (req, res) => {
+  try {
+    const farmer = await Farmer.find();
+    res.status(200).json(farmer);
+  } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+});
 
 // ========================================== FARMER CULTIVATION =======================================================================
 
 //Create new cultivation data
 router.post("/cultivation", async (req, res) => {
+  const {
+    area,
+    crop,
+    variety,
+    dateOfSowing,
+    soilType,
+    irrigationType,
+    fertilizer,
+    farmerId,
+  } = req.body;
   try {
-    const {
-      area,
-      crop,
-      variety,
-      dateOfSowing,
-      soilType,
-      irrigationType,
-      fertilizer,
-      farmerId,
-    } = req.body;
     const cultivationData = await Farmer.findById(farmerId);
     if (!cultivationData)
       return res.status(400).json({ msg: "Farmer does not exist." });
+    const oldCultivation = await FarmerCultivation.findOne({ crop: crop });
+    if (oldCultivation)
+      return res.status(400).json({ message: "Cultivation already exists" });
 
     const newcultivationData = new FarmerCultivation({
       area,

@@ -3,14 +3,16 @@ import { TextField } from "@material-ui/core";
 import { Autocomplete, MenuItem, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import * as Api from "../../Services/Api";
-import { getCrops, getvariteyByCropId } from "../../Services/Api";
+import { getCrops, getFarmers } from "../../Services/Api";
 
 const CropHealth = () => {
   let col: any = 12;
   let row: any = 5;
   const [allCrops, setAllCropes] = useState<any[]>([]);
   const [crop, setCrop] = useState("");
-  const [text, setText] = React.useState("");
+  const [text, setText] = useState("");
+  const [farmer, setFarmer] = useState("");
+  const [allFarmer, setAllFarmer] = useState<any>([]);
   const onChangeCrop = (e: any) => {
     setCrop(e.target.value);
   };
@@ -22,6 +24,13 @@ const CropHealth = () => {
     setCrops();
   }, []);
 
+  useEffect(() => {
+    const setFarmers = async () => {
+      const farmers: any[] = await getFarmers();
+      setAllFarmer(farmers[1].data);
+    };
+    setFarmers();
+  }, []);
   return (
     <>
       <div className="w-full max-w-sm mt-10 mb-5 ml-80">
@@ -31,6 +40,25 @@ const CropHealth = () => {
               className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
               // for="inline-password"
             >
+              Farmer
+            </label>
+          </div>
+          <div className="md:w-2/3">
+            <select
+              id="countries"
+              className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              // onChange={onChangeCrop}
+            >
+              <option selected>Select Farmer </option>
+              {allFarmer?.map((crop: any) => (
+                <option value={crop._id}>{crop.name}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="md:flex md:items-center mb-6">
+          <div className="md:w-1/3">
+            <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
               Crop
             </label>
           </div>
@@ -116,8 +144,9 @@ const CropHealth = () => {
               className=" bg-[#F3FFF1] appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-400 h-24"
               //   onChange={onChangeArea}
               id="inline-password"
-              //   type="text"
-              placeholder="Description"
+              // type="text"
+              maxLength={50}
+              placeholder="Maximum Of 50 Characters"
             />
           </div>
         </div>
