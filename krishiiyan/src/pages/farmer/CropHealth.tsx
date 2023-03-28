@@ -144,7 +144,6 @@ const CropHealth = () => {
               className=" bg-[#F3FFF1] appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-400 h-24"
               //   onChange={onChangeArea}
               id="inline-password"
-              // type="text"
               maxLength={50}
               placeholder="Maximum Of 50 Characters"
             />
