@@ -29,22 +29,16 @@ const SupportCredit = () => {
           </label>
         </div>
         <div className="md:w-2/3">
-          <TextField
-            id="outlined-select-currency"
-            select
-            // label="Select Crop"
-            style={{
-              width: 260,
-            }}
-            value={credit}
+          <select
+            id="countries"
+            className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             onChange={onChangeCredit}
           >
-            {allCredits.map((credit) => (
-              <MenuItem key={credit._id} value={credit._id}>
-                {credit.billNumber}
-              </MenuItem>
+            <option selected>Select Credit Number </option>
+            {allCredits?.map((credit: any) => (
+              <option value={credit._id}>{credit.billNumber}</option>
             ))}
-          </TextField>
+          </select>
         </div>
       </div>
       <div className="md:flex md:items-center mb-6">
@@ -58,11 +52,11 @@ const SupportCredit = () => {
         </div>
         <div className="md:w-2/3">
           <textarea
-            className=" appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 h-24"
+            className=" bg-[#F3FFF1] appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 h-24"
             //   onChange={onChangeArea}
             id="inline-password"
-            //   type="text"
-            placeholder="Description"
+            maxLength={50}
+            placeholder="Maximum Of 50 Characters"
           />
         </div>
       </div>

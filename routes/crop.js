@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
   const information = req.body;
 
   try {
-    // const oldCrop = await Crop.findOne({ localName });
+    // const oldCrop = await Crop.findOne({ localName:localName });
     // if (oldCrop)
     //   return res.status(400).json({ message: "crop already exists" });
     const newCrop = new Crop({
@@ -487,38 +487,4 @@ router.get("/problems", (req, res) => {
   } catch (error) {}
 });
 
-// fungicide and herbicide
-
-// function herbicide() {
-//   let herbicide = 250;
-//   return {
-//     quantity: herbicide * 2,
-//   };
-// }
-// router.post("/fungicide-herbicide", async (req, res) => {
-//   try {
-//     const { localName } = req.body;
-//     const crop = await Crop.findOne({ localName });
-
-//     res.status(200).json({
-//       // E1: {
-//       //   // pesticide: E1_pesticide_data,
-//       //   cropStage: "MaizePest1Pesticde 1",
-//       //   calculation:E1_pesticide_data
-//       // },
-//       // E2: {
-//       //   // pesticide: E2_pesticide_data,
-//       //   cropStage: "MaizePest1Pesticde 2",
-//       //   calculation:E2_pesticide_data
-//       // },
-//       // E3: {
-//       //   // pesticide: E3_pesticide_data,
-//       //   cropStage: "MaizePest1Pesticde 3",
-//       //   calculation:E3_pesticide_data
-//       // },
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
 module.exports = router;
