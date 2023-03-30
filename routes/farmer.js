@@ -6,6 +6,7 @@ const FarmerCultivation = require("../models/farmerCultivation");
 const Credit = require("../models/credit");
 const axios = require("axios");
 const credit = require("../models/credit");
+const { findByIdAndUpdate } = require("../models/farmer");
 
 // ========================================== NEW FARMER REGISTRATION ====================================================================
 
@@ -108,10 +109,6 @@ router.post("/cultivation", async (req, res) => {
     const cultivationData = await Farmer.findById(farmerId);
     if (!cultivationData)
       return res.status(400).json({ msg: "Farmer does not exist." });
-    const oldCultivation = await FarmerCultivation.findOne({ crop: crop });
-    if (oldCultivation)
-      return res.status(400).json({ message: "Cultivation already exists" });
-
     const newcultivationData = new FarmerCultivation({
       area,
       crop,
@@ -134,6 +131,23 @@ router.post("/cultivation", async (req, res) => {
     await newcultivationData.save();
 
     res.json({ newcultivationData });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+});
+
+// Find and update cultivation Done and Inprogress
+
+router.post("/update-cultivation/:id", async (req, res) => {
+  try {
+    const newcultivation = await FarmerCultivation.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+      }
+    );
+    res.json(newcultivation);
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }

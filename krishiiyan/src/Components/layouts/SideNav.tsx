@@ -10,9 +10,26 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
   const [help, setHelp] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [Heading, setHeading] = useState("");
-
   const [content, setContent] = useState<any>();
   let navigate = useNavigate();
+  const [weather, setWeather] = useState<any>({});
+
+  const api = {
+    key: "72b05fdfa25a691624fb032c0b0aa2ec",
+    base: "https://api.openweathermap.org/data/2.5/weather?",
+  };
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function (position: any) {
+      const lat = position.coords.latitude;
+      const long = position.coords.longitude;
+      fetch(`${api.base}lat=${lat}&lon=${long}&units=metric&appid=${api.key}`)
+        .then((res) => res.json())
+        .then((result) => {
+          setWeather(result);
+        });
+    });
+  }, []);
 
   useEffect(() => {
     if (pos === true) {
@@ -146,7 +163,7 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
       <Menu
         Number="4"
         Heading={Heading}
-        Address="Pune, Maharashtra"
+        Address={weather?.name}
         pos={pos}
         crop={crop}
         farm={farm}
