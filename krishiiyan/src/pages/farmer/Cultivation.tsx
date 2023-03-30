@@ -520,7 +520,7 @@ const Cultivation = () => {
                           Soil Type
                         </th>
                         <th className="border-r border-black py-[1.2%]">
-                          Irrigation
+                          Irrigation Type
                         </th>
                         <th className="border-r border-black py-[1.2%]">
                           Area (Acre)
@@ -546,7 +546,7 @@ const Cultivation = () => {
                             {cultivation?.variety}
                           </td>
                           <td className="border-r border-black">
-                            {moment(cultivation?.date).format("MM/DD/YYYY")}
+                            {moment(cultivation?.date).format("DD/MM/YYYY")}
                           </td>
 
                           <td className="border-r border-black">

@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import Weather from "./Weather";
 import { MenuItem, TextField } from "@mui/material";
+import Pagination from "@mui/material/Pagination";
 
 const Credit = () => {
   let row: any = "5";
@@ -307,7 +308,7 @@ const Credit = () => {
                 onChange={onChangeCreditNum}
               />
             </form> */}
-            <section className="mt-20">
+            <section className="mt-10">
               {farmerCredits ? (
                 <table className="table-auto border-collapse border border-black font-bold text-base w-[96%] mx-auto">
                   <thead className="border-b border-black">
@@ -316,7 +317,7 @@ const Credit = () => {
                       <th className="border-r border-black py-[1.2%]">
                         Credit number
                       </th>
-                      <th className="border-r border-black py-[1.2%]">
+                      <th className="border-r border-black py-[1.2%] pl-1 pr-1">
                         Reason
                       </th>
                       <th className="border-r border-black py-[1.2%]">
@@ -409,6 +410,16 @@ const Credit = () => {
               ) : (
                 <></>
               )}
+
+              {/* <Pagination
+                sx={{
+                  mt: 3,
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  mr: 2,
+                }}
+                count={rows.length}
+              /> */}
             </section>
           </div>
 
@@ -436,7 +447,7 @@ const Credit = () => {
               <input
                 type="text"
                 className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
-                defaultValue={farmerDetails?.creditLimit}
+                defaultValue={eligibleAmount}
                 onChange={onChangeAmount}
                 disabled
               />

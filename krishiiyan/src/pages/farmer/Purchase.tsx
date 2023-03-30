@@ -326,7 +326,7 @@ const Purchase = () => {
 
   return (
     <div>
-      <Header title="Farmer Relationship Management" subtitle="Cultivation" />
+      <Header title="Farmer Relationship Management" subtitle="Purchase" />
       <div className="grid grid-cols-[90%_30%] items-center box-border w-full">
         <div className="mt-6 leading-4 ml-16">
           <p className="text-[#000000]  text-end">

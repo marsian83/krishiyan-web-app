@@ -3,7 +3,13 @@ import { TextField } from "@material-ui/core";
 import { Autocomplete, MenuItem, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import * as Api from "../../Services/Api";
-import { getCrops, getFarmers } from "../../Services/Api";
+import { toast } from "react-toastify";
+
+import {
+  getCrops,
+  getFarmers,
+  createFarmerSupportHealth,
+} from "../../Services/Api";
 
 const CropHealth = () => {
   let col: any = 12;
@@ -13,6 +19,9 @@ const CropHealth = () => {
   const [text, setText] = useState("");
   const [farmer, setFarmer] = useState("");
   const [allFarmer, setAllFarmer] = useState<any>([]);
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const [farmerID, setFarmerID] = useState("");
   const onChangeCrop = (e: any) => {
     setCrop(e.target.value);
   };
@@ -31,10 +40,53 @@ const CropHealth = () => {
     };
     setFarmers();
   }, []);
+
+  const onChangeFarmerName = (e: any) => {
+    setFarmer(e.target.value);
+  };
+
+  // const getFarmerById = async () => {
+  //   if (farmerID) {
+  //     const [err, res] = await Api.getFarmer(farmerID);
+  //     if (err) {
+  //       console.log(err);
+  //     }
+  //     if (res) {
+  //       console.log(res);
+
+  //       setFarmerDetail(res?.data);
+  //     }
+
+  //     setLoading(false);
+  //   }
+  // };
+
+  const onChangeCategory = (e: any) => {
+    setCategory(e.target.value);
+  };
+  const onSubmitHandler = async () => {
+    const [err, res] = await Api.createFarmerSupportHealth(
+      allFarmer?._id,
+      allCrops.find((c) => c._id === crop).localName,
+      category,
+      description
+    );
+    if (err) {
+      toast.error(err.data, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+    if (res) {
+      toast.success(" Crop Health created!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  };
+
   return (
     <>
       <div className="w-full max-w-sm mt-10 mb-5 ml-80">
-        <div className="md:flex md:items-center mb-6">
+        {/* <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3">
             <label
               className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
@@ -47,15 +99,15 @@ const CropHealth = () => {
             <select
               id="countries"
               className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              // onChange={onChangeCrop}
+              onChange={onChangeFarmerName}
             >
               <option selected>Select Farmer </option>
               {allFarmer?.map((crop: any) => (
-                <option value={crop._id}>{crop.name}</option>
+                <option value={farmer}>{crop.name}</option>
               ))}
             </select>
           </div>
-        </div>
+        </div> */}
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3">
             <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
@@ -68,7 +120,7 @@ const CropHealth = () => {
               className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               onChange={onChangeCrop}
             >
-              <option selected>Select Crop </option>
+              <option selected>Select Crop</option>
               {allCrops?.map((crop: any) => (
                 <option value={crop._id}>{crop.localName}</option>
               ))}
@@ -86,47 +138,16 @@ const CropHealth = () => {
             </label>
           </div>
           <div className="md:w-2/3">
-            {/* <Autocomplete
-              id="plantation-select"
-              sx={{ width: 260 }}
-              options={[
-                {
-                  value: "Pest",
-                },
-                {
-                  value: "Disease",
-                },
-                {
-                  value: "Weed",
-                },
-                {
-                  value: "Deficiency",
-                },
-              ]}
-              autoHighlight
-              getOptionLabel={(option) => option.value}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Select Category"
-                  inputProps={{
-                    ...params.inputProps,
-                    autoComplete: "new-password",
-                  }}
-                />
-              )}
-            /> */}
-
             <select
               id="countries"
               className="bg-[#F3FFF1] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              // onChange={onChangePaymentMethod}
+              onChange={onChangeCategory}
             >
               <option selected>Choose Category</option>
-              <option value="US">Pest</option>
-              <option value="CA">Disease</option>
-              <option value="FR">Weed</option>
-              <option value="FR">Deficiency</option>
+              <option>Pest</option>
+              <option>Disease</option>
+              <option>Weed</option>
+              <option>Deficiency</option>
             </select>
           </div>
         </div>
@@ -152,7 +173,7 @@ const CropHealth = () => {
 
         <button
           type="submit"
-          //   onClick={onSubmitHandler}
+          onClick={onSubmitHandler}
           className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
         >
           Submit

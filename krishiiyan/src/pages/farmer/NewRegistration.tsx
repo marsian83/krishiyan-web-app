@@ -216,7 +216,7 @@ const NewRegistration = () => {
 
         <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
           <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-            Dealer Farmer Relation
+            Dealer Farmer Relationship
           </label>
           <Autocomplete
             onChange={onChangeDealerFarmerRel}
@@ -245,36 +245,13 @@ const NewRegistration = () => {
 
         <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
           <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-            Plantation type
+            Type
           </label>
           <Autocomplete
             onChange={onChangePlantationType}
             id="plantation-select"
             sx={{ width: 340 }}
             options={PlantationOptions}
-            autoHighlight
-            getOptionLabel={(option) => option.value}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Choose plantation type"
-                inputProps={{
-                  ...params.inputProps,
-                  autoComplete: "new-password",
-                }}
-              />
-            )}
-          />
-        </div>
-        <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
-          <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-            Type
-          </label>
-          <Autocomplete
-            // onChange={onChangePlantationType}
-            id="plantation-select"
-            sx={{ width: 340 }}
-            options={PlantationType}
             autoHighlight
             getOptionLabel={(option) => option.value}
             renderInput={(params) => (
