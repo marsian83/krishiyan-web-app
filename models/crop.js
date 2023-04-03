@@ -63,6 +63,173 @@ const cultivation_stage = {
   },
 };
 
+const crop_stage = {
+  Stage1: {
+    Name_of_the_Stage: {
+      name: String,
+      image: String,
+    },
+    Description: String,
+    Disease_Infection: {
+      Data: String,
+      image: String,
+    },
+    Pest_infestation: {
+      Data: String,
+      image: String,
+    },
+    Fertilizer: {
+      Data: String,
+      image: String,
+    },
+    Weed_mangement: {
+      Data: String,
+      image: String,
+    },
+    interculturalOperation: String,
+  },
+  Stage2: {
+    Name_of_the_Stage: {
+      name: String,
+      image: String,
+    },
+    Description: String,
+    Disease_Infection: {
+      Data: String,
+      image: String,
+    },
+    Pest_infestation: {
+      Data: String,
+      image: String,
+    },
+    Fertilizer: {
+      Data: String,
+      image: String,
+    },
+    interculturalOperation: String,
+  },
+  Stage3: {
+    Name_of_the_Stage: {
+      name: String,
+      image: String,
+    },
+    Description: String,
+    Disease_Infection: {
+      Data: String,
+      image: String,
+    },
+    Pest_infestation: {
+      Data: String,
+      image: String,
+    },
+    Fertilizer: {
+      Data: String,
+      image: String,
+    },
+    interculturalOperation: String,
+  },
+  Stage4: {
+    Name_of_the_Stage: {
+      name: String,
+      image: String,
+    },
+    Description: String,
+    Disease_Infection: {
+      Data: String,
+      image: String,
+    },
+    Pest_infestation: {
+      Data: String,
+      image: String,
+    },
+    Fertilizer: {
+      Data: String,
+      image: String,
+    },
+    interculturalOperation: String,
+  },
+  Stage5: {
+    Name_of_the_Stage: {
+      name: String,
+      image: String,
+    },
+    Description: String,
+    Disease_Infection: {
+      Data: String,
+      image: String,
+    },
+    Pest_infestation: {
+      Data: String,
+      image: String,
+    },
+    Fertilizer: {
+      Data: String,
+      image: String,
+    },
+    interculturalOperation: String,
+  },
+  Stage6: {
+    Name_of_the_Stage: {
+      name: String,
+      image: String,
+    },
+    Description: String,
+    Disease_Infection: {
+      Data: String,
+      image: String,
+    },
+    Pest_infestation: {
+      Data: String,
+      image: String,
+    },
+    Fertilizer: {
+      Data: String,
+      image: String,
+    },
+    interculturalOperation: String,
+  },
+  Stage7: {
+    Name_of_the_Stage: {
+      name: String,
+      image: String,
+    },
+    Description: String,
+    Disease_Infection: {
+      Data: String,
+      image: String,
+    },
+    Pest_infestation: {
+      Data: String,
+      image: String,
+    },
+    Fertilizer: {
+      Data: String,
+      image: String,
+    },
+    interculturalOperation: String,
+  },
+  Stage8: {
+    Name_of_the_Stage: {
+      name: String,
+      image: String,
+    },
+    Description: String,
+    Disease_Infection: {
+      Data: String,
+      image: String,
+    },
+    Pest_infestation: {
+      Data: String,
+      image: String,
+    },
+    Fertilizer: {
+      Data: String,
+      image: String,
+    },
+    interculturalOperation: String,
+  },
+};
+
 const CropSchema = new mongoose.Schema(
   {
     localName: {
@@ -192,6 +359,7 @@ const CropSchema = new mongoose.Schema(
     cultivationStage: cultivation_stage, //Cultivation Stages
     rainfall: String,
     image: String,
+    cropStage: crop_stage,
     diseaseMgmt: [
       {
         name: String,

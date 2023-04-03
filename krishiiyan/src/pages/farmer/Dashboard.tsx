@@ -45,6 +45,7 @@ const Dashboard = () => {
   };
 
   const onClickEnter = async () => {
+    localStorage.setItem("Number", farmerID);
     await getFarmerById();
   };
 
@@ -62,6 +63,11 @@ const Dashboard = () => {
     };
     init();
   }, [farmerID, farmerDetail]);
+
+  //Local storage
+  // useEffect(() => {
+  //   localStorage.setItem("Number", farmerID);
+  // }, [farmerID]);
 
   return (
     <div>

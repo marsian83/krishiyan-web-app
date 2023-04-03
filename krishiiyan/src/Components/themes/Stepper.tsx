@@ -19,13 +19,13 @@ import StepConnector, {
 } from "@mui/material/StepConnector";
 import moment from "moment";
 
-const steps = [
-  "Basal(at Sowing)",
-  "V4(four leaf stage)",
-  "V8(eight leaf stage)",
-  "VT(tasseling stage)",
-  "GF(grain filling stage)",
-];
+// const steps = [
+//   "Basal(at Sowing)",
+//   "V4(four leaf stage)",
+//   "V8(eight leaf stage)",
+//   "VT(tasseling stage)",
+//   "GF(grain filling stage)",
+// ];
 
 const QontoConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -54,6 +54,7 @@ const QontoConnector = styled(StepConnector)(({ theme }) => ({
 export default function HorizontalNonLinearStepper(props: any) {
   const { active, className } = props;
   const [activea, setActivea] = useState(0);
+  const [steps, setSteps] = useState<any[]>([]);
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState<{
     [k: number]: boolean;
@@ -66,11 +67,20 @@ export default function HorizontalNonLinearStepper(props: any) {
   }, [completed]);
 
   useEffect(() => {
+    if (!props?.cropDetails?.cropStage) return;
+    let Stages = props?.cropDetails?.cropStage;
+    const Steps = Object.values(Stages);
+    setSteps(Steps);
+  }, [props?.cropDetails]);
+
+  useEffect(() => {
     setInterval(() => {
       if (timeLine) {
         steps.forEach((step, index) => {
           if (
-            moment(timeLine[step]).isBefore(moment()) &&
+            moment(timeLine[step?.Name_of_the_Stage?.name]).isBefore(
+              moment()
+            ) &&
             !completedRef.current[index]
           ) {
             setCompleted((prev) => ({ ...prev, [index]: true }));
@@ -103,31 +113,46 @@ export default function HorizontalNonLinearStepper(props: any) {
   };
 
   const Content = (step: any) => {
-    switch (step) {
-      case 0:
-        return <BasalStep cropDetails={props?.cropDetails} />; //at Sowing
-      case 1:
-        return <V4step cropDetails={props?.cropDetails} />; //four leaf stage
-      case 2:
-        return <V8step cropDetails={props?.cropDetails} />; //eight leaf stage
-      case 3:
-        return <VTstep cropDetails={props?.cropDetails} />; //tasseling stage
-      case 4:
-        return <GFstep cropDetails={props?.cropDetails} />; //grain filling stage
-      default:
-        return <div>404: Not Found</div>;
-    }
+    // switch (step) {
+    // case 0:
+    //   return <BasalStep cropDetails={props?.cropDetails} />; //at Sowing
+    // case 1:
+    //   return <V4step cropDetails={props?.cropDetails} />; //four leaf stage
+    // case 2:
+    //   return <V8step cropDetails={props?.cropDetails} />; //eight leaf stage
+    // case 3:
+    //   return <VTstep cropDetails={props?.cropDetails} />; //tasseling stage
+    // case 4:
+    //   return <GFstep cropDetails={props?.cropDetails} />; //grain filling stage
+
+    // default:
+
+    // return <div>404: Not Found</div>;
+
+    // }
+    return (
+      <BasalStep
+        cropDetails={props?.cropDetails}
+        stage={Object.keys(props?.cropDetails.cropStage)[step]}
+      />
+    ); //at Sowing
   };
 
   return (
     <Box sx={{ width: "100%" }}>
       <Stepper nonLinear activeStep={activeStep}>
-        {steps.map((label, index) => (
-          <Step key={label} completed={completed[index]}>
+        {steps.map((step, index) => (
+          <Step
+            key={step?.Name_of_the_Stage?.name}
+            completed={completed[index]}
+          >
             <StepButton color="success" onClick={handleStep(index)}>
               <span>
-                {label} <br />
-                {timeLine && moment(timeLine[label]).format("MMM Do YY")}
+                {step?.Name_of_the_Stage?.name} <br />
+                {timeLine &&
+                  moment(timeLine[step?.Name_of_the_Stage?.name]).format(
+                    "MMM Do YY"
+                  )}
               </span>
             </StepButton>
           </Step>

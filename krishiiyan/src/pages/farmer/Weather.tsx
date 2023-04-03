@@ -52,7 +52,12 @@ const Weather = () => {
       }}
     >
       <div className="w-30 mr-6 text-start	">
-        <p className="font-thin text-sm">Temp: {weather?.main?.temp}°C</p>
+        <p className="font-thin text-sm">
+          Temp: {parseFloat(weather?.main?.temp).toFixed(0)}°C
+        </p>
+        {/* {parseFloat(credit_details?.totalPayableAmount).toFixed(
+                          2
+                        )} */}
         <p className="font-thin text-sm">Humidity: {weather?.main?.humidity}</p>
         <p className="font-thin text-sm">
           Current Weather:{" "}

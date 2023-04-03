@@ -37,12 +37,12 @@ const Cultivation = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const init = async () => {
-  //     await getFarmerById();
-  //   };
-  //   init();
-  // }, [farmerID]);
+  useEffect(() => {
+    const init = async () => {
+      await getFarmerById();
+    };
+    init();
+  }, [farmerID]);
 
   const onClickEnter = async () => {
     await getFarmerById();
@@ -142,11 +142,17 @@ const Cultivation = () => {
     else setAllPests([]);
   }, [crop]);
 
+  useEffect(() => {
+    if (!localStorage.Number) return;
+    setFarmerID(localStorage.Number);
+    onClickEnter();
+  }, []);
+
   return (
     <div>
       <Header title="Farmer Relationship Management" subtitle="Cultivation" />
       <section>
-        <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
+        {/* <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
           <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
             <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
               Farmer Mobile Number
@@ -182,7 +188,7 @@ const Cultivation = () => {
           ) : (
             <></>
           )}
-        </div>
+        </div> */}
 
         {farmerDetail ? (
           <>

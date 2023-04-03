@@ -207,6 +207,17 @@ const Credit = () => {
       }
     }
   };
+  useEffect(() => {
+    const init = async () => {
+      await getFarmerByMobile();
+    };
+    init();
+  }, [farmerMobile]);
+  useEffect(() => {
+    if (!localStorage.Number) return;
+    setFarmerMobile(localStorage.Number);
+    onClickEnter();
+  }, []);
 
   //get eligible amount
   // useEffect(() => {
@@ -221,7 +232,7 @@ const Credit = () => {
       <Header title="Farmer Relationship Management" subtitle="Credit" />
       <section className="font-roboto">
         {/* Input Search box */}
-        <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
+        {/* <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
           <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
             <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
               Farmer Mobile Number
@@ -255,7 +266,7 @@ const Credit = () => {
           ) : (
             <></>
           )}
-        </div>
+        </div> */}
       </section>
       {farmerDetails ? (
         <section className="font-roboto">
