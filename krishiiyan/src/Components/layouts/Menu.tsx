@@ -704,7 +704,7 @@ const Menu = (props: any) => {
                     purchase === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
                   }`}
                 >
-                  Purchase
+                  Product
                 </li>
                 <li
                   onClick={onClickAccounting}
@@ -714,7 +714,7 @@ const Menu = (props: any) => {
                       : ""
                   }`}
                 >
-                  Accounting
+                  Sales Statement
                 </li>
               </ul>
             </>
