@@ -45,6 +45,7 @@ const Dashboard = () => {
   };
 
   const onClickEnter = async () => {
+    localStorage.setItem("Number", farmerID);
     await getFarmerById();
   };
 
@@ -62,6 +63,11 @@ const Dashboard = () => {
     };
     init();
   }, [farmerID, farmerDetail]);
+
+  //Local storage
+  // useEffect(() => {
+  //   localStorage.setItem("Number", farmerID);
+  // }, [farmerID]);
 
   return (
     <div>
@@ -147,7 +153,7 @@ const Dashboard = () => {
                           </th>
                         </tr>
                         <tr className="text-center">
-                          <th className="border-r border-black py-[1.2%] text-start">
+                          <th className="border-r border-black py-[1.2%] text-start pl-2">
                             Member Since
                           </th>
                           <th className="border-r border-black py-[1.2%]">
@@ -162,7 +168,7 @@ const Dashboard = () => {
                       <tbody>
                         {/* Stage1 */}
                         <tr className="h-10 border-b border-black">
-                          <td className="border-r border-black text-start">
+                          <td className="border-r border-black text-start pl-2">
                             Total Farm Area(Acre)
                           </td>
 
@@ -171,7 +177,7 @@ const Dashboard = () => {
                           </td>
                         </tr>
                         <tr className="h-10 border-b border-black">
-                          <td className="border-r border-black text-start">
+                          <td className="border-r border-black text-start pl-2">
                             Last soil Tested Date
                           </td>
 
@@ -184,7 +190,7 @@ const Dashboard = () => {
                           </td>
                         </tr>
                         <tr className="h-10 border-b border-black">
-                          <td className="border-r border-black text-start">
+                          <td className="border-r border-black text-start pl-2">
                             Credit Eligible Amount
                           </td>
 

@@ -16,9 +16,11 @@ const SupportQury = () => {
       <div className="md:flex md:items-center mb-6">
         <div className="md:w-2/3">
           <textarea
-            className=" appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 h-36"
+            className="  bg-[#F3FFF1] appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 h-36"
             //   onChange={onChangeArea}
             id="inline-password"
+            maxLength={30}
+            placeholder="Maximum Of 30 Characters"
           />
         </div>
       </div>

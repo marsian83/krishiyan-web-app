@@ -37,12 +37,12 @@ const Cultivation = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const init = async () => {
-  //     await getFarmerById();
-  //   };
-  //   init();
-  // }, [farmerID]);
+  useEffect(() => {
+    const init = async () => {
+      await getFarmerById();
+    };
+    init();
+  }, [farmerID]);
 
   const onClickEnter = async () => {
     await getFarmerById();
@@ -142,11 +142,17 @@ const Cultivation = () => {
     else setAllPests([]);
   }, [crop]);
 
+  useEffect(() => {
+    if (!localStorage.Number) return;
+    setFarmerID(localStorage.Number);
+    onClickEnter();
+  }, []);
+
   return (
     <div>
       <Header title="Farmer Relationship Management" subtitle="Cultivation" />
       <section>
-        <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
+        {/* <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
           <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
             <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
               Farmer Mobile Number
@@ -182,7 +188,7 @@ const Cultivation = () => {
           ) : (
             <></>
           )}
-        </div>
+        </div> */}
 
         {farmerDetail ? (
           <>
@@ -520,7 +526,7 @@ const Cultivation = () => {
                           Soil Type
                         </th>
                         <th className="border-r border-black py-[1.2%]">
-                          Irrigation
+                          Irrigation Type
                         </th>
                         <th className="border-r border-black py-[1.2%]">
                           Area (Acre)
@@ -546,7 +552,7 @@ const Cultivation = () => {
                             {cultivation?.variety}
                           </td>
                           <td className="border-r border-black">
-                            {moment(cultivation?.date).format("MM/DD/YYYY")}
+                            {moment(cultivation?.date).format("DD/MM/YYYY")}
                           </td>
 
                           <td className="border-r border-black">
@@ -561,6 +567,17 @@ const Cultivation = () => {
 
                           <td className="border-r border-black">
                             {cultivation?.fertilizer}
+                          </td>
+                          <td className="border-r border-black">
+                            <select
+                              id="countries"
+                              className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) text-black w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 text-sm font-thin"
+                              // onChange={onChangeCreditNum}
+                            >
+                              <option selected>Done</option>
+
+                              <option>In-progress</option>
+                            </select>
                           </td>
                         </tr>
                       ))}

@@ -222,6 +222,22 @@ export async function getFarmerCreditData(farmerId: string) {
   }
 }
 
+// Get Farmer
+export async function getFarmers() {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "get",
+      url: `${apiURL}/farmer/get-farmer`,
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
 //Get credit by ID
 export async function getCreditTxInfo(creditNumber: string) {
   try {
@@ -298,6 +314,33 @@ export async function payCredit(
         billNumber: billNumber,
         payableAmount: payableAmount,
         paymentMethod: paymentMethod,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+// create crop health
+export async function createFarmerSupportHealth(
+  farmerId: string,
+  crop: string,
+  category: string,
+  description: string
+) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/crop-health`,
+      data: {
+        farmerId: farmerId,
+        crop: crop,
+        category: category,
+        description: description,
       },
     };
     const response = await axios.default.request(axiosConfig);
