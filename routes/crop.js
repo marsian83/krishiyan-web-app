@@ -48,19 +48,19 @@ router.get("/", async (req, res) => {
 // router.get("/fill-data", async (req, res) => {
 //   try {
 //     const pest = await new Pest({
-//       name: "Pest3 ",// pest 2
+//       name: "Pest 3 ", // pest 2
 //       pesticidesIds: [],
-//       cropsIds: [new ObjectId("63f73c50676f085c2f436f26")],
+//       cropsIds: [new ObjectId("642562463e10839593ff9edb")],
 //     }).save();
 //     const pesticide = new Pesticide({
 //       name: "Pesticide 3", // pe 2
 //       dosagePerAcre: "500",
-//       unit: "ml",// 'gram', 'kilogram','ml','litre'
+//       unit: "gram", // 'gram', 'kilogram','ml','litre'
 //       dilutionRatioPerAcre: "150-200",
-//       stage: "Stage 2", // Stage 1, Stage 2, Stage 3, Stage 4
-//       sprayingTime: "Sunlight", // Evening, Afternoon, Sunlight, Night
-//       applicationType: "Florial",// Basal
-//       frequency: "3 times for 2 weeks",// 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
+//       stage: "Stage 3", // Stage 1, Stage 2, Stage 3, Stage 4
+//       sprayingTime: "Afternoon", // Evening, Afternoon, Sunlight, Night
+//       applicationType: "Florial", // Basal, Florial
+//       frequency: "1 times for 3 weeks", // 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
 //       pestsIds: [pest._id],
 //     });
 //     await pesticide.save();
@@ -76,66 +76,66 @@ router.get("/", async (req, res) => {
 // });
 
 // fill data for herbicide
-// router.get("/fill-data", async (req, res) => {
-//   try {
-//     const weed = await new Weeds({
-//       name: "Weed1 ",// pest 2
-//       herbicidesIds: [],
-//       cropsIds: [new ObjectId("63f347b63098d304b39aa5fb")],
-//     }).save();
-//     const herbicide = new Herbicide({
-//       name: "Herbicide1", // pe 2
-//       dosagePerAcre: "500",
-//       unit: "ml",// 'gram', 'kilogram','ml','litre'
-//       dilutionRatioPerAcre: "150-200",
-//       stage: "Stage 3", // Stage 1, Stage 2, Stage 3, Stage 4
-//       sprayingTime: "Evening", // Evening, Afternoon, Sunlight, Night
-//       applicationType: "Florial",// Basal
-//       frequency: "3 times for 2 weeks",// 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
-//       weedsIds: [weed._id],
-//     });
-//     await herbicide.save();
-//     weed.herbicidesIds.push(new ObjectId(herbicide._id));
-//     await weed.save();
-//     res.json({
-//       weed,
-//       herbicide,
-//     });
-//   } catch (error) {
-//     console.log(error, "ERROR");
-//   }
-// });
-
-//fill data for fungicide
 router.get("/fill-data", async (req, res) => {
   try {
-    const disease = await new Disease({
-      name: "Disease3 ", // pest 2
-      fungicidesIds: [],
-      cropsIds: [new ObjectId("63f347b63098d304b39aa5fb")],
+    const weed = await new Weeds({
+      name: "Weed 3 ", // pest 2
+      herbicidesIds: [],
+      cropsIds: [new ObjectId("642562463e10839593ff9edb")],
     }).save();
-    const fungicide = new Fungicide({
-      name: "Fungicide3", // pe 2
+    const herbicide = new Herbicide({
+      name: "Herbicide 3", // pe 2
       dosagePerAcre: "500",
-      unit: "ml", // 'gram', 'kilogram','ml','litre'
+      unit: "litre", // 'gram', 'kilogram','ml','litre'
       dilutionRatioPerAcre: "150-200",
       stage: "Stage 3", // Stage 1, Stage 2, Stage 3, Stage 4
       sprayingTime: "Sunlight", // Evening, Afternoon, Sunlight, Night
-      applicationType: "Florial", // Basal
-      frequency: " times for 1 weeks", // 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
-      diseaseIds: [disease._id],
+      applicationType: "Florial", // Basal,Florial
+      frequency: "1 times for 3 weeks", // 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
+      weedsIds: [weed._id],
     });
-    await fungicide.save();
-    disease.fungicidesIds.push(new ObjectId(fungicide._id));
-    await disease.save();
+    await herbicide.save();
+    weed.herbicidesIds.push(new ObjectId(herbicide._id));
+    await weed.save();
     res.json({
-      disease,
-      fungicide,
+      weed,
+      herbicide,
     });
   } catch (error) {
     console.log(error, "ERROR");
   }
 });
+
+//fill data for fungicide
+// router.get("/fill-data", async (req, res) => {
+//   try {
+//     const disease = await new Disease({
+//       name: "Disease3 ", // pest 2
+//       fungicidesIds: [],
+//       cropsIds: [new ObjectId("63f347b63098d304b39aa5fb")],
+//     }).save();
+//     const fungicide = new Fungicide({
+//       name: "Fungicide3", // pe 2
+//       dosagePerAcre: "500",
+//       unit: "ml", // 'gram', 'kilogram','ml','litre'
+//       dilutionRatioPerAcre: "150-200",
+//       stage: "Stage 3", // Stage 1, Stage 2, Stage 3, Stage 4
+//       sprayingTime: "Sunlight", // Evening, Afternoon, Sunlight, Night
+//       applicationType: "Florial", // Basal
+//       frequency: " times for 1 weeks", // 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
+//       diseaseIds: [disease._id],
+//     });
+//     await fungicide.save();
+//     disease.fungicidesIds.push(new ObjectId(fungicide._id));
+//     await disease.save();
+//     res.json({
+//       disease,
+//       fungicide,
+//     });
+//   } catch (error) {
+//     console.log(error, "ERROR");
+//   }
+// });
 
 // Get crop by localName and scientificName
 router.post("/get-crop-name", async (req, res) => {
@@ -145,27 +145,25 @@ router.post("/get-crop-name", async (req, res) => {
     // $or: [ {localName }, {scientificName} ]
 
     const crop = await Crop.find({ $or: [{ localName }, { scientificName }] });
+    console.log(localName, scientificName, crop);
     var day = 60 / 5;
     if (dateOfSowing) {
       return res.status(200).json(
-        crop.map((_crop) => ({
-          ..._crop._doc,
-          timeLine: {
-            "Basal(at Sowing)": moment(dateOfSowing).add(0, "days").toDate(),
-            "V4(four leaf stage)": moment(dateOfSowing)
-              .add(day * 2, "days")
-              .toDate(),
-            "V8(eight leaf stage)": moment(dateOfSowing)
-              .add(day * 3, "days")
-              .toDate(),
-            "VT(tasseling stage)": moment(dateOfSowing)
-              .add(day * 4, "days")
-              .toDate(),
-            "GF(grain filling stage)": moment(dateOfSowing)
-              .add(day * 5, "days")
-              .toDate(),
-          },
-        }))
+        crop.map((_crop) => {
+          const timeLine = {};
+          let day = 0;
+          Object.values(_crop._doc.cropStage).map((step) => {
+            day += parseInt(step.Age);
+
+            timeLine[step.Name_of_the_Stage.name] = moment(dateOfSowing)
+              .add(day, "days")
+              .toDate();
+          });
+          return {
+            ..._crop._doc,
+            timeLine,
+          };
+        })
       );
     }
     res.status(200).json(crop);
