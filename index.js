@@ -33,6 +33,8 @@ app.use("/api/yield-crop", require("./routes/yieldCrop"));
 app.use("/api/add-inventory", require("./routes/inventory"));
 app.use("/api/credit", require("./routes/credit"));
 
+app.use("/pos",require("./routes/pos"))
+
 //Connect to DB.
 connectDB();
 
