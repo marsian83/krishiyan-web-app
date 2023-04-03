@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
 import Header from "../../Components/layouts/Header";
+import moment from "moment";
 const Sale = () => {
   const [number, SetNumber] = useState<any>(true);
   const [data, setData] = useState(false);
@@ -26,9 +27,9 @@ const Sale = () => {
       if (res) {
         console.log(res);
         if (res?.data === null) {
-          toast.error("Farmer not found!", {
-            position: toast.POSITION.TOP_RIGHT,
-          });
+          // toast.error("Farmer not found!", {
+          //   position: toast.POSITION.TOP_RIGHT,
+          // });
         }
         setFarmerDetail(res?.data);
       }
@@ -38,6 +39,7 @@ const Sale = () => {
   };
 
   const onClickEnter = async () => {
+    localStorage.setItem("Number", farmerID);
     await getFarmerById();
     SetNumber(false);
     setData(true);
@@ -57,6 +59,26 @@ const Sale = () => {
     };
     init();
   }, [farmerID, farmerDetail]);
+
+  useEffect(() => {
+    const init = async () => {
+      await getFarmerById();
+    };
+    init();
+  }, [farmerID]);
+
+  useEffect(() => {
+    if (
+      !localStorage.Number ||
+      localStorage.Number === "" ||
+      localStorage.Number === undefined
+    ) {
+      return;
+    } else if (localStorage.Number || !localStorage.Number === undefined) {
+      setFarmerID(localStorage.Number);
+      onClickEnter();
+    }
+  }, []);
   return (
     <div>
       <Header title="Pos" subtitle="Sale" />
@@ -86,12 +108,28 @@ const Sale = () => {
               </>
             ) : null}
             {data ? (
-              <div className="right  font-bold flex-[1.2] text-start">
-                <p>Name :{farmerDetail?.name}</p>
-                <p>Phone :{farmerDetail?.mobile}</p>
-                <p>E-Mail :</p>
-                <p>Area :{farmerDetail?.address?.street}</p>
-                <p>Dealer:</p>
+              <div className="flex space-x-96 w-full">
+                <div className="right  font-bold flex-[1.2] text-start">
+                  <p>Name : {farmerDetail?.name}</p>
+                  <p>Phone : {farmerDetail?.mobile}</p>
+                  <p>E-Mail : test@example.com</p>
+                  <p>Area : {farmerDetail?.address?.street}</p>
+                  <p>Dealer: Pune-01</p>
+                </div>
+
+                <div className="right  font-bold flex-[1.2] text-start">
+                  <p>Type : {farmerDetail?.plantation_type}</p>
+                  <div className="flex gap-2">
+                    <div>Available Credit :{" "}</div>
+                    <div className="text-[#FF0000]">₹ {farmerDetail?.creditLimit}</div>
+                  </div>
+                  <p>
+                    Member Since :{" "}
+                    {moment(farmerDetail?.createdAt)?.format("DD-MM-YY")}
+                  </p>
+                  <p>Number Of Purchases : 0</p>
+                  <p>Due: 0</p>
+                </div>
               </div>
             ) : null}
           </div>
@@ -103,7 +141,7 @@ const Sale = () => {
                 style={{ backgroundColor: "rgb(242 242 242)" }}
               >
                 <button className="border border-collapse border-black flex-1 text-sm font-bold">
-                  Top
+                  Recommended
                 </button>
                 <button className="border border-collapse border-black flex-1 text-sm font-bold">
                   Fertilizer
