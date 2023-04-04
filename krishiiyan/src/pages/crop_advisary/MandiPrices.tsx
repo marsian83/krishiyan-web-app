@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../Components/layouts/Header";
 
+import * as Api from "../../Services/Api";
+import { toast } from "react-toastify";
+
 const MandiPrices = () => {
+  const [prices, setPrices] = useState<any>();
+
+  const getMandiprice = async () => {
+    const [err, res] = await Api.getMandiPrices();
+
+    if (err) {
+      toast.error(err.data, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+    if (res) {
+      setPrices(res?.data);
+    }
+  };
+
+  useEffect(() => {
+    const init = async () => {
+      await getMandiprice();
+    };
+    init();
+  }, []);
+
+  // console.log(prices?.records[0], "it is mandi prices");
   return (
     <div>
       <Header title="Crop Advisary" subtitle="Market" />

@@ -132,7 +132,7 @@ const CropCalendar = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Crop name"
+                  label="Crop Name"
                   inputProps={{
                     ...params.inputProps,
                     autoComplete: "new-password",

@@ -50,17 +50,17 @@ router.get("/", async (req, res) => {
 //     const pest = await new Pest({
 //       name: "Pest 3 ", // pest 2
 //       pesticidesIds: [],
-//       cropsIds: [new ObjectId("642562463e10839593ff9edb")],
+//       cropsIds: [new ObjectId("642abb7ceb25dc0bf93b525b")],
 //     }).save();
 //     const pesticide = new Pesticide({
 //       name: "Pesticide 3", // pe 2
 //       dosagePerAcre: "500",
-//       unit: "gram", // 'gram', 'kilogram','ml','litre'
+//       unit: "ml", // 'gram', 'kilogram','ml','litre'
 //       dilutionRatioPerAcre: "150-200",
 //       stage: "Stage 3", // Stage 1, Stage 2, Stage 3, Stage 4
-//       sprayingTime: "Afternoon", // Evening, Afternoon, Sunlight, Night
+//       sprayingTime: "Sunlight", // Evening, Afternoon, Sunlight, Night
 //       applicationType: "Florial", // Basal, Florial
-//       frequency: "1 times for 3 weeks", // 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
+//       frequency: "3 times for 2 weeks", // 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
 //       pestsIds: [pest._id],
 //     });
 //     await pesticide.save();
@@ -79,19 +79,19 @@ router.get("/", async (req, res) => {
 router.get("/fill-data", async (req, res) => {
   try {
     const weed = await new Weeds({
-      name: "Weed 3 ", // pest 2
+      name: "Weed 2 ", // pest 2
       herbicidesIds: [],
-      cropsIds: [new ObjectId("642562463e10839593ff9edb")],
+      cropsIds: [new ObjectId("642abb7ceb25dc0bf93b525b")],
     }).save();
     const herbicide = new Herbicide({
-      name: "Herbicide 3", // pe 2
-      dosagePerAcre: "500",
-      unit: "litre", // 'gram', 'kilogram','ml','litre'
+      name: "Herbicide 2", // pe 2
+      dosagePerAcre: "250",
+      unit: "ml", // 'gram', 'kilogram','ml','litre'
       dilutionRatioPerAcre: "150-200",
       stage: "Stage 3", // Stage 1, Stage 2, Stage 3, Stage 4
       sprayingTime: "Sunlight", // Evening, Afternoon, Sunlight, Night
       applicationType: "Florial", // Basal,Florial
-      frequency: "1 times for 3 weeks", // 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
+      frequency: "2 times for 1 weeks", // 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
       weedsIds: [weed._id],
     });
     await herbicide.save();
@@ -112,7 +112,7 @@ router.get("/fill-data", async (req, res) => {
 //     const disease = await new Disease({
 //       name: "Disease3 ", // pest 2
 //       fungicidesIds: [],
-//       cropsIds: [new ObjectId("63f347b63098d304b39aa5fb")],
+//       cropsIds: [new ObjectId("64257fc05ea04907a4a590e6")],
 //     }).save();
 //     const fungicide = new Fungicide({
 //       name: "Fungicide3", // pe 2
@@ -145,7 +145,7 @@ router.post("/get-crop-name", async (req, res) => {
     // $or: [ {localName }, {scientificName} ]
 
     const crop = await Crop.find({ $or: [{ localName }, { scientificName }] });
-    console.log(localName, scientificName, crop);
+    console.log(localName, scientificName, dateOfSowing, "UNIQUE");
     var day = 60 / 5;
     if (dateOfSowing) {
       return res.status(200).json(
@@ -160,7 +160,7 @@ router.post("/get-crop-name", async (req, res) => {
               .toDate();
           });
           return {
-            ..._crop._doc,
+            ..._crop.toObject(),
             timeLine,
           };
         })
