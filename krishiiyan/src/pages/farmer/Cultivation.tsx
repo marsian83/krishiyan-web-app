@@ -152,9 +152,9 @@ const Cultivation = () => {
     <div>
       <Header title="Farmer Relationship Management" subtitle="Cultivation" />
       <section>
-        {/* <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
+        <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
           <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
-            <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
+            {/* <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
               Farmer Mobile Number
             </label>
             <input
@@ -168,7 +168,7 @@ const Cultivation = () => {
               className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
             >
               ENTER
-            </button>
+            </button> */}
           </div>
           {farmerDetail ? (
             <div className="mt-6 leading-4 ml-16">
@@ -188,7 +188,7 @@ const Cultivation = () => {
           ) : (
             <></>
           )}
-        </div> */}
+        </div>
 
         {farmerDetail ? (
           <>

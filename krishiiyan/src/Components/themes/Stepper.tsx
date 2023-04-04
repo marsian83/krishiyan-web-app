@@ -58,8 +58,9 @@ export default function HorizontalNonLinearStepper(props: any) {
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState<{
     [k: number]: boolean;
-  }>({ 0: false, 1: false, 2: false, 3: false, 4: false });
+  }>({});
   const completedRef = useRef<any>();
+  const stepsRef = useRef<any>();
   const { timeLine } = props?.cropDetails;
 
   useEffect(() => {
@@ -67,23 +68,31 @@ export default function HorizontalNonLinearStepper(props: any) {
   }, [completed]);
 
   useEffect(() => {
+    stepsRef.current = steps;
+  }, [steps]);
+
+  useEffect(() => {
     if (!props?.cropDetails?.cropStage) return;
     let Stages = props?.cropDetails?.cropStage;
     const Steps = Object.values(Stages);
     setSteps(Steps);
+    // console.log(Steps, "it is steps");
   }, [props?.cropDetails]);
 
   useEffect(() => {
     setInterval(() => {
       if (timeLine) {
-        steps.forEach((step, index) => {
+        stepsRef.current.forEach((step: any, index: number) => {
           if (
             moment(timeLine[step?.Name_of_the_Stage?.name]).isBefore(
               moment()
             ) &&
-            !completedRef.current[index]
+            !completedRef.current[step.Name_of_the_Stage.name]
           ) {
-            setCompleted((prev) => ({ ...prev, [index]: true }));
+            setCompleted((prev) => ({
+              ...prev,
+              [step.Name_of_the_Stage.name]: true,
+            }));
             setActiveStep(index);
           }
         });
@@ -137,6 +146,7 @@ export default function HorizontalNonLinearStepper(props: any) {
       />
     ); //at Sowing
   };
+  // console.log(completed);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -144,7 +154,7 @@ export default function HorizontalNonLinearStepper(props: any) {
         {steps.map((step, index) => (
           <Step
             key={step?.Name_of_the_Stage?.name}
-            completed={completed[index]}
+            completed={completed[step?.Name_of_the_Stage?.name]}
           >
             <StepButton color="success" onClick={handleStep(index)}>
               <span>

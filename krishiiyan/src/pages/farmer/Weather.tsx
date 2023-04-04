@@ -34,11 +34,9 @@ const Weather = () => {
     navigator.geolocation.getCurrentPosition(function (position: any) {
       const lat = position.coords.latitude;
       const long = position.coords.longitude;
-      console.log(lat, long);
       fetch(`${api.base}lat=${lat}&lon=${long}&units=metric&appid=${api.key}`)
         .then((res) => res.json())
         .then((result) => {
-          console.log(result);
           setWeather(result);
         });
     });
