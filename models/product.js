@@ -7,11 +7,15 @@ const ProductSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    category: {
-      type: String,
-      enum: ["FERTILIZER", "PESTICIDE", "FUNGICIDE", "HERBICIDE"], //
-      default: "",
-      required: true,
+    // category: {
+    //   type: String,
+    //   enum: ["FERTILIZER", "PESTICIDE", "FUNGICIDE", "HERBICIDE"], //
+    //   default: "",
+    //   required: true,
+    // },
+    category: { 
+      type: [String], 
+      required: true 
     },
     measuringUnit: {
       type: String,
@@ -30,6 +34,10 @@ const ProductSchema = new mongoose.Schema(
       required: true,
     },
     price: {
+      type: String,
+      required: true,
+    },
+    image: {
       type: String,
       required: true,
     },
