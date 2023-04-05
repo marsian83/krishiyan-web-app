@@ -213,6 +213,21 @@ export async function getFarmerCultivationData(farmerId: string) {
   }
 }
 
+// mandi prices
+export async function getMandiPrices() {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "get",
+      url: `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001d9143fc81ac74bce7ad727abc2705a8a&format=json&limit=10000`,
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
 // ========================================== FARMER CREDIT SYSTEM =======================================================================
 
 //Farmer credit

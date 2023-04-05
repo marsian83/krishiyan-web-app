@@ -9,7 +9,7 @@ import Weather from "./Weather";
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [receivedData, setReceivedData] = useState(false);
-  const [farmerID, setFarmerID] = useState("");
+  const [farmerID, setFarmerID] = useState<any>();
   const [farmerDetail, setFarmerDetail] = useState<any>();
   const [currentCultivation, setCurrentCultivation] = useState<any>();
   const [dasTable, setDasTable] = useState(false);
@@ -66,8 +66,15 @@ const Dashboard = () => {
 
   //Local storage
   // useEffect(() => {
-  //   localStorage.setItem("Number", farmerID);
-  // }, [farmerID]);
+  //   if (localStorage.Number) {
+  //     setFarmerID((prev: any) => localStorage.Number);
+  //     console.log(localStorage.Number);
+  //     setTimeout(() => {
+  //       console.log(localStorage.Number);
+  //       onClickEnter();
+  //     }, 1000);
+  //   }
+  // }, []);
 
   return (
     <div>
@@ -83,6 +90,7 @@ const Dashboard = () => {
               onChange={onChangeInput}
               // value={farmerID}
               type="text"
+              value={farmerID}
               className="bg-[#F3FFF1] h-8 lg:w-[86%] xl:w-[90%] lg:ml-2 xl:ml-[1%] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pr-3 pl-3"
             />
             {loading ? (
