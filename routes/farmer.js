@@ -7,11 +7,13 @@ const Credit = require("../models/credit");
 const axios = require("axios");
 const credit = require("../models/credit");
 const { findByIdAndUpdate } = require("../models/farmer");
+const AuthGuard = require("../AuthGuard")
+
 
 // ========================================== NEW FARMER REGISTRATION ====================================================================
 
 //Create a farmer
-router.post("/", async (req, res) => {
+router.post("/",AuthGuard, async (req, res) => {
   const {
     name,
     mobile,
@@ -23,7 +25,6 @@ router.post("/", async (req, res) => {
   } = req.body;
   try {
     const oldFarmer = await Farmer.findOne({ mobile });
-    console.log(oldFarmer);
     if (oldFarmer)
       return res.status(400).json({ message: "Farmer already exists" });
     const newFarmer = new Farmer({
@@ -34,6 +35,7 @@ router.post("/", async (req, res) => {
       totalLandArea,
       dealer_farmer_relation,
       plantation_type,
+      createdBy: req.user
     });
     const farmer = await newFarmer.save();
     res.json(farmer);
