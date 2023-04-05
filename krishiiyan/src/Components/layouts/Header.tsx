@@ -1,7 +1,18 @@
 import React from "react";
 import Weather from "../../pages/farmer/Weather";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import { Icon } from "@iconify/react";
+import { useNavigate } from "react-router-dom";
 
 const Header = (props: any) => {
+  const navigate = useNavigate();
+  let DealerName = localStorage.getItem("dealerName");
+  const logout = () => {
+    localStorage.removeItem("authToken");
+    navigate("/login");
+    window.location.reload();
+  };
   return (
     <header
       className="bg-[#F3FFF1] w-full h-[12vh] xl:h-[14vh] flex flex-row items-center rounded-2xl ml-1 shadow-[0_8px_16px_rgba(0,0,0,0.1)] 
@@ -15,38 +26,23 @@ const Header = (props: any) => {
         <Weather />
       </div>
       <div className="flex items-center justify-center font-roboto flex-[2] lg:space-x-2">
-        <div className="flex flex-[1] justify-between mt-[2%]">
-          <img
-            src="Images/Chat.png"
-            alt="chat"
-            className="w-4 h-4 lg:w-4 lg:h-4 xl:w-5 xl:h-5"
-          />
-          <img
-            src="Images/Notification.png"
-            alt="notification"
-            className="w-4 h-4 lg:w-4 lg:h-4 xl:w-5 xl:h-5"
-          />
-          <img
-            src="Images/settings.png"
-            alt="settings"
-            className="w-4 h-4 lg:w-4 lg:h-4 xl:w-5 xl:h-5"
-          />
-        </div>
-        <div className="flex flex-[2] justify-around items-center border border-[#F0F0F0] rounded-lg">
-          <img
-            src="Images/Dropdown.png"
-            alt="dropdown.png"
-            className="w-3 h-3 lg:w-3 lg:h-3 xl:w-4 xl:h-4"
-          />
+        <div className="flex items-center rounded-lg gap-3">
           <p className="text-[#000000] font-normal text-xs lg:text-xs xl:text-sm">
-            Dennis Ritche
+            {DealerName}
           </p>
-          <img
-            src="Images/Ritche.png"
-            alt="Dennis Ritche"
-            width="15%"
-            className="lg:w-[18%]"
+          <Avatar
+            alt="Remy Sharp"
+            src="https://mui.com/static/images/avatar/2.jpg"
+            sx={{ width: 56, height: 56 }}
           />
+          <Button variant="contained" onClick={logout}>
+            <Icon
+              icon="material-symbols:logout"
+              height={30}
+              width={30}
+              color="red"
+            />
+          </Button>
         </div>
       </div>
     </header>

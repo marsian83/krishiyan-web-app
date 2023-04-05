@@ -3,6 +3,7 @@ import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
 import Header from "../../Components/layouts/Header";
 import moment from "moment";
+import ProductList from "./Sale/Products/ProductList";
 const Sale = () => {
   const [number, SetNumber] = useState<any>(true);
   const [data, setData] = useState(false);
@@ -112,9 +113,9 @@ const Sale = () => {
                 <div className="right  font-bold flex-[1.2] text-start">
                   <p>Name : {farmerDetail?.name}</p>
                   <p>Phone : {farmerDetail?.mobile}</p>
-                  <p>E-Mail : test@example.com</p>
+                  <p>E-Mail : </p>
                   <p>Area : {farmerDetail?.address?.street}</p>
-                  <p>Dealer: Pune-01</p>
+                  <p>Dealer: </p>
                 </div>
 
                 <div className="right  font-bold flex-[1.2] text-start">
@@ -173,7 +174,9 @@ const Sale = () => {
                   />
                 </div>
               </div>
-              <table className="flex flex-col gap-y-2 my-2 text-sm font-bold"></table>
+              <div className="flex flex-col gap-y-2 my-2 text-sm font-bold">
+                <ProductList />
+              </div>
             </div>
             <div className="border border-black flex-[1.2]">
               <div
