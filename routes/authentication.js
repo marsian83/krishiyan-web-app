@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../models/dealer")
+const User = require("../models/dealer");
+const AuthGuard = require("../AuthGuard")
+
 
 //Register
 router.post("/register", async (req, res) => {
@@ -65,5 +67,16 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 });
+
+//Me {Profile}
+router.get("/me", AuthGuard, async (req, res) => {
+  try {
+    const user = req.user;
+    res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({ msg: err.message });
+  }
+});
+
 
 module.exports = router;
