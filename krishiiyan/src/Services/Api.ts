@@ -1,7 +1,7 @@
 import * as axios from "axios";
 
-const apiURL = "http://35.77.226.139:5001/api";
-// const apiURL = "http://localhost:5001/api";
+// const apiURL = "http://35.77.226.139:5001/api";
+const apiURL = "http://localhost:5001/api";
 
 // "http://localhost:5001/api";   localhost
 //http://35.77.226.139:5001/api   Production url
@@ -93,6 +93,7 @@ export async function createFarmer(
   plantation_type: string
 ) {
   try {
+    let token: any = localStorage.getItem("authToken");
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "post",
       url: `${apiURL}/farmer`,
@@ -110,6 +111,7 @@ export async function createFarmer(
         dealer_farmer_relation: dealer_farmer_relation,
         plantation_type: plantation_type,
       },
+      headers: { Authorization: "Bearer " + token },
     };
     const response = await axios.default.request(axiosConfig);
     const normalizedResponse = normalizeServerResponse(response);
@@ -673,7 +675,42 @@ export async function getCreditNumber() {
 
 // ============================================== SALE ===============================================================
 
-// Get products
+//Get dealer products
+export async function getDealerProducts() {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "get",
+      url: `${apiURL}/pos/get-dealer-products`,
+      headers: { Authorization: "Bearer " + token },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+// Create products
+export async function createProduct() {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/pos/create-inventory-product`,
+      data: {},
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+// Get all products
 export async function getProducts() {
   try {
     const axiosConfig: axios.AxiosRequestConfig = {
@@ -689,4 +726,81 @@ export async function getProducts() {
   }
 }
 
-//
+//Add product to cart
+export async function addtoCart(farmerID: string, itemID: string) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/pos/add-to-cart`,
+      data: {
+        farmerID: farmerID,
+        itemId: itemID,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Get farmer cart
+export async function getFarmerCart(farmerID: string){
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/pos/get-cart-items`,
+      data: {
+        farmerID: farmerID,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Reduce cart item
+export async function reduceCartItem(farmerID: string, itemID: string) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/pos/reduce-cart-item`,
+      data: {
+        farmerID: farmerID,
+        itemId: itemID,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Reduce cart item
+export async function removeCartItem(farmerID: string, itemID: string) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/pos/remove-cart-item`,
+      data: {
+        farmerID: farmerID,
+        itemId: itemID,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}

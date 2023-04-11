@@ -35,12 +35,12 @@ const Header = (props: any) => {
             src="https://mui.com/static/images/avatar/2.jpg"
             sx={{ width: 56, height: 56 }}
           />
-          <Button variant="contained" onClick={logout}>
+          <Button variant="contained" onClick={logout} sx={{backgroundColor:'#05AB2A'}}>
             <Icon
               icon="material-symbols:logout"
               height={30}
               width={30}
-              color="red"
+              // color="red"
             />
           </Button>
         </div>
