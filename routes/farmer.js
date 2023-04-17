@@ -6,6 +6,7 @@ const FarmerCultivation = require("../models/farmerCultivation");
 const Credit = require("../models/credit");
 const axios = require("axios");
 const credit = require("../models/credit");
+const Crop = require("../models/crop");
 const { findByIdAndUpdate } = require("../models/farmer");
 const AuthGuard = require("../AuthGuard")
 
@@ -102,6 +103,7 @@ router.post("/cultivation", async (req, res) => {
     crop,
     variety,
     dateOfSowing,
+    months,
     soilType,
     irrigationType,
     fertilizer,
@@ -116,6 +118,7 @@ router.post("/cultivation", async (req, res) => {
       crop,
       variety,
       dateOfSowing,
+      months,
       soilType,
       irrigationType,
       fertilizer,
@@ -187,14 +190,6 @@ function calculateCreditAmount(
   let future_price_rating;
   let total_rating_percent;
 
-  if (season === "kharif") {
-    season_rating = 0.5;
-  } else if (season === "rabi") {
-    season_rating = 0.2;
-  } else if (season === "rainy") {
-    season_rating = 0.8;
-  }
-
   if (futurePrice < "14000") {
     future_price_rating = 0.5;
   } else if (futurePrice === "14000" || futurePrice === "20000") {
@@ -217,38 +212,115 @@ function calculateCreditAmount(
 
   return Number(amount);
 }
+// farmer credit manegement
 
 router.post("/credit-eligible-amount", async (req, res) => {
   try {
-    const { farmerId } = req.body;
+    const { farmerId, reasonId } = req.body;
     const farmer = await Farmer.findById(farmerId);
     if (!farmer) return res.status(400).json({ msg: "Farmer does not exist." });
 
-    let farmer_current_cultivation_id =
-      farmer.cultivationData[farmer.cultivationData.length - 1];
     const farmer_current_cultivation_data = await FarmerCultivation.findById(
-      farmer_current_cultivation_id
-    );
-    let cost_of_cultivation = "20000"; //By crop db // Need to make this value dynamic
-    let credit_score = 0.3; //Gave by dealer {0.1 - 1} // Need to make this value dynamic
-
-    let eligible_amount = calculateCreditAmount(
-      farmer_current_cultivation_data.area,
-      cost_of_cultivation,
-      farmer_current_cultivation_data.adoptedSeason,
-      cost_of_cultivation,
-      credit_score
+      reasonId
     );
 
-    let updateFields = {};
-    updateFields.creditLimit = eligible_amount;
-    let updateFarmer = await Farmer.findOneAndUpdate(
-      { _id: farmerId },
-      { $set: updateFields },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
-    );
+    let cost_cultivation =
+      parseInt(farmer_current_cultivation_data.costOfCultivationPerAcre) *
+      parseInt(farmer_current_cultivation_data.area);
 
-    res.status(200).send({ message: "Success!", updateFarmer });
+    let futurePrice = farmer_current_cultivation_data.FuturePrice;
+    let area_rating = 0;
+    let farmer_credit_score_rating = farmer.dealer_farmer_relation;
+    let farmerArea = farmer.totalLandArea;
+    let time_of_sowing_rating = 0;
+
+    if (futurePrice <= 14000) {
+      future_price_rating = 0.5;
+    } else if (futurePrice === 14001 || futurePrice === 20000) {
+      future_price_rating = 1;
+    } else {
+      future_price_rating = 1.5;
+    }
+
+    if (parseInt(farmerArea) < 2.5) {
+      area_rating = 0.5;
+    } else if (parseInt(farmerArea) < 2.6 || parseInt(farmerArea) == 5) {
+      area_rating = 1;
+    } else {
+      area_rating = 1.5;
+    }
+
+    const Month = farmer_current_cultivation_data.dateOfSowing.getMonth() + 1;
+    const Day = farmer_current_cultivation_data.dateOfSowing.getDate();
+
+    if (Month == 1) {
+      time_of_sowing_rating = 0.5;
+    } else if (Month == 2) {
+      if (Day <= 14) {
+        time_of_sowing_rating = 1;
+      } else {
+        time_of_sowing_rating = 1.5;
+      }
+    } else if (Month == 3) {
+      if (Day < 16) {
+        time_of_sowing_rating = 1.5;
+      } else {
+        time_of_sowing_rating = 1;
+      }
+    } else if (Month == 4) {
+      time_of_sowing_rating = 0.5;
+    } else if (Month == 5) {
+      time_of_sowing_rating = 0.5;
+    } else if (Month == 6) {
+      if (Day <= 14) {
+        time_of_sowing_rating = 1;
+      } else {
+        time_of_sowing_rating = 1.5;
+      }
+    } else if (Month == 7) {
+      if (Day < 16) {
+        time_of_sowing_rating = 1.5;
+      } else {
+        time_of_sowing_rating = 1;
+      }
+    } else if (Month == 8) {
+      time_of_sowing_rating = 0.5;
+    } else if (Month == 9) {
+      if (Day <= 14) {
+        time_of_sowing_rating = 0.5;
+      } else {
+        time_of_sowing_rating = 1;
+      }
+    } else if (Month == 10) {
+      time_of_sowing_rating = 1.5;
+    } else if (Month == 11) {
+      if (Day <= 15) {
+        time_of_sowing_rating = 1.5;
+      } else {
+        time_of_sowing_rating = 1;
+      }
+    } else if (Month == 12) {
+      time_of_sowing_rating = 0.5;
+    }
+
+    const average_rating =
+      (time_of_sowing_rating +
+        future_price_rating +
+        area_rating +
+        farmer_credit_score_rating) /
+      4;
+    let percentage = 0;
+    if (average_rating <= 0.5) {
+      percentage = 15;
+    } else if (average_rating == 0.6 || average_rating == 1) {
+      percentage = 25;
+    } else {
+      percentage = 35;
+    }
+
+    return res.json({
+      eligibleAmount: (cost_cultivation * percentage) / 100,
+    });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
@@ -317,6 +389,7 @@ router.post("/credit-amount-info", async (req, res) => {
 router.post("/credit", async (req, res) => {
   try {
     const {
+      creditAmount,
       eligibleAmount,
       reason,
       creditPeriod,
@@ -326,17 +399,23 @@ router.post("/credit", async (req, res) => {
       interestAmount,
       farmerId,
     } = req.body;
+    if (typeof reason !== "string" || reason.trim().length === 0) {
+      return res.status(400).json({
+        message: "Please fill Reason",
+      });
+    }
     const farmer = await Farmer.findById(farmerId);
     if (!farmer)
       return res.status(400).json({ message: "Farmer does not exist." });
 
-    if (farmer.creditLimit < eligibleAmount)
+    if (eligibleAmount < totalPayableAmount)
       return res.status(500).json({
-        message: `Your maximum credit limit is ${farmer.creditLimit}`,
+        message: `Your maximum credit limit is ${eligibleAmount}`,
       });
     const bill_number = Math.floor(100000 + Math.random() * 900000);
 
     const newcreditData = new Credit({
+      creditAmount,
       eligibleAmount,
       reason,
       billNumber: bill_number,
@@ -388,11 +467,17 @@ router.post("/credits-data", async (req, res) => {
     if (!farmer) return res.status(400).json({ msg: "Farmer does not exist." });
 
     console.log(farmer.creditData);
+    const page = req.query.page;
+    const size = req.query.size ? parseInt(req.query.size) : 10;
+    const skip = (page - 1) * size;
+    const total = await Credit.countDocuments()
+      .where("_id")
+      .in(farmer.creditData);
 
     let farmerCreditData = await Credit.find()
       .where("_id")
       .in(farmer.creditData);
-    res.json({ farmerCreditData });
+    res.json({ farmerCreditData, total });
   } catch (error) {
     res.status(500).json({
       message: error,

@@ -4,7 +4,6 @@ import * as Api from "../../Services/Api";
 import moment from "moment";
 import { toast } from "react-toastify";
 import Loader from "../../Components/themes/Loader";
-import Weather from "./Weather";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
@@ -12,6 +11,7 @@ const Dashboard = () => {
   const [farmerID, setFarmerID] = useState<any>();
   const [farmerDetail, setFarmerDetail] = useState<any>();
   const [currentCultivation, setCurrentCultivation] = useState<any>();
+  const [fetchData, setFetchData] = useState(false);
   const [dasTable, setDasTable] = useState(false);
 
   const onChangeInput = (e: any) => {
@@ -51,7 +51,7 @@ const Dashboard = () => {
 
   //Get Farmer Cultivations
   useEffect(() => {
-    const init = async () => {
+    const getCultivationData = async () => {
       const [err, res] = await Api.getFarmerCultivationData(farmerDetail?._id);
       if (res) {
         let current_cultivation =
@@ -61,25 +61,26 @@ const Dashboard = () => {
         setCurrentCultivation(current_cultivation);
       }
     };
-    init();
-  }, [farmerID, farmerDetail]);
+    getCultivationData();
+  }, [farmerDetail]);
+
+  useEffect(() => {
+    if (fetchData) {
+      onClickEnter();
+    }
+  }, [fetchData]);
 
   //Local storage
-  // useEffect(() => {
-  //   if (localStorage.Number) {
-  //     setFarmerID((prev: any) => localStorage.Number);
-  //     console.log(localStorage.Number);
-  //     setTimeout(() => {
-  //       console.log(localStorage.Number);
-  //       onClickEnter();
-  //     }, 1000);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (localStorage.Number) {
+      setFarmerID((prev: any) => localStorage.Number);
+      setFetchData(true);
+    }
+  }, []);
 
   return (
     <div>
       <Header title="Farmer Relationship Management" subtitle="Dashboard" />
-
       <section>
         <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
           <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">

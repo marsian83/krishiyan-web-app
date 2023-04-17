@@ -33,7 +33,7 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
 
   useEffect(() => {
     if (pos === true) {
-      setHeading("Krishiyan Clinic");
+      setHeading("KrishiYan");
     } else if (crop === true) {
       setHeading("KrishiYan");
     } else if (farm === true) {
@@ -41,7 +41,7 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
     } else if (manage === true) {
       setHeading("KrishiYan");
     } else if (help === true) {
-      setHeading("Krishiyan Clinic");
+      setHeading("KrishiYan");
     }
   }, [pos, crop, farm, manage, help]);
 
@@ -113,7 +113,7 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
     <div className="flex">
       <nav className="bg-[#C6EDC0] w-[45%] lg:w-[9vw] xl:w-[45%] flex flex-col items-center h-screen h-full">
         <img
-          src="Images/Ellipse 1.png"
+          src="Images/logo.png"
           alt="Ellipse"
           className="mb-[50%] my-5 lg:w-10 xl:w-14"
         />

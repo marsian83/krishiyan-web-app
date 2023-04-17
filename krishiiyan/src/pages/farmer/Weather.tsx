@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 
 const Weather = () => {
@@ -56,7 +57,9 @@ const Weather = () => {
         {/* {parseFloat(credit_details?.totalPayableAmount).toFixed(
                           2
                         )} */}
-        <p className="font-thin text-sm">Humidity: {weather?.main?.humidity}</p>
+        <p className="font-thin text-sm">
+          Humidity: {weather?.main?.humidity}%
+        </p>
         <p className="font-thin text-sm">
           Current Weather:{" "}
           {weather?.weather?.length && weather?.weather[0]?.main}
@@ -64,7 +67,9 @@ const Weather = () => {
         {/* <p>Location: {weather?.name}</p> */}
       </div>
       <div className="w-30 mr-2 mt-5 text-start">
-        <p className="font-thin text-sm">Date:{new Date().toDateString()}</p>
+        <p className="font-thin text-sm">
+          Date:{moment().format("DD-MM-YYYY")}
+        </p>
         <p className="font-thin text-sm">Time: {ctime}</p>
       </div>
     </div>

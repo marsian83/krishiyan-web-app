@@ -42,7 +42,7 @@ const BasalStep = (props: any) => {
           </p>
           <br />
           <p>
-            ImportantActivity: <br />
+            Important Activity: <br />
             {props?.cropDetails?.cultivationStage?.basal?.importantActivity}
           </p>
           <br />

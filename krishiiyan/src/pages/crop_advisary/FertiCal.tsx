@@ -83,7 +83,7 @@ const FertiCal = () => {
 
   return (
     <div>
-      <Header title="Crop Advisary" subtitle="Ferti Cal" />
+      <Header title="Crop Advisory" subtitle="Ferti Cal" />
       <section className="p-5">
         <div className="grid grid-cols-[30%_30%_30%_10%]">
           {/* <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center">
@@ -186,7 +186,7 @@ const FertiCal = () => {
           <div className="grid grid-cols-[12%_12%_12%_12%_12%] gap-[6%] mx-[10%] mt-6 mb-9">
             <button
               className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
-                openTab === "Fertilizer" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                openTab === "Fertilizer" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
               }`}
               onClick={() => {
                 setOpenTab("Fertilizer");
@@ -201,7 +201,7 @@ const FertiCal = () => {
                 setOpenTab("Pesticide");
               }}
               className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
-                openTab === "Pesticide" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                openTab === "Pesticide" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
               }`}
             >
               Pesticide
@@ -212,7 +212,7 @@ const FertiCal = () => {
                 setOpenTab("Herbicide");
               }}
               className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
-                openTab === "Herbicide" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                openTab === "Herbicide" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
               }`}
             >
               Herbicide
@@ -223,7 +223,7 @@ const FertiCal = () => {
                 setOpenTab("Fungicide");
               }}
               className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
-                openTab === "Fungicide" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                openTab === "Fungicide" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
               }`}
             >
               Fungicide
@@ -234,7 +234,7 @@ const FertiCal = () => {
                 setOpenTab("Yield");
               }}
               className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
-                openTab === "Yield" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                openTab === "Yield" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
               }`}
             >
               Yield
