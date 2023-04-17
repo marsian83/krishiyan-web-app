@@ -15,13 +15,15 @@ const CropHealth = () => {
   let col: any = 12;
   let row: any = 5;
   const [allCrops, setAllCropes] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
   const [crop, setCrop] = useState("");
   const [text, setText] = useState("");
   const [farmer, setFarmer] = useState("");
   const [allFarmer, setAllFarmer] = useState<any>([]);
   const [category, setCategory] = useState("");
+  const [farmerDetail, setFarmerDetail] = useState<any>();
   const [description, setDescription] = useState("");
-  const [farmerID, setFarmerID] = useState("");
+  const [farmerID, setFarmerID] = useState<any>("");
   const onChangeCrop = (e: any) => {
     setCrop(e.target.value);
   };
@@ -45,28 +47,31 @@ const CropHealth = () => {
     setFarmer(e.target.value);
   };
 
-  // const getFarmerById = async () => {
-  //   if (farmerID) {
-  //     const [err, res] = await Api.getFarmer(farmerID);
-  //     if (err) {
-  //       console.log(err);
-  //     }
-  //     if (res) {
-  //       console.log(res);
+  const getFarmerById = async () => {
+    if (farmerID) {
+      const [err, res] = await Api.getFarmer(farmerID);
+      if (err) {
+        console.log(err);
+      }
+      if (res) {
+        console.log(res);
 
-  //       setFarmerDetail(res?.data);
-  //     }
+        setFarmerDetail(res?.data);
+      }
 
-  //     setLoading(false);
-  //   }
-  // };
+      setLoading(false);
+    }
+  };
 
   const onChangeCategory = (e: any) => {
     setCategory(e.target.value);
   };
+  const onChangeDescription = (e: any) => {
+    setDescription(e.target.value);
+  };
   const onSubmitHandler = async () => {
     const [err, res] = await Api.createFarmerSupportHealth(
-      allFarmer?._id,
+      farmerDetail?._id,
       allCrops.find((c) => c._id === crop).localName,
       category,
       description
@@ -82,6 +87,17 @@ const CropHealth = () => {
       });
     }
   };
+  useEffect(() => {
+    const init = async () => {
+      await getFarmerById();
+    };
+    init();
+  }, [farmerID]);
+
+  useEffect(() => {
+    if (!localStorage.Number) return;
+    setFarmerID(localStorage.Number);
+  }, []);
 
   return (
     <>
@@ -110,14 +126,14 @@ const CropHealth = () => {
         </div> */}
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3">
-            <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+            <label className="text-[#13490A] font-extrabold text-sm mx-5">
               Crop
             </label>
           </div>
           <div className="md:w-2/3">
             <select
               id="countries"
-              className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               onChange={onChangeCrop}
             >
               <option selected>Select Crop</option>
@@ -131,16 +147,16 @@ const CropHealth = () => {
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3">
             <label
-              className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+              className="text-[#13490A] font-extrabold text-sm mx-5"
               // for="inline-password"
             >
               Category
             </label>
           </div>
-          <div className="md:w-2/3">
+          <div className="md:w-2/3 ">
             <select
               id="countries"
-              className="bg-[#F3FFF1] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               onChange={onChangeCategory}
             >
               <option selected>Choose Category</option>
@@ -154,7 +170,7 @@ const CropHealth = () => {
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3">
             <label
-              className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+              className="text-[#13490A] font-extrabold text-sm mx-5"
               // for="inline-password"
             >
               Description
@@ -162,11 +178,12 @@ const CropHealth = () => {
           </div>
           <div className="md:w-2/3">
             <textarea
-              className=" bg-[#F3FFF1] appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-400 h-24"
+              className=" bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-400 h-24"
               //   onChange={onChangeArea}
               id="inline-password"
               maxLength={50}
               placeholder="Maximum Of 50 Characters"
+              onChange={onChangeDescription}
             />
           </div>
         </div>

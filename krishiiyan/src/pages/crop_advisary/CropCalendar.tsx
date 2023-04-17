@@ -97,7 +97,7 @@ const CropCalendar = () => {
   }, []);
   return (
     <div>
-      <Header title="Crop Advisary" subtitle="Crop Calendar" />
+      <Header title="Crop Advisory" subtitle="Crop Calendar" />
       <section className="p-[1%]">
         {/* <div style={{width:"100%",height:"105px",backgroundColor:"red"}}>
 

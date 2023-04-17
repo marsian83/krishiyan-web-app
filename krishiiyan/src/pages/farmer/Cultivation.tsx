@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import { Autocomplete, MenuItem, TextField } from "@mui/material";
 import { getCrops, getvariteyByCropId } from "../../Services/Api";
 import moment from "moment";
-import Weather from "./Weather";
 
 const Cultivation = () => {
   const [openTab, setOpenTab] = useState("New");
@@ -14,6 +13,8 @@ const Cultivation = () => {
   const [farmerDetail, setFarmerDetail] = useState<any>();
   const [currentCultivation, setCurrentCultivation] = useState<any>();
   const [oldCultivation, setOldCultivation] = useState<any>();
+  const [fetchData, setFetchData] = useState(false);
+  const [selected, setSelected] = useState<string>("progress");
 
   console.log(currentCultivation?.adoptedSeason);
 
@@ -37,17 +38,10 @@ const Cultivation = () => {
     }
   };
 
-  useEffect(() => {
-    const init = async () => {
-      await getFarmerById();
-    };
-    init();
-  }, [farmerID]);
-
   const onClickEnter = async () => {
+    localStorage.setItem("Number", farmerID);
     await getFarmerById();
   };
-
   //Cultivation form data
   const [area, setArea] = useState("");
   const [problem, setProblem] = useState("");
@@ -59,6 +53,10 @@ const Cultivation = () => {
   const [soilType, setSoilType] = useState("");
   const [irrigationType, setIrrigationType] = useState("");
   const [fertilizer, setFertilizer] = useState("");
+  const [months, setMonths] = useState<any>("");
+  const [expireDateofSowing, setExpireDateofSowing] = useState<any>("");
+
+  // setFuturePrice("18500");
 
   const onChangeArea = (e: any) => {
     setArea(e.target.value);
@@ -74,6 +72,28 @@ const Cultivation = () => {
     let date = moment(e.target.value).toISOString(); //ISO 8601 format
     setDateOfSowing(date);
   };
+  // const onChangedateOfSowing = (e: any) => {
+  //   let date: any = moment(e.target.value).toISOString(); //ISO 8601 format
+  //   // let date: any = d.getMonth(e.target.value);
+  //   setDateOfSowing(date);
+  // };
+
+  // const onChangedateOfSowing = (e: any) => {
+  //   Date.prototype.addDays  = function (days: any) {
+  //     var date = new Date(this.valueOf());
+
+  //     date.setDate(date.getDate() + days);
+  //     return date;
+  //   };
+  //   let date = new Date();
+  //   const expireDate = date.addDays(120);
+  //   const selectedDate = moment(e.target.value);
+  //   const month = moment(selectedDate).format("MM"); // returns the month number (0-11)
+  //   setDateOfSowing(expireDate);
+
+  //   setMonths(month + 1);
+  //   console.log(month);
+  // };
 
   const onChangeSoilType = (e: any, val: any) => {
     setSoilType(val.value);
@@ -94,6 +114,8 @@ const Cultivation = () => {
       allCrops.find((c) => c._id === crop).localName,
       allPests.find((v) => v._id === variety).nameOfvariety,
       dateOfSowing,
+      expireDateofSowing,
+      months,
       soilType,
       irrigationType,
       fertilizer
@@ -121,6 +143,10 @@ const Cultivation = () => {
         //   ];
         // setCurrentCultivation(current_cultivation);
         setOldCultivation(res?.data?.farmerCultivationData);
+        console.log(
+          res?.data?.farmerCultivationData,
+          "res?.data?.farmerCultivationData"
+        );
       }
     };
     init();
@@ -143,18 +169,24 @@ const Cultivation = () => {
   }, [crop]);
 
   useEffect(() => {
-    if (!localStorage.Number) return;
-    setFarmerID(localStorage.Number);
-    onClickEnter();
-  }, []);
+    if (fetchData) {
+      onClickEnter();
+    }
+  }, [fetchData]);
+  useEffect(() => {
+    if (localStorage.Number) setFarmerID((prev: any) => localStorage.Number);
+    setFetchData(true);
 
+    // onClickEnter();
+  }, []);
+  console.log(dateOfSowing, "it is dateofSowing");
   return (
     <div>
       <Header title="Farmer Relationship Management" subtitle="Cultivation" />
       <section>
         <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
           <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
-            {/* <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
+            <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
               Farmer Mobile Number
             </label>
             <input
@@ -168,7 +200,7 @@ const Cultivation = () => {
               className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
             >
               ENTER
-            </button> */}
+            </button>
           </div>
           {farmerDetail ? (
             <div className="mt-6 leading-4 ml-16">
@@ -395,7 +427,7 @@ const Cultivation = () => {
                       className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
                       // for="inline-password"
                     >
-                      Fertilizer
+                      Type
                     </label>
                   </div>
                   <div className="md:w-2/3">
@@ -419,7 +451,7 @@ const Cultivation = () => {
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="Fertilizer"
+                          label="Type"
                           inputProps={{
                             ...params.inputProps,
                             autoComplete: "new-password",
@@ -543,40 +575,45 @@ const Cultivation = () => {
                       {/* Stage1 */}
                       {oldCultivation?.map((cultivation: any, index: any) => (
                         <tr className="h-10 border-b border-black">
-                          <td className="border-r border-black">{index + 1}</td>
-                          <td className="border-r border-black">
+                          <td className="border-r border-black font-thin">
+                            {index + 1}
+                          </td>
+                          <td className="border-r border-black font-thin">
                             {cultivation?.crop}
                           </td>
 
-                          <td className="border-r border-black">
+                          <td className="border-r border-black font-thin">
                             {cultivation?.variety}
                           </td>
-                          <td className="border-r border-black">
-                            {moment(cultivation?.date).format("DD/MM/YYYY")}
+                          <td className="border-r border-black font-thin">
+                            {moment(cultivation?.dateOfSowing).format(
+                              "DD/MM/YYYY"
+                            )}
                           </td>
 
-                          <td className="border-r border-black">
+                          <td className="border-r border-black font-thin">
                             {cultivation?.soilType}
                           </td>
-                          <td className="border-r border-black">
+                          <td className="border-r border-black font-thin">
                             {cultivation?.irrigationType}
                           </td>
-                          <td className="border-r border-black">
+                          <td className="border-r border-black font-thin">
                             {cultivation?.area} acre
                           </td>
 
-                          <td className="border-r border-black">
+                          <td className="border-r border-black font-thin">
                             {cultivation?.fertilizer}
                           </td>
-                          <td className="border-r border-black">
+                          <td className="border-r border-black font-thin">
                             <select
+                              value={cultivation?.dateOfSowing}
                               id="countries"
                               className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) text-black w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 text-sm font-thin"
                               // onChange={onChangeCreditNum}
                             >
-                              <option selected>Done</option>
+                              <option value="progress">In-progress </option>
 
-                              <option>In-progress</option>
+                              <option value="done">Done</option>
                             </select>
                           </td>
                         </tr>

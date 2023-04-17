@@ -22,15 +22,9 @@ const PlantationOptions = [
   },
 ];
 const PlantationOption = [
-  {
-    value: "Average",
-  },
-  {
-    value: "Good",
-  },
-  {
-    value: "Excellent",
-  },
+  { label: "Good", value: 1 },
+  { label: "Average", value: 0.5 },
+  { label: "Excellent", value: 1.5 },
 ];
 
 const PlantationType = [
@@ -77,8 +71,8 @@ const NewRegistration = () => {
   const onChangeTotalLandArea = (e: any) => {
     setTotalLandArea(e.target.value);
   };
-  const onChangeDealerFarmerRel = (e: any) => {
-    setDealerFarmerRel(e.target.value);
+  const onChangeDealerFarmerRel = (e: any, label: any) => {
+    setDealerFarmerRel(label.value);
   };
   const onChangePlantationType = (e: any, value: any) => {
     setPlantationType(value.value);
@@ -154,7 +148,7 @@ const NewRegistration = () => {
           </label>
           <input
             type="text"
-            className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
+            className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
             onChange={onChangeName}
           ></input>
         </div>
@@ -165,7 +159,7 @@ const NewRegistration = () => {
             </label>
             <input
               type="text"
-              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
+              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
               onChange={onChangePhone}
             ></input>
           </div>
@@ -181,7 +175,7 @@ const NewRegistration = () => {
           </div>
         </div>
         <img src="Images/Line18.png" className="my-5" alt="line" />
-        <div className="grid grid-cols-[25%_27%]">
+        <div className="grid grid-cols-[25%_26%]">
           <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
             Address
           </label>
@@ -209,7 +203,7 @@ const NewRegistration = () => {
           </label>
           <input
             type="text"
-            className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
+            className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
             onChange={onChangeTotalLandArea}
           ></input>
         </div>
@@ -224,7 +218,7 @@ const NewRegistration = () => {
             sx={{ width: 340 }}
             options={PlantationOption}
             autoHighlight
-            getOptionLabel={(option) => option.value}
+            getOptionLabel={(option) => option.label}
             renderInput={(params) => (
               <TextField
                 {...params}

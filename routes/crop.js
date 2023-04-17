@@ -76,35 +76,35 @@ router.get("/", async (req, res) => {
 // });
 
 // fill data for herbicide
-router.get("/fill-data", async (req, res) => {
-  try {
-    const weed = await new Weeds({
-      name: "Weed 2 ", // pest 2
-      herbicidesIds: [],
-      cropsIds: [new ObjectId("642abb7ceb25dc0bf93b525b")],
-    }).save();
-    const herbicide = new Herbicide({
-      name: "Herbicide 2", // pe 2
-      dosagePerAcre: "250",
-      unit: "ml", // 'gram', 'kilogram','ml','litre'
-      dilutionRatioPerAcre: "150-200",
-      stage: "Stage 3", // Stage 1, Stage 2, Stage 3, Stage 4
-      sprayingTime: "Sunlight", // Evening, Afternoon, Sunlight, Night
-      applicationType: "Florial", // Basal,Florial
-      frequency: "2 times for 1 weeks", // 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
-      weedsIds: [weed._id],
-    });
-    await herbicide.save();
-    weed.herbicidesIds.push(new ObjectId(herbicide._id));
-    await weed.save();
-    res.json({
-      weed,
-      herbicide,
-    });
-  } catch (error) {
-    console.log(error, "ERROR");
-  }
-});
+// router.get("/fill-data", async (req, res) => {
+//   try {
+//     const weed = await new Weeds({
+//       name: "Weed 2 ", // pest 2
+//       herbicidesIds: [],
+//       cropsIds: [new ObjectId("642abb7ceb25dc0bf93b525b")],
+//     }).save();
+//     const herbicide = new Herbicide({
+//       name: "Herbicide 2", // pe 2
+//       dosagePerAcre: "250",
+//       unit: "ml", // 'gram', 'kilogram','ml','litre'
+//       dilutionRatioPerAcre: "150-200",
+//       stage: "Stage 3", // Stage 1, Stage 2, Stage 3, Stage 4
+//       sprayingTime: "Sunlight", // Evening, Afternoon, Sunlight, Night
+//       applicationType: "Florial", // Basal,Florial
+//       frequency: "2 times for 1 weeks", // 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
+//       weedsIds: [weed._id],
+//     });
+//     await herbicide.save();
+//     weed.herbicidesIds.push(new ObjectId(herbicide._id));
+//     await weed.save();
+//     res.json({
+//       weed,
+//       herbicide,
+//     });
+//   } catch (error) {
+//     console.log(error, "ERROR");
+//   }
+// });
 
 //fill data for fungicide
 // router.get("/fill-data", async (req, res) => {
@@ -112,7 +112,7 @@ router.get("/fill-data", async (req, res) => {
 //     const disease = await new Disease({
 //       name: "Disease3 ", // pest 2
 //       fungicidesIds: [],
-//       cropsIds: [new ObjectId("64257fc05ea04907a4a590e6")],
+//       cropsIds: [new ObjectId("642abb7ceb25dc0bf93b525b")],
 //     }).save();
 //     const fungicide = new Fungicide({
 //       name: "Fungicide3", // pe 2
@@ -120,9 +120,9 @@ router.get("/fill-data", async (req, res) => {
 //       unit: "ml", // 'gram', 'kilogram','ml','litre'
 //       dilutionRatioPerAcre: "150-200",
 //       stage: "Stage 3", // Stage 1, Stage 2, Stage 3, Stage 4
-//       sprayingTime: "Sunlight", // Evening, Afternoon, Sunlight, Night
-//       applicationType: "Florial", // Basal
-//       frequency: " times for 1 weeks", // 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
+//       sprayingTime: "Afternoon", // Evening, Afternoon, Sunlight, Night
+//       applicationType: "Night", // Basal,Florial
+//       frequency: "1 times for 3 weeks", // 3 times for 2 weeks,2 times for 1 weeks,1 times for 3 weeks
 //       diseaseIds: [disease._id],
 //     });
 //     await fungicide.save();

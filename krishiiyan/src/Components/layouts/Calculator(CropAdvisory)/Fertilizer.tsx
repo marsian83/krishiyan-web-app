@@ -76,8 +76,9 @@ const Fertilizer = (props: any) => {
           <table className="table-auto border-collapse border border-black font-bold text-base w-[80%] mx-auto">
             <thead className="border-b border-black">
               <tr className="text-center">
+                <th className="border-r border-black py-[1.2%]">S.No</th>
                 <th className="border-r border-black py-[1.2%]">Crop Stage</th>
-                <th className="border-r border-black py-[1.2%]">Nutrients</th>
+                {/* <th className="border-r border-black py-[1.2%]">Nutrients</th> */}
                 <th className="border-r border-black py-[1.2%]">Quantity</th>
                 <th className="border-r border-black py-[1.2%]">Products</th>
               </tr>
@@ -85,33 +86,34 @@ const Fertilizer = (props: any) => {
             <tbody>
               {/* Stage1 */}
               <tr className="h-10 border-b border-black">
+                <td className="border-r border-black">1</td>
                 <td className="border-r border-black">
                   {fertilizer?.STAGE1?.cropStage}
                 </td>
-                <td className="border-r border-black">
+                {/* <td className="border-r border-black">
                   {fertilizer?.STAGE1?.nutrients.map((val: any) => (
                     <>
                       {val} <br />
                     </>
                   ))}
-                </td>
+                </td> */}
                 <td className="border-r border-black">
                   {fertilizer?.STAGE1?.fertilizer?.nitrogen_prod_recommended?.quantity.toFixed(
                     0
                   )}{" "}
-                  Kg <br />
+                  Kg(acre) <br />
                   {fertilizer?.STAGE1?.fertilizer?.phosphorous_prod_recommended?.quantity.toFixed(
                     0
                   )}{" "}
-                  Kg <br />
+                  Kg(acre) <br />
                   {fertilizer?.STAGE1?.fertilizer?.pottasium_prod_recommended?.quantity.toFixed(
                     0
                   )}{" "}
-                  Kg <br />
+                  Kg(acre) <br />
                   {fertilizer?.STAGE1?.fertilizer?.zinc_prod_recommended?.quantity.toFixed(
                     0
                   )}{" "}
-                  Kg <br />
+                  Kg(acre) <br />
                 </td>
 
                 <td className="border-r border-black">
@@ -139,20 +141,22 @@ const Fertilizer = (props: any) => {
 
               {/* Stage2 */}
               <tr className="h-10 border-b border-black">
+                <td className="border-r border-black">2</td>
+
                 <td className="border-r border-black">
                   {fertilizer?.STAGE2?.cropStage}
                 </td>
 
-                <td className="border-r border-black">
+                {/* <td className="border-r border-black">
                   {fertilizer?.STAGE2?.nutrients.map((val: any) => (
                     <>
                       {val} <br />
                     </>
                   ))}
-                </td>
+                </td> */}
 
                 <td className="border-r border-black">
-                  {fertilizer?.STAGE2?.fertilizer?.quantity.toFixed(0)} Kg
+                  {fertilizer?.STAGE2?.fertilizer?.quantity.toFixed(0)} Kg(acre)
                 </td>
 
                 <td className="border-r border-black">
@@ -162,19 +166,21 @@ const Fertilizer = (props: any) => {
 
               {/* Stage3 */}
               <tr className="h-10 border-b border-black">
+                <td className="border-r border-black">3</td>
+
                 <td className="border-r border-black">
                   {fertilizer?.STAGE3?.cropStage}
                 </td>
-                <td className="border-r border-black">
+                {/* <td className="border-r border-black">
                   {fertilizer?.STAGE3?.nutrients.map((val: any) => (
                     <>
                       {val} <br />
                     </>
                   ))}
-                </td>
+                </td> */}
 
                 <td className="border-r border-black">
-                  {fertilizer?.STAGE3?.fertilizer?.quantity.toFixed(0)} Kg
+                  {fertilizer?.STAGE3?.fertilizer?.quantity.toFixed(0)} Kg(acre)
                 </td>
 
                 <td className="border-r border-black">

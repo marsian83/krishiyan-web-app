@@ -42,7 +42,8 @@ const ProductionReqContent = (props: any) => {
             setOpenTab("Land Prepation");
           }}
           className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
-            openTab === "Land Prepation" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+            // openTab === "Land Prepation" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+            openTab === "Land Prepation" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
         >
           Land Prepation
@@ -53,7 +54,8 @@ const ProductionReqContent = (props: any) => {
             setOpenTab("Seed treatment");
           }}
           className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
-            openTab === "Seed treatment" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+            // openTab === "Seed treatment" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+            openTab === "Seed treatment" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
         >
           Seed Treatment
@@ -64,9 +66,10 @@ const ProductionReqContent = (props: any) => {
             setOpenTab("Interculteral operation");
           }}
           className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+            // openTab === "Interculteral operation"? "bg-[#526D4E]": "bg-[#05AB2A]"
             openTab === "Interculteral operation"
-              ? "bg-[#526D4E]"
-              : "bg-[#05AB2A]"
+              ? "bg-[#05AB2A]"
+              : "bg-[#526D4E]"
           }`}
         >
           Interculteral Operation
@@ -77,7 +80,8 @@ const ProductionReqContent = (props: any) => {
             setOpenTab("Soil condition");
           }}
           className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
-            openTab === "Soil condition" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+            // openTab === "Soil condition" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+            openTab === "Soil condition" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
         >
           Soil Condition

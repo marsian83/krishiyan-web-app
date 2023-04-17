@@ -71,7 +71,7 @@ const ProductionReqContent = (props: any) => {
             setOpenTab("Pest Management");
           }}
           className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
-            openTab === "Pest Management" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+            openTab === "Pest Management" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
         >
           Pest Management
@@ -82,7 +82,7 @@ const ProductionReqContent = (props: any) => {
             setOpenTab("Disease Management");
           }}
           className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
-            openTab === "Disease Management" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+            openTab === "Disease Management" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
         >
           Disease Management
@@ -94,8 +94,8 @@ const ProductionReqContent = (props: any) => {
           }}
           className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
             openTab === "Deficiency Management"
-              ? "bg-[#526D4E]"
-              : "bg-[#05AB2A]"
+              ? "bg-[#05AB2A]"
+              : "bg-[#526D4E]"
           }`}
         >
           Deficiency Management
@@ -106,7 +106,7 @@ const ProductionReqContent = (props: any) => {
             setOpenTab("weed Management");
           }}
           className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
-            openTab === "weed Management" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+            openTab === "weed Management" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
         >
           Weed Management
@@ -117,7 +117,7 @@ const ProductionReqContent = (props: any) => {
             setOpenTab("weather Injuses");
           }}
           className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
-            openTab === "weather Injuses" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+            openTab === "weather Injuses" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
         >
           Weather Injuses

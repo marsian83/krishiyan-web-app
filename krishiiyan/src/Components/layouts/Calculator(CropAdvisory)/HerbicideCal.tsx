@@ -83,7 +83,7 @@ const HerbicideCal = (props: any) => {
                 </td>
                 <td className="border-r border-black">{area}</td>
                 <td className="border-r border-black">
-                  {parseFloat(area) * parseFloat(Product?.dosagePerAcre)}
+                  {parseFloat(area) * parseFloat(Product?.dosagePerAcre)} ml
                 </td>
               </tr>
             </tbody>
