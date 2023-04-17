@@ -465,7 +465,7 @@ const Credit = () => {
                               : "-"}
                           </td>
                           <td className="border-r border-black font-thin">
-                            {moment(credit?.updatedAt).format("MMM Do YY")}
+                            {moment(credit?.updatedAt).format("DD-MM-YYYY")}
                           </td>
                         </tr>
                       ))}
