@@ -109,44 +109,62 @@ const Purchase = () => {
               </thead>
               <tbody>
                 <tr className="h-10 border-b border-black">
-                  <td className="border-r border-black">01</td>
-                  <td className="border-r border-black">22/04/22</td>
-                  <td className="border-r border-black">FERT012</td>
-                  <td className="border-r border-black">Fertilizer</td>
-                  <td className="border-r border-black">150</td>
-                  <td className="border-r border-black ">Paid</td>
+                  <td className="border-r border-black font-thin">01</td>
+                  <td className="border-r border-black font-thin">22/042022</td>
+                  <td className="border-r border-black font-thin">FERT012</td>
+                  <td className="border-r border-black font-thin">
+                    Fertilizer
+                  </td>
+                  <td className="border-r border-black font-thin">150</td>
+                  <td className="border-r border-black font-thin">Paid</td>
                 </tr>
                 <tr className="h-10 border-b border-black">
-                  <td className="border-r border-black">02</td>
-                  <td className="border-r border-black">22/04/22</td>
-                  <td className="border-r border-black">FERT012</td>
-                  <td className="border-r border-black">Fertilizer</td>
-                  <td className="border-r border-black">150</td>
-                  <td className="border-r border-black ">Paid</td>
+                  <td className="border-r border-black font-thin">02</td>
+                  <td className="border-r border-black font-thin">
+                    22/04/2022
+                  </td>
+                  <td className="border-r border-black font-thin">FERT012</td>
+                  <td className="border-r border-black font-thin">
+                    Fertilizer
+                  </td>
+                  <td className="border-r border-black font-thin">150</td>
+                  <td className="border-r border-black font-thin">Paid</td>
                 </tr>
                 <tr className="h-10 border-b border-black">
-                  <td className="border-r border-black">03</td>
-                  <td className="border-r border-black">22/04/22</td>
-                  <td className="border-r border-black">FERT012</td>
-                  <td className="border-r border-black">Fertilizer</td>
-                  <td className="border-r border-black">150</td>
-                  <td className="border-r border-black ">Paid</td>
+                  <td className="border-r border-black font-thin">03</td>
+                  <td className="border-r border-black font-thin">
+                    22/04/2022
+                  </td>
+                  <td className="border-r border-black font-thin">FERT012</td>
+                  <td className="border-r border-black font-thin">
+                    Fertilizer
+                  </td>
+                  <td className="border-r border-black font-thin">150</td>
+                  <td className="border-r border-black font-thin">Paid</td>
                 </tr>
                 <tr className="h-10 border-b border-black">
-                  <td className="border-r border-black">04</td>
-                  <td className="border-r border-black">22/04/22</td>
-                  <td className="border-r border-black">FERT012</td>
-                  <td className="border-r border-black">Fertilizer</td>
-                  <td className="border-r border-black">150</td>
-                  <td className="border-r border-black ">Paid</td>
+                  <td className="border-r border-black font-thin">04</td>
+                  <td className="border-r border-black font-thin">
+                    22/04/2022
+                  </td>
+                  <td className="border-r border-black font-thin">FERT012</td>
+                  <td className="border-r border-black font-thin">
+                    Fertilizer
+                  </td>
+                  <td className="border-r border-black font-thin">150</td>
+                  <td className="border-r border-black font-thin">Paid</td>
                 </tr>
                 <tr className="h-10 border-b border-black">
-                  <td className="border-r border-black">05</td>
-                  <td className="border-r border-black">22/04/22</td>
-                  <td className="border-r border-black">FERT012</td>
-                  <td className="border-r border-black">Fertilizer</td>
-                  <td className="border-r border-black">150</td>
-                  <td className="border-r border-black ">Paid</td>
+                  <td className="border-r border-black font-thin">05</td>
+                  <td className="border-r border-black font-thin">
+                    22/04/2022
+                  </td>
+                  <td className="border-r border-black font-thin">FERT012</td>
+                  <td className="border-r border-black font-thin">
+                    Fertilizer
+                  </td>
+                  <td className="border-r border-black font-thin">150</td>
+                  <td className="border-r border-black font-thin">Paid</td>
                 </tr>
               </tbody>
             </table>
