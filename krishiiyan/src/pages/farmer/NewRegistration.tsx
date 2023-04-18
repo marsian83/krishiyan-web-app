@@ -40,15 +40,15 @@ const PlantationType = [
 ];
 const NewRegistration = () => {
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState<any>();
+  const [mobile, setMobile] = useState<any>();
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [zip, setZip] = useState("");
   const [street, setStreet] = useState("");
-  const [isWhatsapp, setIsWhatsapp] = useState(false);
+  const [mobileIsWhatsapp, setMobileIsWhatsapp] = useState(false);
   const [totalLandArea, setTotalLandArea] = useState("");
-  const [dealerFarmerRel, setDealerFarmerRel] = useState("");
-  const [plantationType, setPlantationType] = useState("");
+  const [dealer_farmer_relation, setDealer_farmer_relation] = useState("");
+  const [plantation_type, setPlantation_type] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -56,7 +56,7 @@ const NewRegistration = () => {
     setName(e.target.value);
   };
   const onChangePhone = (e: any) => {
-    setPhone(e.target.value);
+    setMobile(e.target.value);
   };
   const onChangeZip = (e: any) => {
     setZip(e.target.value);
@@ -65,17 +65,17 @@ const NewRegistration = () => {
     setStreet(e.target.value);
   };
   const onChangeIsWhatsapp = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsWhatsapp(event.target.checked);
+    setMobileIsWhatsapp(event.target.checked);
   };
 
   const onChangeTotalLandArea = (e: any) => {
     setTotalLandArea(e.target.value);
   };
   const onChangeDealerFarmerRel = (e: any, label: any) => {
-    setDealerFarmerRel(label.value);
+    setDealer_farmer_relation(label.value);
   };
   const onChangePlantationType = (e: any, value: any) => {
-    setPlantationType(value.value);
+    setPlantation_type(value.value);
   };
 
   //Get farmer location
@@ -113,15 +113,15 @@ const NewRegistration = () => {
     } else {
       const [error, response] = await Api.createFarmer(
         name,
-        phone,
-        isWhatsapp,
+        mobile,
+        mobileIsWhatsapp,
         state,
         city,
         zip,
         street,
         totalLandArea,
-        dealerFarmerRel,
-        plantationType
+        dealer_farmer_relation,
+        plantation_type
       );
       if (error) {
         // console.log(error.data);
@@ -168,7 +168,7 @@ const NewRegistration = () => {
               Whatsapp
             </label>
             <Checkbox
-              checked={isWhatsapp}
+              checked={mobileIsWhatsapp}
               onChange={onChangeIsWhatsapp}
               inputProps={{ "aria-label": "controlled" }}
             />

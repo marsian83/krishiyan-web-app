@@ -8,13 +8,13 @@ const axios = require("axios");
 const credit = require("../models/credit");
 const Crop = require("../models/crop");
 const { findByIdAndUpdate } = require("../models/farmer");
-const AuthGuard = require("../AuthGuard")
-
+const AuthGuard = require("../AuthGuard");
 
 // ========================================== NEW FARMER REGISTRATION ====================================================================
 
 //Create a farmer
-router.post("/",AuthGuard, async (req, res) => {
+router.post("/", AuthGuard, async (req, res) => {
+  //AuthGuard
   const {
     name,
     mobile,
@@ -36,7 +36,7 @@ router.post("/",AuthGuard, async (req, res) => {
       totalLandArea,
       dealer_farmer_relation,
       plantation_type,
-      createdBy: req.user
+      createdBy: req.user,
     });
     const farmer = await newFarmer.save();
     res.json(farmer);
@@ -47,6 +47,43 @@ router.post("/",AuthGuard, async (req, res) => {
     });
   }
 });
+// router.post("/", AuthGuard, async (req, res) => {
+//   const {
+//     name,
+//     mobile,
+//     mobileIsWhatsapp,
+//     address,
+//     totalLandArea,
+//     dealer_farmer_relation,
+//     plantation_type,
+//   } = req.body;
+//   try {
+//     const oldFarmer = await Farmer.findOne({ mobile });
+//     if (oldFarmer)
+//       return res.status(400).json({ message: "Farmer already exists" });
+//     const newFarmer = new Farmer({
+//       name,
+//       mobile,
+//       mobileIsWhatsapp,
+//       address,
+//       totalLandArea,
+//       dealer_farmer_relation,
+//       plantation_type,
+//       createdBy: req.user,
+//     });
+//     const farmer = await newFarmer.save();
+//     res.json(farmer);
+//   } catch (err) {
+//     if (err.status === 401) {
+//       console.log("User not authenticated:", err.message);
+//     } else {
+//       console.log("Unexpected error:", err.message);
+//     }
+//     res.status(err.status || 500).json({
+//       message: err.message,
+//     });
+//   }
+// });
 
 //Get farmer address by its pincode  `http://postalpincode.in/api/pincode/${pincode}`
 router.post("/address", async (req, res) => {
