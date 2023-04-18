@@ -1,7 +1,7 @@
 import * as axios from "axios";
 
-const apiURL = "http://35.77.226.139:5001/api";
-// const apiURL = "http://localhost:5001/api";
+// const apiURL = "http://35.77.226.139:5001/api";
+const apiURL = "http://localhost:5001/api";
 
 // "http://localhost:5001/api";   localhost
 //http://35.77.226.139:5001/api   Production url
@@ -80,6 +80,46 @@ export async function dealerLogin(email: any, password: any) {
 // ========================================== NEW FARMER REGISTRATION ====================================================================
 
 //Create Farmer
+// export async function createFarmer(
+//   name: string,
+//   mobile: number,
+//   mobileIsWhatsapp: boolean,
+//   state: string,
+//   city: string,
+//   zip: string,
+//   street: string,
+//   totalLandArea: string,
+//   dealer_farmer_relation: string,
+//   plantation_type: string
+// ) {
+//   try {
+//     const axiosConfig: axios.AxiosRequestConfig = {
+//       method: "post",
+//       url: `${apiURL}/farmer`,
+//       data: {
+//         name: name,
+//         mobile: mobile,
+//         mobileIsWhatsapp: mobileIsWhatsapp,
+//         address: {
+//           state: state,
+//           city: city,
+//           zip: zip,
+//           street: street,
+//         },
+//         totalLandArea: totalLandArea,
+//         dealer_farmer_relation: dealer_farmer_relation,
+//         plantation_type: plantation_type,
+//       },
+//     };
+//     const response = await axios.default.request(axiosConfig);
+//     const normalizedResponse = normalizeServerResponse(response);
+//     return [null, normalizedResponse];
+//   } catch (error) {
+//     const errorObject = normalizeServerError(error);
+//     return [errorObject, null];
+//   }
+// }
+
 export async function createFarmer(
   name: string,
   mobile: number,
@@ -93,6 +133,7 @@ export async function createFarmer(
   plantation_type: string
 ) {
   try {
+    let token: any = localStorage.getItem("authToken");
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "post",
       url: `${apiURL}/farmer`,
@@ -110,6 +151,7 @@ export async function createFarmer(
         dealer_farmer_relation: dealer_farmer_relation,
         plantation_type: plantation_type,
       },
+      headers: { Authorization: "Bearer " + token },
     };
     const response = await axios.default.request(axiosConfig);
     const normalizedResponse = normalizeServerResponse(response);
