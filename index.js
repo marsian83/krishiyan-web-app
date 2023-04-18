@@ -34,6 +34,9 @@ app.use("/api/add-inventory", require("./routes/inventory"));
 app.use("/api/credit", require("./routes/credit"));
 app.use("/api/support", require("./routes/support"));
 
+app.use("/api/pos",require("./routes/pos")) // POS module
+app.use("/api/auth",require("./routes/authentication")) //Auth module
+
 //Connect to DB.
 connectDB();
 

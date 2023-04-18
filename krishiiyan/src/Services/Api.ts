@@ -28,6 +28,53 @@ function normalizeServerError(serverResponse: any) {
 
   return response;
 }
+// ========================================== DEALER AUTHENTICATION ====================================================================
+
+//Register
+export async function dealerRegistration(
+  name: any,
+  email: any,
+  password: any,
+  mobile: any
+) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/auth/register`,
+      data: {
+        name: name,
+        email: email,
+        password: password,
+        mobile: mobile,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+//Login
+export async function dealerLogin(email: any, password: any) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/auth/login`,
+      data: {
+        email: email,
+        password: password,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
 // ========================================== FARMER RELATIONAL MANAGEMENT ====================================================================
 
 // ========================================== NEW FARMER REGISTRATION ====================================================================
@@ -663,43 +710,6 @@ export async function getvariteyByCropId(cropId: string) {
   }
 }
 
-// =================add new product for inventory==========================
-export async function addNewProduct(
-  name: string,
-  category: string,
-  measurement: string,
-  volume: string,
-  discription: string,
-  hsn: string,
-  tax: string,
-  date_of_purchase: string,
-  expiry_date: String
-) {
-  try {
-    const axiosConfig: axios.AxiosRequestConfig = {
-      method: "post",
-      url: `${apiURL}/add-inventory/`,
-      data: {
-        name: name,
-        category: category,
-        measurement: measurement,
-        volume: volume,
-        discription: discription,
-        hsn: hsn,
-        tax: tax,
-        date_of_purchase: date_of_purchase,
-        expiry_date: expiry_date,
-      },
-    };
-    const response = await axios.default.request(axiosConfig);
-    const normalizedResponse = normalizeServerResponse(response);
-    return [null, normalizedResponse];
-  } catch (error) {
-    const errorObject = normalizeServerError(error);
-    return [errorObject, null];
-  }
-}
-
 export async function getCreditNumber() {
   try {
     const axiosConfig: axios.AxiosRequestConfig = {
@@ -714,3 +724,25 @@ export async function getCreditNumber() {
     return [errorObject, null];
   }
 }
+
+// ============================================== POS ============================================================
+
+// ============================================== SALE ===============================================================
+
+// Get products
+export async function getProducts() {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "get",
+      url: `${apiURL}/pos/get-inventory-products`,
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//
