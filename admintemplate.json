@@ -1,0 +1,61 @@
+[
+    {
+        "_id": "643684d378c526905069c511",
+        "activeIngridient": "Rynaxypyr",
+        "tradeName": "CORAGEN INSECTICIDE",
+        "productDescription": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout",
+        "category": "Pesticide",
+        "measuringUnit": "ml",
+        "volume": "30",
+        "quantity": "0",
+        "dateOfPurchase": "2023-04-12T10:15:47.271Z",
+        "expiryDate": "2023-04-12T10:15:47.271Z",
+        "MRP": "1000",
+        "procurementDiscout": "0",
+        "procuredPrice": "0",
+        "saleDiscout": "0",
+        "sellingPrice": "0",
+        "searchKeywords": [
+            "stem borer",
+            "maize"
+        ],
+        "productType": "uniform",
+        "crop": [
+            "Maize",
+            "paddy",
+            "Groundnut"
+        ],
+        "createdAt": "2023-04-12T10:15:47.286Z",
+        "updatedAt": "2023-04-12T10:15:47.286Z",
+        "__v": 0
+    },
+    {
+        "_id": "6436851278c526905069c513",
+        "activeIngridient": "Emamectin Benzoate",
+        "tradeName": "EMA5 INSECTICIDE",
+        "productDescription": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout",
+        "category": "Pesticide",
+        "measuringUnit": "gm",
+        "volume": "100",
+        "quantity": "0",
+        "dateOfPurchase": "2023-04-12T10:16:50.548Z",
+        "expiryDate": "2023-04-12T10:16:50.548Z",
+        "MRP": "400",
+        "procurementDiscout": "0",
+        "procuredPrice": "0",
+        "saleDiscout": "0",
+        "sellingPrice": "0",
+        "searchKeywords": [
+            "stem borer",
+            "groundnut"
+        ],
+        "productType": "uniform",
+        "crop": [
+            "Maize",
+            "Groundnut"
+        ],
+        "createdAt": "2023-04-12T10:16:50.550Z",
+        "updatedAt": "2023-04-12T10:16:50.550Z",
+        "__v": 0
+    }
+]

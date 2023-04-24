@@ -1,10 +1,27 @@
 import * as axios from "axios";
 
-// const apiURL = "http://35.77.226.139:5001/api";
-const apiURL = "http://localhost:5001/api";
+const apiURL = "http://35.77.226.139:5001/api";
+// const apiURL = "http://localhost:5001/api";
 
 // "http://localhost:5001/api";   localhost
 //http://35.77.226.139:5001/api   Production url
+
+export interface AddProductRequestPayload {
+  activeIngridient: string;
+  tradeName: string;
+  productDescription: string;
+  category: string;
+  measuringUnit: string;
+  volume: Number;
+  quantity: string;
+  dateOfPurchase: any;
+  expiryDate: string;
+  MRP: string;
+  procurementDiscout: string;
+  sellingPrice: string;
+  searchKeywords: string[];
+  crop: string[];
+}
 
 interface ResponseData {
   data: any;
@@ -22,7 +39,7 @@ function normalizeServerResponse(serverResponse: any) {
 
 function normalizeServerError(serverResponse: any) {
   let response: ResponseData = {
-    data: serverResponse.response.data.message,
+    data: serverResponse.response?.data?.message,
     status: serverResponse.status,
   };
 
@@ -66,6 +83,24 @@ export async function dealerLogin(email: any, password: any) {
         email: email,
         password: password,
       },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Get dealer profile
+export async function getDealer() {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "get",
+      url: `${apiURL}/auth/me`,
+      headers: { Authorization: "Bearer " + token },
     };
     const response = await axios.default.request(axiosConfig);
     const normalizedResponse = normalizeServerResponse(response);
@@ -122,7 +157,7 @@ export async function createFarmer(
   }
 }
 
-//Get farmer
+//Get farmer {By mobile}
 export async function getFarmer(mobile: string) {
   try {
     const axiosConfig: axios.AxiosRequestConfig = {
@@ -140,6 +175,25 @@ export async function getFarmer(mobile: string) {
     return [errorObject, null];
   }
 }
+//Get farmer {By farmerId}
+export async function getFarmerById(farmerId: string) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/farmer/get-farmer`,
+      data: {
+        farmerId: farmerId,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
 
 //Get farmer location
 export async function getFarmerLocation(pin: string) {
@@ -675,6 +729,24 @@ export async function getCreditNumber() {
 
 // ============================================== SALE ===============================================================
 
+//PRODUCTS TEMPLATE
+
+//Get Admin Product Template.
+export async function getProductTemplate() {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "get",
+      url: `${apiURL}/pos/get-product-template`,
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
 //Get dealer products
 export async function getDealerProducts() {
   try {
@@ -693,13 +765,64 @@ export async function getDealerProducts() {
   }
 }
 
-// Create products
-export async function createProduct() {
+// Create products {Uniform}
+export async function createUniformProduct(payload: AddProductRequestPayload) {
   try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/pos/create-uniform-product`,
+      data: {
+        activeIngridient: payload.activeIngridient,
+        tradeName: payload.tradeName,
+        productDescription: payload.productDescription,
+        category: payload.category,
+        measuringUnit: payload.measuringUnit,
+        volume: payload.volume,
+        quantity: payload.quantity,
+        dateOfPurchase: payload.dateOfPurchase,
+        expiryDate: payload.expiryDate,
+        MRP: payload.MRP,
+        procurementDiscout: payload.procurementDiscout,
+        sellingPrice: payload.sellingPrice,
+        searchKeywords: payload.searchKeywords,
+        crop: payload.crop,
+      },
+      headers: { Authorization: "Bearer " + token },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+// Create products {Dealer specific}
+export async function createDealerSpecificProduct(payload: AddProductRequestPayload) {
+  try {
+    let token: any = localStorage.getItem("authToken");
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "post",
       url: `${apiURL}/pos/create-inventory-product`,
-      data: {},
+      data: {
+        activeIngridient: payload.activeIngridient,
+        tradeName: payload.tradeName,
+        productDescription: payload.productDescription,
+        category: payload.category,
+        measuringUnit: payload.measuringUnit,
+        volume: payload.volume,
+        quantity: payload.quantity,
+        dateOfPurchase: payload.dateOfPurchase,
+        expiryDate: payload.expiryDate,
+        MRP: payload.MRP,
+        procurementDiscout: payload.procurementDiscout,
+        sellingPrice: payload.sellingPrice,
+        searchKeywords: payload.searchKeywords,
+        crop: payload.crop,
+      },
+      headers: { Authorization: "Bearer " + token },
     };
     const response = await axios.default.request(axiosConfig);
     const normalizedResponse = normalizeServerResponse(response);
@@ -726,6 +849,42 @@ export async function getProducts() {
   }
 }
 
+//Get expired products
+export async function getExpiredProducts() {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "get",
+      url: `${apiURL}/pos/get-expired-products`,
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Get farmer recommended products {based on current cultivation}
+export async function getRecommendedProducts(farmerId:string) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/pos/farmer-recommended-product`,
+      data:{
+        farmerID:farmerId
+      }
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Farmer Cart
 //Add product to cart
 export async function addtoCart(farmerID: string, itemID: string) {
   try {
@@ -747,7 +906,7 @@ export async function addtoCart(farmerID: string, itemID: string) {
 }
 
 //Get farmer cart
-export async function getFarmerCart(farmerID: string){
+export async function getFarmerCart(farmerID: string) {
   try {
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "post",
@@ -804,3 +963,52 @@ export async function removeCartItem(farmerID: string, itemID: string) {
     return [errorObject, null];
   }
 }
+
+//Farmer purchase
+export async function createFarmerOrder(
+  items: [],
+  farmerID: string,
+  paymentStatus: string,
+  totalPrice: string
+) {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/pos/create-farmer-order`,
+      data: {
+        items: items,
+        totalPrice: totalPrice,
+        customer: farmerID,
+        paymentStatus: paymentStatus,
+      },
+      headers: { Authorization: "Bearer " + token },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Dealer sales report
+export async function getDealerReport() {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "get",
+      url: `${apiURL}/pos/dealer-sales-report`,
+      headers: { Authorization: "Bearer " + token },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+

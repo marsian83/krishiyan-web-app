@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 
-const ProductSchema = new mongoose.Schema(
+const ProductAdminTemplateSchema = new mongoose.Schema(
   {
     activeIngridient: {
       type: String,
       required: true,
-      unique: true,
     },
     tradeName: {
       type: String,
@@ -52,57 +51,38 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    MSP: {
-      type: String,
-      required: true,
-    },
     procurementDiscout: {
       type: String,
       required: true,
     },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "Dealer",
-    },
-    procuredPrice:{
-      type:String,
+    procuredPrice: {
+      type: String,
     },
     saleDiscout: {
       type: String,
       required: true,
     },
-    sellingPrice:{
+    sellingPrice: {
       type: String,
       required: true,
     },
-    searchKeywords:{
-      type:[String],
-      required: true
+    searchKeywords: {
+      type: [String],
+      required: true,
     },
-    productType:{ //uniform/dealer-specific 
+    productType: {
       type: String,
       required: true,
     },
-    crop:{
-      type:[],
-      required: true
-    },
-    totalProcuredAmount:{
-      type: String,
+    crop: {
+      type: [String],
       required: true,
     },
-    batches:[
-      {
-        batchName:String,
-        quantity:String,
-        productName:String,
-        purchaseDate:Date,
-        expiryDate:Date
-      }
-    ]
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Product", ProductSchema);
+module.exports = mongoose.model(
+  "ProductAdminTemplate",
+  ProductAdminTemplateSchema
+);

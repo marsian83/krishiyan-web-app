@@ -18,6 +18,10 @@ const DealerSchema = new mongoose.Schema(
       type: Number,
       unique: true,
       required: true,
+    },
+    excel_data_download:{
+      type:Boolean,
+      default:false
     }
   },
   { timestamps: true }

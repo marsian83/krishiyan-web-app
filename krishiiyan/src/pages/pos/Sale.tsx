@@ -9,28 +9,90 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import TextField from "@mui/material/TextField";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { useNavigate } from "react-router-dom";
+
+const SearchBar = (props: any) => (
+  <>
+    <input
+      type="text"
+      onInput={(e: any) => {
+        props?.setSearchQuery(e.target.value);
+      }}
+      className="text-[#13490A] !outline-none bg-transparent w-full font-normal text-center"
+      placeholder="Search... By Trade Name"
+    />
+  </>
+);
+
+const SearchBarCart = (props: any) => (
+  <>
+    <input
+      type="text"
+      onInput={(e: any) => {
+        props?.setSearchQuery(e.target.value);
+      }}
+      className="text-[#13490A] !outline-none bg-transparent w-full font-normal text-center"
+      placeholder="Search... Cart"
+    />
+  </>
+);
+
+const filterData = (query: any, data: any) => {
+  if (!query) {
+    return data;
+  } else {
+    let filterdData = data.filter((d: any) =>
+      d?.tradeName?.toLowerCase().includes(query)
+    );
+    return filterdData;
+  }
+};
+
+const filterDataCart = (query: any, data: any) => {
+  if (!query) {
+    return data;
+  } else {
+    let filterdData = data.filter((d: any) =>
+      d?.itemId?.tradeName?.toLowerCase().includes(query)
+    );
+    console.log(filterdData);
+    
+    return filterdData;
+  }
+};
 
 const Sale = () => {
+  let navigate = useNavigate();
   const [number, SetNumber] = useState<any>(true);
   const [data, setData] = useState(false);
   const [loading, setLoading] = useState(false);
   const [farmerID, setFarmerID] = useState("");
   const [farmerDetail, setFarmerDetail] = useState<any>();
   const [currentCultivation, setCurrentCultivation] = useState<any>();
-
+  const [disclaimer, setDisclaimer] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQueryCart, setSearchQueryCart] = useState("");
   const [products, setProducts] = useState<any>();
   const [selectedProductDetails, setSelectedProductDetails] = useState<any>();
+  const [farmerRecommendedProducts, setFarmerRecommendedProducts] =
+    useState<any>();
+
+  const [productCategory, setProductCategory] = useState("Pesticide");
+
+ 
 
   //========================================== Farmer Cart ===================================================
   const [cartItems, setCartItems] = useState<any>();
   const [totalPrice, setTotalPrice] = useState("");
 
-  console.log({ cartItems, totalPrice });
+  const dataFiltered = filterData(searchQuery, products);
+  const cartDataFiltered = filterDataCart(searchQueryCart, cartItems);
 
   //Get Farmer Cart
   const getFarmerCart = async () => {
@@ -49,17 +111,23 @@ const Sale = () => {
 
   //Add to cart
   const addToCart = async (itemid: string) => {
-    const [addToCartErr, addToCartRes] = await Api.addtoCart(
-      farmerDetail?._id,
-      itemid
-    );
-    if (addToCartErr) {
-      toast.error(addToCartErr.data, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
-    if (addToCartRes) {
-      toast.success("Product added to cart!", {
+    if (farmerDetail?._id) {
+      const [addToCartErr, addToCartRes] = await Api.addtoCart(
+        farmerDetail?._id,
+        itemid
+      );
+      if (addToCartErr) {
+        toast.error(addToCartErr.data, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+      if (addToCartRes) {
+        toast.success("Product added to cart!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    } else {
+      toast.error("Farmer details not available.Plz provide farmer detail.", {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
@@ -80,6 +148,7 @@ const Sale = () => {
       await getFarmerCart();
     }
   };
+
   //Reduce quantity
   const reduceQuantityHandler = async (itemid: string) => {
     const [reduceQuantityErr, reduceQuantityRes] = await Api.reduceCartItem(
@@ -203,6 +272,87 @@ const Sale = () => {
     init();
   }, []);
 
+  /**
+   * Disclaimer:
+   * Selling Price < MSP => You are selling at low price.
+   * Selling Price = Procured Price => You are selling at low margin.
+   * Selling Price < Procured Price => You are selling at loss.
+   */
+  const showDisclaimer = (
+    sellingPrice: string,
+    MSP: string,
+    procuredPrice: string
+  ) => {
+    // console.log({ sellingPrice, MSP, procuredPrice });
+    if (sellingPrice < MSP) {
+      setDisclaimer("You are selling at low price.");
+    } else if (sellingPrice === procuredPrice) {
+      setDisclaimer("You are selling at low margin.");
+    } else if (sellingPrice < procuredPrice) {
+      setDisclaimer("You are selling at loss.");
+    } else if (sellingPrice > MSP) {
+      setDisclaimer("You are selling at high margin.");
+    }
+  };
+
+  //Payment
+
+  //Pay by cash
+  const onClickPayHandler = async () => {
+    if (cartItems.length > 0 && totalPrice !== undefined && farmerDetail) {
+      console.log({ cartItems, totalPrice });
+      const [createOrderErr, createOrderRes] = await Api.createFarmerOrder(
+        cartItems,
+        farmerDetail?._id,
+        "paid",
+        totalPrice
+      );
+      if (createOrderErr) {
+        alert(createOrderErr?.data);
+      }
+      if (createOrderRes) {
+        console.log(createOrderRes);
+      }
+      getFarmerCart();
+    }
+  };
+
+  //Pay by credit
+  const onClickPayByCreditHandler = async () => {
+    if (cartItems.length > 0 && totalPrice !== undefined && farmerDetail) {
+      console.log({ cartItems, totalPrice });
+      const [createOrderErr, createOrderRes] = await Api.createFarmerOrder(
+        cartItems,
+        farmerDetail?._id,
+        "payByCredit",
+        totalPrice
+      );
+      if (createOrderErr) {
+        alert(createOrderErr?.data);
+      }
+      if (createOrderRes) {
+        console.log(createOrderRes);
+      }
+      getFarmerCart();
+      navigate("/credit");
+    }
+  };
+
+  //Get recommended products
+
+  useEffect(() => {
+    const getFarmerRecommendedProducts = async () => {
+      const [err, res] = await Api.getRecommendedProducts(farmerDetail?._id);
+      if (res) {
+        let recommended_products = res.data.RecommendedProducts.filter(
+          (o: any) => o.productId !== ""
+        );
+        setFarmerRecommendedProducts(recommended_products);
+      }
+    };
+    getFarmerRecommendedProducts();
+  }, [farmerDetail]);
+
   return (
     <div>
       <Header title="Pos" subtitle="Sale" />
@@ -265,155 +415,487 @@ const Sale = () => {
             <div className="flex flex-col flex-1">
               <div
                 className="flex justify-around  border-collapse h-10 shadow-sm"
-                style={{ backgroundColor: "rgb(242 242 242)" }}
+                // style={{ backgroundColor: "rgb(242 242 242)" }}
               >
-                <button className="border border-collapse border-black flex-1 text-sm font-bold">
+                <button
+                  onClick={() => setProductCategory("Recommended")}
+                  className={`border border-collapse border-black flex-1 text-sm font-bold ${
+                    productCategory === "Recommended"
+                      ? "bg-[#526D4E]"
+                      : "bg-[#05AB2A]"
+                  }`}
+                >
                   Recommended
                 </button>
-                <button className="border border-collapse border-black flex-1 text-sm font-bold">
+                <button
+                  onClick={() => setProductCategory("Seeds")}
+                  className={`border border-collapse border-black flex-1 text-sm font-bold ${
+                    productCategory === "Seeds"
+                      ? "bg-[#526D4E]"
+                      : "bg-[#05AB2A]"
+                  }`}
+                >
                   Seeds
                 </button>
-                <button className="border border-collapse border-black flex-1 text-sm font-bold">
+                <button
+                  onClick={() => setProductCategory("Fertilizer")}
+                  className={`border border-collapse border-black flex-1 text-sm font-bold ${
+                    productCategory === "Fertilizer"
+                      ? "bg-[#526D4E]"
+                      : "bg-[#05AB2A]"
+                  }`}
+                >
                   Fertilizer
                 </button>
-                <button className="border border-collapse border-black flex-1 text-sm font-bold">
+                <button
+                  onClick={() => setProductCategory("GrowthPromoter")}
+                  className={`border border-collapse border-black flex-1 text-sm font-bold ${
+                    productCategory === "GrowthPromoter"
+                      ? "bg-[#526D4E]"
+                      : "bg-[#05AB2A]"
+                  }`}
+                >
                   Growth Promoter
                 </button>
-                <button className="border border-collapse border-black flex-1 text-sm font-bold">
+                <button
+                  onClick={() => setProductCategory("Pesticide")}
+                  className={`border border-collapse border-black flex-1 text-sm font-bold ${
+                    productCategory === "Pesticide"
+                      ? "bg-[#526D4E]"
+                      : "bg-[#05AB2A]"
+                  }`}
+                >
                   Pesticide
                 </button>
-                <button className="border border-collapse border-black flex-1 text-sm font-bold">
+                <button
+                  onClick={() => setProductCategory("Fungicide")}
+                  className={`border border-collapse border-black flex-1 text-sm font-bold ${
+                    productCategory === "Fungicide"
+                      ? "bg-[#526D4E]"
+                      : "bg-[#05AB2A]"
+                  }`}
+                >
                   Fungicide
                 </button>
-                <button className="border border-collapse border-black flex-1 text-sm font-bold">
+                <button
+                  onClick={() => setProductCategory("Herbicide")}
+                  className={`border border-collapse border-black flex-1 text-sm font-bold ${
+                    productCategory === "Herbicide"
+                      ? "bg-[#526D4E]"
+                      : "bg-[#05AB2A]"
+                  }`}
+                >
                   Herbicide
                 </button>
               </div>
               <div
-                className="shadow-[0px_4px_4px_rgba(0,0,0,0.25)]"
+                className="shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-full"
                 style={{ backgroundColor: "rgb(242 242 242)" }}
               >
-                <div className="flex border border-[#526D4E] px-[1%] rounded-lg w-[95%] h-6 mx-1 my-1 items-center">
-                  <input
-                    type="text"
-                    className="text-[#13490A] !outline-none bg-transparent w-full font-normal text-center"
-                    placeholder="Type here to search"
-                  />
-                  <img
-                    src="Images/Search.png"
-                    alt="searchbar"
-                    className="h-4 w-4"
-                  />
-                </div>
+                <SearchBar
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                />
               </div>
               {/* Product List for Sale */}
-              {products &&
-                products.map((product: any) => (
-                  <>
-                    <div
-                      key={product?._id}
-                      className="flex justify-around p-2 mt-5 items-center"
-                    >
-                      <div>{product?._id.slice(0, 8)}...</div>
-                      <div>{product?.tradeName}</div>
 
-                      <Tooltip title="Add to cart" arrow>
-                        <IconButton
-                          onClick={() => AddToCartOnClickHandler(product?._id)}
-                        >
-                          <Icon
-                            icon="material-symbols:add-circle-outline"
-                            height={30}
-                            width={30}
-                            color="green"
-                          />
-                        </IconButton>
-                      </Tooltip>
-                      <button
-                        onClick={() => setSelectedProductDetails(product)}
-                        className="bg-[#05AB2A] text-white font-thin tracking-wide w-20 h-9 flex items-center justify-center rounded-md text-base p-2"
-                      >
-                        Details
-                      </button>
-                    </div>
-                  </>
-                ))}
+              {/* Recommended Product */}
+              {productCategory === "Recommended" ? (
+                <>
+                  {farmerRecommendedProducts &&
+                    farmerRecommendedProducts
+                      // .filter((obj: any) => obj.category === "Seeds")
+                      .sort((a: any, b: any) => b.quantity - a.quantity)
+                      .map((product: any) => (
+                        <>
+                          <div
+                            key={product?.productId}
+                            className="flex justify-around p-2 mt-5 items-center"
+                          >
+                            <div>{product?.productId.slice(0, 8)}...</div>
+                            <div>{product?.productName}</div>
+
+                            <Tooltip title="Add to cart" arrow>
+                              <IconButton
+                                onClick={() =>
+                                  AddToCartOnClickHandler(product?.productId)
+                                }
+                              >
+                                <Icon
+                                  icon="material-symbols:add-circle-outline"
+                                  height={30}
+                                  width={30}
+                                  color="green"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            <button
+                              onClick={() => setSelectedProductDetails(product)}
+                              className="bg-[#05AB2A] text-white font-thin tracking-wide w-20 h-9 flex items-center justify-center rounded-md text-base p-2"
+                            >
+                              Details
+                            </button>
+                          </div>
+                        </>
+                      ))}
+                </>
+              ) : (
+                <></>
+              )}
+
+              {/* Seeds */}
+              {productCategory === "Seeds" ? (
+                <>
+                  {dataFiltered &&
+                    dataFiltered
+                      .filter((obj: any) => obj.category === "Seeds")
+                      .sort((a: any, b: any) => b.quantity - a.quantity)
+                      .map((product: any) => (
+                        <>
+                          <div
+                            key={product?._id}
+                            className="flex justify-around p-2 mt-5 items-center"
+                          >
+                            <div>{product?._id.slice(0, 8)}...</div>
+                            <div>{product?.tradeName}</div>
+
+                            <Tooltip title="Add to cart" arrow>
+                              <IconButton
+                                onClick={() =>
+                                  AddToCartOnClickHandler(product?._id)
+                                }
+                              >
+                                <Icon
+                                  icon="material-symbols:add-circle-outline"
+                                  height={30}
+                                  width={30}
+                                  color="green"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            <button
+                              onClick={() => setSelectedProductDetails(product)}
+                              className="bg-[#05AB2A] text-white font-thin tracking-wide w-20 h-9 flex items-center justify-center rounded-md text-base p-2"
+                            >
+                              Details
+                            </button>
+                          </div>
+                        </>
+                      ))}
+                </>
+              ) : (
+                <></>
+              )}
+              {/* Fertilizer */}
+              {productCategory === "Fertilizer" ? (
+                <>
+                  {dataFiltered &&
+                    dataFiltered
+                      .filter((obj: any) => obj.category === "Fertilizer")
+                      .sort((a: any, b: any) => b.quantity - a.quantity)
+                      .map((product: any) => (
+                        <>
+                          <div
+                            key={product?._id}
+                            className="flex justify-around p-2 mt-5 items-center"
+                          >
+                            <div>{product?._id.slice(0, 8)}...</div>
+                            <div>{product?.tradeName}</div>
+
+                            <Tooltip title="Add to cart" arrow>
+                              <IconButton
+                                onClick={() =>
+                                  AddToCartOnClickHandler(product?._id)
+                                }
+                              >
+                                <Icon
+                                  icon="material-symbols:add-circle-outline"
+                                  height={30}
+                                  width={30}
+                                  color="green"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            <button
+                              onClick={() => setSelectedProductDetails(product)}
+                              className="bg-[#05AB2A] text-white font-thin tracking-wide w-20 h-9 flex items-center justify-center rounded-md text-base p-2"
+                            >
+                              Details
+                            </button>
+                          </div>
+                        </>
+                      ))}
+                </>
+              ) : (
+                <></>
+              )}
+              {/* Growth Promoter */}
+              {productCategory === "GrowthPromoter" ? (
+                <>
+                  {dataFiltered &&
+                    dataFiltered
+                      .filter((obj: any) => obj.category === "GrowthPromoter")
+                      .sort((a: any, b: any) => b.quantity - a.quantity)
+                      .map((product: any) => (
+                        <>
+                          <div
+                            key={product?._id}
+                            className="flex justify-around p-2 mt-5 items-center"
+                          >
+                            <div>{product?._id.slice(0, 8)}...</div>
+                            <div>{product?.tradeName}</div>
+
+                            <Tooltip title="Add to cart" arrow>
+                              <IconButton
+                                onClick={() =>
+                                  AddToCartOnClickHandler(product?._id)
+                                }
+                              >
+                                <Icon
+                                  icon="material-symbols:add-circle-outline"
+                                  height={30}
+                                  width={30}
+                                  color="green"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            <button
+                              onClick={() => setSelectedProductDetails(product)}
+                              className="bg-[#05AB2A] text-white font-thin tracking-wide w-20 h-9 flex items-center justify-center rounded-md text-base p-2"
+                            >
+                              Details
+                            </button>
+                          </div>
+                        </>
+                      ))}
+                </>
+              ) : (
+                <></>
+              )}
+              {/* Pesticide */}
+              {productCategory === "Pesticide" ? (
+                <>
+                  {dataFiltered &&
+                    dataFiltered
+                      .filter((obj: any) => obj.category === "Pesticide")
+                      .sort((a: any, b: any) => b.quantity - a.quantity)
+                      .map((product: any) => (
+                        <>
+                          <div
+                            key={product?._id}
+                            className="flex justify-between p-4 mt-5 items-center"
+                          >
+                            <div className="justify-text">
+                              {product?._id.slice(0, 8)}...
+                            </div>
+                            <div className="justify-text">
+                              {product?.tradeName}
+                            </div>
+                            <div className="justify-text">
+                              <Tooltip title="Add to cart" arrow>
+                                <IconButton
+                                  onClick={() =>
+                                    AddToCartOnClickHandler(product?._id)
+                                  }
+                                >
+                                  <Icon
+                                    icon="material-symbols:add-circle-outline"
+                                    height={30}
+                                    width={30}
+                                    color="green"
+                                  />
+                                </IconButton>
+                              </Tooltip>
+                            </div>
+                            <button
+                              onClick={() => setSelectedProductDetails(product)}
+                              className="bg-[#05AB2A] text-white font-thin tracking-wide w-20 h-9 flex items-center justify-center rounded-md text-base p-2"
+                            >
+                              Details
+                            </button>
+                          </div>
+                        </>
+                      ))}
+                </>
+              ) : (
+                <></>
+              )}
+
+              {/* Fungicide */}
+              {productCategory === "Fungicide" ? (
+                <>
+                  {dataFiltered &&
+                    dataFiltered
+                      .filter((obj: any) => obj.category === "Fungicide")
+                      .sort((a: any, b: any) => b.quantity - a.quantity)
+                      .map((product: any) => (
+                        <>
+                          <div
+                            key={product?._id}
+                            className="flex justify-around p-2 mt-5 items-center"
+                          >
+                            <div>{product?._id.slice(0, 8)}...</div>
+                            <div>{product?.tradeName}</div>
+
+                            <Tooltip title="Add to cart" arrow>
+                              <IconButton
+                                onClick={() =>
+                                  AddToCartOnClickHandler(product?._id)
+                                }
+                              >
+                                <Icon
+                                  icon="material-symbols:add-circle-outline"
+                                  height={30}
+                                  width={30}
+                                  color="green"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            <button
+                              onClick={() => setSelectedProductDetails(product)}
+                              className="bg-[#05AB2A] text-white font-thin tracking-wide w-20 h-9 flex items-center justify-center rounded-md text-base p-2"
+                            >
+                              Details
+                            </button>
+                          </div>
+                        </>
+                      ))}
+                </>
+              ) : (
+                <></>
+              )}
+              {/* Herbicide */}
+              {productCategory === "Herbicide" ? (
+                <>
+                  {dataFiltered &&
+                    dataFiltered
+                      .filter((obj: any) => obj.category === "Herbicide")
+                      .sort((a: any, b: any) => b.quantity - a.quantity)
+                      .map((product: any) => (
+                        <>
+                          <div
+                            key={product?._id}
+                            className="flex justify-around p-2 mt-5 items-center"
+                          >
+                            <div>{product?._id.slice(0, 8)}...</div>
+                            <div>{product?.tradeName}</div>
+
+                            <Tooltip title="Add to cart" arrow>
+                              <IconButton
+                                onClick={() =>
+                                  AddToCartOnClickHandler(product?._id)
+                                }
+                              >
+                                <Icon
+                                  icon="material-symbols:add-circle-outline"
+                                  height={30}
+                                  width={30}
+                                  color="green"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            <button
+                              onClick={() => setSelectedProductDetails(product)}
+                              className="bg-[#05AB2A] text-white font-thin tracking-wide w-20 h-9 flex items-center justify-center rounded-md text-base p-2"
+                            >
+                              Details
+                            </button>
+                          </div>
+                        </>
+                      ))}
+                </>
+              ) : (
+                <></>
+              )}
             </div>
 
             {/* 2nd Window */}
             <div className="border border-black flex-[1]">
               <div
-                className="h-10 flex items-center shadow-[0px_4px_4px_rgba(0,0,0,0.25)] gap-x-5 pl-1"
+                className="h-10 flex items-center shadow-[0px_4px_4px_rgba(0,0,0,0.25)] gap-x-5 pl-2"
                 style={{ backgroundColor: "rgb(242 242 242)" }}
               >
-                <label className="font-bold text-sm text-[#033E02]">
-                  PRODUCT ID
+                <label className="font-bold text-sms text-[#033E02]">
+                  PRODUCT
                 </label>
-                <input
-                  type="text"
-                  className="bg-[#f2f2f2]  rounded-md py-[1%] text-center h-7 border border-[#033E02]"
+                 <SearchBarCart
+                  searchQuery={searchQueryCart}
+                  setSearchQuery={setSearchQueryCart}
                 />
-                <button className="bg-[#05AB2A] w-10 h-8 flex items-center justify-center rounded-md">
-                  <img src="Images/plus.png" alt="plus" className="h-5 w-5" />
-                </button>
               </div>
               {/* Cart Items */}
               <div>
-                {cartItems?.length < 0 || cartItems === undefined ? (
+                {cartDataFiltered?.length <= 0 || cartDataFiltered === undefined ? (
                   <div className="flex items-center justify-center mt-5">
                     <label className="font-bold text-lg text-[#033E02]">
-                      No Product in your Cart.
+                      No Product in Farmer Cart.
                     </label>
                   </div>
                 ) : (
                   <div className="p-2">
-                    {/* <TableContainer component={Paper}> */}
+                    <h1 className="text-[#033E02] font-bold">Cart Items</h1>
                     <Table
                       sx={{ minWidth: 650, border: "2px solid" }}
                       aria-label="simple table"
                     >
                       <TableHead>
                         <TableRow>
-                          <TableCell sx={{ border: "1px solid" }}>
+                          <TableCell
+                            sx={{ border: "1px solid", fontWeight: "bold" }}
+                          >
                             Product ID
                           </TableCell>
-                          <TableCell sx={{ border: "1px solid" }}>
+                          <TableCell
+                            sx={{ border: "1px solid", fontWeight: "bold" }}
+                          >
                             Name
                           </TableCell>
-                          <TableCell sx={{ border: "1px solid" }}>
+                          <TableCell
+                            sx={{ border: "1px solid", fontWeight: "bold" }}
+                          >
                             Price/Unit
                           </TableCell>
-                          <TableCell sx={{ border: "1px solid" }}>
+                          <TableCell
+                            sx={{ border: "1px solid", fontWeight: "bold" }}
+                          >
                             Quantity
                           </TableCell>
-                          <TableCell sx={{ border: "1px solid" }}>
+                          <TableCell
+                            sx={{ border: "1px solid", fontWeight: "bold" }}
+                          >
                             Discount(%)
                           </TableCell>
-                          <TableCell sx={{ border: "1px solid" }}>
+                          <TableCell
+                            sx={{ border: "1px solid", fontWeight: "bold" }}
+                          >
                             Total
+                          </TableCell>
+                          <TableCell
+                            sx={{ border: "1px solid", fontWeight: "bold" }}
+                          >
+                            Disclaimer
                           </TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {cartItems?.length > 0 &&
-                          cartItems.map((row: any) => (
+                        {cartDataFiltered?.length > 0 &&
+                          cartDataFiltered.map((row: any) => (
                             <TableRow
                               key={row._id}
                               sx={{
-                                "&:last-child td, &:last-child th": {
-                                  border: 1,
-                                },
-                                // cursor: "pointer",
+                                border: 1,
                               }}
                             >
-                              <TableCell>
+                              <TableCell sx={{ border: 1 }}>
                                 {row?.itemId?._id.slice(0, 5)}...
                               </TableCell>
-                              <TableCell>{row?.itemId?.tradeName}</TableCell>
-                              <TableCell>
-                                ₹{row?.itemId?.procuredPrice}
+                              <TableCell sx={{ border: 1 }}>
+                                {row?.itemId?.tradeName}
                               </TableCell>
-                              <TableCell>
+                              <TableCell sx={{ border: 1 }}>
+                                ₹{row?.itemId?.sellingPrice}
+                              </TableCell>
+                              <TableCell sx={{ border: 1 }}>
                                 <div className="flex gap-[0.5] items-center">
                                   {row?.quantity}
                                   <IconButton
@@ -442,13 +924,34 @@ const Sale = () => {
                                   </IconButton>
                                 </div>
                               </TableCell>
-                              <TableCell>{row?.itemId?.saleDiscout}</TableCell>
-                              <TableCell>
+                              <TableCell sx={{ border: 1 }}>
+                                {row?.itemId?.saleDiscout}
+                              </TableCell>
+                              <TableCell sx={{ border: 1 }}>
                                 ₹
                                 {Number(row?.itemId?.sellingPrice) *
                                   Number(row?.quantity)}
                               </TableCell>
-                              <TableCell sx={{ cursor: "pointer" }}>
+                              <TableCell sx={{ cursor: "pointer", border: 1 }}>
+                                <IconButton
+                                  sx={{ cursor: "pointor" }}
+                                  onClick={() =>
+                                    showDisclaimer(
+                                      row?.itemId?.sellingPrice,
+                                      row?.itemId?.MSP,
+                                      row?.itemId?.procuredPrice
+                                    )
+                                  }
+                                >
+                                  <Icon
+                                    icon="ic:outline-remove-red-eye"
+                                    height={20}
+                                    width={20}
+                                    color="green"
+                                  />
+                                </IconButton>
+                              </TableCell>
+                              <TableCell sx={{ cursor: "pointer", border: 1 }}>
                                 <IconButton
                                   onClick={() =>
                                     removeItemHandler(row?.itemId?._id)
@@ -466,7 +969,13 @@ const Sale = () => {
                           ))}
                       </TableBody>
                     </Table>
-                    {/* </TableContainer> */}
+
+                    <div className="mt-5">
+                      <h1 className="text-[#033E02] font-bold">Disclaimer</h1>
+                      <p className="text-lg font-bold text-[#033E02]">
+                        {disclaimer}
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
@@ -477,6 +986,17 @@ const Sale = () => {
             {selectedProductDetails ? (
               <>
                 <div className="w-[70%] border border-[#13490A] h-fit">
+                  {/* Name */}
+                  <div className="flex p-1 gap-2">
+                    <div>
+                      {" "}
+                      <h1 className="">Name:</h1>
+                    </div>
+                    <div>
+                      <h1 className="">{selectedProductDetails?.tradeName}.</h1>
+                    </div>
+                  </div>
+                  {/* Active Ingridient */}
                   <div className="flex p-2 gap-2">
                     <div>
                       {" "}
@@ -486,16 +1006,6 @@ const Sale = () => {
                       <h1 className="">
                         {selectedProductDetails?.activeIngridient}.
                       </h1>
-                    </div>
-                  </div>
-
-                  <div className="flex p-1 gap-2">
-                    <div>
-                      {" "}
-                      <h1 className="">Name:</h1>
-                    </div>
-                    <div>
-                      <h1 className="">{selectedProductDetails?.tradeName}.</h1>
                     </div>
                   </div>
 
@@ -517,7 +1027,11 @@ const Sale = () => {
                       {" "}
                       <h1 className="">Crops:</h1>
                     </div>
-                    <div></div>
+                    <div className="flex gap-1">
+                      {selectedProductDetails?.crop?.map((o: any) => (
+                        <h1 className="">{o},</h1>
+                      ))}
+                    </div>
                   </div>
                   {/* Price */}
                   <div className="flex p-1 gap-2">
@@ -527,7 +1041,7 @@ const Sale = () => {
                     </div>
                     <div>
                       <h1 className="">
-                        ₹{selectedProductDetails?.sellingPrice}
+                        ₹{selectedProductDetails?.sellingPrice}/Unit
                       </h1>
                     </div>
                   </div>
@@ -552,16 +1066,22 @@ const Sale = () => {
             <div className="w-[30%] border border-[#13490A] h-fit">
               <div className="total flex justify-between py-4 border border-[#13490A] px-1">
                 <p>Total</p>
-                <p className="text-[#526D4E] font-normal">$00.00</p>
+                <p className="text-[#526D4E] font-normal">₹{totalPrice}</p>
               </div>
               <div>
                 <div className="mt-20 px-1">
                   <p className="text-start">Payment Method</p>
                   <div className="flex justify-around flex-row mt-1 mb-1">
-                    <button className="bg-[#05AB2A] text-white font-thin tracking-wide w-20 h-9 flex items-center justify-center rounded-md text-base">
+                    <button
+                      onClick={() => onClickPayHandler()}
+                      className="bg-[#05AB2A] text-white font-thin tracking-wide w-20 h-9 flex items-center justify-center rounded-md text-base"
+                    >
                       Paid
                     </button>
-                    <button className="bg-[#05AB2A] text-white font-thin tracking-wide w-25 p-4 h-9 flex items-center justify-center rounded-md text-base">
+                    <button
+                      onClick={() => onClickPayByCreditHandler()}
+                      className="bg-[#05AB2A] text-white font-thin tracking-wide w-25 p-4 h-9 flex items-center justify-center rounded-md text-base"
+                    >
                       Pay by Credit
                     </button>
                   </div>
