@@ -376,7 +376,7 @@ const Sale = () => {
                 >
                   ENTER
                 </button>
-                <button className=" w-10 h-6 flex items-center justify-center rounded-md">
+                <button onClick={() => navigate('/new_registration')} className=" w-10 h-6 flex items-center justify-center rounded-md">
                   <img src="Images/plus.png" alt="plus" className="h-6 w-6" />
                 </button>{" "}
               </>
