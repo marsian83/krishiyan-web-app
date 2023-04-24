@@ -9,7 +9,7 @@ const SupportHealthSchema = new mongoose.Schema(
     farmerId: mongoose.Types.ObjectId,
     category: {
       type: String,
-      enum: ["pest", "Disease", "Weed", "Deficiency"],
+      enum: ["Pest", "Disease", "Weed", "Deficiency"],
     },
     description: {
       type: String,

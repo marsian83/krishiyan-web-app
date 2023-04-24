@@ -9,11 +9,15 @@ const FarmerCultivationSchema = new mongoose.Schema(
     crop: String,
     variety: String,
     dateOfSowing: { type: Date },
+    FuturePrice: { type: Number, default: "18500" },
+    expireDateofSowing: { type: Date },
     soilType: {
       type: String,
       enum: ["RED", "BLACK"],
       default: "BLACK",
     },
+    months: { type: Number },
+    costOfCultivationPerAcre: { type: Number, default: "20000" },
     irrigationType: {
       type: String,
       enum: ["RAINFALL", "CANAL", "Wetland", "Rain fed land"],

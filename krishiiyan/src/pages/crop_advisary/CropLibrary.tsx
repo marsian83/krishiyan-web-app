@@ -158,7 +158,7 @@ const CropLibrary = () => {
 
   return (
     <div>
-      <Header title="Crop Advisary" subtitle="Crop Library" />
+      <Header title="Crop Advisory" subtitle="Crop Library" />
       <section className="p-5 grid grid-cols-[30%_30%_30%_10%] ">
         <div className="font-extrabold grid grid-cols-[50%_50%_50%] items-cente  ">
           {/* <label className="text-[#13490A] text-center">Type</label>
@@ -272,7 +272,7 @@ const CropLibrary = () => {
                       setOpenTab("Genral");
                     }}
                     className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
-                      openTab === "Genral" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                      openTab === "Genral" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
                     }`}
                   >
                     General
@@ -283,7 +283,7 @@ const CropLibrary = () => {
                       setOpenTab("Variety");
                     }}
                     className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
-                      openTab === "Variety" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                      openTab === "Variety" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
                     }`}
                   >
                     Variety
@@ -295,8 +295,8 @@ const CropLibrary = () => {
                     }}
                     className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1  rounded text-sm font-thin ${
                       openTab === "Pre Sowing practius"
-                        ? "bg-[#526D4E]"
-                        : "bg-[#05AB2A]"
+                        ? "bg-[#05AB2A]"
+                        : "bg-[#526D4E]"
                     }`}
                   >
                     Pre Sowing Practius
@@ -308,8 +308,8 @@ const CropLibrary = () => {
                     }}
                     className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
                       openTab === "Natrient Management"
-                        ? "bg-[#526D4E]"
-                        : "bg-[#05AB2A]"
+                        ? "bg-[#05AB2A]"
+                        : "bg-[#526D4E]"
                     }`}
                   >
                     Natrient Management
@@ -321,8 +321,8 @@ const CropLibrary = () => {
                     }}
                     className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
                       openTab === "crop protection"
-                        ? "bg-[#526D4E]"
-                        : "bg-[#05AB2A]"
+                        ? "bg-[#05AB2A]"
+                        : "bg-[#526D4E]"
                     }`}
                   >
                     Crop Protection
@@ -333,7 +333,7 @@ const CropLibrary = () => {
                       setOpenTab("Irrigation");
                     }}
                     className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
-                      openTab === "Irrigation" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                      openTab === "Irrigation" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
                     }`}
                   >
                     Irrigation
@@ -344,7 +344,7 @@ const CropLibrary = () => {
                       setOpenTab("Harvest");
                     }}
                     className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
-                      openTab === "Harvest" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                      openTab === "Harvest" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
                     }`}
                   >
                     Harvest
@@ -355,7 +355,7 @@ const CropLibrary = () => {
                       setOpenTab("FAQ");
                     }}
                     className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
-                      openTab === "FAQ" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+                      openTab === "FAQ" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
                     }`}
                   >
                     FAQ
@@ -373,21 +373,23 @@ const CropLibrary = () => {
                           marginRight: "20px",
                         }}
                       >
-                        {/* {obj.Images?.map((url: any) => ( */}
-                        {/* <> */}
-                        <img
-                          src={obj?.image}
-                          alt="maize"
-                          style={{ width: "20%", height: "20%" }}
-                        />
-                        {/* </> */}
-                        {/* ))} */}
+                        <figure>
+                          <img
+                            src="Images/Maize_Germination.jpg"
+                            alt="maize"
+                            width={210}
+                          />
+                          <figcaption>Germination</figcaption>
+                        </figure>
 
-                        <img
-                          src="Images/Maize01.png"
-                          alt="maize"
-                          style={{ width: "20%", height: "20%" }}
-                        />
+                        <figure>
+                          <img
+                            src="https://assets.thehansindia.com/hansindia-bucket/COMMERCIAL-CROPS_5889.jpg"
+                            alt="maize"
+                            width={210}
+                          />
+                          <figcaption>Vegetative stage </figcaption>
+                        </figure>
                       </div>
                       <div
                         style={{
@@ -398,17 +400,14 @@ const CropLibrary = () => {
                           marginRight: "20px",
                         }}
                       >
-                        <img
-                          src={"Images/Maize01.png"}
-                          alt="maize"
-                          style={{ width: "20%", height: "20%" }}
-                        />
-
-                        <img
-                          src="Images/Maize01.png"
-                          alt="maize"
-                          style={{ width: "20%", height: "20%" }}
-                        />
+                        <figure>
+                          <img src="Images/Vegetative_stage.jpg" alt="maize" />
+                          <figcaption>Vegetative stage </figcaption>
+                        </figure>
+                        <figure>
+                          <img src={"Images/Maize_Flowering.jpg"} alt="maize" />
+                          <figcaption>Fowering stage </figcaption>
+                        </figure>
                       </div>
 
                       <div
@@ -429,7 +428,6 @@ const CropLibrary = () => {
                               >
                                 Parameter
                               </span>
-                              {/* {obj?.localName}{" "} */}
                             </td>
                             <td className="border border-black w-[28%]">
                               <span
@@ -438,16 +436,7 @@ const CropLibrary = () => {
                               >
                                 Speafication
                               </span>{" "}
-                              {/* {obj.climate.map((i: any) => (
-                              <>{i} , </>
-                            ))} */}
                             </td>
-                            {/* <td className="border border-black">
-                            <span className="text-[#13490A] font-bold text-sm">
-                              Soil:
-                            </span>{" "}
-                            {obj?.soil}
-                          </td> */}
                           </tr>
                           <tr className="text-[#13490A] font-normal text-sm">
                             <td

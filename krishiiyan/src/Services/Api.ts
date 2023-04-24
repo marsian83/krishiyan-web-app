@@ -115,6 +115,46 @@ export async function getDealer() {
 // ========================================== NEW FARMER REGISTRATION ====================================================================
 
 //Create Farmer
+// export async function createFarmer(
+//   name: string,
+//   mobile: number,
+//   mobileIsWhatsapp: boolean,
+//   state: string,
+//   city: string,
+//   zip: string,
+//   street: string,
+//   totalLandArea: string,
+//   dealer_farmer_relation: string,
+//   plantation_type: string
+// ) {
+//   try {
+//     const axiosConfig: axios.AxiosRequestConfig = {
+//       method: "post",
+//       url: `${apiURL}/farmer`,
+//       data: {
+//         name: name,
+//         mobile: mobile,
+//         mobileIsWhatsapp: mobileIsWhatsapp,
+//         address: {
+//           state: state,
+//           city: city,
+//           zip: zip,
+//           street: street,
+//         },
+//         totalLandArea: totalLandArea,
+//         dealer_farmer_relation: dealer_farmer_relation,
+//         plantation_type: plantation_type,
+//       },
+//     };
+//     const response = await axios.default.request(axiosConfig);
+//     const normalizedResponse = normalizeServerResponse(response);
+//     return [null, normalizedResponse];
+//   } catch (error) {
+//     const errorObject = normalizeServerError(error);
+//     return [errorObject, null];
+//   }
+// }
+
 export async function createFarmer(
   name: string,
   mobile: number,
@@ -222,6 +262,8 @@ export async function createFarmerCultivationData(
   crop: string,
   variety: string,
   dateOfSowing: string,
+  expireDateofSowing: String,
+  months: Number,
   soilType: string,
   irrigationType: string,
   fertilizer: string
@@ -236,6 +278,8 @@ export async function createFarmerCultivationData(
         crop: crop,
         variety: variety,
         dateOfSowing: dateOfSowing,
+        expireDateofSowing,
+        months: months,
         soilType: soilType,
         irrigationType: irrigationType,
         fertilizer: fertilizer,
@@ -288,6 +332,7 @@ export async function getMandiPrices() {
 
 //Farmer credit
 export async function createFarmerCredit(
+  creditAmount: string,
   eligibleAmount: string,
   reason: string,
   creditPeriod: string,
@@ -302,6 +347,7 @@ export async function createFarmerCredit(
       method: "post",
       url: `${apiURL}/farmer/credit`,
       data: {
+        creditAmount: creditAmount,
         eligibleAmount: eligibleAmount,
         reason: reason,
         creditPeriod: creditPeriod,
@@ -322,7 +368,11 @@ export async function createFarmerCredit(
 }
 
 //Get Farmer credits data
-export async function getFarmerCreditData(farmerId: string) {
+export async function getFarmerCreditData(
+  farmerId: string
+  // page: number,
+  // rowPerPage: number
+) {
   try {
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "post",
@@ -330,6 +380,10 @@ export async function getFarmerCreditData(farmerId: string) {
       data: {
         farmerId: farmerId,
       },
+      // params: {
+      //   page: 1,
+      //   size: rowPerPage,
+      // },
     };
     const response = await axios.default.request(axiosConfig);
     const normalizedResponse = normalizeServerResponse(response);
@@ -400,13 +454,14 @@ export async function FarmerCreditAmountInfo(
 }
 
 //Get Farmer eligible amount
-export async function farmerCreditLimit(farmerId: string) {
+export async function farmerCreditLimit(farmerId: string, reasonId?: string) {
   try {
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "post",
       url: `${apiURL}/farmer/credit-eligible-amount`,
       data: {
         farmerId: farmerId,
+        reasonId: reasonId,
       },
     };
     const response = await axios.default.request(axiosConfig);
@@ -443,7 +498,8 @@ export async function payCredit(
   }
 }
 
-// create crop health
+// ================ support =================
+//Health created
 export async function createFarmerSupportHealth(
   farmerId: string,
   crop: string,
@@ -453,7 +509,7 @@ export async function createFarmerSupportHealth(
   try {
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "post",
-      url: `${apiURL}/crop-health`,
+      url: `${apiURL}/support/crop-health`,
       data: {
         farmerId: farmerId,
         crop: crop,
@@ -470,6 +526,46 @@ export async function createFarmerSupportHealth(
   }
 }
 
+export async function createFarmerQuery(farmerId: string, query: string) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/support/query`,
+      data: {
+        farmerId: farmerId,
+        query: query,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+export async function createFarmerSuppotCredit(
+  creditId: string,
+  description: string
+) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/support/credit`,
+      data: {
+        creditId: creditId,
+        description: description,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
 // ========================================== CROP ADVISORY =============================================================================
 
 //Get crops

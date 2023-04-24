@@ -6,21 +6,26 @@ import moment from "moment";
 import Weather from "./Weather";
 import { MenuItem, TextField } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
+import TablePagination from "@mui/material/TablePagination";
+import { number } from "yargs";
 
 const Credit = () => {
   let row: any = "5";
   let col: any = "20";
   const [openTab, setOpenTab] = useState("New");
-
+  const [fetchData, setFetchData] = useState(false);
   const [farmerMobile, setFarmerMobile] = useState("");
   const [farmerDetails, setFarmerDetails] = useState<any>();
   const [farmerCredits, setFarmerCredits] = useState<any>();
+  const [page, setPage] = useState<any>(1);
+  const [rows, setRows] = useState<any>([]);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const getFarmerCredits = async () => {
     const [err, res] = await Api.getFarmerCreditData(farmerDetails?._id);
     if (res) {
-      // console.log(res,"farmerCredits");
       setFarmerCredits(res?.data?.farmerCreditData);
+      setRows(Math.ceil(res?.data?.total / 10));
     }
   };
 
@@ -33,10 +38,11 @@ const Credit = () => {
 
   //Credit
   const [eligibleAmount, setEligibleAmount] = useState("");
+  const [creditAmount, setCreditAmount] = useState(0);
   const [creditPeriod, setCreditPeriod] = useState("");
   const [interestRate, setInterestRate] = useState("");
 
-  const [reason, setReason] = useState(" ");
+  const [reason, setReason] = useState<any>(" ");
   const [reasond, setReasond] = useState(" ");
   const [total_payable_amount, set_total_payable_amount] = useState("0");
   const [interest_amount, set_interest_amount] = useState("");
@@ -51,13 +57,16 @@ const Credit = () => {
   //   };
   //   getEligibleAmount();
   // }, [farmerDetails, farmerMobile]);
-
   const onChangeMobile = (e: any) => {
     setFarmerMobile(e.target.value);
   };
 
+  const handlePageChange = (event: any, value: any) => {
+    setPage(value);
+  };
   const onChangeAmount = (e: any) => {
-    setEligibleAmount(e.target.value);
+    // setEligibleAmount(e.target.value);
+    setCreditAmount(e.target.value);
   };
 
   const onChangePeriod = (e: any) => {
@@ -68,9 +77,24 @@ const Credit = () => {
     setInterestRate(e.target.value);
   };
 
-  const onChangeReason = (e: any) => {
-    setReason(e.target.value);
+  const onChangeReason = async (e: any) => {
+    setReason(JSON.parse(e.target.value));
   };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!reason) return;
+        const [err, res] = await Api.farmerCreditLimit(
+          farmerDetails?._id,
+          reason?._id
+        );
+        setEligibleAmount(res?.data.eligibleAmount);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [reason]);
 
   //Status
   const [credit_id, set_credit_id] = useState("");
@@ -100,26 +124,29 @@ const Credit = () => {
     const [err, res] = await Api.getFarmer(farmerMobile);
     if (res) {
       setFarmerDetails(res?.data);
-      setEligibleAmount(res?.data?.creditLimit);
+      // setEligibleAmount(res?.data?.creditLimit);
     }
   };
 
   //Get credit amount Info
   const getcreditamountInfo = async () => {
     const [err, res] = await Api.FarmerCreditAmountInfo(
-      eligibleAmount,
+      creditAmount.toString(),
       creditPeriod,
       interestRate
     );
     if (res) {
       // set_total_payable_amount(res?.data?.TotalPayableAmount);
-      set_total_payable_amount(res?.data?.TotalPayableAmount);
+      set_total_payable_amount(
+        parseFloat(res?.data?.TotalPayableAmount).toFixed(2)
+      );
       set_interest_amount(res?.data?.InterestAmount);
       set_due_date(res?.data?.DueDate);
     }
   };
 
   const onClickEnter = async () => {
+    localStorage.setItem("Number", farmerMobile);
     await getFarmerByMobile();
   };
 
@@ -141,13 +168,14 @@ const Credit = () => {
     };
     init();
   }, [farmerMobile, farmerDetails]);
-  console.log(oldCultivation, "This is a oldcultivation data");
+  // console.log(oldCultivation, "This is a oldcultivation data");
 
   const sanctionCredit = async () => {
     if (farmerDetails && eligibleAmount) {
       const [err, res] = await Api.createFarmerCredit(
+        creditAmount.toString(),
         eligibleAmount,
-        reason,
+        reason?.crop,
         creditPeriod,
         interestRate,
         total_payable_amount,
@@ -197,35 +225,46 @@ const Credit = () => {
       toast.error(err.data, {
         position: toast.POSITION.TOP_RIGHT,
       });
-      if (res) {
-        getFarmerCredits();
-        toast.success(`Paid Success!`, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-
-        console.log(res, "Credit pay response__________");
-      }
+    } else {
+      getFarmerCredits();
+      toast.success(`Paid Success!`, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      console.log(res, "Credit pay response__________");
     }
   };
+  // useEffect(() => {
+  //   const init = async () => {
+  //     await getFarmerByMobile();
+  //   };
+  //   init();
+  // }, [farmerMobile]);
+
   useEffect(() => {
-    const init = async () => {
-      await getFarmerByMobile();
-    };
-    init();
-  }, [farmerMobile]);
+    if (fetchData) {
+      onClickEnter();
+    }
+  }, [fetchData]);
+
   useEffect(() => {
-    if (!localStorage.Number) return;
-    setFarmerMobile(localStorage.Number);
-    onClickEnter();
+    if (localStorage.Number)
+      setFarmerMobile((prev: any) => localStorage.Number);
+    setFetchData(true);
   }, []);
 
   //get eligible amount
   // useEffect(() => {
   //   const getFarmerEligibleAmount = async () => {
-  //     const [err,res] = await Api.farmerCreditLimit(farmerDetails?._id)
-
+  //     const [err, res] = await Api.farmerCreditLimit(
+  //       farmerDetails?._id,
+  //       reason?._id
+  //     );
   //   };
-  // }, [farmerDetails,farmerMobile]);
+  //   if (farmerDetails) getFarmerEligibleAmount();
+  // }, [farmerDetails, farmerMobile, reason]);
+
+  // crop k select k onchange pr crop ki id (on change event) aur farmer id (farmerDetails?._id)
+  // await Api.farmerCreditLimit(farmerDetails?._id, cropId)
 
   return (
     <div>
@@ -234,7 +273,7 @@ const Credit = () => {
         {/* Input Search box */}
         <div className="grid grid-cols-[70%_30%] items-center box-border w-full">
           <div className="grid grid-cols-[35%_45%_15%_5%] mt-7 flex-row items-center w-full">
-            {/* <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
+            <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
               Farmer Mobile Number
             </label>
             <input
@@ -248,10 +287,10 @@ const Credit = () => {
               className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
             >
               ENTER
-            </button> */}
+            </button>
           </div>
           {farmerDetails ? (
-            <div className="mt-6 leading-4 ml-24">
+            <div className="mt-10 leading-4 ml-24">
               <p className="text-[#000000] font-bold text-start">
                 Name:{" "}
                 <span className="text-[#FB0404]">{farmerDetails?.name}</span>
@@ -324,7 +363,9 @@ const Credit = () => {
                 <table className="table-auto border-collapse border border-black font-bold text-base w-[96%] mx-auto">
                   <thead className="border-b border-black">
                     <tr className="text-center">
-                      <th className="border-r border-black py-[1.2%]">S.No</th>
+                      <th className="border-r border-black py-[1.2%] pl-0.5 pr-0.5">
+                        S.No
+                      </th>
                       <th className="border-r border-black py-[1.2%]">
                         Credit number
                       </th>
@@ -334,9 +375,6 @@ const Credit = () => {
                       <th className="border-r border-black py-[1.2%]">
                         Credit Amount
                       </th>
-                      {/* <th className="border-r border-black py-[1.2%]">
-                        Credit Number
-                      </th> */}
                       <th className="border-r border-black py-[1.2%]">
                         Credit Period
                       </th>
@@ -367,70 +405,86 @@ const Credit = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {farmerCredits?.map((credit: any, index: any) => (
-                      <tr className="h-10 border-b border-black">
-                        <td className="border-r border-black">{index + 1}</td>
-                        <td className="border-r border-black">
-                          {credit?.billNumber}
-                        </td>
-                        <td className="border-r border-black">
-                          {credit?.reason}
-                        </td>
-                        <td className="border-r border-black">
-                          {credit?.eligibleAmount}
-                        </td>
+                    {farmerCredits
+                      ?.slice((page - 1) * 10, page * 10)
+                      .map((credit: any, index: any) => (
+                        <tr className="h-10 border-b border-black">
+                          <td className="border-r border-black font-thin">
+                            {(page - 1) * 10 + index + 1}
+                          </td>
+                          <td className="border-r border-black font-thin">
+                            {credit?.billNumber}
+                          </td>
+                          <td className="border-r border-black pl-0.5 pr-0.5 font-thin">
+                            {credit?.reason}
+                          </td>
+                          <td className="border-r border-black font-thin">
+                            {credit?.creditAmount}
+                          </td>
 
-                        {/* <td className="border-r border-black">
+                          {/* <td className="border-r border-black">
                           {moment(credit?.createdAt).format("DD/MM/YYYY")}
                         </td> */}
-                        <td className="border-r border-black">
-                          {credit?.creditPeriod} months
-                        </td>
-                        <td className="border-r border-black">
-                          {credit?.interestRate} %
-                        </td>
-                        <td className="border-r border-black">
-                          {parseFloat(credit?.interestAmount).toFixed(2)}
-                        </td>
-                        <td className="border-r border-black">
-                          {parseFloat(credit?.totalPayableAmount).toFixed(2)}
-                        </td>
-                        <td className="border-r border-black">
-                          {credit?.dueDate}
-                        </td>
-                        <td className="border-r border-black">
-                          {credit?.paymentStatus}
-                        </td>
-                        {credit?.remainingPayableAmount !== "" &&
-                        credit?.remainingPayableAmount !== undefined ? (
-                          <td className="border-r border-black">
-                            {parseFloat(credit?.remainingPayableAmount).toFixed(
-                              2
-                            )}
+                          <td className="border-r border-black font-thin">
+                            {credit?.creditPeriod} months
                           </td>
-                        ) : (
-                          <></>
-                        )}
+                          <td className="border-r border-black font-thin">
+                            {credit?.interestRate} %
+                          </td>
+                          <td className="border-r border-black font-thin">
+                            {parseFloat(credit?.interestAmount).toFixed(2)}
+                          </td>
+                          <td className="border-r border-black font-thin">
+                            {parseFloat(credit?.totalPayableAmount).toFixed(2)}
+                          </td>
+                          <td className="border-r border-black pl-1 pr-1 font-thin">
+                            {credit?.dueDate}
+                          </td>
+                          <td className="border-r border-black font-thin">
+                            {credit?.paymentStatus}
+                          </td>
+                          {credit?.remainingPayableAmount !== "" &&
+                          credit?.remainingPayableAmount !== undefined ? (
+                            <td className="border-r border-black font-thin">
+                              {parseFloat(
+                                credit?.remainingPayableAmount
+                              ).toFixed(2)}
+                            </td>
+                          ) : (
+                            <>
+                              <td className="border-r border-black font-thin"></td>
+                            </>
+                          )}
 
-                        <td className="border-r border-black">-</td>
-                        <td className="border-r border-black">-</td>
-                      </tr>
-                    ))}
+                          <td className="border-r border-black font-thin">
+                            {credit?.remainingPayableAmount
+                              ? (
+                                  credit?.totalPayableAmount -
+                                  credit?.remainingPayableAmount
+                                ).toFixed(2)
+                              : "-"}
+                          </td>
+                          <td className="border-r border-black font-thin">
+                            {moment(credit?.updatedAt).format("DD-MM-YYYY")}
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               ) : (
                 <></>
               )}
-
-              {/* <Pagination
+              <Pagination
                 sx={{
                   mt: 3,
                   display: "flex",
                   justifyContent: "flex-end",
                   mr: 2,
                 }}
-                count={rows.length}
-              /> */}
+                count={rows}
+                page={page}
+                onChange={handlePageChange}
+              />
             </section>
           </div>
 
@@ -442,12 +496,15 @@ const Credit = () => {
               </label>
               <select
                 id="countries"
-                className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 onChange={onChangeReason}
               >
                 <option selected>Choose Reason</option>
                 {oldCultivation?.map((crop: any) => (
-                  <option value={credit_details}>{crop?.crop}</option>
+                  <option value={JSON.stringify(crop)}>
+                    {crop?.crop} (
+                    {moment(crop?.dateOfSowing).format("DD-MM-YYYY")})
+                  </option>
                 ))}
               </select>
             </div>
@@ -459,6 +516,7 @@ const Credit = () => {
                 type="text"
                 className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
                 defaultValue={eligibleAmount}
+                value={eligibleAmount}
                 onChange={onChangeAmount}
                 disabled
               />
@@ -473,14 +531,16 @@ const Credit = () => {
                 max="20000"
                 type="text"
                 className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
+                value={creditAmount}
                 onChange={onChangeAmount}
               />
             </div>
 
             <div className="grid grid-cols-[70%_28%_15%] text-center items-center my-2">
-              {Number(eligibleAmount) > Number(farmerDetails?.creditLimit) ? (
+              {/* {Number(eligibleAmount) > Number(farmerDetails?.creditLimit) ? ( */}
+              {Number(eligibleAmount) < creditAmount ? (
                 <p className="text-center font-extrabold text-md text-[#ff0000]">
-                  Maximum credit limit is {farmerDetails?.creditLimit}.
+                  Maximum credit limit is {eligibleAmount}.
                 </p>
               ) : null}
             </div>
@@ -529,8 +589,6 @@ const Credit = () => {
                   type="text"
                   className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
                   value={total_payable_amount}
-                  // {currentCultivation?.crop || "-"}
-                  // defaultValue={farmerCredits[0]?.totalPayableAmount}
                 />
               </div>
               <div className="grid grid-cols-[45%_50%] items-center">
@@ -564,7 +622,7 @@ const Credit = () => {
                 </label>
                 <select
                   id="countries"
-                  className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] overflow-y-scroll ... rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   onChange={onChangeCreditNum}
                 >
                   <option selected>Choose Credit Number</option>
@@ -613,7 +671,7 @@ const Credit = () => {
                     </label>
                     <input
                       type="text"
-                      className="bg-[#F3FFF1]  h-8  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
+                      className="bg-[#F3FFF1]  h-8  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-2"
                       onChange={onChangeAmountPayable}
                     />
                   </div>
@@ -623,13 +681,13 @@ const Credit = () => {
                     </label>
                     <select
                       id="countries"
-                      className="bg-[#F3FFF1] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       onChange={onChangePaymentMethod}
                     >
                       <option selected>Choose Payment Method</option>
                       <option value={amn_payable}>CASH</option>
-                      <option value="CA">UPI</option>
-                      <option value="FR">CARD</option>
+                      <option value={amn_payable}>UPI</option>
+                      <option value={amn_payable}>CARD</option>
                     </select>
                     {/* <img
                       src="Images/Dropdown.png"

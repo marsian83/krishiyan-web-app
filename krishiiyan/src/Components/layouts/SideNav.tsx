@@ -33,7 +33,7 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
 
   useEffect(() => {
     if (pos === true) {
-      setHeading("Krishiyan Clinic");
+      setHeading("KrishiYan");
     } else if (crop === true) {
       setHeading("KrishiYan");
     } else if (farm === true) {
@@ -41,7 +41,7 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
     } else if (manage === true) {
       setHeading("KrishiYan");
     } else if (help === true) {
-      setHeading("Krishiyan Clinic");
+      setHeading("KrishiYan");
     }
   }, [pos, crop, farm, manage, help]);
 
@@ -113,14 +113,14 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
     <div className="flex">
       <nav className="bg-[#C6EDC0] w-[45%] lg:w-[9vw] xl:w-[45%] flex flex-col items-center h-screen h-full">
         <img
-          src="Images/Ellipse 1.png"
+          src="Images/logo.png"
           alt="Ellipse"
           className="mb-[50%] my-5 lg:w-10 xl:w-14"
         />
         <ul className="text-center text-sm flex flex-col items-center gap-y-3">
           <li
             onClick={posClick}
-            className={`text-[#13490A] font-bold font-roboto text-xs cursor-pointer px-7 lg:px-5 xl:px-7 py-2 rounded-lg ${
+            className={`text-[#13490A] font-semibold font-roboto text-[13px] cursor-pointer px-7 lg:px-5 xl:px-7 py-2 rounded-lg ${
               pos === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >
@@ -128,15 +128,15 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
           </li>
           <li
             onClick={cropClick}
-            className={`text-[#13490A] font-bold font-roboto text-xs cursor-pointer px-0.5 py-2 rounded-lg ${
-              crop === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+            className={`text-[#13490A] font-semibold font-roboto text-[13px] cursor-pointer px-0.5 py-2 rounded-lg ${
+              crop === true ? "bg-[#526D4E] mix-blend-hard-light px-1" : ""
             }`}
           >
             Crop Advisory
           </li>
           <li
             onClick={farmClick}
-            className={`text-[#13490A] font-bold font-roboto text-xs cursor-pointer px-3 py-2 rounded-lg ${
+            className={`text-[#13490A] font-semibold font-roboto text-[13px] cursor-pointer px-3 py-2 rounded-lg ${
               farm === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >
@@ -144,15 +144,15 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
           </li>
           <li
             onClick={manageClick}
-            className={`text-[#13490A] font-bold font-roboto text-xs cursor-pointer px-0.5 py-2 rounded-lg ${
-              manage === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+            className={`text-[#13490A] font-semibold font-roboto text-[13px] cursor-pointer px-0.5 py-2 rounded-lg ${
+              manage === true ? "bg-[#526D4E] mix-blend-hard-light px-1" : ""
             }`}
           >
             Management
           </li>
           <li
             onClick={helpClick}
-            className={`text-[#13490A] font-bold font-roboto text-xs cursor-pointer px-5 py-2 rounded-lg ${
+            className={`text-[#13490A] font-semibold font-roboto text-[13px] cursor-pointer px-5 py-2 rounded-lg ${
               help === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >

@@ -22,15 +22,9 @@ const PlantationOptions = [
   },
 ];
 const PlantationOption = [
-  {
-    value: "Average",
-  },
-  {
-    value: "Good",
-  },
-  {
-    value: "Excellent",
-  },
+  { label: "Good", value: 1 },
+  { label: "Average", value: 0.5 },
+  { label: "Excellent", value: 1.5 },
 ];
 
 const PlantationType = [
@@ -46,15 +40,15 @@ const PlantationType = [
 ];
 const NewRegistration = () => {
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState<any>();
+  const [mobile, setMobile] = useState<any>();
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [zip, setZip] = useState("");
   const [street, setStreet] = useState("");
-  const [isWhatsapp, setIsWhatsapp] = useState(false);
+  const [mobileIsWhatsapp, setMobileIsWhatsapp] = useState(false);
   const [totalLandArea, setTotalLandArea] = useState("");
-  const [dealerFarmerRel, setDealerFarmerRel] = useState("");
-  const [plantationType, setPlantationType] = useState("");
+  const [dealer_farmer_relation, setDealer_farmer_relation] = useState("");
+  const [plantation_type, setPlantation_type] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -62,7 +56,7 @@ const NewRegistration = () => {
     setName(e.target.value);
   };
   const onChangePhone = (e: any) => {
-    setPhone(e.target.value);
+    setMobile(e.target.value);
   };
   const onChangeZip = (e: any) => {
     setZip(e.target.value);
@@ -71,17 +65,17 @@ const NewRegistration = () => {
     setStreet(e.target.value);
   };
   const onChangeIsWhatsapp = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsWhatsapp(event.target.checked);
+    setMobileIsWhatsapp(event.target.checked);
   };
 
   const onChangeTotalLandArea = (e: any) => {
     setTotalLandArea(e.target.value);
   };
-  const onChangeDealerFarmerRel = (e: any) => {
-    setDealerFarmerRel(e.target.value);
+  const onChangeDealerFarmerRel = (e: any, label: any) => {
+    setDealer_farmer_relation(label.value);
   };
   const onChangePlantationType = (e: any, value: any) => {
-    setPlantationType(value.value);
+    setPlantation_type(value.value);
   };
 
   //Get farmer location
@@ -119,15 +113,15 @@ const NewRegistration = () => {
     } else {
       const [error, response] = await Api.createFarmer(
         name,
-        phone,
-        isWhatsapp,
+        mobile,
+        mobileIsWhatsapp,
         state,
         city,
         zip,
         street,
         totalLandArea,
-        dealerFarmerRel,
-        plantationType
+        dealer_farmer_relation,
+        plantation_type
       );
       if (error) {
         // console.log(error.data);
@@ -154,7 +148,7 @@ const NewRegistration = () => {
           </label>
           <input
             type="text"
-            className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
+            className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
             onChange={onChangeName}
           ></input>
         </div>
@@ -165,7 +159,7 @@ const NewRegistration = () => {
             </label>
             <input
               type="text"
-              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
+              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
               onChange={onChangePhone}
             ></input>
           </div>
@@ -174,14 +168,14 @@ const NewRegistration = () => {
               Whatsapp
             </label>
             <Checkbox
-              checked={isWhatsapp}
+              checked={mobileIsWhatsapp}
               onChange={onChangeIsWhatsapp}
               inputProps={{ "aria-label": "controlled" }}
             />
           </div>
         </div>
         <img src="Images/Line18.png" className="my-5" alt="line" />
-        <div className="grid grid-cols-[25%_27%]">
+        <div className="grid grid-cols-[25%_26%]">
           <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
             Address
           </label>
@@ -209,7 +203,7 @@ const NewRegistration = () => {
           </label>
           <input
             type="text"
-            className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md"
+            className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
             onChange={onChangeTotalLandArea}
           ></input>
         </div>
@@ -224,7 +218,7 @@ const NewRegistration = () => {
             sx={{ width: 340 }}
             options={PlantationOption}
             autoHighlight
-            getOptionLabel={(option) => option.value}
+            getOptionLabel={(option) => option.label}
             renderInput={(params) => (
               <TextField
                 {...params}

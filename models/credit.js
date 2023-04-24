@@ -6,6 +6,11 @@ const CreditSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    creditAmount: {
+      type: String,
+      required: true,
+      default: "0",
+    },
     reason: {
       type: String,
       required: true,
@@ -37,17 +42,17 @@ const CreditSchema = new mongoose.Schema(
     farmerId: mongoose.Types.ObjectId,
     paymentStatus: {
       type: String,
-      enum: ["PAID", "UNPAID","PARTIAL_PAID"],
+      enum: ["PAID", "UNPAID", "PARTIAL_PAID"],
       default: "UNPAID",
     },
-    paymentMethod:{
-      type:String
+    paymentMethod: {
+      type: String,
     },
-    paidAmount:{
-      type:String
+    paidAmount: {
+      type: String,
     },
-    remainingPayableAmount:{
-      type:String
+    remainingPayableAmount: {
+      type: String,
     },
   },
   { timestamps: true }

@@ -119,7 +119,7 @@ const CropHealth = () => {
 
   return (
     <div>
-      <Header title="Crop Advisary" subtitle="Crop Health" />
+      <Header title="Crop Advisory" subtitle="Crop Health" />
       <section className="p-[1%] grid gap-y-1 mt-5">
         <div
           className=" "
