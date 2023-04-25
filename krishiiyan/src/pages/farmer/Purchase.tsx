@@ -85,7 +85,7 @@ const Purchase = () => {
               <p className="text-[#000000]   text-start">
                 Area :{" "}
                 <span className="text-[#FB0404] font-bold">
-                  {farmerDetail?.address?.state}
+                  {farmerDetail?.address?.city}
                 </span>
               </p>
             </div>

@@ -10,6 +10,8 @@ import NatrientTable from "./NatrientTable";
 import CropProtectionSec from "./cropProtection/CropProtectionSec";
 import IrrigationTable from "./IrrigationTable";
 import "./ProductReq.css";
+import Hervest from "./cropProtection/Hervest";
+import Faq from "./cropProtection/Faq";
 
 const PlantationOptions = [
   {
@@ -40,6 +42,8 @@ const CropLibrary = () => {
   const [cropProtection, setCropProtection] = useState(false);
   const [irrigation, SetIrrigation] = useState(false);
   const [plantationType, setPlantationType] = useState("");
+  const [harvest, setHarvest] = useState(false);
+  const [faq, setFaq] = useState(false);
 
   const onClickGeneral = () => {
     setGeneral(true);
@@ -48,6 +52,8 @@ const CropLibrary = () => {
     setNatrient(false);
     setCropProtection(false);
     SetIrrigation(false);
+    setHarvest(false);
+    setFaq(false);
   };
   const onClickvarietyTab = () => {
     setGeneral(false);
@@ -56,6 +62,8 @@ const CropLibrary = () => {
     setNatrient(false);
     setCropProtection(false);
     SetIrrigation(false);
+    setHarvest(false);
+    setFaq(false);
   };
   const onClickrequirement = () => {
     setGeneral(false);
@@ -64,6 +72,8 @@ const CropLibrary = () => {
     setNatrient(false);
     setCropProtection(false);
     SetIrrigation(false);
+    setHarvest(false);
+    setFaq(false);
   };
   const onClicknitrient = () => {
     setGeneral(false);
@@ -72,6 +82,8 @@ const CropLibrary = () => {
     setNatrient(true);
     setCropProtection(false);
     SetIrrigation(false);
+    setHarvest(false);
+    setFaq(false);
   };
   const onClicCropProtection = () => {
     setGeneral(false);
@@ -80,6 +92,8 @@ const CropLibrary = () => {
     setNatrient(false);
     setCropProtection(true);
     SetIrrigation(false);
+    setHarvest(false);
+    setFaq(false);
   };
   const onClickIrrigation = () => {
     setGeneral(false);
@@ -88,6 +102,28 @@ const CropLibrary = () => {
     setNatrient(false);
     setCropProtection(false);
     SetIrrigation(true);
+    setHarvest(false);
+    setFaq(false);
+  };
+  const onClickHervest = () => {
+    setGeneral(false);
+    setVarietyTab(false);
+    setRequirement(false);
+    setNatrient(false);
+    setCropProtection(false);
+    SetIrrigation(false);
+    setHarvest(true);
+    setFaq(false);
+  };
+  const onClickFaq = () => {
+    setGeneral(false);
+    setVarietyTab(false);
+    setRequirement(false);
+    setNatrient(false);
+    setCropProtection(false);
+    SetIrrigation(false);
+    setHarvest(false);
+    setFaq(true);
   };
 
   const getCrops = async () => {
@@ -156,6 +192,7 @@ const CropLibrary = () => {
   //     // setLong(position.coords.longitude);
   //   });
 
+  console.log("");
   return (
     <div>
       <Header title="Crop Advisory" subtitle="Crop Library" />
@@ -234,7 +271,7 @@ const CropLibrary = () => {
               onClick={onSubmit}
               className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
             >
-              submit
+              Submit
             </button>
           )}
         </div>
@@ -340,7 +377,7 @@ const CropLibrary = () => {
                   </button>
                   <button
                     onClick={() => {
-                      onClickIrrigation();
+                      onClickHervest();
                       setOpenTab("Harvest");
                     }}
                     className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
@@ -351,7 +388,7 @@ const CropLibrary = () => {
                   </button>
                   <button
                     onClick={() => {
-                      onClickrequirement();
+                      onClickFaq();
                       setOpenTab("FAQ");
                     }}
                     className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
@@ -413,38 +450,26 @@ const CropLibrary = () => {
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
                       >
-                        <table
+                        {/* <table
                           className="table-auto border border-black border-collapse"
                           style={{ width: "50%" }}
                         >
                           <tr className="text-[#13490A] font-normal text-sm w-auto">
-                            <td
-                              className="border border-black w-[28%]"
-                              style={{ padding: "15px" }}
-                            >
-                              <span
-                                className="text-[#13490A] font-bold text-sm"
-                                style={{ fontSize: "20px" }}
-                              >
+                            <td className="border border-black w-[28%] p-[10px]">
+                              <span className="text-[#13490A] font-bold text-base">
                                 Parameter
                               </span>
                             </td>
                             <td className="border border-black w-[28%]">
-                              <span
-                                className="text-[#13490A] font-bold text-sm"
-                                style={{ fontSize: "20px" }}
-                              >
+                              <span className="text-[#13490A] font-bold text-base p-[10px]">
                                 Speafication
                               </span>{" "}
                             </td>
                           </tr>
                           <tr className="text-[#13490A] font-normal text-sm">
-                            <td
-                              className="border border-black w-[28%]"
-                              style={{ textAlign: "start" }}
-                            >
-                              <span className="text-[#13490A] font-bold text-sm">
-                                Season
+                            <td className="border border-black w-[28%] text-start">
+                              <span className="text-[#13490A] font-bold text-sm pl-2">
+                                Kharif (Sowing Month)
                               </span>{" "}
                             </td>
                             <td className="border border-black">
@@ -458,17 +483,13 @@ const CropLibrary = () => {
                               className="border border-black w-[28%]"
                               style={{ textAlign: "start" }}
                             >
-                              <span className="text-[#13490A] font-bold text-sm">
-                                Temperature
+                              <span className="text-[#13490A] font-bold text-sm pl-2">
+                                Rabi (Sowing Month)
                               </span>
                             </td>
                             <td className="border border-black" colSpan={Col}>
                               <span className="text-[#13490A] font-bold text-sm"></span>
                               <p>{obj.temperature} </p>
-
-                              {/* {obj.varieties.map((i: any) => (
-                              <>{i} , </>
-                            ))} */}
                             </td>
                           </tr>
 
@@ -477,17 +498,13 @@ const CropLibrary = () => {
                               className="border border-black w-[28%]"
                               style={{ textAlign: "start" }}
                             >
-                              <span className="text-[#13490A] font-bold text-sm">
-                                Rainfall requirement
+                              <span className="text-[#13490A] font-bold text-sm pl-2">
+                                Zaid (Sowing Month)
                               </span>
                             </td>
                             <td className="border border-black" colSpan={Col}>
                               <span className="text-[#13490A] font-bold text-sm"></span>
                               <p>{obj.rainfall} </p>
-
-                              {/* {obj.varieties.map((i: any) => (
-                              <>{i} , </>
-                            ))} */}
                             </td>
                           </tr>
                           <tr className="text-[#13490A] font-normal text-sm">
@@ -495,8 +512,8 @@ const CropLibrary = () => {
                               className="border border-black w-[28%]"
                               style={{ textAlign: "start" }}
                             >
-                              <span className="text-[#13490A] font-bold text-sm">
-                                Recommend soil
+                              <span className="text-[#13490A] font-bold text-sm pl-2">
+                                Optimum temperature ( ° C) for growing
                               </span>{" "}
                             </td>
                             <td className="border border-black">
@@ -510,7 +527,37 @@ const CropLibrary = () => {
                               className="border border-black w-[28%]"
                               style={{ textAlign: "start" }}
                             >
-                              <span className="text-[#13490A] font-bold text-sm">
+                              <span className="text-[#13490A] font-bold text-sm pl-2">
+                                Rainfall requirement (mm)
+                              </span>
+                            </td>
+                            <td className="border border-black">
+                              <span className="text-[#13490A] font-bold text-sm"></span>
+                              <p>{obj.ph}</p>
+                            </td>
+                          </tr>
+
+                          <tr className="text-[#13490A] font-normal text-sm">
+                            <td
+                              className="border border-black w-[28%]"
+                              style={{ textAlign: "start" }}
+                            >
+                              <span className="text-[#13490A] font-bold text-sm pl-2">
+                                Recommended soil
+                              </span>
+                            </td>
+                            <td className="border border-black">
+                              <span className="text-[#13490A] font-bold text-sm"></span>
+                              <p>{obj.ph}</p>
+                            </td>
+                          </tr>
+
+                          <tr className="text-[#13490A] font-normal text-sm">
+                            <td
+                              className="border border-black w-[28%]"
+                              style={{ textAlign: "start" }}
+                            >
+                              <span className="text-[#13490A] font-bold text-sm pl-2">
                                 ph of the soil
                               </span>
                             </td>
@@ -520,22 +567,183 @@ const CropLibrary = () => {
                             </td>
                           </tr>
 
-                          {/* <tr className="h-10 border border-black">
-                          <th
-                            className="border border-black text-left"
-                            colSpan={Col2}
-                          >
-                            Key Market Details
-                          </th>
-                        </tr> */}
+                          <tr className="text-[#13490A] font-normal text-sm">
+                            <td
+                              className="border border-black w-[28%]"
+                              style={{ textAlign: "start" }}
+                            >
+                              <span className="text-[#13490A] font-bold text-sm pl-2">
+                                Spacing (row * plant )(cm *cm)
+                              </span>
+                            </td>
+                            <td className="border border-black">
+                              <span className="text-[#13490A] font-bold text-sm"></span>
+                              <p>{obj.ph}</p>
+                            </td>
+                          </tr>
+
+                          <tr className="text-[#13490A] font-normal text-sm">
+                            <td
+                              className="border border-black w-[28%]"
+                              style={{ textAlign: "start" }}
+                            >
+                              <span className="text-[#13490A] font-bold text-sm pl-2">
+                                Seed rate (kg/ acre)
+                              </span>
+                            </td>
+                            <td className="border border-black">
+                              <span className="text-[#13490A] font-bold text-sm"></span>
+                              <p>{obj.ph}</p>
+                            </td>
+                          </tr>
+
+                          <tr className="text-[#13490A] font-normal text-sm">
+                            <td
+                              className="border border-black w-[28%]"
+                              style={{ textAlign: "start" }}
+                            >
+                              <span className="text-[#13490A] font-bold text-sm pl-2">
+                                Average yield (Quintal /acre)
+                              </span>
+                            </td>
+                            <td className="border border-black">
+                              <span className="text-[#13490A] font-bold text-sm"></span>
+                              <p>{obj.ph}</p>
+                            </td>
+                          </tr>
+
+                          <tr className="text-[#13490A] font-normal text-sm">
+                            <td
+                              className="border border-black w-[28%]"
+                              style={{ textAlign: "start" }}
+                            >
+                              <span className="text-[black] font-bold text-sm pl-2">
+                                Intercrop details and pattern
+                              </span>
+                            </td>
+                            <td className="border border-black">
+                              <span className="text-[#13490A] font-bold text-sm"></span>
+                              <p>{obj.ph}</p>
+                            </td>
+                          </tr>
+                        </table> */}
+
+                        <table className="table-auto border-collapse border border-black font-bold text-base w-[60%] mx-auto">
+                          <thead className="border-b border-black">
+                            <tr className="text-center">
+                              <th className="border-r border-black py-[1.2%] text-lg">
+                                Parameter
+                              </th>
+                              <th className="border-r border-black py-[1.2%] text-lg">
+                                Speafication
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {/* Stage1 */}
+                            <tr className="h-10 border-b border-black">
+                              <td className="border-r border-black text-start pl-2 font-semibold pr-2 ">
+                                Kharif (Sowing Month)
+                              </td>
+
+                              <td className="border-r border-black font-thin">
+                                {/* {farmerDetail?.totalLandArea || "-"} */}
+                                {obj.generalInformation.Kharif}
+                              </td>
+                            </tr>
+                            <tr className="h-10 border-b border-black">
+                              <td className="border-r border-black text-start pl-2 pr-2">
+                                Rabi (Sowing Month)
+                              </td>
+
+                              <td className="border-r border-black font-thin">
+                                {obj.generalInformation.Rabi}
+                              </td>
+                            </tr>
+                            <tr className="h-10 border-b border-black">
+                              <td className="border-r border-black text-start pl-2 pr-2">
+                                Zaid (Sowing Month)
+                              </td>
+
+                              <td className="border-r border-black font-thin">
+                                {obj.generalInformation.Zaid}
+                              </td>
+                            </tr>
+                            <tr className="h-10 border-b border-black">
+                              <td className="border-r border-black text-start pl-2 pr-2">
+                                Optimum temperature ( ° C) for growing
+                              </td>
+
+                              <td className="border-r border-black font-thin">
+                                {obj.generalInformation.Optimum_temperature}
+                              </td>
+                            </tr>
+                            <tr className="h-10 border-b border-black">
+                              <td className="border-r border-black text-start pl-2 pr-2">
+                                Rainfall requirement (mm)
+                              </td>
+
+                              <td className="border-r border-black font-thin pr-2">
+                                {obj.generalInformation.Rainfall_requirement}
+                              </td>
+                            </tr>
+                            <tr className="h-10 border-b border-black">
+                              <td className="border-r border-black text-start pl-2 pr-2">
+                                Recommended soil
+                              </td>
+
+                              <td className="border-r border-black font-thin pr-2">
+                                {obj.generalInformation.Recommended_soil}
+                              </td>
+                            </tr>
+                            <tr className="h-10 border-b border-black">
+                              <td className="border-r border-black text-start pl-2 pr-2">
+                                pH of the soil
+                              </td>
+
+                              <td className="border-r border-black font-thin">
+                                {obj.generalInformation.pH_soil}
+                              </td>
+                            </tr>
+                            <tr className="h-10 border-b border-black">
+                              <td className="border-r border-black text-start pl-2 pr-2">
+                                Spacing (row * plant )(cm *cm)
+                              </td>
+
+                              <td className="border-r border-black font-thin">
+                                {obj.generalInformation.Spacing}
+                              </td>
+                            </tr>
+                            <tr className="h-10 border-b border-black">
+                              <td className="border-r border-black text-start pl-2 pr-2">
+                                Seed rate (kg/ acre)
+                              </td>
+
+                              <td className="border-r border-black font-thin">
+                                {obj.generalInformation.Seed_rate}
+                              </td>
+                            </tr>
+                            <tr className="h-10 border-b border-black">
+                              <td className="border-r border-black text-start pl-2 pr-2">
+                                Average yield (Quintal /acre)
+                              </td>
+
+                              <td className="border-r border-black font-thin">
+                                {obj.generalInformation.Average_yield}
+                              </td>
+                            </tr>
+                            <tr className="h-10 border-b border-black">
+                              <td className="border-r border-black text-start pl-2 pr-2">
+                                Intercrop details and pattern
+                              </td>
+
+                              <td className="border-r border-black font-thin">
+                                {obj.generalInformation.Intercrop}
+                              </td>
+                            </tr>
+                          </tbody>
                         </table>
                       </div>
-
-                      {/* <table className="border-collapse">
-                        <td className="text-sm  border border- p-4">
-                          {obj?.description}
-                        </td>
-                      </table> */}
                     </>
                   ) : (
                     <></>
@@ -543,7 +751,7 @@ const CropLibrary = () => {
 
                   {varietyTab ? (
                     <>
-                      <ProductionVarContent />
+                      <ProductionVarContent crop={obj} />
                     </>
                   ) : (
                     <></>
@@ -558,21 +766,24 @@ const CropLibrary = () => {
                   )}
                   {natrient ? (
                     <>
-                      <NatrientTable />
+                      <NatrientTable crop={obj} />
                     </>
                   ) : (
                     <></>
                   )}
                   {cropProtection ? (
                     <>
-                      <CropProtectionSec />
+                      <CropProtectionSec crop={obj} />
                     </>
                   ) : (
                     <></>
                   )}
+                  {harvest ? <Hervest crop={obj} /> : <></>}
+                  {faq ? <Faq crop={obj} /> : <></>}
+
                   {irrigation ? (
                     <>
-                      <IrrigationTable />
+                      <IrrigationTable crop={obj} />
                     </>
                   ) : (
                     <></>

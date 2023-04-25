@@ -13,6 +13,7 @@ const Dashboard = () => {
   const [currentCultivation, setCurrentCultivation] = useState<any>();
   const [fetchData, setFetchData] = useState(false);
   const [dasTable, setDasTable] = useState(false);
+  const [tableSize, setTableSize] = useState(5);
 
   const onChangeInput = (e: any) => {
     setFarmerID(e.target.value);
@@ -58,7 +59,14 @@ const Dashboard = () => {
           res?.data?.farmerCultivationData[
             res?.data?.farmerCultivationData.length - 1
           ];
-        setCurrentCultivation(current_cultivation);
+        // setCurrentCultivation(current_cultivation);
+
+        setCurrentCultivation((prevState: any) => {
+          const currentCultivations = res?.data?.farmerCultivationData;
+          return currentCultivations
+            ? currentCultivations.slice(0, tableSize)
+            : prevState;
+        });
       }
     };
     getCultivationData();
@@ -126,7 +134,7 @@ const Dashboard = () => {
               <p className="text-[#000000] text-start">
                 Area :{" "}
                 <span className="text-[#FB0404] font-bold">
-                  {farmerDetail?.address?.street}
+                  {farmerDetail?.address?.city}
                 </span>
               </p>
             </div>
@@ -168,7 +176,7 @@ const Dashboard = () => {
                           <th className="border-r border-black py-[1.2%]">
                             {farmerDetail
                               ? moment(farmerDetail?.createdAt).format(
-                                  "MM/DD/YYYY"
+                                  "DD/MM/YYYY"
                                 )
                               : "-"}
                           </th>
@@ -193,7 +201,7 @@ const Dashboard = () => {
                           <td className="border-r border-black">
                             {farmerDetail
                               ? moment(farmerDetail?.updatedAt).format(
-                                  "MM/DD/YYYY"
+                                  "DD/MM/YYYY"
                                 )
                               : "-"}
                           </td>
@@ -215,7 +223,7 @@ const Dashboard = () => {
 
                   {/* Current Cultivation */}
 
-                  {
+                  {currentCultivation && (
                     <table className="table-auto border-collapse border border-black font-bold text-base w-[50%] mx-auto">
                       <thead className="border-b border-black">
                         <tr className="text-center ">
@@ -245,32 +253,90 @@ const Dashboard = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {/* Stage1 */}
-                        <tr className="h-10 border-b border-black">
-                          <td className="border-r border-black">
-                            {currentCultivation ? 1 : "-"}
-                          </td>
-
-                          <td className="border-r border-black">
-                            {currentCultivation?.crop || "-"}
-                          </td>
-                          <td className="border-r border-black">
-                            {currentCultivation?.area || "-"}
-                          </td>
-                          <td className="border-r border-black">
-                            {currentCultivation?.dateOfSowing
-                              ? moment(currentCultivation?.dateOfSowing).format(
-                                  "MM/DD/YYYY"
-                                )
-                              : "-"}
-                          </td>
-                          <td className="border-r border-black">
-                            {currentCultivation ? "YES" : "-"}
-                          </td>
-                        </tr>
+                        {currentCultivation.map(
+                          (cultivation: any, index: number) => (
+                            <tr className="h-10 border-b border-black">
+                              <td className="border-r border-black">
+                                {/* {currentCultivation ? 1 : "-"} */}
+                                {index + 1 || "-"}
+                              </td>
+                              <td className="border-r border-black">
+                                {/* {currentCultivation?.crop || "-"} */}
+                                {cultivation?.crop || "-"}
+                              </td>
+                              <td className="border-r border-black">
+                                {cultivation?.area || "-"}
+                              </td>
+                              <td className="border-r border-black">
+                                {cultivation?.dateOfSowing
+                                  ? moment(cultivation?.dateOfSowing).format(
+                                      "DD/MM/YYYY"
+                                    )
+                                  : "-"}
+                              </td>
+                              <td className="border-r border-black">
+                                {currentCultivation ? "In-progress" : "-"}
+                              </td>
+                            </tr>
+                          )
+                        )}
                       </tbody>
                     </table>
-                  }
+                  )}
+
+                  {/* {currentCultivation && (
+                    <div className="mt-10">
+                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                        Cultivation Details
+                      </h3>
+                      <table className="min-w-full leading-normal">
+                        <thead>
+                          <tr>
+                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Crop Name
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Start Date
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              End Date
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {currentCultivation.map(
+                            (cultivation: any, index: number) => (
+                              <tr key={index}>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <div className="flex items-center">
+                                    <div className="ml-3">
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {cultivation.cropName}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {moment(cultivation.startDate).format(
+                                      "YYYY-MM-DD"
+                                    )}
+                                  </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {moment(cultivation.endDate).format(
+                                      "YYYY-MM-DD"
+                                    )}
+                                  </p>
+                                </td>
+                              </tr>
+                            )
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  )} */}
                 </div>
 
                 <div className="flex lg:gap-x-[5%] xl:gap-x-[5%] w-full ">
@@ -329,7 +395,7 @@ const Dashboard = () => {
                             className="border-b border-black py-[1.2%] "
                             colSpan={5}
                           >
-                            Issues resolved
+                            Issues Resolved
                           </th>
                         </tr>
                         <tr className="text-center">

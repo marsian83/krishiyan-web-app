@@ -375,19 +375,72 @@ router.post("/credit-eligible-amount", async (req, res) => {
 //   return (total * Math.pow(interestRate, years)).toFixed(roundToPlaces);
 // };
 
+// const calculateMonthlyInterest = function (p, r, n) {
+//   // let rate = (r * p) / 100;
+//   let rate = r / 12 / 100;
+//   let interest = (
+//     (p * rate * Math.pow(1 + rate, n)) /
+//     (Math.pow(1 + rate, n) - 1)
+//   ).toFixed(4);
+//   const totalPayableAmount = interest * n;
+//   const totalInterestAmount = totalPayableAmount - p;
+
+//   return {
+//     MonthlyInterest: interest,
+//     TotalPayableAmount: totalPayableAmount.toFixed(4),
+//     TotalInterestAmount: totalInterestAmount.toFixed(4),
+//   };
+// };
+
+// //Calculate Interest rate amount on eligible amount
+// router.post("/credit-amount-info", async (req, res) => {
+//   const { amount, period, rate, reason } = req.body;
+//   try {
+//     // let total_payable_amount = calculateInterestAmount(amount, period, rate, 3);
+//     // let interest_amount = total_payable_amount - amount;
+//     const status = await Farmer.findOne({ reason });
+
+//     let InterestInfo = calculateMonthlyInterest(amount, rate, period);
+
+//     //Due Date
+//     function addMonths(date, months) {
+//       date.setMonth(date.getMonth() + months);
+//       return date;
+//     }
+//     let due_date = addMonths(new Date(), period);
+
+//     res.status(200).json({
+//       TotalPayableAmount: InterestInfo.TotalPayableAmount,
+//       InterestAmount: InterestInfo.TotalInterestAmount,
+//       DueDate: moment(due_date).format("DD/MM/YYYY"),
+//       LoanEMI: InterestInfo.MonthlyInterest,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({
+//       message: error,
+//     });
+//   }
+// });
+
 const calculateMonthlyInterest = function (p, r, n) {
-  let rate = r / 12 / 100;
-  let interest = (
-    (p * rate * Math.pow(1 + rate, n)) /
-    (Math.pow(1 + rate, n) - 1)
-  ).toFixed(4);
-  const totalPayableAmount = interest * n;
-  const totalInterestAmount = totalPayableAmount - p;
+  // let rate = r / 12; // convert annual rate to monthly rate
+  // let interest = (
+  //   (p * rate * Math.pow(1 + rate, n)) /
+  //   (Math.pow(1 + rate, n) - 1)
+  // ).toFixed(4);
+  // console.log(interest);
+  // const totalPayableAmount = (interest * n).toFixed(4);
+  // const totalInterestAmount = (totalPayableAmount - p).toFixed(4);
+
+  const totalPayableAmount = (p * (1 + (r / 100) * (n / 12))).toFixed(4);
+  const totalInterestAmount = (totalPayableAmount - p).toFixed(4);
+  const interest = 1;
 
   return {
     MonthlyInterest: interest,
-    TotalPayableAmount: totalPayableAmount.toFixed(4),
-    TotalInterestAmount: totalInterestAmount.toFixed(4),
+    TotalPayableAmount: totalPayableAmount,
+    TotalInterestAmount: totalInterestAmount,
   };
 };
 
@@ -395,23 +448,39 @@ const calculateMonthlyInterest = function (p, r, n) {
 router.post("/credit-amount-info", async (req, res) => {
   const { amount, period, rate, reason } = req.body;
   try {
-    // let total_payable_amount = calculateInterestAmount(amount, period, rate, 3);
-    // let interest_amount = total_payable_amount - amount;
     const status = await Farmer.findOne({ reason });
 
-    let InterestInfo = calculateMonthlyInterest(amount, rate, period);
+    let InterestInfo = calculateMonthlyInterest(
+      parseFloat(amount),
+      parseFloat(rate),
+      parseInt(period)
+    );
 
     //Due Date
-    function addMonths(date, months) {
-      date.setMonth(date.getMonth() + months);
+    function addMonths(date, monthsToAdd) {
+      if (isNaN(monthsToAdd)) return date;
+      let months = date.getMonth();
+      let year = date.getFullYear();
+      months += monthsToAdd;
+      if (months > 11) {
+        year += Math.floor(months / 12);
+        months = months % 12;
+      }
+      date.setMonth(months);
+      date.setFullYear(year);
       return date;
     }
-    let due_date = addMonths(new Date(), period);
+    let due_date = addMonths(new Date(), parseInt(period));
 
     res.status(200).json({
       TotalPayableAmount: InterestInfo.TotalPayableAmount,
       InterestAmount: InterestInfo.TotalInterestAmount,
-      DueDate: moment(due_date).format("DD/MM/YYYY"),
+      DueDate: due_date.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+      }),
+      // DueDate: moment(due_date).format("DD/MM/YYYY"),
       LoanEMI: InterestInfo.MonthlyInterest,
     });
   } catch (error) {
@@ -503,7 +572,7 @@ router.post("/credits-data", async (req, res) => {
     const farmer = await Farmer.findById(farmerId);
     if (!farmer) return res.status(400).json({ msg: "Farmer does not exist." });
 
-    console.log(farmer.creditData);
+    // console.log(farmer.creditData);
     const page = req.query.page;
     const size = req.query.size ? parseInt(req.query.size) : 10;
     const skip = (page - 1) * size;
@@ -521,6 +590,40 @@ router.post("/credits-data", async (req, res) => {
     });
   }
 });
+
+// router.get("/credits-bill", async (req, res) => {
+//   try {
+//     const { farmerId } = req.body;
+//     const farmer = await Farmer.findById(farmerId);
+//     if (!farmer) return res.status(400).json({ msg: "Farmer does not exist." });
+//     let farmerCreditData = await Credit.find()
+//       .where("_id")
+//       .in(farmer.creditData);
+
+//     res.json({ farmerCreditData });
+//   } catch (error) {
+//     res.status(500).json({
+//       message: error,
+//     });
+//   }
+// });
+
+// router.post("/credits-bill", async (req, res) => {
+//   try {
+//     const { farmerId } = req.body;
+//     const farmer = await Farmer.findById(farmerId);
+//     if (!farmer) return res.status(400).json({ msg: "Farmer does not exist." });
+//     let farmerCreditData = await Credit.find({
+//       _id: { $in: farmer.creditData },
+//       status: { $in: ["PARTIAL_PAID"] },
+//     });
+//     res.json({ farmerCreditData });
+//   } catch (error) {
+//     res.status(500).json({
+//       message: error,
+//     });
+//   }
+// });
 
 //Pay Credit
 router.post("/pay-credit", async (req, res) => {
