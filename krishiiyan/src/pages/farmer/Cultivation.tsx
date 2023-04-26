@@ -132,6 +132,26 @@ const Cultivation = () => {
     }
   };
 
+  const onChangeHarvestStatus = async (
+    status: string,
+    cultivationId: string
+  ) => {
+    const [err, res] = await Api.updateHarvestStatus(cultivationId, status);
+    if (res) {
+      const [err, res] = await Api.getFarmerCultivationData(farmerDetail?._id);
+      if (res) {
+        setOldCultivation(res?.data?.farmerCultivationData);
+      }
+    }
+  };
+
+  // useEffect(()=>{
+  //   if(oldCultivation && !Array.isArray(oldCultivation)) return;
+  //   oldCultivation.forEach((cultivation:any) => {
+
+  //   });
+  // },[oldCultivation])
+
   //Get Farmer Cultivations
   useEffect(() => {
     const init = async () => {
@@ -143,10 +163,6 @@ const Cultivation = () => {
         //   ];
         // setCurrentCultivation(current_cultivation);
         setOldCultivation(res?.data?.farmerCultivationData);
-        console.log(
-          res?.data?.farmerCultivationData,
-          "res?.data?.farmerCultivationData"
-        );
       }
     };
     init();
@@ -606,14 +622,19 @@ const Cultivation = () => {
                           </td>
                           <td className="border-r border-black font-thin">
                             <select
-                              value={cultivation?.dateOfSowing}
+                              value={cultivation?.harvestStatus}
                               id="countries"
                               className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) text-black w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 text-sm font-thin"
-                              // onChange={onChangeCreditNum}
+                              onChange={(e) =>
+                                onChangeHarvestStatus(
+                                  e.target.value,
+                                  cultivation._id
+                                )
+                              }
                             >
-                              <option value="progress">In-progress </option>
+                              <option value="In-progress">In-progress </option>
 
-                              <option value="done">Done</option>
+                              <option value="Done">Done</option>
                             </select>
                           </td>
                         </tr>

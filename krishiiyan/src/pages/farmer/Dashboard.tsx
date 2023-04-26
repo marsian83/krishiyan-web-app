@@ -52,21 +52,34 @@ const Dashboard = () => {
 
   //Get Farmer Cultivations
   useEffect(() => {
+    // const getCultivationData = async () => {
+    //   const [err, res] = await Api.getFarmerCultivationData(farmerDetail?._id);
+    //   if (res) {
+    //     let current_cultivation =
+    //       res?.data?.farmerCultivationData[
+    //         res?.data?.farmerCultivationData.length - 1
+    //       ];
+    //     // setCurrentCultivation(current_cultivation);
+
+    //     setCurrentCultivation((prevState: any) => {
+    //       const currentCultivations = res?.data?.farmerCultivationData;
+    //       return currentCultivations
+    //         ? currentCultivations.slice(0, tableSize)
+    //         : prevState;
+    //     });
+    //   }
+    // };
+
     const getCultivationData = async () => {
       const [err, res] = await Api.getFarmerCultivationData(farmerDetail?._id);
       if (res) {
-        let current_cultivation =
-          res?.data?.farmerCultivationData[
-            res?.data?.farmerCultivationData.length - 1
-          ];
-        // setCurrentCultivation(current_cultivation);
-
-        setCurrentCultivation((prevState: any) => {
-          const currentCultivations = res?.data?.farmerCultivationData;
-          return currentCultivations
-            ? currentCultivations.slice(0, tableSize)
-            : prevState;
-        });
+        const currentCultivations = res?.data?.farmerCultivationData;
+        const inProgressHarvest = currentCultivations
+          .filter(
+            (cultivation: any) => cultivation.harvestStatus === "In-progress"
+          )
+          .slice(0, 5);
+        setCurrentCultivation(inProgressHarvest);
       }
     };
     getCultivationData();
@@ -275,7 +288,7 @@ const Dashboard = () => {
                                   : "-"}
                               </td>
                               <td className="border-r border-black">
-                                {currentCultivation ? "In-progress" : "-"}
+                                {cultivation?.harvestStatus || "-"}
                               </td>
                             </tr>
                           )

@@ -206,6 +206,32 @@ router.post("/cultivation-data", async (req, res) => {
       .where("_id")
       .in(farmer.cultivationData);
     res.json({ farmerCultivationData });
+    farmerCultivationData.forEach(async (cultivation) => {
+      const crop = await Crop.findOne({ localName: cultivation.crop });
+      const cropCycle = crop.cropCycle;
+      const diffTime = Math.abs(new Date() - cultivation.dateOfSowing);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      if (diffDays > parseInt(cropCycle)) {
+        cultivation.harvestStatus = "Done";
+        await cultivation.save();
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+});
+
+// update harvest status
+router.post("/harvest-status", async (req, res) => {
+  try {
+    const { cultivationId, harvestStatus } = req.body;
+    const cultivation = await FarmerCultivation.findById(cultivationId);
+    if (!cultivation)
+      return res.status(400).json({ msg: "Cultivation does not exist." });
+
+    cultivation.harvestStatus = harvestStatus;
+    await cultivation.save();
+    res.json({ message: "Status updated successfully." });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
@@ -626,6 +652,78 @@ router.post("/credits-data", async (req, res) => {
 // });
 
 //Pay Credit
+// router.post("/pay-credit", async (req, res) => {
+//   try {
+//     const { billNumber, payableAmount, paymentMethod } = req.body;
+//     const credit = await Credit.findOne({ billNumber });
+//     if (!credit) return res.status(404).json({ msg: "Tx not found" });
+
+//     let payment_status;
+//     let total_paid_amount;
+//     let remaining_payable_amount;
+//     let interest_amount;
+
+//     if (payableAmount === credit.totalPayableAmount) {
+//       payment_status = "PAID";
+//     } else if (payableAmount === 0) {
+//       payment_status = "UNPAID";
+//     } else if (
+//       payableAmount !== credit.totalPayableAmount &&
+//       payableAmount != 0
+//     ) {
+//       payment_status = "PARTIAL_PAID";
+//       let start_date = new Date();
+//       let payment_date = moment(start_date).format("DD/MM/YYYY");
+//       let payment_due_date = credit.dueDate;
+
+//       var dateRegex = /\d+/g;
+//       var date1Array = payment_date.match(dateRegex);
+//       var date2Array = payment_due_date.match(dateRegex);
+
+//       var startDate = new Date(date1Array[2], date1Array[1], date1Array[0]);
+//       var endDate = new Date(date2Array[2], date2Array[1], date2Array[0]);
+
+//       var diffResult = Math.round(
+//         (endDate - startDate) / (1000 * 60 * 60 * 24)
+//       );
+
+//       var months = Math.floor(diffResult / 30);
+
+//       let pricipal_amount =
+//         Number(credit.totalPayableAmount) - Number(payableAmount);
+
+//       let pricipal_rate = credit.interestRate;
+
+//       let InterestInfo = calculateMonthlyInterest(
+//         pricipal_amount,
+//         pricipal_rate,
+//         months
+//       );
+//       total_paid_amount = Number(credit.paidAmount) + Number(payableAmount);
+//       remaining_payable_amount = InterestInfo.TotalPayableAmount;
+//       interest_amount = InterestInfo.TotalInterestAmount;
+//     }
+//     let updateCreditInfoFields = {};
+//     updateCreditInfoFields.paymentStatus = payment_status;
+//     updateCreditInfoFields.remainingPayableAmount = remaining_payable_amount;
+//     updateCreditInfoFields.paymentMethod = paymentMethod;
+//     updateCreditInfoFields.interestAmount = interest_amount;
+//     updateCreditInfoFields.paidAmount = total_paid_amount;
+
+//     let updateCreditInfo = await Credit.findByIdAndUpdate(
+//       { _id: credit._id },
+//       { $set: updateCreditInfoFields },
+//       { new: true, upsert: true, setDefaultsOnInsert: true }
+//     );
+//     console.log(updateCreditInfo, "updateCreditInfo");
+//     res.send(updateCreditInfo);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({
+//       message: error,
+//     });
+//   }
+// });
 router.post("/pay-credit", async (req, res) => {
   try {
     const { billNumber, payableAmount, paymentMethod } = req.body;
@@ -633,6 +731,7 @@ router.post("/pay-credit", async (req, res) => {
     if (!credit) return res.status(404).json({ msg: "Tx not found" });
 
     let payment_status;
+    let total_paid_amount;
     let remaining_payable_amount;
     let interest_amount;
 
@@ -664,29 +763,52 @@ router.post("/pay-credit", async (req, res) => {
 
       let pricipal_amount =
         Number(credit.totalPayableAmount) - Number(payableAmount);
+      if (isNaN(pricipal_amount)) {
+        pricipal_amount = payableAmount;
+      }
 
       let pricipal_rate = credit.interestRate;
+      if (isNaN(pricipal_rate)) {
+        pricipal_rate = payableAmount;
+      }
 
       let InterestInfo = calculateMonthlyInterest(
         pricipal_amount,
         pricipal_rate,
         months
       );
+      if (isNaN(InterestInfo.TotalPayableAmount)) {
+        InterestInfo.TotalPayableAmount = 0;
+      }
+
+      total_paid_amount = Number(credit.paidAmount) + Number(payableAmount);
+      if (isNaN(total_paid_amount)) {
+        total_paid_amount = 0;
+      }
 
       remaining_payable_amount = InterestInfo.TotalPayableAmount;
+      if (isNaN(remaining_payable_amount)) {
+        remaining_payable_amount = 0;
+      }
+
       interest_amount = InterestInfo.TotalInterestAmount;
+      if (isNaN(interest_amount)) {
+        interest_amount = 0;
+      }
     }
     let updateCreditInfoFields = {};
     updateCreditInfoFields.paymentStatus = payment_status;
     updateCreditInfoFields.remainingPayableAmount = remaining_payable_amount;
     updateCreditInfoFields.paymentMethod = paymentMethod;
     updateCreditInfoFields.interestAmount = interest_amount;
+    updateCreditInfoFields.paidAmount = total_paid_amount;
 
     let updateCreditInfo = await Credit.findByIdAndUpdate(
       { _id: credit._id },
       { $set: updateCreditInfoFields },
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );
+    console.log(updateCreditInfo, "updateCreditInfo");
     res.send(updateCreditInfo);
   } catch (error) {
     console.log(error);

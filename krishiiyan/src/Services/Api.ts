@@ -1,7 +1,7 @@
 import * as axios from "axios";
 
-const apiURL = "http://35.77.226.139:5001/api";
-// const apiURL = "http://localhost:5001/api";
+// const apiURL = "http://35.77.226.139:5001/api";
+const apiURL = "http://localhost:5001/api";
 
 // "http://localhost:5001/api";   localhost
 //http://35.77.226.139:5001/api   Production url
@@ -248,6 +248,28 @@ export async function getFarmerCultivationData(farmerId: string) {
       url: `${apiURL}/farmer/cultivation-data`,
       data: {
         farmerId: farmerId,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+export async function updateHarvestStatus(
+  cultivationId: string,
+  harvestStatus: string
+) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/farmer/harvest-status`,
+      data: {
+        cultivationId,
+        harvestStatus,
       },
     };
     const response = await axios.default.request(axiosConfig);

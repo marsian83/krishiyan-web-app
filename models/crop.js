@@ -1151,6 +1151,7 @@ const CropSchema = new mongoose.Schema(
     cultivationStage: cultivation_stage, //Cultivation Stages
     rainfall: String,
     image: String,
+    cropCycle: { type: String, default: "120" },
     cropStage: crop_stage,
     generalInformation: general_Information,
     varietyInformation: variety_information,

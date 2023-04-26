@@ -23,6 +23,11 @@ const FarmerCultivationSchema = new mongoose.Schema(
       enum: ["RAINFALL", "CANAL", "Wetland", "Rain fed land"],
       default: "RAINFALL",
     },
+    harvestStatus: {
+      type: String,
+      enum: ["In-progress", "Done"],
+      default: "In-progress",
+    },
     fertilizer: {
       type: String,
       enum: ["ORGANIC", "INORGANIC", "HYBRID", "BOTH"],

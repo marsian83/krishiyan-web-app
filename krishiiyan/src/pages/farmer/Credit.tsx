@@ -439,10 +439,10 @@ const Credit = () => {
                         Payment Status
                       </th>
                       <th className="border-r border-black py-[1.2%]">
-                        Paid Amount
+                        Remaining Payable Amount
                       </th>
                       <th className="border-r border-black py-[1.2%]">
-                        Remaining Payable Amount
+                        Paid Amount
                       </th>
                       <th className="border-r border-black py-[1.2%]">
                         Payment Date
@@ -504,11 +504,8 @@ const Credit = () => {
                           )}
 
                           <td className="border-r border-black font-thin">
-                            {credit?.remainingPayableAmount
-                              ? (
-                                  credit?.totalPayableAmount -
-                                  credit?.remainingPayableAmount
-                                ).toFixed(2)
+                            {credit?.paidAmount
+                              ? parseFloat(credit.paidAmount).toFixed(2)
                               : "-"}
                           </td>
                           <td className="border-r border-black font-thin">
