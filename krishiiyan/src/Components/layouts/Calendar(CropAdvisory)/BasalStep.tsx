@@ -11,6 +11,24 @@ const BasalStep = (props: any) => {
         }}
       >
         <div>
+          <div style={{ display: "Flex", justifyContent: "space-between" }}>
+            <p>
+              Name Of the Stage:
+              <br />
+              {
+                props?.cropDetails?.cropStage[props.stage]?.Name_of_the_Stage
+                  ?.name
+              }
+            </p>
+            <img
+              style={{ width: "200px", height: "200px", marginRight: "20px" }}
+              src={
+                props?.cropDetails?.cropStage[props.stage]?.Name_of_the_Stage
+                  ?.image
+              }
+            />
+          </div>
+
           <p>
             Description:
             <br /> {props?.cropDetails?.cropStage[props.stage]?.Description}
@@ -18,18 +36,48 @@ const BasalStep = (props: any) => {
           <br />
           {/* <p>NutrientContains: </p>
           <br /> */}
-          <p>
-            Disease Infection: <br />
-            {
-              props?.cropDetails?.cropStage[props.stage]?.Disease_Infection
-                ?.Data
-            }
-          </p>
+          <div
+            className="text-[#13490A] font-extrabold mt-4 "
+            style={{
+              display: "flex",
+              textAlign: "left",
+            }}
+          >
+            <p>
+              Disease Infection: <br />
+              {
+                props?.cropDetails?.cropStage[props.stage]?.Disease_Infection
+                  ?.Data
+              }
+            </p>
+            <img
+              style={{ width: "200px", height: "200px", marginRight: "20px" }}
+              src={
+                props?.cropDetails?.cropStage[props.stage]?.Disease_Infection
+                  ?.image
+              }
+            />
+          </div>
+
           <br />
+          <div
+            className="text-[#13490A] font-extrabold mt-4 "
+            style={{
+              display: "flex",
+              textAlign: "left",
+            }}
+          ></div>
           <p>
             Pest Infestation: <br />
             {props?.cropDetails?.cropStage[props.stage]?.Pest_infestation?.Data}
           </p>
+          <img
+            style={{ width: "200px", height: "200px", marginRight: "20px" }}
+            src={
+              props?.cropDetails?.cropStage[props.stage]?.Pest_infestation
+                ?.image
+            }
+          />
           <br />
           <p>
             Fertilizer: <br />

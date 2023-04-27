@@ -20,14 +20,59 @@ const Credit = () => {
   const [page, setPage] = useState<any>(1);
   const [rows, setRows] = useState<any>([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [billData, setBillData] = useState<any>();
 
+  // const getFarmerCredits = async () => {
+  //   const [err, res] = await Api.getFarmerCreditData(farmerDetails?._id);
+  //   if (res) {
+  //     setFarmerCredits(res?.data?.farmerCreditData);
+  //     setRows(Math.ceil(res?.data?.total / 10));
+  //   }
+  // };
+  // const getFarmerCredits = async () => {
+  //   const [err, res] = await Api.getFarmerCreditData(farmerDetails?._id);
+  //   if (res) {
+  //     setFarmerCredits(res?.data?.farmerCreditData);
+  //     setRows(Math.ceil(res?.data?.total / 10));
+  //   }
+  //   if (res) {
+  //     const filteredData :any = res.data.farmerCreditData.filter(data =>
+  //       data.paymentStatus === 'UNPAID' || data.paymentStatus === 'PARTIAL_PAID'
+  //     );
+  //     setBillData(filteredData)
+  // };
   const getFarmerCredits = async () => {
     const [err, res] = await Api.getFarmerCreditData(farmerDetails?._id);
     if (res) {
-      setFarmerCredits(res?.data?.farmerCreditData);
-      setRows(Math.ceil(res?.data?.total / 10));
+      const farmerCreditData = res?.data?.farmerCreditData;
+      const filteredData = farmerCreditData.filter(
+        (data: any) =>
+          data.paymentStatus === "UNPAID" ||
+          data.paymentStatus === "PARTIAL_PAID"
+      );
+      setFarmerCredits(farmerCreditData);
+      setRows(Math.ceil(farmerCreditData.length / 10));
+      setBillData(filteredData);
     }
   };
+
+  // useEffect(() => {
+  //   const init = async () => {
+  //     await getFarmerBill();
+  //   };
+  //   init();
+  // }, [farmerMobile, farmerDetails]);
+
+  // const getFarmerCredits = async () => {
+  //   const [err, res] = await Api.getFarmerCreditData(farmerDetails?._id);
+  //   if (res) {
+  //     const filteredCredits = res?.data?.farmerCreditData.filter(
+  //       (credit: any) => credit.status === "PAID"
+  //     );
+  //     setFarmerCredits(filteredCredits);
+  //     setRows(Math.ceil(filteredCredits.length / 10));
+  //   }
+  // };
 
   useEffect(() => {
     const init = async () => {
@@ -108,7 +153,7 @@ const Credit = () => {
     setReasond(e.target.value);
   };
   //Pay Credit
-  const [amn_payable, set_amn_payable] = useState("");
+  const [amn_payable, set_amn_payable] = useState<any>("");
   const [payment_method, set_payment_method] = useState("cash");
 
   const onChangeAmountPayable = (e: any) => {
@@ -298,7 +343,7 @@ const Credit = () => {
               <p className="text-[#000000] font-bold text-start">
                 Area :{" "}
                 <span className="text-[#FB0404]">
-                  {farmerDetails?.address?.state}
+                  {farmerDetails?.address?.city}
                 </span>
               </p>
             </div>
@@ -363,7 +408,7 @@ const Credit = () => {
                 <table className="table-auto border-collapse border border-black font-bold text-base w-[96%] mx-auto">
                   <thead className="border-b border-black">
                     <tr className="text-center">
-                      <th className="border-r border-black py-[1.2%] pl-0.5 pr-0.5">
+                      <th className="border-r border-black py-[1.2%] pl-1 pr-1">
                         S.No
                       </th>
                       <th className="border-r border-black py-[1.2%]">
@@ -437,10 +482,10 @@ const Credit = () => {
                           <td className="border-r border-black font-thin">
                             {parseFloat(credit?.totalPayableAmount).toFixed(2)}
                           </td>
-                          <td className="border-r border-black pl-1 pr-1 font-thin">
+                          <td className="border-r border-black pl-2 pr-2 font-thin">
                             {credit?.dueDate}
                           </td>
-                          <td className="border-r border-black font-thin">
+                          <td className="border-r border-black pl-1 pr-1 font-thin">
                             {credit?.paymentStatus}
                           </td>
                           {credit?.remainingPayableAmount !== "" &&
@@ -452,16 +497,15 @@ const Credit = () => {
                             </td>
                           ) : (
                             <>
-                              <td className="border-r border-black font-thin"></td>
+                              <td className="border-r border-black font-thin">
+                                -
+                              </td>
                             </>
                           )}
 
                           <td className="border-r border-black font-thin">
-                            {credit?.remainingPayableAmount
-                              ? (
-                                  credit?.totalPayableAmount -
-                                  credit?.remainingPayableAmount
-                                ).toFixed(2)
+                            {credit?.paidAmount
+                              ? parseFloat(credit.paidAmount).toFixed(2)
                               : "-"}
                           </td>
                           <td className="border-r border-black font-thin">
@@ -626,7 +670,7 @@ const Credit = () => {
                   onChange={onChangeCreditNum}
                 >
                   <option selected>Choose Credit Number</option>
-                  {farmerCredits?.map((credit: any) => (
+                  {billData?.map((credit: any) => (
                     <option value={credit_details}>{credit?.billNumber}</option>
                   ))}
                 </select>
@@ -675,6 +719,16 @@ const Credit = () => {
                       onChange={onChangeAmountPayable}
                     />
                   </div>
+                  <div className="grid grid-cols-[70%_28%_15%] text-center items-center my-2">
+                    {/* {Number(eligibleAmount) > Number(farmerDetails?.creditLimit) ? ( */}
+                    {credit_details?.remainingPayableAmount <
+                    parseFloat(amn_payable).toFixed(2) ? (
+                      <p className="text-center font-smbold text-md text-[#ff0000]">
+                        Maximum Amount limit
+                      </p>
+                    ) : null}
+                  </div>
+
                   <div className="grid grid-cols-[25%_28%_15%] text-center items-center my-4">
                     <label className="text-[#13490A]  font-roboto font-extrabold text-sm mx-5">
                       Payment Method

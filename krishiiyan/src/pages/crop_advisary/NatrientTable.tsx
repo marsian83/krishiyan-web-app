@@ -1,90 +1,92 @@
-import React from "react";
+import React, { useState } from "react";
 
-const NatrientTable = () => {
+const NatrientTable = (props: any) => {
+  console.log(props, "it is natrient");
+  const [data, setData] = useState(props.crop.nutrientManagement);
+  console.log(data, "it is data natrient");
   return (
     <section className="p-2">
-      <table className="border border-black border-collapse h-[60vh] w-[50%]">
-        <tr className="text-[#13490A] font-bold text-base text-center">
-          <th className="border border-black border-collapse">Name </th>
-          <th className="border border-black border-collapse">Dosage</th>
-          <th className="border border-black border-collapse">
-            Age of the Crop
-          </th>
-          <th className="border border-black border-collapse">
-            Method of Application
-          </th>
-        </tr>
+      <table className="table-auto border-collapse border border-black font-bold text-base w-[80%] mx-auto mt-10">
+        <thead className="border-b border-black">
+          <tr className="text-center">
+            <th className="border-r border-black py-[1.2%]">Nutrients</th>
+            <th className="border-r border-black py-[1.2%]">
+              Dosage (kg/acre)
+            </th>
+            <th className="border-r border-black py-[1.2%]">
+              Age of the crop (Day and Stage)
+            </th>
+            <th className="border-r border-black py-[1.2%]">
+              Method of application
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* Stage1 */}
+          {/* {oldCultivation?.map((cultivation: any, index: any) => ( */}
+          <tr className="h-10 border-b border-black">
+            <td className="border-r border-black font-thin">
+              {/* {index + 1} */}
+              {data.value.value1.Nutient}
+            </td>
+            <td className="border-r border-black font-thin">
+              {data.value.value1.Dosage}
+            </td>
+            <td className="border-r border-black font-thin">
+              {data.value.value1.age}
+            </td>
+            <td className="border-r border-black font-thin ">
+              {data.value.value1.Method_application}
+            </td>
+          </tr>
 
-        <tr className="text-[#13490A] font-bold text-base text-center">
-          <td className="w-fit border border-black border-collapse">
-            Shalimar
-          </td>
-          <td className="w-fit border border-black border-collapse">6</td>
-          <td className="w-fit border border-black border-collapse">15</td>
-          <td className="w-fit border border-black border-collapse">Sweet</td>
-        </tr>
-
-        <tr className="text-[#13490A] font-bold text-base text-center">
-          <td className="w-fit border border-black border-collapse">
-            Shalimar
-          </td>
-          <td className="w-fit border border-black border-collapse">2</td>
-          <td className="w-fit border border-black border-collapse">10</td>
-          <td className="w-fit border border-black border-collapse">Sweet</td>
-        </tr>
-
-        <tr className="text-[#13490A] font-bold text-base text-center">
-          <td className="w-fit border border-black border-collapse">
-            Shalimar
-          </td>
-          <td className="w-fit border border-black border-collapse">2</td>
-          <td className="w-fit border border-black border-collapse">25</td>
-          <td className="w-fit border border-black border-collapse">Sweet</td>
-        </tr>
-
-        <tr className="text-[#13490A] font-bold text-base text-center">
-          <td className="w-fit border border-black border-collapse">
-            Shalimar
-          </td>
-          <td className="w-fit border border-black border-collapse">8</td>
-          <td className="w-fit border border-black border-collapse">14</td>
-          <td className="w-fit border border-black border-collapse">Sweet</td>
-        </tr>
-        <tr className="text-[#13490A] font-bold text-base text-center">
-          <td className="w-fit border border-black border-collapse">
-            Shalimar
-          </td>
-          <td className="w-fit border border-black border-collapse">5</td>
-          <td className="w-fit border border-black border-collapse">13</td>
-          <td className="w-fit border border-black border-collapse">Sweet</td>
-        </tr>
-
-        <tr className="text-[#13490A] font-bold text-base text-center">
-          <td className="w-fit border border-black border-collapse">
-            Shalimar
-          </td>
-          <td className="w-fit border border-black border-collapse">2</td>
-          <td className="w-fit border border-black border-collapse">12</td>
-          <td className="w-fit border border-black border-collapse">Sweet</td>
-        </tr>
-
-        <tr className="text-[#13490A] font-bold text-base text-center">
-          <td className="w-fit border border-black border-collapse">
-            Shalimar
-          </td>
-          <td className="w-fit border border-black border-collapse">3</td>
-          <td className="w-fit border border-black border-collapse">8</td>
-          <td className="w-fit border border-black border-collapse">Sweet</td>
-        </tr>
-
-        <tr className="text-[#13490A] font-bold text-base text-center">
-          <td className="w-fit border border-black border-collapse">
-            Shalimar
-          </td>
-          <td className="w-fit border border-black border-collapse">4</td>
-          <td className="w-fit border border-black border-collapse">11</td>
-          <td className="w-fit border border-black border-collapse">Sweet</td>
-        </tr>
+          <tr className="h-10 border-b border-black">
+            <td className="border-r border-black font-thin">
+              {/* {index + 1} */}
+              {data.value.value2.Nutient}
+            </td>
+            <td className="border-r border-black font-thin">
+              {data.value.value2.Dosage}
+            </td>
+            <td className="border-r border-black font-thin">
+              {data.value.value2.age}
+            </td>
+            {/* <td className="border-r border-black font-thin">
+              {data.value.value2.Method_application}
+            </td> */}
+          </tr>
+          <tr className="h-10 border-b border-black">
+            <td className="border-r border-black font-thin">
+              {/* {index + 1} */}
+              {data.value.value3.Nutient}
+            </td>
+            <td className="border-r border-black font-thin">
+              {data.value.value3.Dosage}
+            </td>
+            <td className="border-r border-black font-thin">
+              {data.value.value3.age}
+            </td>
+            {/* <td className="border-r border-black font-thin">
+              {data.value.value3.Method_application}
+            </td> */}
+          </tr>
+          <tr className="h-10 border-b border-black">
+            <td className="border-r border-black font-thin">
+              {/* {index + 1} */}
+              {data.value.value4.Nutient}
+            </td>
+            <td className="border-r border-black font-thin">
+              {data.value.value4.Dosage}
+            </td>
+            <td className="border-r border-black font-thin">
+              {data.value.value4.age}
+            </td>
+            {/* <td className="border-r border-black font-thin">
+              {data.value.value4.Method_application}
+            </td> */}
+          </tr>
+          {/* ))} */}
+        </tbody>
       </table>
     </section>
   );

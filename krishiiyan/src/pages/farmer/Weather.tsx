@@ -6,7 +6,7 @@ const Weather = () => {
   const [ctime, setctime] = useState("");
 
   const api = {
-    key: "72b05fdfa25a691624fb032c0b0aa2ec",
+    key: "8cf34e0b1b25927289fe47be2864830a",
     base: "https://api.openweathermap.org/data/2.5/weather?",
   };
 
@@ -68,7 +68,7 @@ const Weather = () => {
       </div>
       <div className="w-30 mr-2 mt-5 text-start">
         <p className="font-thin text-sm">
-          Date:{moment().format("DD-MM-YYYY")}
+          Date: {moment().format("DD-MM-YYYY")}
         </p>
         <p className="font-thin text-sm">Time: {ctime}</p>
       </div>

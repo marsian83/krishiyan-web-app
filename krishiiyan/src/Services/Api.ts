@@ -313,6 +313,28 @@ export async function getFarmerCultivationData(farmerId: string) {
   }
 }
 
+export async function updateHarvestStatus(
+  cultivationId: string,
+  harvestStatus: string
+) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/farmer/harvest-status`,
+      data: {
+        cultivationId,
+        harvestStatus,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
 // mandi prices
 export async function getMandiPrices() {
   try {

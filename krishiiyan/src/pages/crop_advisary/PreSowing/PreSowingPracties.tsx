@@ -8,6 +8,8 @@ const ProductionReqContent = (props: any) => {
   const [soil, setSoil] = useState(false);
   const [openTab, setOpenTab] = useState("Land Prepation");
 
+  const [data, setData] = useState<any>(props.crop.presowingPractices);
+
   const onClickLand = () => {
     setLand(true);
     setSeedTab(false);
@@ -32,6 +34,8 @@ const ProductionReqContent = (props: any) => {
     setinterculteral(false);
     setSoil(true);
   };
+
+  console.log(props?.crop?.presowingPractices?.Land_Preparation, "it is props");
   let Col: any = 2;
   return (
     <section>
@@ -91,15 +95,15 @@ const ProductionReqContent = (props: any) => {
 
       {land ? (
         <div>
-          <span className="font-extrabold mr-[4%]">Method of Prepation</span>
-          <br /> Maize can be grown successfully in variety of soils ranging
-          from loamy sand to clay loam.
+          <span className="font-extrabold mr-[4%]">Land Preparation</span>
+          <br />
+          {data?.Land_Preparation}
         </div>
       ) : null}
 
       {seedTab ? (
         <>
-          <SeedTable />
+          <SeedTable data={data} />
         </>
       ) : (
         <></>
@@ -108,18 +112,19 @@ const ProductionReqContent = (props: any) => {
       {interculteral ? (
         <div>
           <span className="font-extrabold mr-[4%]">
-            Method of interculteral
+            Pre-sowing operations (if any) (Pre-emergence weeding,
+            thinning,.....)
           </span>
-          <br /> Maize can be grown successfully in variety of soils ranging
-          from loamy sand to clay loam.
+          <br /> {data?.Pre_sowing}
         </div>
       ) : null}
 
       {soil ? (
         <div>
-          <span className="font-extrabold mr-[4%]">Method of soil</span>
-          <br /> Maize can be grown successfully in variety of soils ranging
-          from loamy sand to clay loam.
+          <span className="font-extrabold mr-[4%]">
+            Soil Conditions (Wet, irrigated, dry)
+          </span>
+          <br /> {data.Soil_Conditions}
         </div>
       ) : null}
 

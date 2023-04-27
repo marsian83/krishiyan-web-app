@@ -15,7 +15,7 @@ const PlantationOptions = [
     value: "ORGANIC",
   },
   {
-    value: "NON-ORGANIC",
+    value: "In Organic",
   },
   {
     value: "BOTH",

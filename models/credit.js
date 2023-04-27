@@ -39,6 +39,10 @@ const CreditSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    paidAmount: {
+      type: String,
+      required: true,
+    },
     farmerId: mongoose.Types.ObjectId,
     paymentStatus: {
       type: String,

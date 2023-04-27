@@ -4,10 +4,16 @@ import "../ProductReq.css";
 import PestManagement from "./PestMangment";
 import WeedManagementT from "./weedManagementT";
 import WeatherInjuses from "./WeatherInjuses";
+import DeficiencySymtoms from "./DeficiencySymtoms";
+import DiseaseManagement from "./DiseaseManagement";
+import Hervest from "./Hervest";
 const ProductionReqContent = (props: any) => {
+  const [data, setData] = useState(props.crop);
   const [land, setLand] = useState(true);
   const [seedTab, setSeedTab] = useState(false);
+  const [deficiency, setDefinciency] = useState(false);
   const [interculteral, setinterculteral] = useState(false);
+  const [disease, setDisease] = useState(false);
   const [soil, setSoil] = useState(false);
   const [WeedManagement, setWeedManagement] = useState(false);
   const [weather, setWeather] = useState(false);
@@ -20,6 +26,8 @@ const ProductionReqContent = (props: any) => {
     setSoil(false);
     setWeedManagement(false);
     setWeather(false);
+    setDefinciency(false);
+    setDisease(false);
   };
   const onClickSeed = () => {
     setLand(false);
@@ -28,6 +36,8 @@ const ProductionReqContent = (props: any) => {
     setSoil(false);
     setWeedManagement(false);
     setWeather(false);
+    setDefinciency(false);
+    setDisease(false);
   };
   const onClickInterculteral = () => {
     setLand(false);
@@ -36,6 +46,8 @@ const ProductionReqContent = (props: any) => {
     setSoil(false);
     setWeedManagement(false);
     setWeather(false);
+    setDefinciency(false);
+    setDisease(false);
   };
   const onClickSoiltab = () => {
     setLand(false);
@@ -44,6 +56,8 @@ const ProductionReqContent = (props: any) => {
     setSoil(true);
     setWeedManagement(false);
     setWeather(false);
+    setDefinciency(false);
+    setDisease(false);
   };
   const onClickWeedManagement = () => {
     setLand(false);
@@ -52,6 +66,8 @@ const ProductionReqContent = (props: any) => {
     setSoil(false);
     setWeedManagement(true);
     setWeather(false);
+    setDefinciency(false);
+    setDisease(false);
   };
   const onClickWeather = () => {
     setLand(false);
@@ -60,6 +76,28 @@ const ProductionReqContent = (props: any) => {
     setSoil(false);
     setWeedManagement(false);
     setWeather(true);
+    setDefinciency(false);
+    setDisease(false);
+  };
+  const onDeficiency = () => {
+    setLand(false);
+    setSeedTab(false);
+    setinterculteral(false);
+    setSoil(false);
+    setWeedManagement(false);
+    setWeather(false);
+    setDefinciency(true);
+    setDisease(false);
+  };
+  const onDisease = () => {
+    setLand(false);
+    setSeedTab(false);
+    setinterculteral(false);
+    setSoil(false);
+    setWeedManagement(false);
+    setWeather(false);
+    setDefinciency(false);
+    setDisease(true);
   };
   let Col: any = 2;
   return (
@@ -78,7 +116,7 @@ const ProductionReqContent = (props: any) => {
         </button>
         <button
           onClick={() => {
-            onClickSeed();
+            onDisease();
             setOpenTab("Disease Management");
           }}
           className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
@@ -89,7 +127,7 @@ const ProductionReqContent = (props: any) => {
         </button>
         <button
           onClick={() => {
-            onClickInterculteral();
+            onDeficiency();
             setOpenTab("Deficiency Management");
           }}
           className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
@@ -98,7 +136,7 @@ const ProductionReqContent = (props: any) => {
               : "bg-[#526D4E]"
           }`}
         >
-          Deficiency Management
+          Deficiency Symptoms
         </button>
         <button
           onClick={() => {
@@ -127,7 +165,7 @@ const ProductionReqContent = (props: any) => {
 
       {land ? (
         <>
-          <PestManagement />
+          <PestManagement data={data} />
         </>
       ) : (
         <></>
@@ -143,18 +181,21 @@ const ProductionReqContent = (props: any) => {
 
       {WeedManagement ? (
         <>
-          <WeedManagementT />
+          <WeedManagementT data={data} />
         </>
       ) : (
         <></>
       )}
       {weather ? (
         <>
-          <WeatherInjuses />
+          <WeatherInjuses data={data} />
         </>
       ) : (
         <></>
       )}
+
+      {deficiency ? <DeficiencySymtoms data={data} /> : <></>}
+      {disease ? <DiseaseManagement data={data} /> : <></>}
 
       {/* <table className="table-auto border border-black border-collapse my-5 mx-[0.8%]">
         <tr className="h-[6vh] text-center bg-[#C6EDC0]">
