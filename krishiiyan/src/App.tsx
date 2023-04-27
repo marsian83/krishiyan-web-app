@@ -29,6 +29,7 @@ import ManageAccounting from "./pages/management/Accounting";
 import FPurchase from "./pages/farmer/Purchase";
 import LoginPage from "./pages/Authentication/LoginPage";
 import SignupPage from "./pages/Authentication/SignupPage";
+import ProductBatches from "./pages/pos/ProductBatches";
 
 const AuthGuard = () => {
   const auth = localStorage.getItem("authToken");
@@ -59,6 +60,15 @@ function App() {
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"pos"} submenu={"inventory"} />
                 <Inventory />
+              </main>
+            }
+          />
+          <Route
+            path="/product-batches"
+            element={
+              <main className="h-screen w-screen grid grid-cols-[18%_82%]">
+                <SideNav menu={"pos"} submenu={"product-batches"} />
+                <ProductBatches />
               </main>
             }
           />

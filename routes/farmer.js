@@ -120,9 +120,11 @@ router.post("/get-farmer-mobile", async (req, res) => {
     });
   }
 });
-router.get("/get-farmer", async (req, res) => {
+
+router.post("/get-farmer", async (req, res) => {
+  const {farmerId} = req.body
   try {
-    const farmer = await Farmer.find();
+    const farmer = await Farmer.findById(farmerId)
     res.status(200).json(farmer);
   } catch (error) {
     res.status(500).json({

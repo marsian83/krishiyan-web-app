@@ -1,0 +1,30 @@
+[
+    {
+    "activeIngridient":"Rynaxypyr",
+    "tradeName":"CORAGEN INSECTICIDE",
+    "productDescription":"It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout",
+    "category":"Pesticide",
+    "measuringUnit":"ml",
+    "volume":"30",
+    "quantity":"34",
+    "dateOfPurchase":"11/3/2023",
+    "expiryDate":"11/3/2025",
+    "MRP":"1000",
+    "procurementDiscout":"30",
+    "procuredPrice":"700",
+    "saleDiscout":"20",
+    "sellingPrice":"476",
+    "searchKeywords":[
+        "stem borer",
+        "maize"
+    ],
+    "productType":"dealer-specific",
+    "crop":[
+        "Maize",
+        "paddy",
+        "Groundnut"
+    ]
+},
+
+
+]

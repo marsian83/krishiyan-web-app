@@ -2,20 +2,31 @@ const mongoose = require("mongoose");
 
 const ProductSchema = new mongoose.Schema(
   {
+    activeIngridient: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     tradeName: {
       type: String,
       required: true,
       unique: true,
     },
-    // category: {
-    //   type: String,
-    //   enum: ["FERTILIZER", "PESTICIDE", "FUNGICIDE", "HERBICIDE"], //
-    //   default: "",
-    //   required: true,
-    // },
-    category: { 
-      type: [String], 
-      required: true 
+    productDescription: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      enum: [
+        "Fertilizer",
+        "Pesticide",
+        "Fungicide",
+        "Herbicide",
+        "Seeds",
+        "GrowthPromoter",
+      ],
+      required: true,
     },
     measuringUnit: {
       type: String,
@@ -29,18 +40,67 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    dateOfPurchase: {
+      type: Date,
+      required: true,
+    },
     expiryDate: {
       type: Date,
       required: true,
     },
-    price: {
+    MRP: {
       type: String,
       required: true,
     },
-    image: {
+    MSP: {
       type: String,
       required: true,
     },
+    procurementDiscout: {
+      type: String,
+      required: true,
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Dealer",
+    },
+    procuredPrice:{
+      type:String,
+    },
+    saleDiscout: {
+      type: String,
+      required: true,
+    },
+    sellingPrice:{
+      type: String,
+      required: true,
+    },
+    searchKeywords:{
+      type:[String],
+      required: true
+    },
+    productType:{ //uniform/dealer-specific 
+      type: String,
+      required: true,
+    },
+    crop:{
+      type:[],
+      required: true
+    },
+    totalProcuredAmount:{
+      type: String,
+      required: true,
+    },
+    batches:[
+      {
+        batchName:String,
+        quantity:String,
+        productName:String,
+        purchaseDate:Date,
+        expiryDate:Date
+      }
+    ]
   },
   { timestamps: true }
 );
