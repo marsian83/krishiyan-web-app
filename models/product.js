@@ -98,7 +98,8 @@ const ProductSchema = new mongoose.Schema(
         quantity:String,
         productName:String,
         purchaseDate:Date,
-        expiryDate:Date
+        expiryDate:Date,
+        expired:Boolean
       }
     ]
   },

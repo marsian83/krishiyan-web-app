@@ -9,14 +9,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import moment from "moment";
 
-
 interface CustomState {
   Batches: any;
 }
 const ProductBatches = () => {
   const location = useLocation();
   const state = location.state as CustomState;
-  
+
   return (
     <div>
       <Header title="Pos" subtitle="Product Batches" />
@@ -49,6 +48,9 @@ const ProductBatches = () => {
                 <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
                   Batch
                 </TableCell>
+                <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                  Expiry Status
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -73,6 +75,13 @@ const ProductBatches = () => {
                       <Typography sx={{ fontWeight: "bold" }}>
                         {row?.batchName}
                       </Typography>
+                    </TableCell>
+                    <TableCell sx={{ border: 1 }}>
+                      {row?.expired.toString() === 'true' ? (
+                        <>Expired</>
+                      ) : (
+                        <>Not expired yet!</>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

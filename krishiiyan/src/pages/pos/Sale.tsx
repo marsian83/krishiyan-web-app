@@ -7,15 +7,14 @@ import moment from "moment";
 import { Icon } from "@iconify/react";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import TextField from "@mui/material/TextField";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const SearchBar = (props: any) => (
   <>
@@ -25,10 +24,25 @@ const SearchBar = (props: any) => (
         props?.setSearchQuery(e.target.value);
       }}
       className="text-[#13490A] !outline-none bg-transparent w-full font-normal text-center"
-      placeholder="Search... By Trade Name"
+      placeholder="Search..."
     />
   </>
 );
+const filterData = (query: any, data: any) => {
+  if (!query) {
+    return data;
+  } else {
+    // let filterdData = data.filter((d: any) =>
+    //   d?.tradeName?.toLowerCase().includes(query)
+    // );
+    const filteredData = data.filter((product:any) =>
+    product.searchKeywords.some((keyword:any) =>
+      keyword.toLowerCase().includes(query.toLowerCase())
+    )
+  );
+    return filteredData;
+  }
+};
 
 const SearchBarCart = (props: any) => (
   <>
@@ -42,18 +56,6 @@ const SearchBarCart = (props: any) => (
     />
   </>
 );
-
-const filterData = (query: any, data: any) => {
-  if (!query) {
-    return data;
-  } else {
-    let filterdData = data.filter((d: any) =>
-      d?.tradeName?.toLowerCase().includes(query)
-    );
-    return filterdData;
-  }
-};
-
 const filterDataCart = (query: any, data: any) => {
   if (!query) {
     return data;
@@ -62,7 +64,7 @@ const filterDataCart = (query: any, data: any) => {
       d?.itemId?.tradeName?.toLowerCase().includes(query)
     );
     console.log(filterdData);
-    
+
     return filterdData;
   }
 };
@@ -82,10 +84,9 @@ const Sale = () => {
   const [selectedProductDetails, setSelectedProductDetails] = useState<any>();
   const [farmerRecommendedProducts, setFarmerRecommendedProducts] =
     useState<any>();
-
   const [productCategory, setProductCategory] = useState("Pesticide");
 
- 
+  const [discountPercentage, setDiscountPercentage] = useState("");
 
   //========================================== Farmer Cart ===================================================
   const [cartItems, setCartItems] = useState<any>();
@@ -353,6 +354,11 @@ const Sale = () => {
     getFarmerRecommendedProducts();
   }, [farmerDetail]);
 
+  const RemoveFarmerDetails = () => {
+    localStorage.removeItem("Number");
+    window.location.reload();
+  };
+
   return (
     <div>
       <Header title="Pos" subtitle="Sale" />
@@ -376,7 +382,10 @@ const Sale = () => {
                 >
                   ENTER
                 </button>
-                <button onClick={() => navigate('/new_registration')} className=" w-10 h-6 flex items-center justify-center rounded-md">
+                <button
+                  onClick={() => navigate("/new_registration")}
+                  className=" w-10 h-6 flex items-center justify-center rounded-md"
+                >
                   <img src="Images/plus.png" alt="plus" className="h-6 w-6" />
                 </button>{" "}
               </>
@@ -405,6 +414,17 @@ const Sale = () => {
                   </p>
                   <p>Number Of Purchases : 0</p>
                   <p>Due: 0</p>
+                </div>
+
+                <div>
+                  <Button
+                    variant="contained"
+                    sx={{ backgroundColor: "red", mt: 20 }}
+                    onClick={RemoveFarmerDetails}
+                    startIcon={<CloseIcon />}
+                  >
+                    Cancel
+                  </Button>
                 </div>
               </div>
             ) : null}
@@ -818,14 +838,15 @@ const Sale = () => {
                 <label className="font-bold text-sms text-[#033E02]">
                   PRODUCT
                 </label>
-                 <SearchBarCart
+                <SearchBarCart
                   searchQuery={searchQueryCart}
                   setSearchQuery={setSearchQueryCart}
                 />
               </div>
               {/* Cart Items */}
               <div>
-                {cartDataFiltered?.length <= 0 || cartDataFiltered === undefined ? (
+                {cartDataFiltered?.length <= 0 ||
+                cartDataFiltered === undefined ? (
                   <div className="flex items-center justify-center mt-5">
                     <label className="font-bold text-lg text-[#033E02]">
                       No Product in Farmer Cart.
@@ -925,31 +946,24 @@ const Sale = () => {
                                 </div>
                               </TableCell>
                               <TableCell sx={{ border: 1 }}>
-                                {row?.itemId?.saleDiscout}
+                                {/* {row?.itemId?.saleDiscout} */}
+                                <input
+                                  type="text"
+                                  className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md py-[1%] text-center h-10 border border-[#033E02]"
+                                  style={{ width: "80px" }}
+                                  placeholder="Discount(%)"
+                                  onChange={(e: any) =>
+                                    setDiscountPercentage(e.target.value)
+                                  }
+                                />
                               </TableCell>
                               <TableCell sx={{ border: 1 }}>
                                 ₹
-                                {Number(row?.itemId?.sellingPrice) *
-                                  Number(row?.quantity)}
+                                {/* {Number(row?.itemId?.sellingPrice) *
+                                  Number(row?.quantity)} */}
                               </TableCell>
-                              <TableCell sx={{ cursor: "pointer", border: 1 }}>
-                                <IconButton
-                                  sx={{ cursor: "pointor" }}
-                                  onClick={() =>
-                                    showDisclaimer(
-                                      row?.itemId?.sellingPrice,
-                                      row?.itemId?.MSP,
-                                      row?.itemId?.procuredPrice
-                                    )
-                                  }
-                                >
-                                  <Icon
-                                    icon="ic:outline-remove-red-eye"
-                                    height={20}
-                                    width={20}
-                                    color="green"
-                                  />
-                                </IconButton>
+                              <TableCell sx={{ border: 1 }}>
+                                Disclaimer
                               </TableCell>
                               <TableCell sx={{ cursor: "pointer", border: 1 }}>
                                 <IconButton

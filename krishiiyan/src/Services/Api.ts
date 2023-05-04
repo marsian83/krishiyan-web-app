@@ -917,6 +917,26 @@ export async function createUniformProduct(payload: AddProductRequestPayload) {
   }
 }
 
+//Update expiry date of products
+export async function updateExpiredProduct(productId:string) {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/pos/update-expired-batches`,
+      data: {
+        productId:productId
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
 // Create products {Dealer specific}
 export async function createDealerSpecificProduct(payload: AddProductRequestPayload) {
   try {

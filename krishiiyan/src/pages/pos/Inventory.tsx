@@ -79,7 +79,7 @@ const Inventory = () => {
   const [loading, setLoading] = useState(false);
   const [dealer, setDealer] = useState<any>();
   const [singleProductDetails, setSingleProductDetails] = useState<any>();
-  const [expiredProducts,setExpiredProducts] = useState<any>()
+  const [expiredProducts, setExpiredProducts] = useState<any>();
 
   const fileName = "Krishiyan-Product-Template(Admin)";
   let excelData;
@@ -112,7 +112,6 @@ const Inventory = () => {
     }
   };
 
-  
   //Fetch Admin Product template
   const getAdminProductTemplate = async () => {
     const [err, res] = await Api.getProductTemplate();
@@ -132,20 +131,26 @@ const Inventory = () => {
     }
   };
 
+  //Update product expiry date
+  const updateProduct = async () => {
+    for (const item of products) {
+      const [error, response] = await Api.updateExpiredProduct(item?._id);
+      if (response) {
+        // toast.success("Product Data updated", {
+        //   position: toast.POSITION.TOP_RIGHT,
+        // });
+      }
+    }
+  };
+
   useEffect(() => {
     const init = async () => {
       await getDealer();
       await getProducts();
       await getAdminProductTemplate();
-      
     };
     init();
   }, []);
-
-  const onClickUpdate = (productDetails: any) => {
-    setSingleProductDetails(productDetails);
-    handleOpenUpdateModel();
-  };
 
   const showBatches = async (productDetail: any) => {
     navigate("/product-batches", {
@@ -213,9 +218,22 @@ const Inventory = () => {
             </Button>
           </div>
         </div>
-        <p className="text-[#13490A] font-bold text-start mt-2 p-2">
-          Product List
-        </p>
+        <div className="flex justify-between p-1">
+          <div>
+            <p className="text-[#13490A] font-bold text-start mt-2 p-2">
+              Product List
+            </p>
+          </div>
+          <div>
+            <Button
+              onClick={() => updateProduct()}
+              variant="contained"
+              sx={{ backgroundColor: "#05AB2A" }}
+            >
+              Refresh
+            </Button>
+          </div>
+        </div>
 
         {selectedProduct === "All" ? (
           <>

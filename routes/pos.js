@@ -288,8 +288,9 @@ router.post("/create-uniform-product", AuthGuard, async (req, res) => {
 
     //Assign Batch
     const oldProduct = await Product.findOne({ tradeName });
-    console.log(oldProduct, "oldProduct");
+    // console.log(oldProduct, "oldProduct______________________");
     let count = "1";
+
     if (!oldProduct) {
       let product_batch_new_product = {
         batchName: `Batch-${moment(dateOfPurchase).format("YYYY")}-${count}`,
@@ -297,6 +298,7 @@ router.post("/create-uniform-product", AuthGuard, async (req, res) => {
         productName: tradeName,
         purchaseDate: dateOfPurchase,
         expiryDate: expiryDate,
+        expired: false,
       };
 
       const batch = [product_batch_new_product];
@@ -316,7 +318,7 @@ router.post("/create-uniform-product", AuthGuard, async (req, res) => {
         procurementDiscout: procurementDiscout,
         procuredPrice: procured_price,
         saleDiscout: sale_discount,
-        sellingPrice: sellingPrice,
+        sellingPrice: "0",
         searchKeywords: searchKeywords.split(","),
         productType: "uniform", //uniform,dealer-specific
         crop: crop.split(","),
@@ -324,6 +326,7 @@ router.post("/create-uniform-product", AuthGuard, async (req, res) => {
         totalProcuredAmount: total_procured_amount,
         batches: batch,
       });
+      console.log(newProduct, "new product__________________");
     }
 
     if (oldProduct) {
@@ -348,27 +351,30 @@ router.post("/create-uniform-product", AuthGuard, async (req, res) => {
           productName: tradeName,
           purchaseDate: dateOfPurchase,
           expiryDate: expiryDate,
+          expired: false,
         };
         oldProduct.batches.push(product_batch_old_product);
         await oldProduct.save();
       }
+
+      //Update product quantity
+      const productId = oldProduct._id;
+      let updateProductField = {};
+      let products_quantity = oldProduct.batches.map((q) =>
+        parseInt(q.quantity)
+      );
+
+      let updatedProductQuantity = products_quantity.reduce(sum_reducer);
+      updateProductField.quantity = updatedProductQuantity;
+      let updateProduct = await Product.findOneAndUpdate(
+        { _id: productId },
+        { $set: updateProductField },
+        { new: true, upsert: true, setDefaultsOnInsert: true }
+      );
     }
     function sum_reducer(accumulator, currentValue) {
       return accumulator + currentValue;
     }
-    //Update product quantity
-    const productId = oldProduct._id;
-    let updateProductField = {};
-    let products_quantity = oldProduct.batches.map((q) => parseInt(q.quantity));
-
-    let updatedProductQuantity = products_quantity.reduce(sum_reducer);
-    updateProductField.quantity = updatedProductQuantity;
-    let updateProduct = await Product.findOneAndUpdate(
-      { _id: productId },
-      { $set: updateProductField },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
-    );
-
     //Update dealer {excel_data_download field}
     const dealerId = req.user._id;
     let updateFields = {};
@@ -447,7 +453,9 @@ router.get("/get-inventory-products", async (req, res) => {
 //Get all expired products
 router.get("/get-expired-products", async (req, res) => {
   try {
-    const expiredProducts = await Product.find({ expiryDate: { $lt: Date.now() } });
+    const expiredProducts = await Product.find({
+      expiryDate: { $lt: Date.now() },
+    });
     res.json(expiredProducts);
   } catch (error) {
     return res.status(500).json({
@@ -497,7 +505,7 @@ router.post("/create-inventory-product", AuthGuard, async (req, res) => {
       procurementDiscout: procurementDiscout,
       procuredPrice: procured_price,
       saleDiscout: sale_discount,
-      sellingPrice: sellingPrice,
+      sellingPrice: "0",
       searchKeywords: searchKeywords.split(","),
       productType: "dealer-specific", //uniform,dealer-specific
       crop: crop.split(","),
@@ -505,6 +513,30 @@ router.post("/create-inventory-product", AuthGuard, async (req, res) => {
       totalProcuredAmount: total_procured_amount,
     });
     res.status(201).json({ newProduct, message: "Created successfully!" });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+//Update expired batches
+router.post("/update-expired-batches", async (req, res) => {
+  const { productId } = req.body;
+  try {
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).send({ message: "Product not found" });
+    }
+    const currentDate = new Date();
+    product.batches.forEach((batch) => {
+      if (new Date(batch.expiryDate) < currentDate) {
+        batch.expired = true;
+      }
+    });
+    await product.save();
+    return res.send(product);
   } catch (error) {
     return res.status(500).json({
       success: false,
