@@ -58,8 +58,7 @@ const BulkAddProduct = (props: any) => {
             dateOfPurchase: item.dateOfPurchase,
             expiryDate: item.expiryDate,
             MRP: item.MRP,
-            procurementDiscout: item.procurementDiscout,
-            sellingPrice: item.sellingPrice,
+            procurementDiscout: item.procurementDiscount,
             searchKeywords: item.searchKeywords,
             crop: item.crop,
           };
@@ -155,12 +154,12 @@ const BulkAddProduct = (props: any) => {
                   <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
                     MRP
                   </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                  {/* <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
                     Procurement Price
                   </TableCell>
                   <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
                     Selling Price
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -197,12 +196,12 @@ const BulkAddProduct = (props: any) => {
                           {moment(row?.expiryDate)?.format("DD-MM-YY")}
                         </TableCell>
                         <TableCell sx={{ border: 1 }}>₹{row?.MRP}</TableCell>
-                        <TableCell sx={{ border: 1 }}>
+                        {/* <TableCell sx={{ border: 1 }}>
                           ₹{row?.procuredPrice}
                         </TableCell>
                         <TableCell sx={{ border: 1 }}>
                           ₹{row?.sellingPrice}
-                        </TableCell>
+                        </TableCell> */}
                       </TableRow>
                     ))}
               </TableBody>

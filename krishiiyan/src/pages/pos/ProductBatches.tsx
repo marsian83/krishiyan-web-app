@@ -51,6 +51,15 @@ const ProductBatches = () => {
                 <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
                   Expiry Status
                 </TableCell>
+                <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                  MRP
+                </TableCell>
+                <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                  Procurement Discount(%)
+                </TableCell>
+                <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                  MSP
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -83,6 +92,9 @@ const ProductBatches = () => {
                         <>Not expired yet!</>
                       )}
                     </TableCell>
+                    <TableCell sx={{ border: 1 }}>₹{row?.MRP}</TableCell>
+                    <TableCell sx={{ border: 1 }}>{row?.procurementDiscount}%</TableCell>
+                    <TableCell sx={{ border: 1 }}>₹{row?.MSP}</TableCell>
                   </TableRow>
                 ))}
             </TableBody>

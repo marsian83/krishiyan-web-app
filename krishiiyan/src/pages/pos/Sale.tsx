@@ -35,11 +35,11 @@ const filterData = (query: any, data: any) => {
     // let filterdData = data.filter((d: any) =>
     //   d?.tradeName?.toLowerCase().includes(query)
     // );
-    const filteredData = data.filter((product:any) =>
-    product.searchKeywords.some((keyword:any) =>
-      keyword.toLowerCase().includes(query.toLowerCase())
-    )
-  );
+    const filteredData = data.filter((product: any) =>
+      product.searchKeywords.some((keyword: any) =>
+        keyword.toLowerCase().includes(query.toLowerCase())
+      )
+    );
     return filteredData;
   }
 };
@@ -86,14 +86,21 @@ const Sale = () => {
     useState<any>();
   const [productCategory, setProductCategory] = useState("Pesticide");
 
-  const [discountPercentage, setDiscountPercentage] = useState("");
-
   //========================================== Farmer Cart ===================================================
   const [cartItems, setCartItems] = useState<any>();
   const [totalPrice, setTotalPrice] = useState("");
+  const [totalPriceAfterDiscount, setTotalPriceAfterDiscount] = useState("");
+
+  // function percentage(num: any, per: any) {
+  //   return (num / 100) * per;
+  // }
 
   const dataFiltered = filterData(searchQuery, products);
   const cartDataFiltered = filterDataCart(searchQueryCart, cartItems);
+
+  function sum_reducer(accumulator: any, currentValue: any) {
+    return accumulator + currentValue;
+  }
 
   //Get Farmer Cart
   const getFarmerCart = async () => {
@@ -101,6 +108,11 @@ const Sale = () => {
     if (cartRes) {
       setCartItems(cartRes?.data?.cart);
       setTotalPrice(cartRes?.data?.totalPrice);
+      let product_prices = cartRes?.data?.cart.map(
+        (c: any) => c?.itemId?.discountedPrice
+      );
+      let total_cart_price = product_prices.reduce(sum_reducer);
+      setTotalPriceAfterDiscount(total_cart_price);
     }
   };
   useEffect(() => {
@@ -200,7 +212,6 @@ const Sale = () => {
   };
   const getFarmerById = async () => {
     if (farmerID) {
-      setLoading(true);
       const [err, res] = await Api.getFarmer(farmerID);
       if (err) {
         console.log(err);
@@ -216,8 +227,6 @@ const Sale = () => {
         }
         setFarmerDetail(res?.data);
       }
-
-      setLoading(false);
     }
   };
 
@@ -306,13 +315,20 @@ const Sale = () => {
         cartItems,
         farmerDetail?._id,
         "paid",
-        totalPrice
+        totalPrice,
+        totalPriceAfterDiscount
       );
       if (createOrderErr) {
-        alert(createOrderErr?.data);
+        // alert(createOrderErr?.data);
+        toast.error(createOrderErr?.data, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       }
       if (createOrderRes) {
-        console.log(createOrderRes);
+        // console.log(createOrderRes);
+        toast.success("Order created successfully!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       }
       getFarmerCart();
     }
@@ -326,13 +342,20 @@ const Sale = () => {
         cartItems,
         farmerDetail?._id,
         "payByCredit",
-        totalPrice
+        totalPrice,
+        totalPriceAfterDiscount
       );
       if (createOrderErr) {
-        alert(createOrderErr?.data);
+        // alert(createOrderErr?.data);
+        toast.error(createOrderErr?.data, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       }
       if (createOrderRes) {
-        console.log(createOrderRes);
+        // console.log(createOrderRes);
+        toast.success("Order created successfully!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       }
       getFarmerCart();
       navigate("/credit");
@@ -894,6 +917,11 @@ const Sale = () => {
                           <TableCell
                             sx={{ border: "1px solid", fontWeight: "bold" }}
                           >
+                            Price(After Discount)
+                          </TableCell>
+                          <TableCell
+                            sx={{ border: "1px solid", fontWeight: "bold" }}
+                          >
                             Disclaimer
                           </TableCell>
                         </TableRow>
@@ -914,7 +942,7 @@ const Sale = () => {
                                 {row?.itemId?.tradeName}
                               </TableCell>
                               <TableCell sx={{ border: 1 }}>
-                                ₹{row?.itemId?.sellingPrice}
+                                ₹{row?.itemId?.MRP}
                               </TableCell>
                               <TableCell sx={{ border: 1 }}>
                                 <div className="flex gap-[0.5] items-center">
@@ -946,21 +974,32 @@ const Sale = () => {
                                 </div>
                               </TableCell>
                               <TableCell sx={{ border: 1 }}>
-                                {/* {row?.itemId?.saleDiscout} */}
                                 <input
                                   type="text"
                                   className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md py-[1%] text-center h-10 border border-[#033E02]"
                                   style={{ width: "80px" }}
                                   placeholder="Discount(%)"
-                                  onChange={(e: any) =>
-                                    setDiscountPercentage(e.target.value)
-                                  }
+                                  onChange={async (e: any) => {
+                                    const [err, res] =
+                                      await Api.updateProductDiscount(
+                                        row?.itemId?._id,
+                                        e.target.value,
+                                        row?.quantity
+                                      );
+                                    if (err) {
+                                      alert("Something went wrong!");
+                                    }
+                                    if (res) {
+                                      getFarmerCart();
+                                    }
+                                  }}
                                 />
                               </TableCell>
                               <TableCell sx={{ border: 1 }}>
-                                ₹
-                                {/* {Number(row?.itemId?.sellingPrice) *
-                                  Number(row?.quantity)} */}
+                                ₹{row?.itemId?.MRP * row?.quantity}
+                              </TableCell>
+                              <TableCell sx={{ border: 1 }}>
+                                {row?.itemId?.discountedPrice}
                               </TableCell>
                               <TableCell sx={{ border: 1 }}>
                                 Disclaimer
@@ -1082,6 +1121,14 @@ const Sale = () => {
                 <p>Total</p>
                 <p className="text-[#526D4E] font-normal">₹{totalPrice}</p>
               </div>
+
+              <div className="total flex justify-between py-4 border border-[#13490A] px-1">
+                <p>After Discount</p>
+                <p className="text-[#526D4E] font-normal">
+                  ₹{totalPriceAfterDiscount}
+                </p>
+              </div>
+
               <div>
                 <div className="mt-20 px-1">
                   <p className="text-start">Payment Method</p>

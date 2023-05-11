@@ -51,18 +51,7 @@ const ProductAdminTemplateSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    procurementDiscout: {
-      type: String,
-      required: true,
-    },
-    procuredPrice: {
-      type: String,
-    },
-    saleDiscout: {
-      type: String,
-      required: true,
-    },
-    sellingPrice: {
+    procurementDiscount: {
       type: String,
       required: true,
     },

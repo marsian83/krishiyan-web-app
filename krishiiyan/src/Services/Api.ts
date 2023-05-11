@@ -18,7 +18,6 @@ export interface AddProductRequestPayload {
   expiryDate: string;
   MRP: string;
   procurementDiscout: string;
-  sellingPrice: string;
   searchKeywords: string[];
   crop: string[];
 }
@@ -233,7 +232,6 @@ export async function getFarmerById(farmerId: string) {
     return [errorObject, null];
   }
 }
-
 
 //Get farmer location
 export async function getFarmerLocation(pin: string) {
@@ -901,8 +899,7 @@ export async function createUniformProduct(payload: AddProductRequestPayload) {
         dateOfPurchase: payload.dateOfPurchase,
         expiryDate: payload.expiryDate,
         MRP: payload.MRP,
-        procurementDiscout: payload.procurementDiscout,
-        sellingPrice: payload.sellingPrice,
+        procurementDiscount: payload.procurementDiscout,
         searchKeywords: payload.searchKeywords,
         crop: payload.crop,
       },
@@ -918,14 +915,14 @@ export async function createUniformProduct(payload: AddProductRequestPayload) {
 }
 
 //Update expiry date of products
-export async function updateExpiredProduct(productId:string) {
+export async function updateExpiredProduct(productId: string) {
   try {
     let token: any = localStorage.getItem("authToken");
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "post",
       url: `${apiURL}/pos/update-expired-batches`,
       data: {
-        productId:productId
+        productId: productId,
       },
     };
     const response = await axios.default.request(axiosConfig);
@@ -938,7 +935,9 @@ export async function updateExpiredProduct(productId:string) {
 }
 
 // Create products {Dealer specific}
-export async function createDealerSpecificProduct(payload: AddProductRequestPayload) {
+export async function createDealerSpecificProduct(
+  payload: AddProductRequestPayload
+) {
   try {
     let token: any = localStorage.getItem("authToken");
     const axiosConfig: axios.AxiosRequestConfig = {
@@ -955,8 +954,7 @@ export async function createDealerSpecificProduct(payload: AddProductRequestPayl
         dateOfPurchase: payload.dateOfPurchase,
         expiryDate: payload.expiryDate,
         MRP: payload.MRP,
-        procurementDiscout: payload.procurementDiscout,
-        sellingPrice: payload.sellingPrice,
+        procurementDiscount: payload.procurementDiscout,
         searchKeywords: payload.searchKeywords,
         crop: payload.crop,
       },
@@ -987,6 +985,25 @@ export async function getProducts() {
   }
 }
 
+//Get product by tradename
+export async function getProductByTradename(tradeName: String) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/pos/get-product-by-tradename`,
+      data: {
+        tradeName: tradeName,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
 //Get expired products
 export async function getExpiredProducts() {
   try {
@@ -1004,14 +1021,14 @@ export async function getExpiredProducts() {
 }
 
 //Get farmer recommended products {based on current cultivation}
-export async function getRecommendedProducts(farmerId:string) {
+export async function getRecommendedProducts(farmerId: string) {
   try {
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "post",
       url: `${apiURL}/pos/farmer-recommended-product`,
-      data:{
-        farmerID:farmerId
-      }
+      data: {
+        farmerID: farmerId,
+      },
     };
     const response = await axios.default.request(axiosConfig);
     const normalizedResponse = normalizeServerResponse(response);
@@ -1102,12 +1119,37 @@ export async function removeCartItem(farmerID: string, itemID: string) {
   }
 }
 
+//Update product discount
+export async function updateProductDiscount(
+  productId: string,
+  discountPercentage: string,
+  quantity: any
+) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "put",
+      url: `${apiURL}/pos/${productId}/discount`,
+      data: {
+        discount: discountPercentage,
+        quantity:quantity
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
 //Farmer purchase
 export async function createFarmerOrder(
   items: [],
   farmerID: string,
   paymentStatus: string,
-  totalPrice: string
+  totalPrice: string,
+  discountedPrice:string
 ) {
   try {
     let token: any = localStorage.getItem("authToken");
@@ -1119,6 +1161,7 @@ export async function createFarmerOrder(
         totalPrice: totalPrice,
         customer: farmerID,
         paymentStatus: paymentStatus,
+        discountedPrice:discountedPrice
       },
       headers: { Authorization: "Bearer " + token },
     };
@@ -1148,5 +1191,3 @@ export async function getDealerReport() {
     return [errorObject, null];
   }
 }
-
-

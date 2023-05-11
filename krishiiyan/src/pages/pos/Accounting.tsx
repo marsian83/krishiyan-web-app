@@ -34,6 +34,25 @@ const GetFarmer = (props: any) => {
   return (
     <>
       <Typography>{farmer ? farmer?.name : props?.farmerId}</Typography>
+      {/* <Typography>{farmer ? farmer?.mobile : null}</Typography> */}
+    </>
+  );
+};
+
+const GetFarmerMobile = (props: any) => {
+  const [farmer, setFarmer] = useState<any>();
+
+  useEffect(() => {
+    const getFarmer = async () => {
+      const [err, res] = await Api.getFarmerById(props?.farmerId);
+      setFarmer(res?.data);
+    };
+    getFarmer();
+  }, []);
+
+  return (
+    <>
+      {/* <Typography>{farmer ? farmer?.name : props?.farmerId}</Typography> */}
       <Typography>{farmer ? farmer?.mobile : null}</Typography>
     </>
   );
@@ -58,6 +77,19 @@ const Accounting = () => {
   const [endDate, setEndDate] = useState<any>();
   const [totalSales, setTotalSales] = useState<any>();
   const [loading, setLoading] = useState(false);
+
+  const [productWise, setProductWise] = useState(false);
+  const [billWise, setBillWise] = useState(true);
+
+  const onClickProductWiseHandler = () => {
+    setProductWise(true);
+    setBillWise(false);
+  };
+
+  const onClickBillWiseHandler = () => {
+    setBillWise(true);
+    setProductWise(false);
+  };
 
   const fileName = "Total sales";
 
@@ -129,6 +161,13 @@ const Accounting = () => {
     pdf.save("pdf");
   };
 
+  // let bg_color;
+  // if (billWise) {
+  //   bg_color = "#05AB2A";
+  // }else{
+  //   bg_color = "#ffffff";
+  // }
+
   return (
     <div>
       <Header title="Pos" subtitle="Accounting" />
@@ -167,8 +206,22 @@ const Accounting = () => {
 
       <div className="p-5">
         <Box
-          sx={{ display: "flex", justifyContent: "flex-end", mb: 2, gap: 1 }}
+          sx={{ display: "flex", justifyContent: "flex-start", mb: 2, gap: 1 }}
         >
+          <Button
+            onClick={onClickBillWiseHandler}
+            variant="contained"
+            sx={{ backgroundColor: '#05AB2A' }}
+          >
+            Bill Wise
+          </Button>
+          <Button
+            onClick={onClickProductWiseHandler}
+            variant="contained"
+            sx={{ backgroundColor: '#05AB2A' }}
+          >
+            Product Wise
+          </Button>
           {dataFiltered <= 0 || dataFiltered === undefined ? (
             <></>
           ) : (
@@ -186,83 +239,161 @@ const Accounting = () => {
               </CSVLink>
             </Button>
           )}
-          {/* <Button
-            onClick={print}
-            variant="contained"
-            sx={{ backgroundColor: "#05AB2A" }}
-          >
-            Download PDF
-          </Button> */}
         </Box>
-        <TableContainer sx={{ minWidth: 500 }}>
-          <Table sx={{ border: "2px solid" }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                  Purchase ID
-                </TableCell>
-                <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                  Purchase Date
-                </TableCell>
-                <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                  Farmer
-                </TableCell>
-                <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                  Products
-                </TableCell>
-                <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                  Total Amount
-                </TableCell>
-                <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                  Payment Mode
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {dataFiltered?.length > 0 &&
-                dataFiltered.map((row: any) => (
-                  <TableRow
-                    key={row._id}
-                    sx={{
-                      border: 1,
-                    }}
-                  >
-                    <TableCell sx={{ border: 1 }}>{row?._id}</TableCell>
 
-                    <TableCell sx={{ border: 1 }}>
-                      {moment(row.createdAt)?.format("DD-MM-YY")}
+        {billWise ? (
+          <>
+            <Typography variant="h3" sx={{ fontWeight: "bold", mb: 1 }}>
+              Bill Wise Statement
+            </Typography>
+            <TableContainer sx={{ minWidth: 500 }}>
+              <Table sx={{ border: "2px solid" }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                      Date Of Billing
                     </TableCell>
-                    <TableCell sx={{ border: 1 }}>
-                      {/* {row?.customer} */}
-                      <GetFarmer farmerId={row?.customer} />
+                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                      Bill Number
                     </TableCell>
-                    <TableCell sx={{ border: 1 }}>
-                      {row?.items?.map((o: any) => (
-                        <h1 className="">{o?.item?.tradeName}</h1>
-                      ))}
+                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                      Name
                     </TableCell>
-                    <TableCell sx={{ border: 1 }}>₹{row?.totalPrice}</TableCell>
-                    <TableCell sx={{ border: 1 }}>
-                      {row.paymentStatus === "paid" ? (
-                        <Typography sx={{ fontWeight: "bold" }}>
-                          CASH
-                        </Typography>
-                      ) : (
-                        <></>
-                      )}
-                      {row.paymentStatus === "payByCredit" ? (
-                        <Typography sx={{ fontWeight: "bold" }}>
-                          CREDIT
-                        </Typography>
-                      ) : (
-                        <></>
-                      )}
+                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                      Mobile
+                    </TableCell>
+                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                      Sales Value (in Rs)
                     </TableCell>
                   </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {dataFiltered?.length > 0 &&
+                    dataFiltered.map((row: any) => (
+                      <TableRow
+                        key={row._id}
+                        sx={{
+                          border: 1,
+                        }}
+                      >
+                        <TableCell sx={{ border: 1 }}>
+                          {moment(row.createdAt)?.format("DD-MM-YY")}
+                        </TableCell>
+                        <TableCell sx={{ border: 1 }}>{row?._id}</TableCell>
+                        <TableCell sx={{ border: 1 }}>
+                          <GetFarmer farmerId={row?.customer} />
+                        </TableCell>
+                        <TableCell sx={{ border: 1 }}>
+                          <GetFarmerMobile farmerId={row?.customer} />
+                        </TableCell>
+                        <TableCell sx={{ border: 1 }}>
+                          {row?.discountedPrice}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
+        ) : (
+          <></>
+        )}
+
+        {productWise ? (
+          <>
+            <Typography variant="h3" sx={{ fontWeight: "bold", mb: 1 }}>
+              Product Wise Statement
+            </Typography>
+            <TableContainer sx={{ minWidth: 500 }}>
+              <Table sx={{ border: "2px solid" }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                      Product Category
+                    </TableCell>
+                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                      Product ID
+                    </TableCell>
+                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                      Product Name
+                    </TableCell>
+                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                      MRP (Rs. per Unit)
+                    </TableCell>
+                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                      Qty in units
+                    </TableCell>
+                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                      MRP Sales value in Rs.
+                    </TableCell>
+                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
+                      Billing Sales in Rs.
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {dataFiltered?.length > 0 &&
+                    dataFiltered.map((row: any) => (
+                      <TableRow
+                        key={row._id}
+                        sx={{
+                          border: 1,
+                        }}
+                      >
+                        <TableCell sx={{ border: 1 }}>
+                          {row.items.map((item: any) => (
+                            <>
+                              <Box>{item?.item?.category}</Box>
+                            </>
+                          ))}
+                        </TableCell>
+                        <TableCell sx={{ border: 1 }}>
+                          {row.items.map((item: any) => (
+                            <>
+                              <Box>{item?.item?._id}</Box>
+                            </>
+                          ))}
+                        </TableCell>
+                        <TableCell sx={{ border: 1 }}>
+                          {row.items.map((item: any) => (
+                            <>
+                              <Box>{item?.item?.tradeName}</Box>
+                            </>
+                          ))}
+                        </TableCell>
+                        <TableCell sx={{ border: 1 }}>
+                          {row.items.map((item: any) => (
+                            <>
+                              <Box>₹{item?.item?.MRP}</Box>
+                            </>
+                          ))}
+                        </TableCell>
+                        <TableCell sx={{ border: 1 }}>
+                          {row.items.map((item: any) => (
+                            <>
+                              <Box>{item?.item?.quantity}</Box>
+                            </>
+                          ))}
+                        </TableCell>
+                        <TableCell sx={{ border: 1 }}>
+                          ₹{row?.totalPrice}
+                        </TableCell>
+                        <TableCell sx={{ border: 1 }}>
+                          {row?.discountedPrice ? (
+                            <>₹{row?.discountedPrice}</>
+                          ) : (
+                            <></>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ const ProductSchema = new mongoose.Schema(
     tradeName: {
       type: String,
       required: true,
-      unique: true,
+      // unique: true,
     },
     productDescription: {
       type: String,
@@ -52,11 +52,7 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    MSP: {
-      type: String,
-      required: true,
-    },
-    procurementDiscout: {
+    procurementDiscount: {
       type: String,
       required: true,
     },
@@ -64,17 +60,6 @@ const ProductSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "Dealer",
-    },
-    procuredPrice:{
-      type:String,
-    },
-    saleDiscout: {
-      type: String,
-      required: true,
-    },
-    sellingPrice:{
-      type: String,
-      required: true,
     },
     searchKeywords:{
       type:[String],
@@ -88,10 +73,6 @@ const ProductSchema = new mongoose.Schema(
       type:[],
       required: true
     },
-    totalProcuredAmount:{
-      type: String,
-      required: true,
-    },
     batches:[
       {
         batchName:String,
@@ -99,9 +80,22 @@ const ProductSchema = new mongoose.Schema(
         productName:String,
         purchaseDate:Date,
         expiryDate:Date,
-        expired:Boolean
+        expired:Boolean,
+        MRP:String,
+        procurementDiscount:String,
+        procuredPrice:String,
+        MSP:String,
+        TPA:String
       }
-    ]
+    ],
+    discount: {
+      type: Number,
+      default: 0,
+    },
+    discountedPrice:{
+      type: Number,
+      default: 0,
+    }
   },
   { timestamps: true }
 );

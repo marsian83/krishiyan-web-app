@@ -1,9 +1,5 @@
 const mongoose = require("mongoose");
 
-const creditInfo = {
-  billNumber: String,
-};
-
 const OrderSchema = new mongoose.Schema(
   {
     items: [
@@ -27,6 +23,10 @@ const OrderSchema = new mongoose.Schema(
       default: "NotPaid",
     },
     totalPrice: { type: Number, required: true },
+    discountedPrice: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );

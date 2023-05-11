@@ -70,6 +70,15 @@ const filterData = (query: any, data: any, selectedProduct?: any) => {
   }
 };
 
+let headers = [
+  { label: "First Name", key: "firstname" },
+  { label: "Last Name", key: "lastname" },
+  { label: "Email", key: "email" },
+];
+
+
+
+
 const Inventory = () => {
   const navigate = useNavigate();
   const [productTemplate, setProductTemplate] = useState<any>();
@@ -82,12 +91,8 @@ const Inventory = () => {
   const [expiredProducts, setExpiredProducts] = useState<any>();
 
   const fileName = "Krishiyan-Product-Template(Admin)";
-  let excelData;
-  if (dealer?.excel_data_download.toString() === "false") {
-    excelData = productTemplate?.ProductTemplate!;
-  } else {
-    excelData = products;
-  }
+  let excelData = productTemplate?.ProductTemplate!;
+
 
   //Add bulk product model
   const [open, setOpen] = useState(false);
@@ -254,34 +259,10 @@ const Inventory = () => {
                       Unit
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Volume
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
                       Quantity
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Date Of Purchase
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Expiry Date
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MRP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Discout
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Price
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Total Procured Amount
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MSP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Selling Price
+                      Product Type
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
                       Batches
@@ -299,9 +280,7 @@ const Inventory = () => {
                             border: 1,
                           }}
                         >
-                          <TableCell sx={{ border: 1 }}>
-                            {row?._id.slice(0, 5)}...
-                          </TableCell>
+                          <TableCell sx={{ border: 1 }}>{row?._id}</TableCell>
                           <TableCell sx={{ border: 1 }}>
                             {row?.tradeName}
                           </TableCell>
@@ -312,30 +291,10 @@ const Inventory = () => {
                             {row?.measuringUnit}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {row?.volume}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
                             {row?.quantity}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {moment(row?.dateOfPurchase)?.format("DD-MM-YY")}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            {moment(row?.expiryDate)?.format("DD-MM-YY")}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MRP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            {row?.procurementDiscout}%
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.procuredPrice}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.totalProcuredAmount}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MSP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.sellingPrice}
+                            {row?.productType.toUpperCase()}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
                             <IconButton onClick={() => showBatches(row)}>
@@ -347,16 +306,6 @@ const Inventory = () => {
                               />
                             </IconButton>
                           </TableCell>
-                          {/* <TableCell sx={{ cursor: "pointer", border: 1 }}>
-                            <IconButton onClick={() => onClickUpdate(row)}>
-                              <Icon
-                                icon="mdi:pencil-circle"
-                                height={40}
-                                width={40}
-                                color="grey"
-                              />
-                            </IconButton>
-                          </TableCell> */}
                         </TableRow>
                       ))}
                 </TableBody>
@@ -392,28 +341,10 @@ const Inventory = () => {
                       Quantity
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Date Of Purchase
+                      Product Type
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Expiry Date
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MRP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Discout
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Price
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Total Procured Amount
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MSP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Selling Price
+                      Batches
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -447,35 +378,18 @@ const Inventory = () => {
                             {row?.quantity}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {moment(row?.dateOfPurchase)?.format("DD-MM-YY")}
+                            {row?.productType.toUpperCase()}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {moment(row?.expiryDate)?.format("DD-MM-YY")}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MRP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            {row?.procurementDiscout}%
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.procuredPrice}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.totalProcuredAmount}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MSP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.sellingPrice}
-                          </TableCell>
-                          {/* <TableCell sx={{ cursor: "pointer", border: 1 }}>
-                            <IconButton onClick={() => onClickUpdate(row)}>
+                            <IconButton onClick={() => showBatches(row)}>
                               <Icon
-                                icon="mdi:pencil-circle"
+                                icon="fluent:arrow-forward-20-regular"
                                 height={40}
                                 width={40}
                                 color="grey"
                               />
                             </IconButton>
-                          </TableCell> */}
+                          </TableCell>
                         </TableRow>
                       ))}
                 </TableBody>
@@ -511,28 +425,10 @@ const Inventory = () => {
                       Quantity
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Date Of Purchase
+                      Product Type
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Expiry Date
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MRP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Discout
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Price
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Total Procured Amount
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MSP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Selling Price
+                      Batches
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -566,35 +462,18 @@ const Inventory = () => {
                             {row?.quantity}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {moment(row?.dateOfPurchase)?.format("DD-MM-YY")}
+                            {row?.productType.toUpperCase()}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {moment(row?.expiryDate)?.format("DD-MM-YY")}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MRP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            {row?.procurementDiscout}%
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.procuredPrice}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.totalProcuredAmount}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MSP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.sellingPrice}
-                          </TableCell>
-                          {/* <TableCell sx={{ cursor: "pointer", border: 1 }}>
-                            <IconButton onClick={() => onClickUpdate(row)}>
+                            <IconButton onClick={() => showBatches(row)}>
                               <Icon
-                                icon="mdi:pencil-circle"
+                                icon="fluent:arrow-forward-20-regular"
                                 height={40}
                                 width={40}
                                 color="grey"
                               />
                             </IconButton>
-                          </TableCell> */}
+                          </TableCell>
                         </TableRow>
                       ))}
                 </TableBody>
@@ -630,28 +509,10 @@ const Inventory = () => {
                       Quantity
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Date Of Purchase
+                      Product Type
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Expiry Date
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MRP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Discout
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Price
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Total Procured Amount
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MSP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Selling Price
+                      Batches
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -685,35 +546,18 @@ const Inventory = () => {
                             {row?.quantity}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {moment(row?.dateOfPurchase)?.format("DD-MM-YY")}
+                            {row?.productType.toUpperCase()}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {moment(row?.expiryDate)?.format("DD-MM-YY")}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MRP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            {row?.procurementDiscout}%
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.procuredPrice}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.totalProcuredAmount}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MSP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.sellingPrice}
-                          </TableCell>
-                          {/* <TableCell sx={{ cursor: "pointer", border: 1 }}>
-                            <IconButton onClick={() => onClickUpdate(row)}>
+                            <IconButton onClick={() => showBatches(row)}>
                               <Icon
-                                icon="mdi:pencil-circle"
+                                icon="fluent:arrow-forward-20-regular"
                                 height={40}
                                 width={40}
                                 color="grey"
                               />
                             </IconButton>
-                          </TableCell> */}
+                          </TableCell>
                         </TableRow>
                       ))}
                 </TableBody>
@@ -749,28 +593,10 @@ const Inventory = () => {
                       Quantity
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Date Of Purchase
+                      Product Type
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Expiry Date
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MRP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Discout
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Price
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Total Procured Amount
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MSP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Selling Price
+                      Batches
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -804,35 +630,18 @@ const Inventory = () => {
                             {row?.quantity}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {moment(row?.dateOfPurchase)?.format("DD-MM-YY")}
+                            {row?.productType.toUpperCase()}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {moment(row?.expiryDate)?.format("DD-MM-YY")}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MRP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            {row?.procurementDiscout}%
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.procuredPrice}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.totalProcuredAmount}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MSP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.sellingPrice}
-                          </TableCell>
-                          {/* <TableCell sx={{ cursor: "pointer", border: 1 }}>
-                            <IconButton onClick={() => onClickUpdate(row)}>
+                            <IconButton onClick={() => showBatches(row)}>
                               <Icon
-                                icon="mdi:pencil-circle"
+                                icon="fluent:arrow-forward-20-regular"
                                 height={40}
                                 width={40}
                                 color="grey"
                               />
                             </IconButton>
-                          </TableCell> */}
+                          </TableCell>
                         </TableRow>
                       ))}
                 </TableBody>
@@ -868,28 +677,10 @@ const Inventory = () => {
                       Quantity
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Date Of Purchase
+                      Product Type
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Expiry Date
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MRP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Discout
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Price
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Total Procured Amount
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MSP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Selling Price
+                      Batches
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -923,35 +714,18 @@ const Inventory = () => {
                             {row?.quantity}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {moment(row?.dateOfPurchase)?.format("DD-MM-YY")}
+                            {row?.productType.toUpperCase()}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {moment(row?.expiryDate)?.format("DD-MM-YY")}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MRP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            {row?.procurementDiscout}%
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.procuredPrice}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.totalProcuredAmount}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MSP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.sellingPrice}
-                          </TableCell>
-                          {/* <TableCell sx={{ cursor: "pointer", border: 1 }}>
-                            <IconButton onClick={() => onClickUpdate(row)}>
+                            <IconButton onClick={() => showBatches(row)}>
                               <Icon
-                                icon="mdi:pencil-circle"
+                                icon="fluent:arrow-forward-20-regular"
                                 height={40}
                                 width={40}
                                 color="grey"
                               />
                             </IconButton>
-                          </TableCell> */}
+                          </TableCell>
                         </TableRow>
                       ))}
                 </TableBody>
@@ -987,28 +761,10 @@ const Inventory = () => {
                       Quantity
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Date Of Purchase
+                      Product Type
                     </TableCell>
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Expiry Date
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MRP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Discout
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Procurement Price
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Total Procured Amount
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MSP
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Selling Price
+                      Batches
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -1042,35 +798,18 @@ const Inventory = () => {
                             {row?.quantity}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {moment(row?.dateOfPurchase)?.format("DD-MM-YY")}
+                            {row?.productType.toUpperCase()}
                           </TableCell>
                           <TableCell sx={{ border: 1 }}>
-                            {moment(row?.expiryDate)?.format("DD-MM-YY")}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MRP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            {row?.procurementDiscout}%
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.procuredPrice}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.totalProcuredAmount}
-                          </TableCell>
-                          <TableCell sx={{ border: 1 }}>₹{row?.MSP}</TableCell>
-                          <TableCell sx={{ border: 1 }}>
-                            ₹{row?.sellingPrice}
-                          </TableCell>
-                          {/* <TableCell sx={{ cursor: "pointer", border: 1 }}>
-                            <IconButton onClick={() => onClickUpdate(row)}>
+                            <IconButton onClick={() => showBatches(row)}>
                               <Icon
-                                icon="mdi:pencil-circle"
+                                icon="fluent:arrow-forward-20-regular"
                                 height={40}
                                 width={40}
                                 color="grey"
                               />
                             </IconButton>
-                          </TableCell> */}
+                          </TableCell>
                         </TableRow>
                       ))}
                 </TableBody>
@@ -1080,119 +819,6 @@ const Inventory = () => {
         ) : (
           <></>
         )}
-
-        {/* <div className="p-2">
-          <TableContainer sx={{ minWidth: 400 }}>
-            <Table sx={{ border: "2px solid" }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    Product ID
-                  </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    Trade Name
-                  </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    Category
-                  </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    Unit
-                  </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    Volume
-                  </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    Quantity
-                  </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    Date Of Purchase
-                  </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    Expiry Date
-                  </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    MRP
-                  </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    Procurement Discout
-                  </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    Procurement Price
-                  </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    Total Procured Amount
-                  </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    MSP
-                  </TableCell>
-                  <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                    Selling Price
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {dataFiltered?.length > 0 &&
-                  dataFiltered
-                    // .filter((obj: any) => obj.category === selectedProduct)
-                    .map((row: any) => (
-                      <TableRow
-                        key={row._id}
-                        sx={{
-                          border: 1,
-                        }}
-                      >
-                        <TableCell sx={{ border: 1 }}>
-                          {row?._id.slice(0, 5)}...
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          {row?.tradeName}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          {row?.category}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          {row?.measuringUnit}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>{row?.volume}</TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          {row?.quantity}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          {moment(row?.dateOfPurchase)?.format("DD-MM-YY")}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          {moment(row?.expiryDate)?.format("DD-MM-YY")}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>₹{row?.MRP}</TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          {row?.procurementDiscout}%
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          ₹{row?.procuredPrice}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          ₹{row?.totalProcuredAmount}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>₹{row?.MSP}</TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          ₹{row?.sellingPrice}
-                        </TableCell>
-                        <TableCell sx={{ cursor: "pointer", border: 1 }}>
-                          <IconButton onClick={() => onClickUpdate(row)}>
-                            <Icon
-                              icon="mdi:pencil-circle"
-                              height={40}
-                              width={40}
-                              color="grey"
-                            />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div> */}
 
         <div></div>
       </section>

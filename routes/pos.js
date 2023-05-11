@@ -97,7 +97,7 @@ router.post("/get-cart-items", async (req, res) => {
       const cartItems = farmer.cart.items;
       let totalPrice = 0;
       cartItems.forEach((item) => {
-        totalPrice = totalPrice + item.quantity * item?.itemId?.sellingPrice;
+        totalPrice = totalPrice + item.quantity * item?.itemId?.MRP;
       });
       res.json({ cart: cartItems, totalPrice: totalPrice });
     })
@@ -161,11 +161,38 @@ router.post("/remove-cart-item", async (req, res) => {
     });
 });
 
+const calculatePriceAfterDiscount = (price, discount) => {
+  const discountAmount = (price * discount) / 100;
+  const priceAfterDiscount = price - discountAmount;
+  return priceAfterDiscount.toFixed(2);
+};
+//Update discount percentage(%)
+router.put("/:id/discount", async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ msg: "Product not found" });
+
+    let MRP = product.MRP;
+    let discounted_price = calculatePriceAfterDiscount(
+      MRP * req.body.quantity,
+      req.body.discount
+    );
+    product.discount = req.body.discount;
+    product.discountedPrice = discounted_price;
+    await product.save();
+
+    res.json(product);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
+
 //FARMER PURCHASES {Billings}
 
 //Create farmer purchase
 router.post("/create-farmer-order", AuthGuard, async (req, res) => {
-  const { items, customer, paymentStatus, totalPrice } = req.body;
+  const { items, customer, paymentStatus, totalPrice, discountedPrice } =
+    req.body;
   try {
     let farmer = await Farmer.findById(customer);
     const newOrder = await Order.create({
@@ -176,6 +203,7 @@ router.post("/create-farmer-order", AuthGuard, async (req, res) => {
       dealer: req.body.items[0].itemId.createdBy,
       paymentStatus: paymentStatus,
       totalPrice,
+      discountedPrice: discountedPrice,
     });
     res.status(201).send({ message: "New Order Created", newOrder });
     if (farmer) {
@@ -212,7 +240,6 @@ router.post("/admin/create-inventory-product", async (req, res) => {
     category,
     measuringUnit,
     volume,
-    MRP,
     searchKeywords,
     crop,
   } = req.body;
@@ -227,11 +254,8 @@ router.post("/admin/create-inventory-product", async (req, res) => {
       quantity: "0",
       dateOfPurchase: new Date(),
       expiryDate: new Date(),
-      MRP,
-      procurementDiscout: "0",
-      procuredPrice: "0",
-      saleDiscout: "0",
-      sellingPrice: "0",
+      MRP: "0",
+      procurementDiscount: "0",
       searchKeywords,
       productType: "uniform", //uniform,dealer-specific
       crop,
@@ -262,6 +286,20 @@ router.get("/get-product-template", async (req, res) => {
   }
 });
 
+//Get product by tradename
+router.post("/get-product-by-tradename", async (req, res) => {
+  const { tradeName } = req.body;
+  try {
+    const product = await Product.findOne({ tradeName });
+    res.send(product);
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 //Create Product {Uniform Products}
 router.post("/create-uniform-product", AuthGuard, async (req, res) => {
   const {
@@ -275,14 +313,13 @@ router.post("/create-uniform-product", AuthGuard, async (req, res) => {
     dateOfPurchase,
     expiryDate,
     MRP,
-    procurementDiscout,
-    sellingPrice,
+    procurementDiscount,
     searchKeywords,
     crop,
   } = req.body;
   try {
-    let procured_price = MRP - (procurementDiscout / 100) * MRP;
-    let sale_discount = procurementDiscout - 10;
+    let procured_price = MRP - (procurementDiscount / 100) * MRP;
+    let sale_discount = procurementDiscount - 10;
     let minimum_selling_price = MRP - (sale_discount / 100) * MRP;
     let total_procured_amount = quantity * procured_price;
 
@@ -299,6 +336,11 @@ router.post("/create-uniform-product", AuthGuard, async (req, res) => {
         purchaseDate: dateOfPurchase,
         expiryDate: expiryDate,
         expired: false,
+        MRP: MRP,
+        procurementDiscount: procurementDiscount,
+        procuredPrice: procured_price,
+        MSP: minimum_selling_price,
+        TPA: total_procured_amount,
       };
 
       const batch = [product_batch_new_product];
@@ -314,22 +356,23 @@ router.post("/create-uniform-product", AuthGuard, async (req, res) => {
         dateOfPurchase: dateOfPurchase,
         expiryDate: expiryDate,
         MRP,
-        MSP: minimum_selling_price,
-        procurementDiscout: procurementDiscout,
-        procuredPrice: procured_price,
-        saleDiscout: sale_discount,
-        sellingPrice: "0",
+        procurementDiscount: procurementDiscount,
         searchKeywords: searchKeywords.split(","),
         productType: "uniform", //uniform,dealer-specific
         crop: crop.split(","),
         createdBy: req.user,
-        totalProcuredAmount: total_procured_amount,
         batches: batch,
       });
-      console.log(newProduct, "new product__________________");
     }
 
-    if (oldProduct) {
+    if (
+      oldProduct &&
+      req.user._id.toString() === oldProduct.createdBy.toString()
+    ) {
+      console.log(
+        "if old product",
+        req.user._id.toString() === oldProduct.createdBy.toString()
+      );
       let previous_product = oldProduct.batches[oldProduct.batches.length - 1];
       let purchase_date_year = moment(dateOfPurchase).format("YYYY");
       let old_product_purchase_year = moment(
@@ -352,6 +395,11 @@ router.post("/create-uniform-product", AuthGuard, async (req, res) => {
           purchaseDate: dateOfPurchase,
           expiryDate: expiryDate,
           expired: false,
+          MRP: MRP,
+          procurementDiscount: procurementDiscount,
+          procuredPrice: procured_price,
+          MSP: minimum_selling_price,
+          TPA: total_procured_amount,
         };
         oldProduct.batches.push(product_batch_old_product);
         await oldProduct.save();
@@ -376,14 +424,14 @@ router.post("/create-uniform-product", AuthGuard, async (req, res) => {
       return accumulator + currentValue;
     }
     //Update dealer {excel_data_download field}
-    const dealerId = req.user._id;
-    let updateFields = {};
-    updateFields.excel_data_download = true;
-    let user = await User.findOneAndUpdate(
-      { _id: dealerId },
-      { $set: updateFields },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
-    );
+    // const dealerId = req.user._id;
+    // let updateFields = {};
+    // updateFields.excel_data_download = true;
+    // let user = await User.findOneAndUpdate(
+    //   { _id: dealerId },
+    //   { $set: updateFields },
+    //   { new: true, upsert: true, setDefaultsOnInsert: true }
+    // );
     res.status(201).json({ message: "Created successfully!" });
   } catch (error) {
     console.log(error);
@@ -479,40 +527,150 @@ router.post("/create-inventory-product", AuthGuard, async (req, res) => {
     dateOfPurchase,
     expiryDate,
     MRP,
-    procurementDiscout,
-    sellingPrice,
+    procurementDiscount,
     searchKeywords,
     crop,
   } = req.body;
   try {
-    let procured_price = MRP - (procurementDiscout / 100) * MRP;
-    let sale_discount = procurementDiscout - 10;
+    let procured_price = MRP - (procurementDiscount / 100) * MRP;
+    let sale_discount = procurementDiscount - 10;
     let minimum_selling_price = MRP - (sale_discount / 100) * MRP;
     let total_procured_amount = quantity * procured_price;
 
-    const newProduct = await Product.create({
-      activeIngridient,
-      tradeName,
-      productDescription,
-      category,
-      measuringUnit,
-      volume,
-      quantity: quantity,
-      dateOfPurchase: dateOfPurchase,
-      expiryDate: expiryDate,
-      MRP,
-      MSP: minimum_selling_price,
-      procurementDiscout: procurementDiscout,
-      procuredPrice: procured_price,
-      saleDiscout: sale_discount,
-      sellingPrice: "0",
-      searchKeywords: searchKeywords.split(","),
-      productType: "dealer-specific", //uniform,dealer-specific
-      crop: crop.split(","),
-      createdBy: req.user,
-      totalProcuredAmount: total_procured_amount,
-    });
-    res.status(201).json({ newProduct, message: "Created successfully!" });
+    //Assign Batch
+    const oldProduct = await Product.findOne({ tradeName });
+    // console.log(oldProduct, "oldProduct______________________");
+    let count = "1";
+
+    if (!oldProduct) {
+      let product_batch_new_product = {
+        batchName: `Batch-${moment(dateOfPurchase).format("YYYY")}-${count}`,
+        quantity: quantity,
+        productName: tradeName,
+        purchaseDate: dateOfPurchase,
+        expiryDate: expiryDate,
+        expired: false,
+        MRP: MRP,
+        procurementDiscount: procurementDiscount,
+        procuredPrice: procured_price,
+        MSP: minimum_selling_price,
+        TPA: total_procured_amount,
+      };
+
+      const batch = [product_batch_new_product];
+
+      const newProduct = await Product.create({
+        activeIngridient,
+        tradeName,
+        productDescription,
+        category,
+        measuringUnit,
+        volume,
+        quantity: quantity,
+        dateOfPurchase: dateOfPurchase,
+        expiryDate: expiryDate,
+        MRP,
+        procurementDiscount: procurementDiscount,
+        searchKeywords: searchKeywords.split(","),
+        productType: "dealer-specific", //uniform,dealer-specific
+        crop: crop.split(","),
+        createdBy: req.user,
+        batches: batch,
+      });
+    }
+
+    if (
+      oldProduct &&
+      req.user._id.toString() === oldProduct.createdBy.toString()
+    ) {
+      // console.log(
+      //   "if old product",
+      //   req.user._id.toString() === oldProduct.createdBy.toString()
+      // );
+      let previous_product = oldProduct.batches[oldProduct.batches.length - 1];
+      let purchase_date_year = moment(dateOfPurchase).format("YYYY");
+      let old_product_purchase_year = moment(
+        previous_product.purchaseDate
+      ).format("YYYY");
+      if (oldProduct) {
+        let batch_name;
+        if (purchase_date_year === old_product_purchase_year) {
+          let previous_batch_name = previous_product.batchName.split("-");
+          let batch_number =
+            parseInt(previous_batch_name[previous_batch_name.length - 1]) + 1;
+          batch_name = `Batch-${moment(dateOfPurchase).format(
+            "YYYY"
+          )}-${batch_number}`;
+        }
+        let product_batch_old_product = {
+          batchName: batch_name,
+          quantity: quantity,
+          productName: tradeName,
+          purchaseDate: dateOfPurchase,
+          expiryDate: expiryDate,
+          expired: false,
+          MRP: MRP,
+          procurementDiscount: procurementDiscount,
+          procuredPrice: procured_price,
+          MSP: minimum_selling_price,
+          TPA: total_procured_amount,
+        };
+        oldProduct.batches.push(product_batch_old_product);
+        await oldProduct.save();
+      }
+
+      //Update product quantity
+      const productId = oldProduct._id;
+      let updateProductField = {};
+      let products_quantity = oldProduct.batches.map((q) =>
+        parseInt(q.quantity)
+      );
+
+      let updatedProductQuantity = products_quantity.reduce(sum_reducer);
+      updateProductField.quantity = updatedProductQuantity;
+      let updateProduct = await Product.findOneAndUpdate(
+        { _id: productId },
+        { $set: updateProductField },
+        { new: true, upsert: true, setDefaultsOnInsert: true }
+      );
+    }
+    function sum_reducer(accumulator, currentValue) {
+      return accumulator + currentValue;
+    }
+    //Update dealer {excel_data_download field}
+    const dealerId = req.user._id;
+    let updateFields = {};
+    updateFields.excel_data_download = true;
+    let user = await User.findOneAndUpdate(
+      { _id: dealerId },
+      { $set: updateFields },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
+    res.status(201).json({ message: "Created successfully!" });
+
+    // const newProduct = await Product.create({
+    //   activeIngridient,
+    //   tradeName,
+    //   productDescription,
+    //   category,
+    //   measuringUnit,
+    //   volume,
+    //   quantity: quantity,
+    //   dateOfPurchase: dateOfPurchase,
+    //   expiryDate: expiryDate,
+    //   MRP,
+    //   MSP: minimum_selling_price,
+    //   procurementDiscount: procurementDiscout,
+    //   procuredPrice: procured_price,
+    //   saleDiscout: sale_discount,
+    //   sellingPrice: "0",
+    //   searchKeywords: searchKeywords.split(","),
+    //   productType: "dealer-specific", //uniform,dealer-specific
+    //   crop: crop.split(","),
+    //   createdBy: req.user,
+    //   totalProcuredAmount: total_procured_amount,
+    // });
+    // res.status(201).json({ newProduct, message: "Created successfully!" });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -542,6 +700,39 @@ router.post("/update-expired-batches", async (req, res) => {
       success: false,
       message: error.message,
     });
+  }
+});
+
+//Get all batches {remaining one months to expire}
+router.get("/get-expired-batches", async (req, res) => {
+  const { id } = req.query;
+  try {
+    const currentDate = new Date();
+    const oneMonthFromNow = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      currentDate.getDate()
+    );
+
+    console.log({ currentDate, oneMonthFromNow });
+
+    const batches = await Product.findById({ _id: id });
+    // {
+    //   "batches.expiryDate": {
+    //     $gte: currentDate,
+    //     $lt: oneMonthFromNow,
+    //   },
+    // },
+    // { batches: 1 }
+    //  const res= batches
+    const res = batches.batches.filter(
+      (f) => f.expiryDate > currentDate && f.expiryDate < oneMonthFromNow
+    );
+    console.log(res);
+    // res.json(res);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 });
 
