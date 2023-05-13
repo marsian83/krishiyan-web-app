@@ -282,12 +282,6 @@ const Sale = () => {
     init();
   }, []);
 
-  /**
-   * Disclaimer:
-   * Selling Price < MSP => You are selling at low price.
-   * Selling Price = Procured Price => You are selling at low margin.
-   * Selling Price < Procured Price => You are selling at loss.
-   */
   const showDisclaimer = (
     sellingPrice: string,
     MSP: string,
@@ -980,17 +974,29 @@ const Sale = () => {
                                   style={{ width: "80px" }}
                                   placeholder="Discount(%)"
                                   onChange={async (e: any) => {
-                                    const [err, res] =
-                                      await Api.updateProductDiscount(
-                                        row?.itemId?._id,
-                                        e.target.value,
-                                        row?.quantity
-                                      );
-                                    if (err) {
-                                      alert("Something went wrong!");
-                                    }
-                                    if (res) {
-                                      getFarmerCart();
+                                    console.log("quantity", row.quantity);
+
+                                    if (row.quantity) {
+                                      const [err, res] =
+                                        await Api.updateProductDiscount(
+                                          row?.itemId?._id,
+                                          e.target.value,
+                                          row.quantity
+                                        );
+                                      if (err) {
+                                        alert("Something went wrong!");
+                                      }
+                                      if (res) {
+                                        getFarmerCart();
+                                        const [err, res] =
+                                          await Api.updateProductDisclaimer(
+                                            row?.itemId?._id,
+                                            e.target.value
+                                          );
+                                        if (err) {
+                                          alert("Something went wrong!");
+                                        }
+                                      }
                                     }
                                   }}
                                 />
@@ -1002,7 +1008,7 @@ const Sale = () => {
                                 {row?.itemId?.discountedPrice}
                               </TableCell>
                               <TableCell sx={{ border: 1 }}>
-                                Disclaimer
+                                {row?.itemId?.disclaimer}
                               </TableCell>
                               <TableCell sx={{ cursor: "pointer", border: 1 }}>
                                 <IconButton
@@ -1022,13 +1028,6 @@ const Sale = () => {
                           ))}
                       </TableBody>
                     </Table>
-
-                    <div className="mt-5">
-                      <h1 className="text-[#033E02] font-bold">Disclaimer</h1>
-                      <p className="text-lg font-bold text-[#033E02]">
-                        {disclaimer}
-                      </p>
-                    </div>
                   </div>
                 )}
               </div>

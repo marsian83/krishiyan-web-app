@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../Components/layouts/Header";
-import Bargraph from "../../Components/themes/BarChart";
 import {
   Box,
   Stack,
@@ -160,14 +159,7 @@ const Accounting = () => {
     console.log(pdf.output("datauristring"));
     pdf.save("pdf");
   };
-
-  // let bg_color;
-  // if (billWise) {
-  //   bg_color = "#05AB2A";
-  // }else{
-  //   bg_color = "#ffffff";
-  // }
-
+  
   return (
     <div>
       <Header title="Pos" subtitle="Accounting" />
@@ -211,14 +203,14 @@ const Accounting = () => {
           <Button
             onClick={onClickBillWiseHandler}
             variant="contained"
-            sx={{ backgroundColor: '#05AB2A' }}
+            sx={{ backgroundColor: "#05AB2A" }}
           >
             Bill Wise
           </Button>
           <Button
             onClick={onClickProductWiseHandler}
             variant="contained"
-            sx={{ backgroundColor: '#05AB2A' }}
+            sx={{ backgroundColor: "#05AB2A" }}
           >
             Product Wise
           </Button>
@@ -287,7 +279,12 @@ const Accounting = () => {
                           <GetFarmerMobile farmerId={row?.customer} />
                         </TableCell>
                         <TableCell sx={{ border: 1 }}>
-                          {row?.discountedPrice}
+                          {/*  */}
+                          {row?.discountedPrice ? (
+                            <>₹{row?.discountedPrice}</>
+                          ) : (
+                            <></>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}

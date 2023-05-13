@@ -95,6 +95,9 @@ const ProductSchema = new mongoose.Schema(
     discountedPrice:{
       type: Number,
       default: 0,
+    },
+    disclaimer:{
+      type:String,
     }
   },
   { timestamps: true }

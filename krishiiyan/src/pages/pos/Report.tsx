@@ -53,7 +53,7 @@ const Report = () => {
       if (res) {
         setTotalOrders(res.data.TotalOrders);
         setCurrentInventoryValue(res.data.TotalInventoryValue);
-        // setTotalSales(res.data.TotalSales);
+        setTotalSales(res.data.TotalSales);
         setTotalTx(res.data.TotalOrders.length);
       }
     };

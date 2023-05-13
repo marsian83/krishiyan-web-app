@@ -162,28 +162,92 @@ router.post("/remove-cart-item", async (req, res) => {
 });
 
 const calculatePriceAfterDiscount = (price, discount) => {
+  console.log({price,discount});
   const discountAmount = (price * discount) / 100;
   const priceAfterDiscount = price - discountAmount;
+  
   return priceAfterDiscount.toFixed(2);
 };
+
 //Update discount percentage(%)
 router.put("/:id/discount", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ msg: "Product not found" });
-
+    let latest_product_batch = product.batches[product.batches.length - 1];
     let MRP = product.MRP;
+    console.log(product.MRP,req.body.quantity);
     let discounted_price = calculatePriceAfterDiscount(
-      MRP * req.body.quantity,
+      MRP * Number(req.body.quantity),
       req.body.discount
     );
     product.discount = req.body.discount;
     product.discountedPrice = discounted_price;
+    // product.disclaimer = selling_desclaimer
     await product.save();
 
     res.json(product);
-  } catch (err) {
-    res.status(500).send("Server Error");
+  } catch (error) {
+    console.log(error,"showDiscount error");
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+//Update product disclaimer
+/**
+ * Disclaimer:
+ * @params Selling Price < MSP => You are selling at low price.
+ * @params Selling Price = Procured Price => You are selling at low margin.
+ * @params Selling Price < Procured Price => You are selling at loss.
+ */
+
+const showDisclaimer = (MSP, PP, SP) => {
+  let disclaimer;
+  if (SP < MSP) {
+    disclaimer = "Low Price";
+  }
+  if (SP === PP) {
+    disclaimer = "Low Margin";
+  }
+  if (SP < PP) {
+    disclaimer = "Loss";
+  }
+  console.log({ MSP, PP, SP, disclaimer });
+  return disclaimer;
+};
+
+router.post("/:id/disclaimer", async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ msg: "Product not found" });
+    let latest_product_batch = product.batches[product.batches.length - 1];
+    let MRP = latest_product_batch.MRP;
+    let product_per_unit_price = calculatePriceAfterDiscount(
+      MRP,
+      req.body.discount
+    );
+    let selling_desclaimer = showDisclaimer(
+      latest_product_batch.MSP,
+      latest_product_batch.procuredPrice,
+      product_per_unit_price
+    );
+    let updateProductField = {};
+    updateProductField.disclaimer = selling_desclaimer;
+    let updatedProduct = await Product.findOneAndUpdate(
+      { _id: product._id },
+      { $set: updateProductField },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
+    res.json(updatedProduct);
+  } catch (error) {
+    console.log(error,"showDisclaimer error");
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 });
 

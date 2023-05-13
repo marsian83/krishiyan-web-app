@@ -1,7 +1,7 @@
 import * as axios from "axios";
 
-const apiURL = "http://35.77.226.139:5001/api";
-// const apiURL = "http://localhost:5001/api";
+// const apiURL = "http://35.77.226.139:5001/api";
+const apiURL = "http://localhost:5001/api";
 
 // "http://localhost:5001/api";   localhost
 //http://35.77.226.139:5001/api   Production url
@@ -1143,6 +1143,27 @@ export async function updateProductDiscount(
   }
 }
 
+//Update product discount
+export async function updateProductDisclaimer(
+  productId: string,
+  discountPercentage: string,
+) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/pos/${productId}/disclaimer`,
+      data: {
+        discount: discountPercentage,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
 //Farmer purchase
 export async function createFarmerOrder(
   items: [],
