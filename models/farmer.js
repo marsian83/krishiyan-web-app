@@ -15,7 +15,7 @@ const FarmerSchema = new mongoose.Schema(
       required: true,
     },
     mobile: {
-      type: Number,
+      type: String,
       unique: true,
       required: true,
     },
@@ -24,6 +24,11 @@ const FarmerSchema = new mongoose.Schema(
       required: true,
       default: false,
     },
+    phone_number_verified: {
+      type: Boolean,
+      default: false,
+    },
+    otp: String,
     address: addressInfo,
     totalLandArea: {
       type: Number,

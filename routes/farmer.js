@@ -9,6 +9,15 @@ const credit = require("../models/credit");
 const Crop = require("../models/crop");
 const { findByIdAndUpdate } = require("../models/farmer");
 const AuthGuard = require("../AuthGuard");
+const twilio = require("twilio");
+
+let TWILIO_ACCOUNT_SID = "ACf1cd2c3e9ecf3b33e11709a596697914";
+let TWILIO_AUTH_TOKEN = "452dc7e974edf61d86e825a7f2282422";
+let TWILIO_SERVICE_SID = "MG2887157943e920597f4caa10317f0479";
+let TWILIO_PHONE_NUMBER = "+12762779759";
+
+const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+console.log(client);
 
 // ========================================== NEW FARMER REGISTRATION ====================================================================
 
@@ -122,11 +131,78 @@ router.post("/get-farmer-mobile", async (req, res) => {
 });
 
 router.post("/get-farmer", async (req, res) => {
-  const {farmerId} = req.body
+  const { farmerId } = req.body;
   try {
-    const farmer = await Farmer.findById(farmerId)
+    const farmer = await Farmer.findById(farmerId);
     res.status(200).json(farmer);
   } catch (error) {
+    res.status(500).json({
+      message: error,
+    });
+  }
+});
+
+//Mobile otp verification
+// Generate OTP
+
+router.post("/generate-otp", async (req, res) => {
+  try {
+    const { mobile } = req.body;
+    if (!mobile) return res.status(500).json({ message: "Enter phone number" });
+    const farmer = await Farmer.findOne({ mobile });
+
+    // Generate an OTP using the Twilio API
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    client.messages
+      .create({
+        body: `Your OTP is ${otp}`,
+        from: TWILIO_PHONE_NUMBER,
+        to: `+${mobile}`,
+      })
+      .then((message) => {
+        console.log(message.sid, phone_number);
+      })
+      .catch((error) => console.log(error));
+    let updateFarmerField = {};
+    updateFarmerField.otp = otp;
+    let updatedFarmer = await Farmer.findOneAndUpdate(
+      { _id: farmer._id },
+      { $set: updateFarmerField },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
+    res.json({ message: "OTP sent successfully", OTP: otp });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: error,
+    });
+  }
+});
+
+//Verify Otp
+router.post("/verify-otp", async (req, res) => {
+  try {
+    const { mobile, otp } = req.body;
+    const farmer = await Farmer.findOne({ mobile });
+    if (!farmer) {
+      return res.status(401).json({ message: "Farmer not found" });
+    }
+    if (farmer.otp !== otp) {
+      return res.status(401).json({ message: "Invalid OTP" });
+    }
+    let updateFields = {};
+    updateFields.phone_number_verified = true;
+    let updatedFarmer = await Farmer.findOneAndUpdate(
+      { _id: farmer._id },
+      { $set: updateFields },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
+    res.json({
+      message: "OTP verified successfully",
+      User: updatedFarmer,
+    });
+  } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: error,
     });
@@ -520,7 +596,7 @@ router.post("/credit-amount-info", async (req, res) => {
 });
 
 //New credit {Sanction credit to farmer}
-router.post("/credit", async (req, res) => {
+router.post("/credit", async (req, res, next) => {
   try {
     const {
       creditAmount,
@@ -542,7 +618,28 @@ router.post("/credit", async (req, res) => {
     if (!farmer)
       return res.status(400).json({ message: "Farmer does not exist." });
 
-    if (eligibleAmount < totalPayableAmount)
+    //Check previous sanctioned credit is paid or not.
+    let previousCreditId = farmer.creditData[farmer.creditData.length - 1];
+    // console.log(previousCreditId,"previousCreditId");
+
+    let previousCreditData = await Credit.findById(previousCreditId);
+    // console.log(previousCreditData,"previousCreditData");
+
+    if (previousCreditData) {
+      // console.log(previousCreditData.paymentStatus,"previousCreditData.paymentStatus");
+      if (
+        previousCreditData.paymentStatus === "UNPAID" ||
+        previousCreditData.paymentStatus === "PARTIAL_PAID"
+      ) {
+        return res
+          .status(400)
+          .json({ message: "Your previous payment is remaining." });
+      } else {
+        // next()
+      }
+    }
+
+    if (eligibleAmount < creditAmount || eligibleAmount < totalPayableAmount)
       return res.status(500).json({
         message: `Your maximum credit limit is ${eligibleAmount}`,
       });
@@ -573,6 +670,7 @@ router.post("/credit", async (req, res) => {
 
     res.json({ newcreditData });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: error,
     });
@@ -737,7 +835,15 @@ router.post("/pay-credit", async (req, res) => {
     let remaining_payable_amount;
     let interest_amount;
 
-    if (payableAmount === credit.totalPayableAmount) {
+    if (
+      payableAmount === credit.totalPayableAmount ||
+      payableAmount === credit.remainingPayableAmount ||
+      credit.remainingPayableAmount === "0"
+    ) {
+      // console.log(
+      //   "credit.remainingPayableAmount === '0.00'",
+      //   credit.remainingPayableAmount
+      // );
       payment_status = "PAID";
     } else if (payableAmount === 0) {
       payment_status = "UNPAID";
@@ -750,53 +856,66 @@ router.post("/pay-credit", async (req, res) => {
       let payment_date = moment(start_date).format("DD/MM/YYYY");
       let payment_due_date = credit.dueDate;
 
-      var dateRegex = /\d+/g;
-      var date1Array = payment_date.match(dateRegex);
-      var date2Array = payment_due_date.match(dateRegex);
-
-      var startDate = new Date(date1Array[2], date1Array[1], date1Array[0]);
-      var endDate = new Date(date2Array[2], date2Array[1], date2Array[0]);
-
-      var diffResult = Math.round(
-        (endDate - startDate) / (1000 * 60 * 60 * 24)
-      );
-
-      var months = Math.floor(diffResult / 30);
-
-      let pricipal_amount =
-        Number(credit.totalPayableAmount) - Number(payableAmount);
-      if (isNaN(pricipal_amount)) {
-        pricipal_amount = payableAmount;
+      // remaining_payable_amount = credit.totalPayableAmount - payableAmount;
+      if (credit.remainingPayableAmount) {
+        remaining_payable_amount =
+          credit.remainingPayableAmount - payableAmount;
+        // console.log(remaining_payable_amount, "remaining_payable_amount");
+        if (remaining_payable_amount === "0") {
+          payment_status = "PAID";
+        }
+        // 0.00
+      } else {
+        remaining_payable_amount = credit.totalPayableAmount - payableAmount;
       }
 
-      let pricipal_rate = credit.interestRate;
-      if (isNaN(pricipal_rate)) {
-        pricipal_rate = payableAmount;
-      }
+      // var dateRegex = /\d+/g;
+      // var date1Array = payment_date.match(dateRegex);
+      // var date2Array = payment_due_date.match(dateRegex);
 
-      let InterestInfo = calculateMonthlyInterest(
-        pricipal_amount,
-        pricipal_rate,
-        months
-      );
-      if (isNaN(InterestInfo.TotalPayableAmount)) {
-        InterestInfo.TotalPayableAmount = 0;
-      }
+      // var startDate = new Date(date1Array[2], date1Array[1], date1Array[0]);
+      // var endDate = new Date(date2Array[2], date2Array[1], date2Array[0]);
+
+      // var diffResult = Math.round(
+      //   (endDate - startDate) / (1000 * 60 * 60 * 24)
+      // );
+
+      // var months = Math.floor(diffResult / 30);
+
+      // let pricipal_amount =
+      //   Number(credit.totalPayableAmount) - Number(payableAmount);
+      // if (isNaN(pricipal_amount)) {
+      //   pricipal_amount = payableAmount;
+      // }
+
+      // let pricipal_rate = credit.interestRate;
+      // if (isNaN(pricipal_rate)) {
+      //   pricipal_rate = payableAmount;
+      // }
+
+      // let InterestInfo = calculateMonthlyInterest(
+      //   pricipal_amount,
+      //   pricipal_rate,
+      //   months
+      // );
+      // if (isNaN(InterestInfo.TotalPayableAmount)) {
+      //   InterestInfo.TotalPayableAmount = 0;
+      // }
 
       total_paid_amount = Number(credit.paidAmount) + Number(payableAmount);
       if (isNaN(total_paid_amount)) {
         total_paid_amount = 0;
       }
 
-      remaining_payable_amount = InterestInfo.TotalPayableAmount;
-      if (isNaN(remaining_payable_amount)) {
-        remaining_payable_amount = 0;
-      }
+      // remaining_payable_amount = InterestInfo.TotalPayableAmount;
+      // if (isNaN(remaining_payable_amount)) {
+      //   remaining_payable_amount = 0;
+      // }
 
-      interest_amount = InterestInfo.TotalInterestAmount;
-      if (isNaN(interest_amount)) {
-        interest_amount = 0;
-      }
+      // interest_amount = InterestInfo.TotalInterestAmount;
+      // if (isNaN(interest_amount)) {
+      //   interest_amount = 0;
+      // }
     }
     let updateCreditInfoFields = {};
     updateCreditInfoFields.paymentStatus = payment_status;
@@ -810,7 +929,7 @@ router.post("/pay-credit", async (req, res) => {
       { $set: updateCreditInfoFields },
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );
-    console.log(updateCreditInfo, "updateCreditInfo");
+    // console.log(updateCreditInfo, "updateCreditInfo");
     res.send(updateCreditInfo);
   } catch (error) {
     console.log(error);

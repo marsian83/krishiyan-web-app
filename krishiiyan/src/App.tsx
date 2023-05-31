@@ -30,6 +30,7 @@ import FPurchase from "./pages/farmer/Purchase";
 import LoginPage from "./pages/Authentication/LoginPage";
 import SignupPage from "./pages/Authentication/SignupPage";
 import ProductBatches from "./pages/pos/ProductBatches";
+import OTPVerification from "./pages/farmer/OTPVerification";
 
 const AuthGuard = () => {
   const auth = localStorage.getItem("authToken");
@@ -42,6 +43,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        {/* <Route path="/login" element={<LoginPage />} /> */}
         <Route path="/" element={<AuthGuard />}>
           <Route
             path="/"

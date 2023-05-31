@@ -980,7 +980,7 @@ const Sale = () => {
                                       const [err, res] =
                                         await Api.updateProductDiscount(
                                           row?.itemId?._id,
-                                          e.target.value,
+                                          e.target.value || 0,
                                           row.quantity
                                         );
                                       if (err) {
@@ -1009,6 +1009,12 @@ const Sale = () => {
                               </TableCell>
                               <TableCell sx={{ border: 1 }}>
                                 {row?.itemId?.disclaimer}
+
+                                {/* {row?.itemId?.disclaimer === undefined ? (
+                                  <>---</>
+                                ):(
+                                  row?.itemId?.disclaimer
+                                )} */}
                               </TableCell>
                               <TableCell sx={{ cursor: "pointer", border: 1 }}>
                                 <IconButton

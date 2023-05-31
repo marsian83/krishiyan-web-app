@@ -94,6 +94,8 @@ const Accounting = () => {
 
   const dataFiltered = filterData(startDate, endDate, totalSales);
 
+  let products = dataFiltered?.map((item: any) => item?.items);
+  console.log(products, "All products list");
   useEffect(() => {
     const init = async () => {
       const [err, res] = await Api.getDealerReport();
@@ -159,7 +161,7 @@ const Accounting = () => {
     console.log(pdf.output("datauristring"));
     pdf.save("pdf");
   };
-  
+
   return (
     <div>
       <Header title="Pos" subtitle="Accounting" />
@@ -320,71 +322,43 @@ const Accounting = () => {
                     <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
                       Qty in units
                     </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      MRP Sales value in Rs.
-                    </TableCell>
-                    <TableCell sx={{ border: "1px solid", fontWeight: "bold" }}>
-                      Billing Sales in Rs.
-                    </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
-                  {dataFiltered?.length > 0 &&
-                    dataFiltered.map((row: any) => (
-                      <TableRow
-                        key={row._id}
-                        sx={{
-                          border: 1,
-                        }}
-                      >
-                        <TableCell sx={{ border: 1 }}>
-                          {row.items.map((item: any) => (
-                            <>
-                              <Box>{item?.item?.category}</Box>
-                            </>
-                          ))}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          {row.items.map((item: any) => (
-                            <>
-                              <Box>{item?.item?._id}</Box>
-                            </>
-                          ))}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          {row.items.map((item: any) => (
-                            <>
-                              <Box>{item?.item?.tradeName}</Box>
-                            </>
-                          ))}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          {row.items.map((item: any) => (
-                            <>
-                              <Box>₹{item?.item?.MRP}</Box>
-                            </>
-                          ))}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          {row.items.map((item: any) => (
-                            <>
-                              <Box>{item?.item?.quantity}</Box>
-                            </>
-                          ))}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          ₹{row?.totalPrice}
-                        </TableCell>
-                        <TableCell sx={{ border: 1 }}>
-                          {row?.discountedPrice ? (
-                            <>₹{row?.discountedPrice}</>
-                          ) : (
-                            <></>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
+                <tbody>
+                  {products.map((data: any, index: any) => (
+                    <React.Fragment key={index}>
+                      {data.map((item: any) => (
+                        <TableRow key={item._id}>
+                          <TableCell
+                            sx={{ border: "1px solid", fontWeight: "bold" }}
+                          >
+                            {item?.item?.category}
+                          </TableCell>
+                          <TableCell
+                            sx={{ border: "1px solid", fontWeight: "bold" }}
+                          >
+                            {item?.item?._id}
+                          </TableCell>
+                          <TableCell
+                            sx={{ border: "1px solid", fontWeight: "bold" }}
+                          >
+                            {item?.item?.tradeName}
+                          </TableCell>
+                          <TableCell
+                            sx={{ border: "1px solid", fontWeight: "bold" }}
+                          >
+                            ₹{item?.item?.MRP}
+                          </TableCell>
+                          <TableCell
+                            sx={{ border: "1px solid", fontWeight: "bold" }}
+                          >
+                            {item?.item?.quantity}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </React.Fragment>
+                  ))}
+                </tbody>
               </Table>
             </TableContainer>
           </>

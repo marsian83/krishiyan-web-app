@@ -87,6 +87,9 @@ const Credit = () => {
   const [creditPeriod, setCreditPeriod] = useState("");
   const [interestRate, setInterestRate] = useState("");
 
+  console.log("eligibleAmount",eligibleAmount);
+  
+
   const [reason, setReason] = useState<any>(" ");
   const [reasond, setReasond] = useState(" ");
   const [total_payable_amount, set_total_payable_amount] = useState("0");
@@ -216,10 +219,10 @@ const Credit = () => {
   // console.log(oldCultivation, "This is a oldcultivation data");
 
   const sanctionCredit = async () => {
-    if (farmerDetails && eligibleAmount) {
+    if (farmerDetails && farmerDetails?.creditLimit) {
       const [err, res] = await Api.createFarmerCredit(
         creditAmount.toString(),
-        eligibleAmount,
+        farmerDetails?.creditLimit,
         reason?.crop,
         creditPeriod,
         interestRate,
@@ -237,7 +240,7 @@ const Credit = () => {
       if (res) {
         getFarmerCredits();
         toast.success(
-          `${eligibleAmount} Credit sanctioned to ${farmerDetails?.name}`,
+          `Credit sanctioned to ${farmerDetails?.name}`,
           {
             position: toast.POSITION.TOP_RIGHT,
           }
@@ -441,9 +444,9 @@ const Credit = () => {
                       <th className="border-r border-black py-[1.2%]">
                         Remaining Payable Amount
                       </th>
-                      <th className="border-r border-black py-[1.2%]">
+                      {/* <th className="border-r border-black py-[1.2%]">
                         Paid Amount
-                      </th>
+                      </th> */}
                       <th className="border-r border-black py-[1.2%]">
                         Payment Date
                       </th>
@@ -503,11 +506,11 @@ const Credit = () => {
                             </>
                           )}
 
-                          <td className="border-r border-black font-thin">
+                          {/* <td className="border-r border-black font-thin">
                             {credit?.paidAmount
                               ? parseFloat(credit.paidAmount).toFixed(2)
                               : "-"}
-                          </td>
+                          </td> */}
                           <td className="border-r border-black font-thin">
                             {moment(credit?.updatedAt).format("DD-MM-YYYY")}
                           </td>
@@ -559,9 +562,9 @@ const Credit = () => {
               <input
                 type="text"
                 className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
-                defaultValue={eligibleAmount}
-                value={eligibleAmount}
-                onChange={onChangeAmount}
+                defaultValue={farmerDetails?.creditLimit}
+                // value={eligibleAmount}
+                // onChange={onChangeAmount}
                 disabled
               />
               {/*  */}

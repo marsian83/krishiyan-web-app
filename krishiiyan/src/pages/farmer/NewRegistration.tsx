@@ -8,7 +8,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Loader from "../../Components/themes/Loader";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import { useNavigate } from "react-router-dom";
 import { log } from "console";
+import OTPVerification from "./OTPVerification";
 
 const PlantationOptions = [
   {
@@ -39,6 +41,7 @@ const PlantationType = [
   },
 ];
 const NewRegistration = () => {
+  const navigate = useNavigate()
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState<any>();
   const [state, setState] = useState("");
@@ -138,6 +141,26 @@ const NewRegistration = () => {
     }
   };
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const verifyMobile = async() =>{
+    const [err,res] = await Api.generateOtp(mobile)
+    if(err){
+      toast.error(err.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+    if(res){
+      console.log({res});
+      toast.success(res?.data?.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+    handleOpen()
+  }
   return (
     <div>
       <Header title="Farmer" subtitle="New Registration" />
@@ -162,9 +185,20 @@ const NewRegistration = () => {
               className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
               onChange={onChangePhone}
             ></input>
+            <div className="ml-50">
+            <button
+            onClick={verifyMobile}
+            type="submit"
+            className="bg-[#05AB2A] text-[#F3FFF1] w-[8vw] h-8  mt-3 shadow-[0px_4px_3px_rgba(0,0,0,0.25)] rounded text-sm font-thin"
+          >
+            Verify mobile
+          </button>
+            </div>
+            
           </div>
           <div className="grid grid-cols-[35%_5%] justify-items-end items-center">
-            <label className="text-[#13490A] font-roboto font-extrabold text-sm mx-5 ">
+           
+            <label className="text-[#13490A] font-roboto font-extrabold text-sm mx-10 ">
               Whatsapp
             </label>
             <Checkbox
@@ -172,7 +206,10 @@ const NewRegistration = () => {
               onChange={onChangeIsWhatsapp}
               inputProps={{ "aria-label": "controlled" }}
             />
+            
+          
           </div>
+          
         </div>
         <img src="Images/Line18.png" className="my-5" alt="line" />
         <div className="grid grid-cols-[25%_26%]">
@@ -271,6 +308,11 @@ const NewRegistration = () => {
           </button>
         </div>
       </section>
+      <OTPVerification
+        open={open}
+        handleClose={handleClose}
+        Phone={mobile}
+      />
     </div>
   );
 };
