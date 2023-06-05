@@ -10,7 +10,7 @@ export default function Piegraph() {
     datasets: [
       {
         label: "# of Products",
-        data: [0, 2, 2, 2, 1, 0],
+        data: [20, 15, 10, 5, 13, 31],
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
