@@ -1,7 +1,7 @@
 import * as axios from "axios";
 
-const apiURL = "http://35.77.226.139:5001/api";
-// const apiURL = "http://localhost:5001/api";
+// const apiURL = "http://35.77.226.139:5001/api";
+const apiURL = "http://localhost:5001/api";
 
 // "http://localhost:5001/api";   localhost
 //http://35.77.226.139:5001/api   Production url
@@ -156,16 +156,14 @@ export async function createFarmer(
 }
 
 //Generate otp
-export async function generateOtp(
-  mobile:String
-) {
+export async function generateOtp(mobile: String) {
   try {
     let token: any = localStorage.getItem("authToken");
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "post",
       url: `${apiURL}/farmer/generate-otp`,
       data: {
-        mobile:mobile
+        mobile: mobile,
       },
       // headers: { Authorization: "Bearer " + token },
     };
@@ -179,18 +177,15 @@ export async function generateOtp(
 }
 
 //Verify OTP
-export async function verifyOtp(
-  mobile:String,
-  otp:String
-) {
+export async function verifyOtp(mobile: String, otp: String) {
   try {
     let token: any = localStorage.getItem("authToken");
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "post",
       url: `${apiURL}/farmer/verify-otp`,
       data: {
-        mobile:mobile,
-        otp:otp
+        mobile: mobile,
+        otp: otp,
       },
       // headers: { Authorization: "Bearer " + token },
     };
@@ -248,6 +243,25 @@ export async function getFarmerLocation(pin: string) {
       url: `${apiURL}/farmer/address`,
       data: {
         pincode: pin,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Get farmer purchases
+export async function getFarmerPurchases(farmerId: string) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/pos/get-farmer-purchase`,
+      data: {
+        farmerId: farmerId,
       },
     };
     const response = await axios.default.request(axiosConfig);
@@ -514,6 +528,27 @@ export async function payCredit(
         billNumber: billNumber,
         payableAmount: payableAmount,
         paymentMethod: paymentMethod,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Update payment status
+export async function updatePaymentStatus(
+  billNumber: string,
+) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/farmer/update-payment-status`,
+      data: {
+        billNumber: billNumber,
       },
     };
     const response = await axios.default.request(axiosConfig);
@@ -1138,7 +1173,7 @@ export async function updateProductDiscount(
       url: `${apiURL}/pos/${productId}/discount`,
       data: {
         discount: discountPercentage,
-        quantity:quantity
+        quantity: quantity,
       },
     };
     const response = await axios.default.request(axiosConfig);
@@ -1153,7 +1188,7 @@ export async function updateProductDiscount(
 //Update product discount
 export async function updateProductDisclaimer(
   productId: string,
-  discountPercentage: string,
+  discountPercentage: string
 ) {
   try {
     const axiosConfig: axios.AxiosRequestConfig = {
@@ -1177,7 +1212,7 @@ export async function createFarmerOrder(
   farmerID: string,
   paymentStatus: string,
   totalPrice: string,
-  discountedPrice:string
+  discountedPrice: string
 ) {
   try {
     let token: any = localStorage.getItem("authToken");
@@ -1189,7 +1224,7 @@ export async function createFarmerOrder(
         totalPrice: totalPrice,
         customer: farmerID,
         paymentStatus: paymentStatus,
-        discountedPrice:discountedPrice
+        discountedPrice: discountedPrice,
       },
       headers: { Authorization: "Bearer " + token },
     };

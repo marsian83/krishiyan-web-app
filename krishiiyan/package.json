@@ -22,6 +22,7 @@
     "base64-to-uint8array": "^1.0.0",
     "chart.js": "^4.0.1",
     "daisyui": "^2.46.1",
+    "faker": "^6.6.6",
     "file-saver": "^2.0.5",
     "iconify": "^1.4.0",
     "jspdf": "^2.5.1",

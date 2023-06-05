@@ -134,9 +134,10 @@ const NewRegistration = () => {
       }
       if (response) {
         // console.log(response);
-        toast.success("New farmer created!", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        // toast.success("New farmer created!", {
+        //   position: toast.POSITION.TOP_RIGHT,
+        // });
+        verifyMobile()
       }
     }
   };
@@ -185,7 +186,7 @@ const NewRegistration = () => {
               className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
               onChange={onChangePhone}
             ></input>
-            <div className="ml-50">
+            {/* <div className="ml-50">
             <button
             onClick={verifyMobile}
             type="submit"
@@ -193,7 +194,7 @@ const NewRegistration = () => {
           >
             Verify mobile
           </button>
-            </div>
+            </div> */}
             
           </div>
           <div className="grid grid-cols-[35%_5%] justify-items-end items-center">

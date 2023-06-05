@@ -603,7 +603,7 @@ const Cultivation = () => {
                           </td>
                           <td className="border-r border-black font-thin">
                             {moment(cultivation?.dateOfSowing).format(
-                              "DD/MM/YYYY"
+                              "DD-MM-YYYY"
                             )}
                           </td>
 

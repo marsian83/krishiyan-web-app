@@ -4,6 +4,8 @@ import * as Api from "../../Services/Api";
 import moment from "moment";
 import { toast } from "react-toastify";
 import Loader from "../../Components/themes/Loader";
+import { Box } from "@mui/material";
+
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
@@ -14,6 +16,8 @@ const Dashboard = () => {
   const [fetchData, setFetchData] = useState(false);
   const [dasTable, setDasTable] = useState(false);
   const [tableSize, setTableSize] = useState(5);
+
+  const [farmerOrders, setFarmerOrders] = useState<any>();
 
   const onChangeInput = (e: any) => {
     setFarmerID(e.target.value);
@@ -98,6 +102,16 @@ const Dashboard = () => {
       setFetchData(true);
     }
   }, []);
+
+  //Get farmer purchases
+  useEffect(() => {
+    const getFarmerOrders = async () => {
+      const [err, res] = await Api.getFarmerPurchases(farmerDetail._id);
+      console.log({ res });
+      setFarmerOrders(res?.data);
+    };
+    getFarmerOrders();
+  }, [farmerDetail]);
 
   return (
     <div>
@@ -189,7 +203,7 @@ const Dashboard = () => {
                           <th className="border-r border-black py-[1.2%]">
                             {farmerDetail
                               ? moment(farmerDetail?.createdAt).format(
-                                  "DD/MM/YYYY"
+                                  "DD-MM-YYYY"
                                 )
                               : "-"}
                           </th>
@@ -214,7 +228,7 @@ const Dashboard = () => {
                           <td className="border-r border-black">
                             {farmerDetail
                               ? moment(farmerDetail?.updatedAt).format(
-                                  "DD/MM/YYYY"
+                                  "DD-MM-YYYY"
                                 )
                               : "-"}
                           </td>
@@ -283,7 +297,7 @@ const Dashboard = () => {
                               <td className="border-r border-black">
                                 {cultivation?.dateOfSowing
                                   ? moment(cultivation?.dateOfSowing).format(
-                                      "DD/MM/YYYY"
+                                      "DD-MM-YYYY"
                                     )
                                   : "-"}
                               </td>
@@ -297,59 +311,7 @@ const Dashboard = () => {
                     </table>
                   )}
 
-                  {/* {currentCultivation && (
-                    <div className="mt-10">
-                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                        Cultivation Details
-                      </h3>
-                      <table className="min-w-full leading-normal">
-                        <thead>
-                          <tr>
-                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                              Crop Name
-                            </th>
-                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                              Start Date
-                            </th>
-                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                              End Date
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {currentCultivation.map(
-                            (cultivation: any, index: number) => (
-                              <tr key={index}>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <div className="flex items-center">
-                                    <div className="ml-3">
-                                      <p className="text-gray-900 whitespace-no-wrap">
-                                        {cultivation.cropName}
-                                      </p>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <p className="text-gray-900 whitespace-no-wrap">
-                                    {moment(cultivation.startDate).format(
-                                      "YYYY-MM-DD"
-                                    )}
-                                  </p>
-                                </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <p className="text-gray-900 whitespace-no-wrap">
-                                    {moment(cultivation.endDate).format(
-                                      "YYYY-MM-DD"
-                                    )}
-                                  </p>
-                                </td>
-                              </tr>
-                            )
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                  )} */}
+            
                 </div>
 
                 <div className="flex lg:gap-x-[5%] xl:gap-x-[5%] w-full ">
@@ -367,32 +329,40 @@ const Dashboard = () => {
                         </tr>
                         <tr className="text-center">
                           <th className="border-r border-black py-[1.2%]">
-                            S.No
+                            Purchase ID
                           </th>
                           <th className="border-r border-black py-[1.2%]">
                             Date
                           </th>
-                          <th className="border-r border-black py-[1.2%]">
+                          {/* <th className="border-r border-black py-[1.2%]">
                             Products
-                          </th>
+                          </th> */}
                           <th className="border-r border-black py-[1.2%]">
                             Amount
                           </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {/* Stage1 */}
-                        <tr className="h-10 border-b border-black">
-                          <td className="border-r border-black">
-                            {/* {currentCultivation?.slotNumber} */}01
-                          </td>
-
-                          <td className="border-r border-black">12/03/22</td>
-                          <td className="border-r border-black">
-                            Urea, Complex B
-                          </td>
-                          <td className="border-r border-black">₹803.00</td>
-                        </tr>
+                        {farmerOrders &&
+                          farmerOrders.map((order: any) => (
+                            <tr className="h-10 border-b border-black">
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                {order?._id.slice(0, 5)}
+                              </td>
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                {moment(order?.createdAt).format("DD-MM-YYYY")}
+                              </td>
+                              {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                {order?.items?.map((item: any) => {
+                                  console.log(item?.item?.tradeName);
+                                  <>{item?.item?.tradeName}</>;
+                                })}
+                              </td> */}
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                ₹{order?.totalPrice}
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </table>
                   ) : (

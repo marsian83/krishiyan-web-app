@@ -22,6 +22,9 @@ const Credit = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [billData, setBillData] = useState<any>();
 
+  const [payMode, setPayMode] = useState(" ");
+  console.log("payMode________", payMode);
+
   // const getFarmerCredits = async () => {
   //   const [err, res] = await Api.getFarmerCreditData(farmerDetails?._id);
   //   if (res) {
@@ -87,8 +90,7 @@ const Credit = () => {
   const [creditPeriod, setCreditPeriod] = useState("");
   const [interestRate, setInterestRate] = useState("");
 
-  console.log("eligibleAmount",eligibleAmount);
-  
+  console.log("eligibleAmount", eligibleAmount);
 
   const [reason, setReason] = useState<any>(" ");
   const [reasond, setReasond] = useState(" ");
@@ -239,12 +241,9 @@ const Credit = () => {
       }
       if (res) {
         getFarmerCredits();
-        toast.success(
-          `Credit sanctioned to ${farmerDetails?.name}`,
-          {
-            position: toast.POSITION.TOP_RIGHT,
-          }
-        );
+        toast.success(`Credit sanctioned to ${farmerDetails?.name}`, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
         console.log(res, "Credit sanctioned response__________");
       }
     }
@@ -263,24 +262,176 @@ const Credit = () => {
     getCreditDetails();
   }, [credit_id]);
 
+  function calculateMonthsBetweenDates(startDate: any, endDate: any) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const yearsDiff = end.getFullYear() - start.getFullYear();
+    const monthsDiff = end.getMonth() - start.getMonth();
+    const totalMonthsDiff = yearsDiff * 12 + monthsDiff;
+    return totalMonthsDiff;
+  }
   const payCredit = async () => {
-    const [err, res] = await Api.payCredit(
-      credit_id,
-      amn_payable,
-      payment_method
-    );
-    if (err) {
-      toast.error(err.data, {
-        position: toast.POSITION.TOP_RIGHT,
+    if (payMode === "Settled Full Amount") {
+      // Formatting dates using moment.js
+      const credit_date = moment(credit_details?.createdAt).format(
+        "MM/DD/YYYY"
+      );
+      const due_date = moment(credit_details?.dueDate).format("MM/DD/YYYY");
+      const payment_date = moment().format("MM/DD/YYYY");
+
+      // Retrieving credit details
+      const principle_amount = credit_details?.creditAmount;
+
+      // Calculating the number of months between credit_date and payment_date
+      const total_months = calculateMonthsBetweenDates(
+        credit_date,
+        payment_date
+      );
+
+      // Calculating one month's interest based on the difference between totalPayableAmount and principle_amount
+      const one_month_interest =
+        Number(credit_details?.totalPayableAmount) - Number(principle_amount);
+
+      // Calculating the total interest amount based on the number of months
+      let total_interest_amount =
+        total_months <= 0
+          ? one_month_interest
+          : Number(total_months) * Number(one_month_interest);
+
+      // Logging relevant details for debugging
+      console.log({
+        credit_date,
+        due_date,
+        payment_date,
+        total_months,
+        one_month_interest,
+        total_interest_amount,
       });
-    } else {
-      getFarmerCredits();
-      toast.success(`Paid Success!`, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      console.log(res, "Credit pay response__________");
+
+      // Making the API call to payCredit
+      const total_settlement_amount = credit_details?.totalPayableAmount;
+      const [err, res] = await Api.payCredit(
+        credit_id,
+        total_settlement_amount,
+        payment_method
+      );
+
+      // Handling errors and displaying appropriate toast messages
+      if (err) {
+        toast.error(err.data, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        const [err, res] = await Api.updatePaymentStatus(
+          credit_details?.billNumber
+        );
+        if (res) {
+          console.log({ res });
+        }
+        // Updating farmer credits and displaying success message
+        getFarmerCredits();
+        toast.success(`Paid Success!`, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    }
+
+    if (payMode === "Partial Payment") {
+      // Making the API call for partial payment
+      const [err, res] = await Api.payCredit(
+        credit_id,
+        amn_payable,
+        payment_method
+      );
+
+      // Handling errors and displaying appropriate toast messages
+      if (err) {
+        toast.error(err.data, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        //call update payment status api
+        const total_settlement_amount = credit_details?.totalPayableAmount;
+        const [err, res] = await Api.updatePaymentStatus(
+          credit_details?.billNumber
+        );
+        if (res) {
+          console.log({ res });
+        }
+        // Updating farmer credits and displaying success message
+        getFarmerCredits();
+        toast.success(`Paid Success!`, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
     }
   };
+
+  // const payCredit = async () => {
+  //   if (payMode === "Settled Full Amount") {
+  //     let credit_date = moment(credit_details?.createdAt).format("MM/DD/YYYY");
+  //     let due_date = moment(credit_details?.dueDate).format("MM/DD/YYYY");
+  //     let date = new Date();
+  //     let payment_date = moment(date).format("MM/DD/YYYY");
+
+  //     let principle_amount = credit_details?.creditAmount;
+  //     let total_months: any = calculateMonthsBetweenDates(
+  //       credit_date,
+  //       payment_date
+  //     );
+  //     let one_month_interest =
+  //       Number(credit_details?.totalPayableAmount) - Number(principle_amount);
+  //     let total_interest_amount;
+  //     if (total_months <= 0) {
+  //       total_interest_amount = one_month_interest;
+  //     }
+  //     if (total_months > 0) {
+  //       total_interest_amount =
+  //         Number(total_months) * Number(one_month_interest);
+  //     }
+  //     console.log({
+  //       credit_date,
+  //       due_date,
+  //       payment_date,
+  //       total_months,
+  //       one_month_interest,
+  //       total_interest_amount,
+  //     });
+  //     let total_settlement_amount = credit_details?.totalPayableAmount;
+  //     const [err, res] = await Api.payCredit(
+  //       credit_id,
+  //       total_settlement_amount,
+  //       payment_method
+  //     );
+  //     if (err) {
+  //       toast.error(err.data, {
+  //         position: toast.POSITION.TOP_RIGHT,
+  //       });
+  //     } else {
+  //       getFarmerCredits();
+  //       toast.success(`Paid Success!`, {
+  //         position: toast.POSITION.TOP_RIGHT,
+  //       });
+  //     }
+  //   }
+  //   if (payMode === "Partial Payment") {
+  //     const [err, res] = await Api.payCredit(
+  //       credit_id,
+  //       amn_payable,
+  //       payment_method
+  //     );
+  //     if (err) {
+  //       toast.error(err.data, {
+  //         position: toast.POSITION.TOP_RIGHT,
+  //       });
+  //     } else {
+  //       getFarmerCredits();
+  //       toast.success(`Paid Success!`, {
+  //         position: toast.POSITION.TOP_RIGHT,
+  //       });
+  //     }
+  //   }
+  // };
   // useEffect(() => {
   //   const init = async () => {
   //     await getFarmerByMobile();
@@ -484,14 +635,17 @@ const Credit = () => {
                           </td>
                           <td className="border-r border-black font-thin">
                             {parseFloat(credit?.totalPayableAmount).toFixed(2)}
+                            {/* {Number(credit?.creditAmount) +
+                              Number(credit?.interestAmount)} */}
                           </td>
                           <td className="border-r border-black pl-2 pr-2 font-thin">
-                            {credit?.dueDate}
+                            {/* {credit?.dueDate} */}
+                            {moment(credit?.dueDate).format("DD-MM-YYYY")}
                           </td>
                           <td className="border-r border-black pl-1 pr-1 font-thin">
                             {credit?.paymentStatus}
                           </td>
-                          {credit?.remainingPayableAmount !== "" &&
+                          {/* {credit?.remainingPayableAmount !== "" &&
                           credit?.remainingPayableAmount !== undefined ? (
                             <td className="border-r border-black font-thin">
                               {parseFloat(
@@ -504,8 +658,10 @@ const Credit = () => {
                                 -
                               </td>
                             </>
-                          )}
-
+                          )} */}
+                          <td className="border-r border-black font-thin">
+                            {credit?.remainingPayableAmount}
+                          </td>
                           {/* <td className="border-r border-black font-thin">
                             {credit?.paidAmount
                               ? parseFloat(credit.paidAmount).toFixed(2)
@@ -611,7 +767,8 @@ const Credit = () => {
                 <input
                   type="text"
                   className="bg-[#F3FFF1]  h-8 w-35 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
-                  value={due_date}
+                  value={moment(due_date).format("DD-MM-YYYY")}
+                  
                 />
               </div>
             </div>
@@ -635,6 +792,7 @@ const Credit = () => {
                 <input
                   type="text"
                   className="bg-[#F3FFF1]  h-8 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
+                  // value={Number(creditAmount) + Number(interest_amount)}
                   value={total_payable_amount}
                 />
               </div>
@@ -645,6 +803,7 @@ const Credit = () => {
                 <input
                   type="text"
                   className="bg-[#F3FFF1]  h-8 w-35 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md p-2"
+                  // value={Number(interest_amount) * Number(12)}
                   value={interest_amount}
                 />
               </div>
@@ -683,21 +842,38 @@ const Credit = () => {
                 <>
                   <div className="grid grid-cols-[25%_28%] text-center items-center my-4">
                     <label className="text-[#13490A]  font-roboto font-extrabold text-sm mx-5">
+                      Payment Mode
+                    </label>
+                    <select
+                      id="countries"
+                      className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] overflow-y-scroll ... rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      onChange={(e: any) => setPayMode(e.target.value)}
+                    >
+                      <option>Settled Full Amount</option>
+                      <option>Partial Payment</option>
+                    </select>
+                  </div>
+
+                  <div className="grid grid-cols-[25%_28%] text-center items-center my-4">
+                    <label className="text-[#13490A]  font-roboto font-extrabold text-sm mx-5">
                       Detail
                     </label>
                     <div className="p-1 bg-[#F3FFF1]">
                       <h1 className="text-start font-bold">
                         Credit Date :{" "}
-                        {moment(credit_details?.createdAt).format("MM/DD/YYYY")}
+                        {moment(credit_details?.createdAt).format("DD-MM-YYYY")}
                       </h1>
                       <h1 className="text-start font-bold">
-                        Due Date : {credit_details?.dueDate}
+                        Due Date :{" "}
+                        {moment(credit_details?.dueDate).format("DD-MM-YYYY")}
                       </h1>
                       <h1 className="text-start font-bold">
                         Amount :{" "}
                         {parseFloat(credit_details?.totalPayableAmount).toFixed(
                           2
                         )}
+                        {/* {Number(credit_details?.creditAmount) +
+                          Number(credit_details?.interestAmount)} */}
                       </h1>
                       {credit_details?.remainingPayableAmount !== "" &&
                       credit_details?.remainingPayableAmount !== undefined ? (
@@ -712,16 +888,32 @@ const Credit = () => {
                       )}
                     </div>
                   </div>
-                  <div className="grid grid-cols-[25%_28%] text-center items-center my-4">
+
+                  {/* <div className="grid grid-cols-[25%_28%] text-center items-center my-4">
                     <label className="text-[#13490A]  font-roboto font-extrabold text-sm mx-5">
-                      Amount Payable
+                      Settled Full Amount
                     </label>
-                    <input
-                      type="text"
-                      className="bg-[#F3FFF1]  h-8  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-2"
-                      onChange={onChangeAmountPayable}
-                    />
-                  </div>
+                    <button
+                      className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-16 py-1  text-sm font-thin"
+                    >
+                     Settled Full Amount
+                    </button>
+                  </div> */}
+                  {payMode === "Partial Payment" ? (
+                    <div className="grid grid-cols-[25%_28%] text-center items-center my-4">
+                      <label className="text-[#13490A]  font-roboto font-extrabold text-sm mx-5">
+                        Amount Payable
+                      </label>
+                      <input
+                        type="text"
+                        className="bg-[#F3FFF1]  h-8  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-2"
+                        onChange={onChangeAmountPayable}
+                      />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+
                   <div className="grid grid-cols-[70%_28%_15%] text-center items-center my-2">
                     {/* {Number(eligibleAmount) > Number(farmerDetails?.creditLimit) ? ( */}
                     {credit_details?.remainingPayableAmount <
@@ -746,10 +938,6 @@ const Credit = () => {
                       <option value={amn_payable}>UPI</option>
                       <option value={amn_payable}>CARD</option>
                     </select>
-                    {/* <img
-                      src="Images/Dropdown.png"
-                      className="ml-4 text-center rounded-full"
-                    /> */}
                   </div>
                   <div className="w-[78%] flex justify-center">
                     <button

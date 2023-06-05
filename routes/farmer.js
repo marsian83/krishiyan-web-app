@@ -19,6 +19,14 @@ let TWILIO_PHONE_NUMBER = "+12762779759";
 const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 console.log(client);
 
+function generateRandom(min, max) {
+  let difference = max - min;
+  let rand = Math.random();
+  rand = Math.floor(rand * difference);
+  rand = rand + min;
+  return rand;
+}
+
 // ========================================== NEW FARMER REGISTRATION ====================================================================
 
 //Create a farmer
@@ -45,6 +53,7 @@ router.post("/", AuthGuard, async (req, res) => {
       totalLandArea,
       dealer_farmer_relation,
       plantation_type,
+      creditLimit: generateRandom(1, 50000),
       createdBy: req.user,
     });
     const farmer = await newFarmer.save();
@@ -527,24 +536,30 @@ router.post("/credit-eligible-amount", async (req, res) => {
 //   }
 // });
 
-const calculateMonthlyInterest = function (p, r, n) {
-  // let rate = r / 12; // convert annual rate to monthly rate
-  // let interest = (
-  //   (p * rate * Math.pow(1 + rate, n)) /
-  //   (Math.pow(1 + rate, n) - 1)
-  // ).toFixed(4);
-  // console.log(interest);
-  // const totalPayableAmount = (interest * n).toFixed(4);
-  // const totalInterestAmount = (totalPayableAmount - p).toFixed(4);
+// let rate = r / 12; // convert annual rate to monthly rate
+// let interest = (
+//   (p * rate * Math.pow(1 + rate, n)) /
+//   (Math.pow(1 + rate, n) - 1)
+// ).toFixed(4);
+// console.log(interest);
+// const totalPayableAmount = (interest * n).toFixed(4);
+// const totalInterestAmount = (totalPayableAmount - p).toFixed(4);
 
+// const totalPayableAmount = (p * (1 + (r / 100) * (n / 12))).toFixed(4);
+const calculateMonthlyInterest = function (p, r, n) {
   const totalPayableAmount = (p * (1 + (r / 100) * (n / 12))).toFixed(4);
-  const totalInterestAmount = (totalPayableAmount - p).toFixed(4);
+  // const totalPayableAmount = (p + (p * r * n) / 1200).toFixed(4);
+  const totalInterestAmount = (totalPayableAmount - p).toFixed(4) * Number(12);
   const interest = 1;
 
   return {
     MonthlyInterest: interest,
-    TotalPayableAmount: totalPayableAmount,
+    // TotalPayableAmount: totalPayableAmount,
+    // TotalInterestAmount: Number(totalInterestAmount) * Number(12),
     TotalInterestAmount: totalInterestAmount,
+    TotalPayableAmount: Number(p) + Number(totalInterestAmount),
+    PrincipalAmount: p,
+    EMI: Number(totalInterestAmount) / Number(12),
   };
 };
 
@@ -559,6 +574,8 @@ router.post("/credit-amount-info", async (req, res) => {
       parseFloat(rate),
       parseInt(period)
     );
+
+    console.log({ InterestInfo });
 
     //Due Date
     function addMonths(date, monthsToAdd) {
@@ -577,6 +594,7 @@ router.post("/credit-amount-info", async (req, res) => {
     let due_date = addMonths(new Date(), parseInt(period));
 
     res.status(200).json({
+      InterestDetails: InterestInfo,
       TotalPayableAmount: InterestInfo.TotalPayableAmount,
       InterestAmount: InterestInfo.TotalInterestAmount,
       DueDate: due_date.toLocaleDateString(undefined, {
@@ -584,7 +602,6 @@ router.post("/credit-amount-info", async (req, res) => {
         month: "numeric",
         day: "numeric",
       }),
-      // DueDate: moment(due_date).format("DD/MM/YYYY"),
       LoanEMI: InterestInfo.MonthlyInterest,
     });
   } catch (error) {
@@ -620,13 +637,8 @@ router.post("/credit", async (req, res, next) => {
 
     //Check previous sanctioned credit is paid or not.
     let previousCreditId = farmer.creditData[farmer.creditData.length - 1];
-    // console.log(previousCreditId,"previousCreditId");
-
     let previousCreditData = await Credit.findById(previousCreditId);
-    // console.log(previousCreditData,"previousCreditData");
-
     if (previousCreditData) {
-      // console.log(previousCreditData.paymentStatus,"previousCreditData.paymentStatus");
       if (
         previousCreditData.paymentStatus === "UNPAID" ||
         previousCreditData.paymentStatus === "PARTIAL_PAID"
@@ -683,6 +695,7 @@ router.post("/credit-info", async (req, res) => {
     const { billNumber } = req.body;
     const credit = await Credit.findOne({ billNumber });
     if (!credit) return res.status(404).json({ msg: "Tx not found" });
+    console.log({ credit });
     res.json({ credit });
   } catch (error) {
     res.status(500).json({
@@ -697,8 +710,6 @@ router.post("/credits-data", async (req, res) => {
     const { farmerId } = req.body;
     const farmer = await Farmer.findById(farmerId);
     if (!farmer) return res.status(400).json({ msg: "Farmer does not exist." });
-
-    // console.log(farmer.creditData);
     const page = req.query.page;
     const size = req.query.size ? parseInt(req.query.size) : 10;
     const skip = (page - 1) * size;
@@ -840,16 +851,12 @@ router.post("/pay-credit", async (req, res) => {
       payableAmount === credit.remainingPayableAmount ||
       credit.remainingPayableAmount === "0"
     ) {
-      // console.log(
-      //   "credit.remainingPayableAmount === '0.00'",
-      //   credit.remainingPayableAmount
-      // );
       payment_status = "PAID";
     } else if (payableAmount === 0) {
       payment_status = "UNPAID";
     } else if (
-      payableAmount !== credit.totalPayableAmount &&
-      payableAmount != 0
+      (payableAmount !== credit.totalPayableAmount && payableAmount != 0) ||
+      0.0
     ) {
       payment_status = "PARTIAL_PAID";
       let start_date = new Date();
@@ -861,12 +868,10 @@ router.post("/pay-credit", async (req, res) => {
         remaining_payable_amount =
           credit.remainingPayableAmount - payableAmount;
         // console.log(remaining_payable_amount, "remaining_payable_amount");
-        if (remaining_payable_amount === "0") {
-          payment_status = "PAID";
-        }
         // 0.00
       } else {
         remaining_payable_amount = credit.totalPayableAmount - payableAmount;
+        console.log(remaining_payable_amount, "remaining_payable_amount");
       }
 
       // var dateRegex = /\d+/g;
@@ -917,6 +922,9 @@ router.post("/pay-credit", async (req, res) => {
       //   interest_amount = 0;
       // }
     }
+    if (credit.remainingPayableAmount === "0") {
+      payment_status = "PAID";
+    }
     let updateCreditInfoFields = {};
     updateCreditInfoFields.paymentStatus = payment_status;
     updateCreditInfoFields.remainingPayableAmount = remaining_payable_amount;
@@ -930,6 +938,33 @@ router.post("/pay-credit", async (req, res) => {
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );
     // console.log(updateCreditInfo, "updateCreditInfo");
+    res.send(updateCreditInfo);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: error,
+    });
+  }
+});
+
+//update credit payment status
+router.post("/update-payment-status", async (req, res) => {
+  try {
+    const { billNumber } = req.body;
+    const credit = await Credit.findOne({ billNumber });
+    if (!credit) return res.status(404).json({ msg: "Tx not found" });
+    let payment_status;
+    let updateCreditInfoFields = {};
+    if (credit.remainingPayableAmount === "0") {
+      payment_status = "PAID";
+    }
+    updateCreditInfoFields.paymentStatus = payment_status;
+    let updateCreditInfo = await Credit.findByIdAndUpdate(
+      { _id: credit._id },
+      { $set: updateCreditInfoFields },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
+    console.log(updateCreditInfo, "updateCreditInfo");
     res.send(updateCreditInfo);
   } catch (error) {
     console.log(error);

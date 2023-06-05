@@ -2,10 +2,21 @@ import React, { useEffect, useState } from "react";
 import Header from "../../Components/layouts/Header";
 import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
-import { Autocomplete, MenuItem, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  MenuItem,
+  TableContainer,
+  TextField,
+} from "@mui/material";
 import { getCrops, getvariteyByCropId } from "../../Services/Api";
 import moment from "moment";
 import Weather from "./Weather";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 
 const Purchase = () => {
   const [loading, setLoading] = useState(false);
@@ -13,6 +24,7 @@ const Purchase = () => {
   const [farmerID, setFarmerID] = useState("");
   const [farmerDetail, setFarmerDetail] = useState<any>();
   const [fetchData, setFetchData] = useState(false);
+  const [farmerOrders, setFarmerOrders] = useState<any>();
 
   const onChangeInput = (e: any) => {
     setFarmerID(e.target.value);
@@ -51,6 +63,16 @@ const Purchase = () => {
       setFetchData(true);
     }
   }, []);
+
+  //Get farmer purchases
+  useEffect(() => {
+    const getFarmerOrders = async () => {
+      const [err, res] = await Api.getFarmerPurchases(farmerDetail._id);
+      console.log({ res });
+      setFarmerOrders(res?.data);
+    };
+    getFarmerOrders();
+  }, [farmerDetail]);
 
   return (
     <div>
@@ -96,78 +118,73 @@ const Purchase = () => {
 
         <section className="mt-10">
           {farmerDetail ? (
-            <table className="table-auto border-collapse border border-black font-bold text-base w-[80%] mx-auto">
-              <thead className="border-b border-black">
-                <tr className="text-center">
-                  <th className="border-r border-black py-[1.2%]">S.No</th>
-                  <th className="border-r border-black py-[1.2%]">Date</th>
-                  <th className="border-r border-black py-[1.2%]">ID</th>
-                  <th className="border-r border-black py-[1.2%]">Product</th>
-                  <th className="border-r border-black py-[1.2%]">Amount</th>
-                  <th className="border-r border-black py-[1.2%]">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="h-10 border-b border-black">
-                  <td className="border-r border-black font-thin">01</td>
-                  <td className="border-r border-black font-thin">22/042022</td>
-                  <td className="border-r border-black font-thin">FERT012</td>
-                  <td className="border-r border-black font-thin">
-                    Fertilizer
-                  </td>
-                  <td className="border-r border-black font-thin">150</td>
-                  <td className="border-r border-black font-thin">Paid</td>
-                </tr>
-                <tr className="h-10 border-b border-black">
-                  <td className="border-r border-black font-thin">02</td>
-                  <td className="border-r border-black font-thin">
-                    22/04/2022
-                  </td>
-                  <td className="border-r border-black font-thin">FERT012</td>
-                  <td className="border-r border-black font-thin">
-                    Fertilizer
-                  </td>
-                  <td className="border-r border-black font-thin">150</td>
-                  <td className="border-r border-black font-thin">Paid</td>
-                </tr>
-                <tr className="h-10 border-b border-black">
-                  <td className="border-r border-black font-thin">03</td>
-                  <td className="border-r border-black font-thin">
-                    22/04/2022
-                  </td>
-                  <td className="border-r border-black font-thin">FERT012</td>
-                  <td className="border-r border-black font-thin">
-                    Fertilizer
-                  </td>
-                  <td className="border-r border-black font-thin">150</td>
-                  <td className="border-r border-black font-thin">Paid</td>
-                </tr>
-                <tr className="h-10 border-b border-black">
-                  <td className="border-r border-black font-thin">04</td>
-                  <td className="border-r border-black font-thin">
-                    22/04/2022
-                  </td>
-                  <td className="border-r border-black font-thin">FERT012</td>
-                  <td className="border-r border-black font-thin">
-                    Fertilizer
-                  </td>
-                  <td className="border-r border-black font-thin">150</td>
-                  <td className="border-r border-black font-thin">Paid</td>
-                </tr>
-                <tr className="h-10 border-b border-black">
-                  <td className="border-r border-black font-thin">05</td>
-                  <td className="border-r border-black font-thin">
-                    22/04/2022
-                  </td>
-                  <td className="border-r border-black font-thin">FERT012</td>
-                  <td className="border-r border-black font-thin">
-                    Fertilizer
-                  </td>
-                  <td className="border-r border-black font-thin">150</td>
-                  <td className="border-r border-black font-thin">Paid</td>
-                </tr>
-              </tbody>
-            </table>
+            <>
+              <TableContainer sx={{ minWidth: 400 }}>
+                <Table sx={{ border: "2px solid" }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell
+                        sx={{ border: "1px solid", fontWeight: "bold" }}
+                      >
+                        Date
+                      </TableCell>
+                      <TableCell
+                        sx={{ border: "1px solid", fontWeight: "bold" }}
+                      >
+                        ID
+                      </TableCell>
+                      {/* <TableCell
+                        sx={{ border: "1px solid", fontWeight: "bold" }}
+                      >
+                        Product
+                      </TableCell> */}
+                      <TableCell
+                        sx={{ border: "1px solid", fontWeight: "bold" }}
+                      >
+                        Amount
+                      </TableCell>
+                      <TableCell
+                        sx={{ border: "1px solid", fontWeight: "bold" }}
+                      >
+                        Status
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {farmerOrders?.length > 0 &&
+                      farmerOrders.map((row: any) => (
+                        <TableRow
+                          key={row._id}
+                          sx={{
+                            border: 1,
+                          }}
+                        >
+                          <TableCell sx={{ border: 1 }}>
+                            {moment(row?.createdAt).format("DD/MM/YYYY")}
+                          </TableCell>
+                          <TableCell sx={{ border: 1 }}>
+                            {row?._id.slice(0, 5)}...
+                          </TableCell>
+                          {/* <TableCell sx={{ border: 1 }}>
+                            {row?.items?.map((item: any) => {
+                              <>
+                                <Box>{item?.item?.tradeName}</Box>
+                              </>;
+                            })}
+                          </TableCell> */}
+                          <TableCell sx={{ border: 1 }}>
+                            {" "}
+                            ₹{row?.totalPrice}
+                          </TableCell>
+                          <TableCell sx={{ border: 1 }}>
+                            {row?.paymentStatus}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </>
           ) : (
             <></>
           )}

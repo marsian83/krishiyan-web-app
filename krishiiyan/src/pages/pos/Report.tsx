@@ -20,7 +20,7 @@ const Report = () => {
       return accumulator + currentValue;
     }
     if (!startDate && !endDate) {
-      return totalOrders
+      return totalOrders;
     } else {
       const filteredData = totalOrders?.filter((o: any) => {
         const itemDate = moment(o.createdAt).format("DD-MM-YYYY");
@@ -29,13 +29,13 @@ const Report = () => {
         return itemDate >= start && itemDate <= end;
       });
 
-      console.log({filteredData});
-      
+      console.log({ filteredData });
+
       let total_product_price = filteredData?.filter(
         (d: any) => d?.discountedPrice
       );
-        
-    // let total_sales = total_product_price?.reduce(sum_reducer);
+
+      // let total_sales = total_product_price?.reduce(sum_reducer);
       console.log({ filteredData, total_product_price });
     }
   };
@@ -131,13 +131,23 @@ const Report = () => {
           </Box>
         </Box>
       </Box>
-      <div className="w-full flex justify-around my-[1%]">
-        <div className="grid gap-y-5">
+      {/* <div className="w-full flex justify-around my-[1%]">
+        <div className="grid gap-y-2">
           <p>Daily Sales</p>
           <Linegraph />
         </div>
-        <div className="grid gap-y-5">
+        <div className="grid gap-y-2">
           <p>Product Wise</p>
+          <Piegraph />
+        </div>
+      </div> */}
+      <div className="flex justify-around">
+        <div className="">
+          <p>Daily Sales(Sales vs Time)</p>
+          <Linegraph />
+        </div>
+        <div className="">
+          <p>Product category wise</p>
           <Piegraph />
         </div>
       </div>

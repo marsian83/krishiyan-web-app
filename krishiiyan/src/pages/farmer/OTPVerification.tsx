@@ -36,7 +36,7 @@ const OTPVerification = (props: any) => {
     <div>
       <Dialog
         open={props.open}
-        onClose={props.handleClose}
+        // onClose={props.handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         fullWidth={fullWidth}

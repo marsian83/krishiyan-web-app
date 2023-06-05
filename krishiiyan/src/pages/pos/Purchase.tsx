@@ -122,6 +122,8 @@ const Purchase = () => {
   };
 
   const [productType, setProductType] = useState("");
+  console.log("productType",productType);
+  
   // Add products state
   const [activeIngridient, setActiveIngredient] = useState("");
   const [tradeName, setTradeName] = useState("");
@@ -196,7 +198,7 @@ const Purchase = () => {
 
   const addProduct = async () => {
     setLoading(true);
-    if (productType && selectedProductDetails) {
+    // if (productType && selectedProductDetails) {
       if (productType === "dealer-specific ") {
         const payloadObj: AddProductRequestPayload = {
           activeIngridient: activeIngridient,
@@ -257,7 +259,7 @@ const Purchase = () => {
           });
         }
       }
-    }
+    // }
 
     setLoading(false);
   };

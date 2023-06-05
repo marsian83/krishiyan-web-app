@@ -57,6 +57,7 @@ const CreditSchema = new mongoose.Schema(
     },
     remainingPayableAmount: {
       type: String,
+      // default:"0"
     },
   },
   { timestamps: true }
