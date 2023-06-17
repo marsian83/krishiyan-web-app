@@ -5,9 +5,10 @@ const cors = require("cors");
 const logger = require("morgan");
 const path = require("path");
 const connectDB = require("./db");
-
-//Logger
-app.use(logger("dev"));
+const bearerToken = require("express-bearer-token");
+const cookieParser = require("cookie-parser");
+// //Logger
+// app.use(logger("dev"));
 
 //BodyParser
 app.use(express.json({ extended: true }));
@@ -15,7 +16,8 @@ app.use(express.urlencoded({ extended: true }));
 
 //CORS
 app.use(cors());
-
+app.use(cookieParser());
+app.use(bearerToken());
 //.env
 dotenv.config();
 

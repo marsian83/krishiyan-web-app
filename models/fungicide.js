@@ -3,14 +3,10 @@ const { Schema } = require("mongoose");
 
 const fungicidesSchema = new Schema(
   {
-    diseaseIds: [
-      {
-        type: mongoose.Schema.ObjectId,
-        required: true,
-        ref: "Diseases",
-      },
-    ],
+    productId: Number,
     name: String,
+    inventory: Number,
+    type: String,
     dosagePerAcre: String,
     unit: String,
     dilutionRatioPerAcre: String,

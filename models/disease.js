@@ -4,6 +4,8 @@ const { Schema } = require("mongoose");
 const diseasesSchema = new Schema(
   {
     name: String,
+    images: [{ type: String }],
+    description: { type: String },
     fungicidesIds: [
       {
         type: mongoose.Schema.ObjectId,

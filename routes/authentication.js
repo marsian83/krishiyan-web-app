@@ -31,6 +31,8 @@ router.post("/register", async (req, res) => {
         expiresIn: "11h",
       }
     );
+    console.log(token);
+    res.cookie("token", token);
     res.status(201).json({ result, token, msg: "Registered successfull!" });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
@@ -42,6 +44,7 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
+    console.log(req.body);
     const oldUser = await User.findOne({ email });
 
     if (!oldUser)
@@ -61,7 +64,8 @@ router.post("/login", async (req, res) => {
         expiresIn: "11h",
       }
     );
-
+    console.log(token);
+    res.cookie("token", token);
     res.status(200).json({ oldUser, token, msg: "Login successfull!" });
   } catch (err) {
     res.status(500).json({ message: "Something went wrong" });
@@ -71,6 +75,7 @@ router.post("/login", async (req, res) => {
 //Me {Profile}
 router.get("/me", AuthGuard, async (req, res) => {
   try {
+    console.log("Inside /me");
     const user = req.user;
     res.status(200).json(user);
   } catch (error) {

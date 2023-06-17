@@ -176,6 +176,19 @@ router.post("/get-crop-name", async (req, res) => {
 });
 
 // Get crop by localName and date
+
+router.post("/cropStage", async (req, res) => { 
+  try {
+    const { Stages } = req.body;
+    
+  }
+  catch(e)
+  {
+    res.status(500).json({ msg: e.message });
+  }
+})
+
+
 router.post("/get-crop-calendar", async (req, res) => {
   try {
     const { localName, createdAt } = req.body;
