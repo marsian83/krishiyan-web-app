@@ -1,6 +1,6 @@
 import * as axios from "axios";
 
-const apiURL = "http://35.77.226.139:5001/api";
+const apiURL = "http://localhost:5001/api";
 // const apiURL = "http://localhost:5001/api";
 
 // "http://localhost:5001/api";   localhost

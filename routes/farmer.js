@@ -8,7 +8,7 @@ const axios = require("axios");
 const credit = require("../models/credit");
 const Crop = require("../models/crop");
 const { findByIdAndUpdate } = require("../models/farmer");
-const AuthGuard = require("../AuthGuard");
+// const AuthGuard = require("../AuthGuard");
 const twilio = require("twilio");
 
 let TWILIO_ACCOUNT_SID = "ACf1cd2c3e9ecf3b33e11709a596697914";

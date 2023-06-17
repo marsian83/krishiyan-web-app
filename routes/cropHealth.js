@@ -55,12 +55,18 @@ router.post("/role-admin/disease", async (req, res) => {
     images = [], //Array
     description = "", // of the pest
     solutions = [
-      { productId: 0, name: "pest", inventory: 10, type: "In-Organic" }, //array of objects
+      {
+        productId: 0,
+        name: "pest",
+        inventory: 10,
+        type: "In-Organic",
+      }, //array of objects
     ],
     csv = {},
   } = req.body;
   try {
     if (!csv) {
+      console.log("After authentication");
       const existingDiseaseDoc = await diseaseModel.findOne({ name: disease });
       const diseaseDoc = !existingDiseaseDoc
         ? new diseaseModel({
@@ -96,7 +102,7 @@ router.post("/role-admin/disease", async (req, res) => {
   }
 });
 
-router.post("/role-admin/pest", async (req, res) => {
+router.post("/role-admin/pest", async (req, res, next) => {
   const {
     localName, //of the crop
     pest, //name of the pest
@@ -108,6 +114,7 @@ router.post("/role-admin/pest", async (req, res) => {
     csv = {},
   } = req.body;
   try {
+    console.log("After authentication");
     if (!csv) {
       const existingpestDoc = await pestModel.findOne({ name: pest });
       const pestDoc = !existingpestDoc

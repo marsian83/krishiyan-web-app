@@ -3,11 +3,12 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/dealer");
-const AuthGuard = require("../AuthGuard")
+const {tokenAuth} = require("../middleware/tokenAuth");
 
 
 //Register
 router.post("/register", async (req, res) => {
+  console.log("inside register")
   const { name, email, password, mobile } = req.body;
   try {
     const oldUser = await User.findOne({ email });
@@ -72,8 +73,8 @@ router.post("/login", async (req, res) => {
   }
 });
 
-//Me {Profile}
-router.get("/me", AuthGuard, async (req, res) => {
+// Me {Profile}
+router.get("/me", tokenAuth, async (req, res) => {
   try {
     console.log("Inside /me");
     const user = req.user;
