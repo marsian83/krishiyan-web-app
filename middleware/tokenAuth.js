@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
 const User = require("./models/dealer");
+const Admin = require("./models/admin");
 const morgan = require("morgan");
 
-const AuthGuard = async (req, res, next) => {
+exports.tokenAuth = async (req, res, next) => {
   let token;
 
   try {
@@ -26,6 +27,3 @@ const AuthGuard = async (req, res, next) => {
     res.status(401).json({ message: err.message });
   }
 };
-
-
-module.exports = AuthGuard;

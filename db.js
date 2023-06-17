@@ -5,13 +5,10 @@ const url = config.MONGO_URL;
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(
-      "mongodb+srv://<username>:<password>@cluster0.4d6novn.mongodb.net/",
-      {
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-      }
-    );
+    const conn = await mongoose.connect(url, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    });
     mongoose.set('strictQuery', false)
     console.log(`Database connected!`);
   } catch (error) {

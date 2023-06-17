@@ -3,14 +3,10 @@ const { Schema } = require("mongoose");
 
 const pesticidesSchema = new Schema(
   {
-    pestsIds: [
-      {
-        type: mongoose.Schema.ObjectId,
-        required: true,
-        ref: "Pests",
-      },
-    ],
+    productId: Number,
     name: String,
+    inventory: Number,
+    type: String,
     dosagePerAcre: String,
     unit: String,
     dilutionRatioPerAcre: String,

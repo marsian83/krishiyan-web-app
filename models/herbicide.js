@@ -3,14 +3,10 @@ const { Schema } = require("mongoose");
 
 const herbicidesSchema = new Schema(
   {
-    weedsIds: [
-      {
-        type: mongoose.Schema.ObjectId,
-        required: true,
-        ref: "Weeds",
-      },
-    ],
+    productId: Number,
     name: String,
+    inventory: Number,
+    type: String,
     dosagePerAcre: String,
     unit: String,
     dilutionRatioPerAcre: String,
