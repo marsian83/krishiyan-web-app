@@ -817,38 +817,15 @@ const Weed_Mangement = {
     },
   },
 };
-const weather_injuries = {
-  value: {
-    value1: {
-      type_injury: String,
-      causes: String,
-      symptom: String,
-      image: String,
-      overcom: String,
-    },
-    value2: {
-      type_injury: String,
-      causes: String,
-      symptom: String,
-      image: String,
-      overcom: String,
-    },
-    value3: {
-      type_injury: String,
-      causes: String,
-      symptom: String,
-      image: String,
-      overcom: String,
-    },
-    value4: {
-      type_injury: String,
-      causes: String,
-      symptom: String,
-      image: String,
-      overcom: String,
-    },
+const weather_injuries = [
+  {
+    type_injury: String,
+    causes: String,
+    symptom: String,
+    image: String,
+    overcom: String,
   },
-};
+];
 const Harvest = {
   Physiological: String,
   index: String,
@@ -856,172 +833,67 @@ const Harvest = {
   Conditions_during: String,
   Post_Harvest: String,
   prevent: String,
-  images: {
-    image1: String,
-    image2: String,
-    image3: String,
-    image4: String,
-    image5: String,
-  },
+  images: [{ type: String }],
 };
 
 const Irrigation_Mgmt = {
   cost_seed_materials: {
-    discription: String,
+    description: String,
     Cost_Component: String,
   },
   Land_preparation: {
-    discription: String,
+    description: String,
     Cost_Component: String,
   },
   Cost_sowing: {
-    discription: String,
+    description: String,
     Cost_Component: String,
   },
   Cost_protectopn: {
-    discription: String,
+    description: String,
     Cost_Component: String,
   },
   Cots_Fertilizer: {
-    discription: String,
+    description: String,
     Cost_Component: String,
   },
   Cost_weeding: {
-    discription: String,
+    description: String,
     Cost_Component: String,
   },
   Cost_Pesticides: {
-    discription: String,
+    description: String,
     Cost_Component: String,
   },
-  Cost_mischallaneous: {
-    discription: String,
+  Cost_miscellaneous: {
+    description: String,
     Cost_Component: String,
   },
   Cost_Harvesting: {
-    discription: String,
+    description: String,
     Cost_Component: String,
   },
   Cost_Transportation: {
-    discription: String,
+    description: String,
     Cost_Component: String,
   },
   Total_cultivation: {
-    discription: String,
+    description: String,
     Cost_Component: String,
   },
   Total_production: {
-    discription: String,
+    description: String,
     Cost_Component: String,
   },
   gross: {
-    discription: String,
+    description: String,
   },
   Net_Profit: {
-    discription: String,
+    description: String,
     Cost_Component: String,
   },
 };
-const Faq = {
-  value: {
-    value1: {
-      data: String,
-      answer: String,
-    },
-    value2: {
-      data: String,
-      answer: String,
-    },
-    value3: {
-      data: String,
-      answer: String,
-    },
-    value4: {
-      data: String,
-      answer: String,
-    },
-    value5: {
-      data: String,
-      answer: String,
-    },
-    value6: {
-      data: String,
-      answer: String,
-    },
-    value7: {
-      data: String,
-      answer: String,
-    },
-    value8: {
-      data: String,
-      answer: String,
-    },
-    value9: {
-      data: String,
-      answer: String,
-    },
-    value10: {
-      data: String,
-      answer: String,
-    },
-    value11: {
-      data: String,
-      answer: String,
-    },
-    value12: {
-      data: String,
-      answer: String,
-    },
-    value13: {
-      data: String,
-      answer: String,
-    },
-    value14: {
-      data: String,
-      answer: String,
-    },
-    value15: {
-      data: String,
-      answer: String,
-    },
-    value16: {
-      data: String,
-      answer: String,
-    },
-    value17: {
-      data: String,
-      answer: String,
-    },
-    value18: {
-      data: String,
-      answer: String,
-    },
-    value19: {
-      data: String,
-      answer: String,
-    },
-    value20: {
-      data: String,
-      answer: String,
-    },
-    value21: {
-      data: String,
-      answer: String,
-    },
-    value22: {
-      data: String,
-      answer: String,
-    },
-    value23: {
-      data: String,
-      answer: String,
-    },
-    value24: {
-      data: String,
-      answer: String,
-    },
-  },
-};
+const Faq =[{question:String,answer:String}]
 const CropSchema = new mongoose.Schema(
   {
     localName: {
