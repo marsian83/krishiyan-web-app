@@ -6,17 +6,18 @@ const diseasesSchema = new Schema(
     name: String,
     images: [{ type: String }],
     description: { type: String },
+    causalAgent: String,
+    symptoms: [String],
+    charecteristic: String,
     fungicidesIds: [
       {
         type: mongoose.Schema.ObjectId,
-        required: true,
         ref: "Fungicides",
       },
     ],
     cropsIds: [
       {
         type: mongoose.Schema.ObjectId,
-        required: true,
         ref: "Crop",
       },
     ],

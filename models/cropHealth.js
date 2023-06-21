@@ -5,7 +5,6 @@ const HealthSchema = new mongoose.Schema(
     cropsIds: [
       {
         type: mongoose.Schema.ObjectId,
-        required: true,
         ref: "Crop",
       },
     ],

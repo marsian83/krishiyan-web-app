@@ -50,8 +50,7 @@ app.use("/api/credit", require("./routes/credit"));
 app.use("/api/support", require("./routes/support"));
 app.use("/api/cropHealth", require("./routes/cropHealth"));
 app.use("/api/auth", require("./routes/authentication"));
-
-
+app.use("/api/admin", tokenAuth, require("./routes/admin"));
 // app.use("/api/pos",require("./routes/pos")) // POS module
 
 //Connect to DB.

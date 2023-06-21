@@ -28,9 +28,6 @@ router.post("/register", async (req, res) => {
     const token = jwt.sign(
       { email: result.email, id: result._id, mobile: result.mobile },
       "secret",
-      {
-        expiresIn: "11h",
-      }
     );
     console.log(token);
     res.cookie("token", token);
@@ -61,9 +58,6 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign(
       { email: oldUser.email, id: oldUser._id, mobile: oldUser.mobile },
       "secret",
-      {
-        expiresIn: "11h",
-      }
     );
     console.log(token);
     res.cookie("token", token);

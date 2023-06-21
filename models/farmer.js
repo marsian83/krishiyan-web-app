@@ -36,7 +36,6 @@ const FarmerSchema = new mongoose.Schema(
     },
     dealer_farmer_relation: {
       type: Number,
-      required: true,
     },
     plantation_type: {
       type: String,
@@ -46,14 +45,12 @@ const FarmerSchema = new mongoose.Schema(
     cultivationData: [
       {
         type: mongoose.Schema.ObjectId,
-        required: true,
         ref: "FarmerCultivation",
       },
     ],
     creditData: [
       {
         type: mongoose.Schema.ObjectId,
-        required: true,
         ref: "Credit",
       },
     ],
@@ -73,7 +70,6 @@ const FarmerSchema = new mongoose.Schema(
           itemId: {
             type: Schema.Types.ObjectId,
             ref: "Product",
-            required: true,
           },
           quantity: { type: Number, required: true },
         },

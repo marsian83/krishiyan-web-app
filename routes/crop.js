@@ -13,15 +13,19 @@ const ObjectId = require("mongodb").ObjectId;
 // ===================================================== CROP ADVISORY =======================================================================
 
 //Create new crop
-router.post("/", async (req, res) => {
-  const information = req.body;
+router.post("/role-admin/save", async (req, res) => {
+  const {
+    localName,
+    scientificName,
+    stages = [{ sn: 1, name: "Germination", images: ["url"] }],
+  } = req.body;
 
   try {
     // const oldCrop = await Crop.findOne({ localName:localName });
     // if (oldCrop)
     //   return res.status(400).json({ message: "crop already exists" });
     const newCrop = new Crop({
-      ...information,
+      ...req.body,
     });
     await newCrop.save();
     res.status(201).json({
@@ -30,6 +34,115 @@ router.post("/", async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
+  }
+});
+
+router.post("/role-admin/faq/add", async (req, res) => {
+  const {
+    faq = [{ question: "q1", answer: "a1" }],
+    localName,
+    scientificName,
+    csv,
+  } = req.body; //array of [{question,answer}]
+  try {
+    if (!csv) {
+      if (!localName && !scientificName)
+        throw new Error("localName or scientificName are required");
+      const query = localName ? { localName } : { scientificName };
+      const crop = await Crop.findOne(query);
+      if (!crop) throw new Error("crop not found");
+      crop.faq.push(...faq);
+      await crop.save();
+      res.status(201).json({ crop });
+    } else {
+      res.status(201).json({ message: "csv" });
+    }
+  } catch (e) {
+    return res.status(500).json({ msg: e.message });
+  }
+});
+
+router.post("/role-admin/general/add", async (req, res) => {
+  const { generalInformation, localName, scientificName } = req.body;
+  //refer generalInformation field in crop model
+  try {
+    if (!localName && !scientificName)
+      throw new Error("localName or scientificName are required");
+    const query = localName ? { localName } : { scientificName };
+    const crop = await Crop.findOne(query);
+    if (!crop) throw new Error("crop not found");
+    crop.generalInformation = generalInformation;
+    await crop.save();
+    res.status(201).json({ crop });
+  } catch (e) {
+    return res.status(500).json({ msg: e.message });
+  }
+});
+
+router.post("/role-admin/preSowing", async (req, res) => {
+  const { presowingPractices, localName, scientificName } = req.body;
+  //refer  presowingpractices field in crop model
+  try {
+    if (!localName && !scientificName)
+      throw new Error("localName or scientificName are required");
+    const query = localName ? { localName } : { scientificName };
+    const crop = await Crop.findOne(query);
+    if (!crop) throw new Error("crop not found");
+    crop.presowingPractices = presowingPractices;
+    await crop.save();
+    res.status(201).json({ crop });
+  } catch (e) {
+    return res.status(500).json({ msg: e.message });
+  }
+});
+
+router.post("/stage/role-admin/add", async (req, res) => {
+  const {
+    stages = [{ sn: 1, name: "germination", image: "url" }],
+    localName,
+    scientificName,
+    csv,
+  } = req.body; //array of [{question,answer}]
+  try {
+    if (!csv) {
+      if (!localName && !scientificName)
+        throw new Error("localName or scientificName are required");
+      const query = localName ? { localName } : { scientificName };
+      const crop = await Crop.findOne(query);
+      if (!crop) throw new Error("crop not found");
+      crop.stages.push(...stages);
+      await crop.save();
+      res.status(201).json({ crop });
+    } else {
+      res.status(201).json({ message: "csv" });
+    }
+  } catch (e) {
+    return res.status(500).json({ msg: e.message });
+  }
+});
+
+router.post("/variety/add", async (req, res) => {
+  const {
+    stages = [{ sn: 1, name: "germination", image: "url" }],
+    localName,
+    scientificName,
+    csv,
+  } = req.body; //array of [{question,answer}]
+  try {
+    if (!csv) {
+      if (!localName && !scientificName)
+        throw new Error("localName or scientificName are required");
+      const query = localName ? { localName } : { scientificName };
+      const crop = await Crop.findOne(query);
+      if (!crop) throw new Error("crop not found");
+      crop.stages.push(...stages);
+      await crop.save();
+      res.status(201).json({ crop });
+    } else {
+      res.status(201).json({ message: "csv" });
+    }
+  } catch (e) {
+    return res.status(500).json({ msg: e.message });
   }
 });
 
@@ -174,6 +287,23 @@ router.post("/get-crop-name", async (req, res) => {
     });
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Get crop by localName and date
 

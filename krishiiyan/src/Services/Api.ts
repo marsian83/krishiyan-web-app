@@ -54,6 +54,7 @@ export async function dealerRegistration(
   mobile: any
 ) {
   try {
+    console.log(name, email, "object");
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "post",
       url: `${apiURL}/auth/register`,
@@ -65,6 +66,7 @@ export async function dealerRegistration(
       },
     };
     const response = await axios.default.request(axiosConfig);
+    console.log(response);
     const normalizedResponse = normalizeServerResponse(response);
     return [null, normalizedResponse];
   } catch (error) {

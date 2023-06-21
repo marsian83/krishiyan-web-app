@@ -6,7 +6,7 @@ const User = require("../models/dealer");
 const Order = require("../models/orders");
 const ProductAdminTemplate = require("../models/productAdminTemplate");
 const Cultivation = require("../models/farmerCultivation");
-const AuthGuard = require("../AuthGuard");
+const tokenAuth = require("../middleware/tokenAuth");
 const ObjectId = require("mongoose").Types.ObjectId;
 const moment = require("moment");
 
@@ -268,7 +268,7 @@ router.post("/:id/disclaimer", async (req, res) => {
 //FARMER PURCHASES {Billings}
 
 //Create farmer purchase
-router.post("/create-farmer-order", AuthGuard, async (req, res) => {
+router.post("/create-farmer-order", tokenAuth, async (req, res) => {
   const { items, customer, paymentStatus, totalPrice, discountedPrice } =
     req.body;
   try {
@@ -379,7 +379,7 @@ router.post("/get-product-by-tradename", async (req, res) => {
 });
 
 //Create Product {Uniform Products}
-router.post("/create-uniform-product", AuthGuard, async (req, res) => {
+router.post("/create-uniform-product", tokenAuth, async (req, res,next) => {
   const {
     activeIngridient,
     tradeName,
@@ -521,7 +521,7 @@ router.post("/create-uniform-product", AuthGuard, async (req, res) => {
 });
 
 //Get dealer products
-router.get("/get-dealer-products", AuthGuard, async (req, res) => {
+router.get("/get-dealer-products", tokenAuth, async (req, res) => {
   try {
     const dealerId = req.user._id;
     const result = await User.aggregate([
@@ -593,7 +593,7 @@ router.get("/get-expired-products", async (req, res) => {
 // ========================================== PRODUCT ==========================================================
 
 //Create Product {Dealer specific product}
-router.post("/create-inventory-product", AuthGuard, async (req, res) => {
+router.post("/create-inventory-product", tokenAuth, async (req, res,next) => {
   const {
     activeIngridient,
     tradeName,
@@ -832,7 +832,7 @@ router.get("/get-expired-batches", async (req, res) => {
 // ========================================== REPORT ===========================================================
 
 // Get total sales,current inventory value && total Tx
-router.get("/dealer-sales-report", AuthGuard, async (req, res) => {
+router.get("/dealer-sales-report", tokenAuth, async (req, res) => {
   try {
     let orders = await Order.find({ dealer: req.user._id });
 
@@ -905,5 +905,5 @@ router.post("/sales-statement", async (req, res) => {
 
 module.exports = router;
 
-//Calculate Product batch
-function ProductBatch(productTradeName, purchaseDate) {}
+// //Calculate Product batch
+// function ProductBatch(productTradeName, purchaseDate) {}
