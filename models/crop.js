@@ -63,20 +63,16 @@ const cultivation_stage = {
   },
 };
 
-const crop_stage = {
-  Stage1: {
-    Name_of_the_Stage: {
-      name: String,
-      image: String,
-    },
+const crop_stage = [
+  {
+    sn: Number,
+    name: String,
+    image: String,
+    description: String,
     Description: String,
     Disease_Infection: {
       Data: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
+      images: [String],
     },
     Pest_infestation: {
       Data: String,
@@ -95,151 +91,7 @@ const crop_stage = {
     },
     interculturalOperation: String,
   },
-  Stage2: {
-    Name_of_the_Stage: {
-      name: String,
-      image: String,
-    },
-    Description: String,
-    Disease_Infection: {
-      Data: String,
-      image: String,
-    },
-    Pest_infestation: {
-      Data: String,
-      image: String,
-    },
-    Fertilizer: {
-      Data: String,
-      image: String,
-    },
-    interculturalOperation: String,
-  },
-  Stage3: {
-    Name_of_the_Stage: {
-      name: String,
-      image: String,
-    },
-    Description: String,
-    Disease_Infection: {
-      Data: String,
-      image: String,
-    },
-    Pest_infestation: {
-      Data: String,
-      image: String,
-    },
-    Fertilizer: {
-      Data: String,
-      image: String,
-    },
-    interculturalOperation: String,
-  },
-  Stage4: {
-    Name_of_the_Stage: {
-      name: String,
-      image: String,
-    },
-    Description: String,
-    Disease_Infection: {
-      Data: String,
-      image: String,
-    },
-    Pest_infestation: {
-      Data: String,
-      image: String,
-    },
-    Fertilizer: {
-      Data: String,
-      image: String,
-    },
-    interculturalOperation: String,
-  },
-  Stage5: {
-    Name_of_the_Stage: {
-      name: String,
-      image: String,
-    },
-    Description: String,
-    Disease_Infection: {
-      Data: String,
-      image: String,
-    },
-    Pest_infestation: {
-      Data: String,
-      image: String,
-    },
-    Fertilizer: {
-      Data: String,
-      image: String,
-    },
-    interculturalOperation: String,
-  },
-  Stage6: {
-    Name_of_the_Stage: {
-      name: String,
-      image: String,
-    },
-    Description: String,
-    Disease_Infection: {
-      Data: String,
-      image: String,
-    },
-    Pest_infestation: {
-      Data: String,
-      image: String,
-    },
-    Fertilizer: {
-      Data: String,
-      image: String,
-    },
-    interculturalOperation: String,
-  },
-  Stage7: {
-    Name_of_the_Stage: {
-      name: String,
-      image: String,
-    },
-    Description: String,
-    Disease_Infection: {
-      Data: String,
-      image: String,
-    },
-    Pest_infestation: {
-      Data: String,
-      image: String,
-    },
-    Fertilizer: {
-      Data: String,
-      image: {
-        image1: "",
-        image2: "",
-      },
-    },
-    interculturalOperation: String,
-  },
-  Stage8: {
-    Name_of_the_Stage: {
-      name: String,
-      image: String,
-    },
-    Description: String,
-    Disease_Infection: {
-      Data: String,
-      image: String,
-    },
-    Pest_infestation: {
-      Data: String,
-      image: String,
-    },
-    Fertilizer: {
-      Data: String,
-      image: String,
-    },
-    interculturalOperation: String,
-  },
-};
-
+];
 const general_Information = {
   Kharif: String,
   Rabi: String,
@@ -253,175 +105,33 @@ const general_Information = {
   Average_yield: String,
   Intercrop: String,
 };
-const variety_information = {
-  value: {
-    value1: {
-      Name: String,
-      Area_Adaptation: String,
-      Average_yield: String,
-      Type_variety: String,
-      Speciality: String,
-    },
-    value2: {
-      Name: String,
-      Area_Adaptation: String,
-      Average_yield: String,
-      Type_variety: String,
-      Speciality: String,
-    },
-    value3: {
-      Name: String,
-      Area_Adaptation: String,
-      Average_yield: String,
-      Type_variety: String,
-      Speciality: String,
-    },
-    value4: {
-      Name: String,
-      Area_Adaptation: String,
-      Average_yield: String,
-      Type_variety: String,
-      Speciality: String,
-    },
-    value5: {
-      Name: String,
-      Area_Adaptation: String,
-      Average_yield: String,
-      Type_variety: String,
-      Speciality: String,
-    },
-    value6: {
-      Name: String,
-      Area_Adaptation: String,
-      Average_yield: String,
-      Type_variety: String,
-      Speciality: String,
-    },
-    value7: {
-      Name: String,
-      Area_Adaptation: String,
-      Average_yield: String,
-      Type_variety: String,
-      Speciality: String,
-    },
-    value8: {
-      Name: String,
-      Area_Adaptation: String,
-      Average_yield: String,
-      Type_variety: String,
-      Speciality: String,
-    },
-    value9: {
-      Name: String,
-      Area_Adaptation: String,
-      Average_yield: String,
-      Type_variety: String,
-      Speciality: String,
-    },
-    value10: {
-      Name: String,
-      Area_Adaptation: String,
-      Average_yield: String,
-      Type_variety: String,
-      Speciality: String,
-    },
-    value11: {
-      Name: String,
-      Area_Adaptation: String,
-      Average_yield: String,
-      Type_variety: String,
-      Speciality: String,
-    },
+const variety_information = [
+  {
+    name: String,
+    Area_Adaptation: String,
+    Average_yield: String,
+    Type_variety: String,
+    Speciality: String,
   },
-};
+];
 const presowing_practices = {
   Land_Preparation: String,
   Seed_treatment: {
     nameOfChemical: String,
     Dosage: String,
   },
-  Pre_sowing: String,
+  Intercultural_Operations: [String],
   Soil_Conditions: String,
 };
-const Nutient = {
-  value1: {
-    Nutient1: String,
+const nutrient = [
+  {
+    nutrient: String,
     Notable_Symptoms: String,
     image: String,
     Solution: String,
     description: String,
   },
-  value2: {
-    Nutient1: String,
-    Notable_Symptoms: String,
-    image: String,
-    Solution: String,
-    description: String,
-  },
-  value3: {
-    Nutient1: String,
-    Notable_Symptoms: String,
-    image: String,
-    Solution: String,
-    description: String,
-  },
-  value4: {
-    Nutient1: String,
-    Notable_Symptoms: String,
-    image: String,
-    Solution: String,
-    description: String,
-  },
-  value5: {
-    Nutient1: String,
-    Notable_Symptoms: String,
-    image: String,
-    Solution: String,
-    description: String,
-  },
-  value6: {
-    Nutient1: String,
-    Notable_Symptoms: String,
-    image: String,
-    Solution: String,
-    description: String,
-  },
-  value7: {
-    Nutient1: String,
-    Notable_Symptoms: String,
-    image: String,
-    Solution: String,
-    description: String,
-  },
-  value8: {
-    Nutient1: String,
-    Notable_Symptoms: String,
-    image: String,
-    Solution: String,
-    description: String,
-  },
-  value9: {
-    Nutient1: String,
-    Notable_Symptoms: String,
-    image: String,
-    Solution: String,
-    description: String,
-  },
-  value10: {
-    Nutient1: String,
-    Notable_Symptoms: String,
-    image: String,
-    Solution: String,
-    description: String,
-  },
-  value11: {
-    Nutient1: String,
-    Notable_Symptoms: String,
-    image: String,
-    Solution: String,
-    description: String,
-  },
-};
+];
 const Pest_Management = {
   value: {
     Value1: {
@@ -659,25 +369,25 @@ const disease_Management = {
 const nutrient_Mgmt = {
   value: {
     value1: {
-      Nutient: String,
+      nutrient: String,
       Dosage: String,
       age: String,
       Method_application: String,
     },
     value2: {
-      Nutient: String,
+      nutrient: String,
       Dosage: String,
       age: String,
       Method_application: String,
     },
     value3: {
-      Nutient: String,
+      nutrient: String,
       Dosage: String,
       age: String,
       Method_application: String,
     },
     value4: {
-      Nutient: String,
+      nutrient: String,
       Dosage: String,
       age: String,
       Method_application: String,
@@ -893,7 +603,7 @@ const Irrigation_Mgmt = {
     Cost_Component: String,
   },
 };
-const Faq =[{question:String,answer:String}]
+const Faq = [{ question: String, answer: String }];
 const CropSchema = new mongoose.Schema(
   {
     localName: {
@@ -911,6 +621,17 @@ const CropSchema = new mongoose.Schema(
     cropTypes: {
       type: Array,
     },
+    faq: Faq,
+
+    stages: crop_stage, //sn is serial number
+    newHarvest: Harvest,
+    presowingPractices: presowing_practices,
+    cropCycle: { type: Number },
+    cropStage: crop_stage, // bhayankar
+    generalInformation: general_Information,
+
+    varietyInformation: variety_information,
+    nutrient: nutrient,
     // varieties: [
     //   varietyOption
     // ],
@@ -932,24 +653,12 @@ const CropSchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
-    ph: {
-      type: String,
-      // required: true,
-    },
     organicMatter: {
       type: String,
       // required: true,
     },
     season: {
       type: Array,
-    },
-    seedRate: {
-      type: String,
-      // required: true,
-    },
-    spacing: {
-      type: String,
-      // required: true,
     },
     beforeSowing: {
       type: String,
@@ -986,13 +695,6 @@ const CropSchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
-    //snowming time
-    kharif: {
-      type: String,
-    },
-    rabi: {
-      type: String,
-    },
 
     pestMgmt: [
       {
@@ -1023,20 +725,13 @@ const CropSchema = new mongoose.Schema(
     cultivationStage: cultivation_stage, //Cultivation Stages
     rainfall: String,
     image: String,
-    cropCycle: { type: String, default: "120" },
-    cropStage: crop_stage,
-    generalInformation: general_Information,
-    varietyInformation: variety_information,
-    presowingPractices: presowing_practices,
-    nutient: Nutient,
+
     PestManagement: Pest_Management,
     diseaseManagement: disease_Management,
     nutrientManagement: nutrient_Mgmt,
     WeedMangement: Weed_Mangement,
     weatherInjuries: weather_injuries,
-    newHarvest: Harvest,
     IrrigationMgmt: Irrigation_Mgmt,
-    faq: Faq,
     diseaseMgmt: [
       {
         name: String,

@@ -4,17 +4,18 @@ const { Schema } = require("mongoose");
 const pestsSchema = new Schema(
   {
     name: String,
+    scientificName: String,
+    symptoms: [{ type: String }],
+    charecteristics: String,
     pesticidesIds: [
       {
         type: mongoose.Schema.ObjectId,
-        required: true,
         ref: "Pesticides",
       },
     ],
     cropsIds: [
       {
         type: mongoose.Schema.ObjectId,
-        required: true,
         ref: "Crop",
       },
     ],

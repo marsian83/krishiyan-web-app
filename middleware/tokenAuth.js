@@ -15,7 +15,7 @@ exports.tokenAuth = async (req, res, next) => {
     }
     // morgan.logger("decoded", decoded);
     const decoded = jwt.verify(token, "secret");
-    req.user = await User.findById(decoded.id).select("-password");
+    req.user = await User.findById(decoded.id);
     if (!req.user) {
       throw new Error({ message: "Invalid User" });
     }
