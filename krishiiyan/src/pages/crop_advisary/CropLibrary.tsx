@@ -450,7 +450,7 @@ const CropLibrary = () => {
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
                       >
-                        {/* <table
+                        {/*<table
                           className="table-auto border border-black border-collapse"
                           style={{ width: "50%" }}
                         >
