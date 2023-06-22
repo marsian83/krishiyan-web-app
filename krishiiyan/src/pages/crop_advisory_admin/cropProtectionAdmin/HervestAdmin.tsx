@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import CSVReader from "../../CSVUpload/CSVUpload";
 
 const HervestAdmin = () => {
   const [crop, setCrop] = useState<any>();
@@ -286,6 +287,8 @@ const HervestAdmin = () => {
             `Add Harvest`
           }
         </button>
+        OR
+        <CSVReader/>
       </div>
     </>
   );
