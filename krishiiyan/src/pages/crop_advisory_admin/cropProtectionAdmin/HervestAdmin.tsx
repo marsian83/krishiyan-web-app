@@ -69,6 +69,26 @@ const HervestAdmin = () => {
       setLoading(false)
     }
   }
+
+  // const handleCSVUpload = (results) => {
+  //   // Perform API request using the `results` data
+  //   // Example:
+  //   fetch(process.env.REACT_APP_BACKEND_URL + 'crop/role-admin/harvest/add', {
+  //     method: 'POST',
+  //     body: JSON.stringify(results),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       // Handle the API response
+  //     })
+  //     .catch((error) => {
+  //       // Handle the error
+  //     });
+  // };
+
   return (
     <>
       <div className="w-full max-w-sm mt-10 mb-5 ml-80">

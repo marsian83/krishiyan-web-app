@@ -95,9 +95,9 @@ const general_Information = {
   Average_yield: String,
   Intercrop: String,
 };
-const variety_information = [
+const variety = [
   {
-    name: String,
+  name: String,
     Area_Adaptation: String,
     Average_yield: String,
     Type_variety: String,
@@ -597,7 +597,7 @@ const CropSchema = new mongoose.Schema(
     cropCycle: { type: Number },
     cropStage: crop_stage, // bhayankar
     generalInformation: general_Information,
-    varietyInformation: variety_information,
+    varieties: variety,
     nutrient: nutrient,
     // varieties: [
     //   varietyOption
