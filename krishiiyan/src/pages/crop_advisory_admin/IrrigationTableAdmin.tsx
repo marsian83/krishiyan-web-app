@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 const IrrigationTableAdmin = () => {
+  // const [name , setName] = useState
   return (
     <>
       <div className="w-full max-w-sm mt-10 mb-5 ml-80">

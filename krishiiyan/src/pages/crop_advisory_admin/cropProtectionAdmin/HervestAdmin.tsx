@@ -49,20 +49,20 @@ const HervestAdmin = () => {
       const data = await res.json()
       if(data.crop){
         toast.success('Harvest added successfully',{
-          position:toast.POSITION.TOP_CENTER
+          position:toast.POSITION.TOP_RIGHT
         })
       }
       else{
         console.log(data)
         toast.error(data.msg,{
-          position:toast.POSITION.TOP_CENTER
+          position:toast.POSITION.TOP_RIGHT
         })
       }
     }
     catch(err:any){
       console.log(err)
       toast.error(err.message,{
-        position:toast.POSITION.TOP_CENTER
+        position:toast.POSITION.TOP_RIGHT
       })
     }
     finally{
