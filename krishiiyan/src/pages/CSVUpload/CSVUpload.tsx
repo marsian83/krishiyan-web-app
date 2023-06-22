@@ -5,6 +5,7 @@ import {
   lightenDarkenColor,
   formatFileSize,
 } from 'react-papaparse';
+import { toast } from 'react-toastify';
 
 const GREY = '#CCC';
 const GREY_LIGHT = 'rgba(255, 255, 255, 0.4)';
@@ -85,12 +86,55 @@ export default function CSVReader() {
   const [removeHoverColor, setRemoveHoverColor] = useState(
     DEFAULT_REMOVE_HOVER_COLOR
   );
+  const [csvData , setCSVData] = useState("");
+  const [laoding , setLoading ] = useState(false)
+
+  const handleCSVDataChange = async (result: any) => {
+    console.log(result);
+    console.log(true);
+    try {
+      const { window, ...resultWithoutWindow } = result; // Exclude the 'window' property
+  
+      const res = await fetch(process.env.REACT_APP_BACKEND_URL + 'crop/harvest/role-admin/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+        },
+        body: JSON.stringify({
+          csv: resultWithoutWindow, // Use the modified object without the 'window' property
+        }),
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.crop) {
+        toast.success('Harvest added successfully', {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        console.log(data);
+        toast.error(data.msg, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  
 
   return (
     <CSVReader
       onUploadAccepted={(results: any) => {
         console.log('---------------------------');
         console.log(results);
+        setCSVData(results);
         console.log('---------------------------');
         setZoneHover(false);
       }}
@@ -151,6 +195,9 @@ export default function CSVReader() {
               'Drop CSV file here or click to upload'
             )}
           </div>
+          {
+            csvData && <button onClick={handleCSVDataChange} className="bg-green-500 text-white p-2 rounded-md">Add Harvest</button>
+          }
         </>
       )}
     </CSVReader>
