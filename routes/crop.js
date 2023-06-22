@@ -8,6 +8,7 @@ const Herbicide = require("../models/herbicide");
 const Weeds = require("../models/weeds");
 const Disease = require("../models/disease");
 const Fungicide = require("../models/fungicide");
+const crop = require("../models/crop");
 const ObjectId = require("mongodb").ObjectId;
 
 // ===================================================== CROP ADVISORY =======================================================================
@@ -121,8 +122,8 @@ router.post("/stage/role-admin/add", async (req, res) => {
   }
 });
 
-router.post("/harvest/role-admin/add", async (req, res) => {
-  const {
+router.post("/role-admin/harvest/add", async (req, res) => {
+  let {
     newHarvest = {
       Physiological: String,
       index: String,
@@ -147,12 +148,70 @@ router.post("/harvest/role-admin/add", async (req, res) => {
       await crop.save();
       res.status(201).json({ crop });
     } else {
+      csv = csv.data;
+      for (let i = 1; i < csv.length; i++) {
+        let harvest = {};
+        let cropModel = {};
+        if (!csv[i][0].length) break;
+        for (let j = 0; j < csv[i].length; j++) {
+          if (j === 0) {
+            lName = csv[i][j];
+            cropModel = await Crop.findOne({ localName: lName });
+          } else {
+            harvest[csv[0][j]] = csv[i][j];
+          }
+        }
+        cropModel.newHarvest = harvest;
+        await cropModel.save();
+      }
+      res.status(201).json({ message: "bulk uploaded " });
+    }
+  } catch (e) {
+    return res.status(500).json({ msg: e.message });
+  }
+});
+
+router.post("/role-admin/variety/add", async (req, res) => {
+  const {
+    nutrient = {
+      name: "Nitrogen",
+      role: String,
+      description: String,
+      Dosage: String,
+      age: String,
+      Method_application: String,
+    },
+    localName,
+    scientificName,
+    csv,
+  } = req.body; //array of [{question,answer}]
+  try {
+    if (!csv) {
+      if (!localName && !scientificName)
+        throw new Error("localName or scientificName are required");
+      const query = localName ? { localName } : { scientificName };
+      const crop = await Crop.findOne(query);
+      if (!crop) throw new Error("crop not found");
+      let b = 0;
+      for (let nutr of crop.nutrient) {
+        if (nutr.name == nutrient.name) {
+          nutr = { ...nutr, ...nutrient };
+          b = 1;
+          break;
+        }
+      }
+      if (!b) crop.nutrient.push(nutrient);
+      await crop.save();
+      res.status(201).json({ crop, message: "nutrient added!" });
+    } else {
       res.status(201).json({ message: "csv" });
     }
   } catch (e) {
     return res.status(500).json({ msg: e.message });
   }
 });
+
+
 
 router.post("/irrigation/role-admin/add", async (req, res) => {
   const {
