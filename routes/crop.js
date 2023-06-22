@@ -121,6 +121,40 @@ router.post("/stage/role-admin/add", async (req, res) => {
   }
 });
 
+router.post("/harvest/role-admin/add", async (req, res) => {
+  const {
+    newHarvest = {
+      Physiological: String,
+      index: String,
+      Average: String,
+      Conditions_during: String,
+      Post_Harvest: String,
+      prevent: String,
+      images: [{ type: String }],
+    },
+    localName,
+    scientificName,
+    csv,
+  } = req.body; //array of [{question,answer}]
+  try {
+    if (!csv) {
+      if (!localName && !scientificName)
+        throw new Error("localName or scientificName are required");
+      const query = localName ? { localName } : { scientificName };
+      const crop = await Crop.findOne(query);
+      if (!crop) throw new Error("crop not found");
+      crop.newHarvest = newHarvest;
+      await crop.save();
+      res.status(201).json({ crop });
+    } else {
+      res.status(201).json({ message: "csv" });
+    }
+  } catch (e) {
+    return res.status(500).json({ msg: e.message });
+  }
+});
+
+
 router.post("/variety/add", async (req, res) => {
   const {
     stages = [{ sn: 1, name: "germination", image: "url" }],
