@@ -67,28 +67,19 @@ const crop_stage = [
   {
     sn: Number,
     name: String,
-    image: String,
+    images: [String],
+    lowerLimit_age: Number,
+    upperLimit_age: Number,
     description: String,
-    Disease_Infection: {
-      Data: String,
-      images: [String],
-    },
-    Pest_infestation: {
-      Data: String,
-      image: String,
-    },
+    disease: [{ type: mongoose.Schema.ObjectId, ref: "Disease" }],
+    pest: [{ type: mongoose.Schema.ObjectId, ref: "Pest" }],
+    weed: [{ type: mongoose.Schema.ObjectId, ref: "Weed" }],
     Fertilizer: {
       Data: String,
-      images: {
-        image1: "",
-        image2: "",
-      },
+      Dosage: String,
+      images: [{ type: String }],
     },
-    Weed_mangement: {
-      Data: String,
-      image: String,
-    },
-    interculturalOperation: String,
+    interculturalOperation: { type: String, default: "" },
   },
 ];
 const general_Information = {
@@ -124,11 +115,17 @@ const presowing_practices = {
 };
 const nutrient = [
   {
-    nutrient: String,
-    Notable_Symptoms: String,
-    image: String,
-    Solution: String,
+    name: String,
+    deficiency: {
+      Notable_Symptoms: String,
+      images: [String],
+      Solution: String,
+    },
+    role: String,
     description: String,
+    Dosage: String,
+    age: String,
+    Method_application: String,
   },
 ];
 const Pest_Management = {
@@ -365,14 +362,6 @@ const disease_Management = {
     },
   },
 };
-const nutrient_Mgmt = [
-  {
-    nutrient: String,
-    Dosage: String,
-    age: String,
-    Method_application: String,
-  },
-];
 
 const Weed_Mangement = {
   value: {
