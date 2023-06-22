@@ -9,6 +9,30 @@ const weedModel = require("../models/weeds");
 const herbicideModel = require("../models/herbicide");
 const fungicide = require("../models/fungicide");
 const crop = require("../models/crop");
+
+
+const dbPopulateAll = async (docs, fields, projections = {}) => {
+  // console.log(docs);
+  for (const doc of docs) {
+    if (!Object.keys(doc).length) continue;
+    for (const field of fields) {
+      const options = { path: field };
+      if (projections[field]) {
+        options.select = projections[field];
+      }
+      await doc.populate(options);
+    }
+  }
+  return docs;
+  /* Example Usage
+  const users = await User.find({ isActive: true });
+  await populateFieldsForArrayOfDocs(users, ['posts', 'friends'], {
+    posts: 'title body',
+    friends: 'name age'
+  });
+  */
+};
+
 // create varities................................
 router.post("/", async (req, res) => {
   try {
@@ -45,6 +69,26 @@ router.post("/", async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
+  }
+});
+
+router.post("/disease/", async (req, res) => {
+  const { localName } = req.body;
+  try {
+    const crop = await Crop.findOne({ localName });
+    if (!crop) throw new Error("crop does not exist.");
+    console.log(crop._id);
+    const diseaseDocs = await diseaseModel.find({
+      cropsIds: crop._id,
+    });
+    await dbPopulateAll(diseaseDocs, ["fungicidesIds"], {
+      fungicidesIds:
+        "name productId inventory type dosagePerAcre unit dilutionRatioPerAcre stage sprayingTime applicationType frequency",
+    });
+    if (!diseaseDocs) throw new Error("diseases not found");
+    res.status(200).json(diseaseDocs);
+  } catch (e) {
+    res.status(500).json({ msg: e.message });
   }
 });
 
@@ -141,7 +185,7 @@ router.post("/role-admin/pest", async (req, res, next) => {
       }
       pestDoc.pesticidesIds.push(...pesticidesIds);
       const crop = Crop.findOne({ localName });
-      if (!crop) throw new Error({ message: "crop does not exist." });
+      if (!crop) throw new Error("crop does not exist.");
       pestDoc.cropsIds.push(crop._id);
       const newpest = await pestDoc.save();
       res.status(201).json({ newpest, status: "success" });

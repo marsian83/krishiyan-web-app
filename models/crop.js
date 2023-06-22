@@ -696,7 +696,7 @@ const CropSchema = new mongoose.Schema(
 
     PestManagement: Pest_Management,
     diseaseManagement: disease_Management,
-    nutrientManagement: nutrient_Mgmt,
+    // nutrientManagement: nutrient_Mgmt,
     WeedMangement: Weed_Mangement,
     weatherInjuries: weather_injuries,
     IrrigationMgmt: Irrigation_Mgmt,
