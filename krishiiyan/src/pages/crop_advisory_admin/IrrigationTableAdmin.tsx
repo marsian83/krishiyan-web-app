@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CSVReader from "../CSVUpload/CSVUpload";
 
 const IrrigationTableAdmin = () => {
   // const [name , setName] = useState
@@ -129,6 +130,8 @@ const IrrigationTableAdmin = () => {
         >
           Submit
         </button>
+        OR
+        <CSVReader />
       </div>
     </>
   );

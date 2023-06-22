@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import CSVReader from "../../CSVUpload/CSVUpload";
 
-const FaqAdmin = (props: any) => {
-  const [data, setData] = useState(props.crop.FaqAdmin.value);
+const FaqAdmin = () => {
   return (
     <div className="w-full max-w-sm mt-10 mb-5 ml-80">
       {/* <div className="md:flex md:items-center mb-6">
@@ -39,7 +39,6 @@ const FaqAdmin = (props: any) => {
           ></textarea>
         </div>
       </div>
-
       <div className="md:flex md:items-center mb-6">
         <div className="md:w-1/3">
           <label
@@ -84,6 +83,8 @@ const FaqAdmin = (props: any) => {
       >
         Submit
       </button>
+      OR
+      <CSVReader />
     </div>
   );
 };
