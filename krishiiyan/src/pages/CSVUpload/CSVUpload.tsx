@@ -1,5 +1,5 @@
 import React, { useState, CSSProperties } from 'react';
-
+// require('dotenv').config();
 import {
   useCSVReader,
   lightenDarkenColor,
@@ -94,15 +94,15 @@ export default function CSVReader() {
     console.log(true);
     try {
       const { window, ...resultWithoutWindow } = result; // Exclude the 'window' property
-  
-      const res = await fetch(process.env.REACT_APP_BACKEND_URL + 'crop/harvest/role-admin/add', {
+      console.log(csvData);
+      const res = await fetch('http://localhost:5001/api/crop/role-admin/harvest/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + localStorage.getItem('authToken'),
         },
         body: JSON.stringify({
-          csv: resultWithoutWindow, // Use the modified object without the 'window' property
+          csv: csvData, // Use the modified object without the 'window' property
         }),
       });
       const data = await res.json();
@@ -133,10 +133,10 @@ export default function CSVReader() {
     <CSVReader
       onUploadAccepted={(results: any) => {
         console.log('---------------------------');
-        console.log(results);
         setCSVData(results);
         console.log('---------------------------');
         setZoneHover(false);
+        console.log(csvData);
       }}
       onDragOver={(event: DragEvent) => {
         event.preventDefault();
