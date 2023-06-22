@@ -13,6 +13,7 @@ import "./ProductReq.css";
 import Hervest from "./cropProtectionAdmin/HervestAdmin";
 import Faq from "./cropProtectionAdmin/FaqAdmin";
 import { Toast } from "react-toastify/dist/components";
+import CSVReader from "../CSVUpload/CSVUpload";
 
 const PlantationOptions = [
   {
@@ -194,7 +195,7 @@ const CropLibraryAdmin = () => {
   //   });
 
   /************Handling admin form********** */
-  const [crop , setCrop] = useState<any>();
+  const [crop, setCrop] = useState<any>();
   const [scientificName, setScientificName] = useState<any>();
   const [stage1Name, setStage1Name] = useState<any>();
   const [stage1Image, setStage1Image] = useState<any>();
@@ -204,25 +205,25 @@ const CropLibraryAdmin = () => {
   const [stage3Image, setStage3Image] = useState<any>();
   const [stage4Name, setStage4Name] = useState<any>();
   const [stage4Image, setStage4Image] = useState<any>();
-  const [kharif , setKharif] = useState<any>();
-  const [rabi , setRabi] = useState<any>();
-  const [zaid , setZaid] = useState<any>();
-  const [optimumTemp , setOptimumTemp] = useState<any>();
-  const [rainfall , setRainFall] = useState<any>();
-  const [soilType , setSoilType] = useState<any>();
-  const [soilPH , setSoilPH] = useState<any>();
-  const [seedRate , setSeedRate] = useState<any>();
+  const [kharif, setKharif] = useState<any>();
+  const [rabi, setRabi] = useState<any>();
+  const [zaid, setZaid] = useState<any>();
+  const [optimumTemp, setOptimumTemp] = useState<any>();
+  const [rainfall, setRainFall] = useState<any>();
+  const [soilType, setSoilType] = useState<any>();
+  const [soilPH, setSoilPH] = useState<any>();
+  const [seedRate, setSeedRate] = useState<any>();
   const [spacing, setSpacing] = useState<number>(0);
-  const [yeild , setYeild] = useState<any>();
-  const [interCrop , setInterCrop] = useState<any>();
-  const [loading , setLoading] = useState<any>(false);
+  const [yeild, setYeild] = useState<any>();
+  const [interCrop, setInterCrop] = useState<any>();
+  const [loading, setLoading] = useState<any>(false);
 
   const handleAddGeneral = async () => {
     setLoading(true);
     const body = {
-      localName : crop,
+      localName: crop,
       scientificName,
-      generalInformation : {
+      generalInformation: {
         stage1Name,
         stage1Image,
         stage2Name,
@@ -231,52 +232,51 @@ const CropLibraryAdmin = () => {
         stage3Image,
         stage4Name,
         stage4Image,
-        Kharif:kharif,
-        Rabi:rabi,
-        Zaid:zaid,
-        Optimum_temperature:optimumTemp,
-        Rainfall_requirement : rainfall,
-        Recommended_soil : soilType,
-        pH_soil : soilPH,
-        Spacing : spacing,
-        Seed_rate : seedRate,
-        Average_yield : yeild,
-        Intercrop : interCrop
-      }
-    }
-    try{
-      const res = await fetch(process.env.REACT_APP_BACKEND_URL + "crop/role-admin/general/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("authToken"),
+        Kharif: kharif,
+        Rabi: rabi,
+        Zaid: zaid,
+        Optimum_temperature: optimumTemp,
+        Rainfall_requirement: rainfall,
+        Recommended_soil: soilType,
+        pH_soil: soilPH,
+        Spacing: spacing,
+        Seed_rate: seedRate,
+        Average_yield: yeild,
+        Intercrop: interCrop,
       },
-        body: JSON.stringify(body)
-    }
-      )
+    };
+    try {
+      const res = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "crop/role-admin/general/add",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("authToken"),
+          },
+          body: JSON.stringify(body),
+        }
+      );
       const data = await res.json();
       console.log(data);
-      if(data.status){
+      if (data.status) {
         toast.success("Crop added successfully", {
           position: toast.POSITION.TOP_RIGHT,
         });
-      }
-      else{
+      } else {
         toast.error(data.msg, {
           position: toast.POSITION.TOP_RIGHT,
         });
       }
-    }
-    catch(err:any){
+    } catch (err: any) {
       console.log(err);
       toast.error(err.data, {
         position: toast.POSITION.TOP_RIGHT,
       });
-    }
-    finally{
+    } finally {
       setLoading(false);
     }
-  }
+  };
   return (
     <div>
       <Header title="Crop Advisory" subtitle="Crop Library" />
@@ -413,7 +413,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       placeholder="Crop"
                       className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      onChange = {(e) => setCrop(e.target.value)}
+                      onChange={(e) => setCrop(e.target.value)}
                     ></textarea>
                   </div>
                 </div>
@@ -430,7 +430,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Scientific name"
-                      onChange = {(e) => setScientificName(e.target.value)}
+                      onChange={(e) => setScientificName(e.target.value)}
                     ></textarea>
                   </div>
                 </div>{" "}
@@ -447,7 +447,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Stage 1 name"
-                      onChange = {(e) => setStage1Name(e.target.value)}
+                      onChange={(e) => setStage1Name(e.target.value)}
                     ></textarea>
                   </div>
                 </div>
@@ -464,7 +464,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Image Link stage 1"
-                      onChange = {(e) => setStage1Image(e.target.value)}
+                      onChange={(e) => setStage1Image(e.target.value)}
                     ></textarea>
                   </div>
                 </div>{" "}
@@ -481,7 +481,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Stage 2 name"
-                      onChange = {(e) => setStage2Name(e.target.value)}
+                      onChange={(e) => setStage2Name(e.target.value)}
                     ></textarea>
                   </div>
                 </div>
@@ -498,7 +498,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Image Link stage 2"
-                      onChange = {(e) => setStage2Image(e.target.value)}
+                      onChange={(e) => setStage2Image(e.target.value)}
                     ></textarea>
                   </div>
                 </div>{" "}
@@ -515,7 +515,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Stage 3 name"
-                      onChange = {(e) => setStage3Name(e.target.value)}
+                      onChange={(e) => setStage3Name(e.target.value)}
                     ></textarea>
                   </div>
                 </div>
@@ -532,7 +532,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Image Link stage 3"
-                      onChange = {(e) => setStage3Image(e.target.value)}
+                      onChange={(e) => setStage3Image(e.target.value)}
                     ></textarea>
                   </div>
                 </div>{" "}
@@ -549,7 +549,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Stage 4 name"
-                      onChange = {(e) => setStage4Name(e.target.value)}
+                      onChange={(e) => setStage4Name(e.target.value)}
                     ></textarea>
                   </div>
                 </div>
@@ -566,7 +566,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Image Link stage 4"
-                      onChange = {(e) => setStage4Image(e.target.value)}
+                      onChange={(e) => setStage4Image(e.target.value)}
                     ></textarea>
                   </div>
                 </div>{" "}
@@ -583,7 +583,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Kharif(Sowing Month)"
-                      onChange = {(e) => setKharif(e.target.value)}
+                      onChange={(e) => setKharif(e.target.value)}
                     ></textarea>
                   </div>
                 </div>{" "}
@@ -600,7 +600,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Rabi (Sowing Month)"
-                      onChange = {(e) => setRabi(e.target.value)}
+                      onChange={(e) => setRabi(e.target.value)}
                     ></textarea>
                   </div>
                 </div>
@@ -617,7 +617,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Zaid (sowing Month)"
-                      onChange = {(e) => setZaid(e.target.value)}
+                      onChange={(e) => setZaid(e.target.value)}
                     ></textarea>
                   </div>
                 </div>{" "}
@@ -634,7 +634,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Optimum temperature(degree C) for growing"
-                      onChange = {(e) => setOptimumTemp(e.target.value)}
+                      onChange={(e) => setOptimumTemp(e.target.value)}
                     ></textarea>
                   </div>
                 </div>
@@ -651,7 +651,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="RainFall Requirement(in mm)"
-                      onChange = {(e) => setRainFall(e.target.value)}
+                      onChange={(e) => setRainFall(e.target.value)}
                     ></textarea>
                   </div>
                 </div>{" "}
@@ -668,7 +668,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder=" Recommended Soil"
-                      onChange = {(e) => setSoilType(e.target.value)}
+                      onChange={(e) => setSoilType(e.target.value)}
                     ></textarea>
                   </div>
                 </div>
@@ -685,7 +685,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="PH of Soil"
-                      onChange = {(e) => setSoilPH(e.target.value)}
+                      onChange={(e) => setSoilPH(e.target.value)}
                     ></textarea>
                   </div>
                 </div>{" "}
@@ -702,11 +702,10 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Spacing (row*plant)(cm*cm)"
-                      onChange = {(event) => {
+                      onChange={(event) => {
                         const newSpacing = parseInt(event.target.value);
                         setSpacing(newSpacing);
-                      }
-                      }
+                      }}
                     ></textarea>
                   </div>
                 </div>
@@ -723,7 +722,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Seed rate(Kg/acre)"
-                      onChange = {(e) => setSeedRate(e.target.value)}
+                      onChange={(e) => setSeedRate(e.target.value)}
                     ></textarea>
                   </div>
                 </div>{" "}
@@ -740,7 +739,7 @@ const CropLibraryAdmin = () => {
                     <textarea
                       className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Average yiled(Quintal/acre)"
-                      onChange = {(e) => setYeild(e.target.value)}
+                      onChange={(e) => setYeild(e.target.value)}
                     ></textarea>
                   </div>
                 </div>{" "}
@@ -770,21 +769,19 @@ const CropLibraryAdmin = () => {
                       id="inline-password"
                       maxLength={50}
                       placeholder="Intercrop details and patterns"
-                      onChange = {(e) => setInterCrop(e.target.value)}
+                      onChange={(e) => setInterCrop(e.target.value)}
                     />
                   </div>
                 </div>
                 <button
                   type="submit"
                   className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
-                  onClick = {handleAddGeneral}
+                  onClick={handleAddGeneral}
                 >
-                  {
-                    loading ? 
-                    'Loading....':
-                    'Submit'
-                  }
+                  {loading ? "Loading...." : "Submit"}
                 </button>
+                OR
+                <CSVReader />
               </div>
             </>
           ) : (

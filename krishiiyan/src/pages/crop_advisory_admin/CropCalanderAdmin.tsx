@@ -4,6 +4,8 @@ import { Autocomplete, MenuItem, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
+import CSVReader from "../CSVUpload/CSVUpload";
+import Header from "../../Components/layouts/Header";
 
 const CropCalanderAdmin = () => {
   let col: any = 12;
@@ -79,8 +81,10 @@ const CropCalanderAdmin = () => {
 
   return (
     <>
-      <div className="w-full max-w-sm mt-10 mb-5 ml-80">
-        {/* <div className="md:flex md:items-center mb-6">
+      <div>
+        <Header title="Crop Calander" subtitle="" />
+        <div className="w-full max-w-sm mt-10 mb-5 ml-80">
+          {/* <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3">
             <label
               className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
@@ -102,98 +106,101 @@ const CropCalanderAdmin = () => {
             </select>
           </div>
         </div> */}
-        <div className="md:flex md:items-center mb-6">
-          <div className="md:w-1/3">
-            <label className="text-[#13490A] font-extrabold text-sm mx-5">
-              Crop
-            </label>
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label className="text-[#13490A] font-extrabold text-sm mx-5">
+                Crop
+              </label>
+            </div>
+            <div className="md:w-2/3">
+              <textarea
+                placeholder="Crop"
+                className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={onChangeCrop}
+              ></textarea>
+            </div>
           </div>
-          <div className="md:w-2/3">
-            <textarea
-              placeholder="Crop"
-              className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              onChange={onChangeCrop}
-            ></textarea>
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label
+                className="text-[#13490A] font-extrabold text-sm mx-5"
+                // for="inline-password"
+              >
+                Scientific name
+              </label>
+            </div>
+            <div className="md:w-2/3 ">
+              <textarea
+                className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Scientific name"
+                onChange={onChangeCategory}
+              ></textarea>
+            </div>
+          </div>{" "}
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label
+                className="text-[#13490A] font-extrabold text-sm mx-5"
+                // for="inline-password"
+              >
+                No. of Stages
+              </label>
+            </div>
+            <div className="md:w-2/3 ">
+              <textarea
+                className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Number of stages"
+                onChange={onChangeCategory}
+              ></textarea>
+            </div>
+          </div>{" "}
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label
+                className="text-[#13490A] font-extrabold text-sm mx-5"
+                // for="inline-password"
+              >
+                Crop Cycle
+              </label>
+            </div>
+            <div className="md:w-2/3 ">
+              <textarea
+                className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Crop Cycle"
+                onChange={onChangeCategory}
+              ></textarea>
+            </div>
           </div>
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label
+                className="text-[#13490A] font-extrabold text-sm mx-5"
+                // for="inline-password"
+              >
+                Name of Stages
+              </label>
+            </div>
+            <div className="md:w-2/3">
+              <textarea
+                className=" bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-400 h-24"
+                //   onChange={onChangeArea}
+                id="inline-password"
+                maxLength={50}
+                placeholder="Name of Stages"
+                onChange={onChangeDescription}
+              />
+            </div>
+          </div>
+          <button
+            type="submit"
+            onClick={refreshPage}
+            className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
+          >
+            Submit
+          </button>
+          OR
+          <CSVReader />
         </div>
-        <div className="md:flex md:items-center mb-6">
-          <div className="md:w-1/3">
-            <label
-              className="text-[#13490A] font-extrabold text-sm mx-5"
-              // for="inline-password"
-            >
-              Scientific name
-            </label>
-          </div>
-          <div className="md:w-2/3 ">
-            <textarea
-              className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Scientific name"
-              onChange={onChangeCategory}
-            ></textarea>
-          </div>
-        </div>{" "}
-        <div className="md:flex md:items-center mb-6">
-          <div className="md:w-1/3">
-            <label
-              className="text-[#13490A] font-extrabold text-sm mx-5"
-              // for="inline-password"
-            >
-              No. of Stages
-            </label>
-          </div>
-          <div className="md:w-2/3 ">
-            <textarea
-              className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Number of stages"
-              onChange={onChangeCategory}
-            ></textarea>
-          </div>
-        </div>{" "}
-        <div className="md:flex md:items-center mb-6">
-          <div className="md:w-1/3">
-            <label
-              className="text-[#13490A] font-extrabold text-sm mx-5"
-              // for="inline-password"
-            >
-              Crop Cycle
-            </label>
-          </div>
-          <div className="md:w-2/3 ">
-            <textarea
-              className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Crop Cycle"
-              onChange={onChangeCategory}
-            ></textarea>
-          </div>
-        </div>
-        <div className="md:flex md:items-center mb-6">
-          <div className="md:w-1/3">
-            <label
-              className="text-[#13490A] font-extrabold text-sm mx-5"
-              // for="inline-password"
-            >
-              Name of Stages
-            </label>
-          </div>
-          <div className="md:w-2/3">
-            <textarea
-              className=" bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-400 h-24"
-              //   onChange={onChangeArea}
-              id="inline-password"
-              maxLength={50}
-              placeholder="Name of Stages"
-              onChange={onChangeDescription}
-            />
-          </div>
-        </div>
-        <button
-          type="submit"
-          onClick={refreshPage}
-          className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
-        >
-          Submit
-        </button>
       </div>
     </>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CSVReader from "../../CSVUpload/CSVUpload";
 
 const DeficienctsymtomsAdmin = () => {
   return (
@@ -128,6 +129,8 @@ const DeficienctsymtomsAdmin = () => {
         >
           Submit
         </button>
+        OR
+        <CSVReader />
       </div>
     </>
   );
