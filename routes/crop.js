@@ -73,7 +73,7 @@ router.post("/role-admin/general/add", async (req, res) => {
     if (!crop) throw new Error("crop not found");
     crop.generalInformation = generalInformation;
     await crop.save();
-    res.status(201).json({ crop });
+    res.status(201).json({ crop, status: 200 });
   } catch (e) {
     return res.status(500).json({ msg: e.message });
   }
@@ -288,36 +288,15 @@ router.post("/get-crop-name", async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Get crop by localName and date
 
-router.post("/cropStage", async (req, res) => { 
+router.post("/cropStage", async (req, res) => {
   try {
     const { Stages } = req.body;
-    
-  }
-  catch(e)
-  {
+  } catch (e) {
     res.status(500).json({ msg: e.message });
   }
-})
-
+});
 
 router.post("/get-crop-calendar", async (req, res) => {
   try {
