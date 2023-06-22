@@ -1,6 +1,36 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const ProductionVarContentAdmin = () => {
+  const [crop , setCrop] = useState("");
+  const [area , setArea] = useState("");
+  const [avgYield , setAvgYield] = useState<any>("");
+  const [variety , setVariety] = useState("");
+  const [type , setType] = useState("");
+  const [speciality , setSpeciality] = useState("");
+  const [loading , setLoading] = useState(false);
+
+  const handleVarietySubmit = async () => {
+    setLoading(true);
+    try{
+      const res = await fetch(process.env.REACT_APP_BACKEND_URL + "/production_variety" , {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("authToken"),
+        },
+        body: JSON.stringify({})
+
+      })
+    }
+    catch(err:any){
+      console.log(err);
+      toast.error(err.message , {
+        position: "top-right",
+      });
+    }
+  }
+  
   return (
     <>
       <div className="w-full max-w-sm mt-10 mb-5 ml-80">
@@ -14,6 +44,7 @@ const ProductionVarContentAdmin = () => {
             <textarea
               placeholder="Name of Variety"
               className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange = {(e) => setVariety(e.target.value)}
             ></textarea>
           </div>
         </div>
@@ -30,6 +61,7 @@ const ProductionVarContentAdmin = () => {
             <textarea
               className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Crop"
+              onChange = {(e) => setCrop(e.target.value)}
             ></textarea>
           </div>
         </div>{" "}
@@ -46,6 +78,7 @@ const ProductionVarContentAdmin = () => {
             <textarea
               className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Area of Adpatation"
+              onChange = {(e) => setArea(e.target.value)}
             ></textarea>
           </div>
         </div>
@@ -62,6 +95,7 @@ const ProductionVarContentAdmin = () => {
             <textarea
               className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="  Average yield"
+              onChange = {(e) => setAvgYield(e.target.value)}
             ></textarea>
           </div>
         </div>{" "}
@@ -78,6 +112,7 @@ const ProductionVarContentAdmin = () => {
             <textarea
               className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Type of variety"
+              onChange = {(e) => setType(e.target.value)}
             ></textarea>
           </div>
         </div>
@@ -97,6 +132,7 @@ const ProductionVarContentAdmin = () => {
               id="inline-password"
               maxLength={50}
               placeholder="Speciality"
+              onChange = {(e) => setSpeciality(e.target.value)}
             />
           </div>
         </div>

@@ -90,7 +90,7 @@ router.post("/role-admin/preSowing", async (req, res) => {
     if (!crop) throw new Error("crop not found");
     crop.presowingPractices = presowingPractices;
     await crop.save();
-    res.status(201).json({ crop });
+    res.status(201).json({ crop, status: 200 });
   } catch (e) {
     return res.status(500).json({ msg: e.message });
   }
