@@ -69,7 +69,6 @@ const crop_stage = [
     name: String,
     image: String,
     description: String,
-    Description: String,
     Disease_Infection: {
       Data: String,
       images: [String],
@@ -366,34 +365,14 @@ const disease_Management = {
     },
   },
 };
-const nutrient_Mgmt = {
-  value: {
-    value1: {
-      nutrient: String,
-      Dosage: String,
-      age: String,
-      Method_application: String,
-    },
-    value2: {
-      nutrient: String,
-      Dosage: String,
-      age: String,
-      Method_application: String,
-    },
-    value3: {
-      nutrient: String,
-      Dosage: String,
-      age: String,
-      Method_application: String,
-    },
-    value4: {
-      nutrient: String,
-      Dosage: String,
-      age: String,
-      Method_application: String,
-    },
+const nutrient_Mgmt = [
+  {
+    nutrient: String,
+    Dosage: String,
+    age: String,
+    Method_application: String,
   },
-};
+];
 
 const Weed_Mangement = {
   value: {
@@ -559,11 +538,11 @@ const Irrigation_Mgmt = {
     description: String,
     Cost_Component: String,
   },
-  Cost_protectopn: {
+  Cost_protection: {
     description: String,
     Cost_Component: String,
   },
-  Cots_Fertilizer: {
+  Cost_Fertilizer: {
     description: String,
     Cost_Component: String,
   },
@@ -629,7 +608,6 @@ const CropSchema = new mongoose.Schema(
     cropCycle: { type: Number },
     cropStage: crop_stage, // bhayankar
     generalInformation: general_Information,
-
     varietyInformation: variety_information,
     nutrient: nutrient,
     // varieties: [
@@ -679,22 +657,22 @@ const CropSchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
-    nitrogen: {
-      type: String,
-      // required: true,
-    },
-    phosporous: {
-      type: String,
-      // required: true,
-    },
-    potash: {
-      type: String,
-      // required: true,
-    },
-    zinc: {
-      type: String,
-      // required: true,
-    },
+    // [nitrogen: {
+    //   type: String,
+    //   // required: true,
+    // },
+    // phosporous: {
+    //   type: String,
+    //   // required: true,
+    // },
+    // potash: {
+    //   type: String,
+    //   // required: true,
+    // },
+    // zinc: {
+    //   type: String,
+    //   // required: true,]
+    // },
 
     pestMgmt: [
       {
@@ -709,15 +687,16 @@ const CropSchema = new mongoose.Schema(
         ], //recommended products
       },
     ],
-    irrigationMgmt: [
+    irrigation: [
       {
-        name: String,
+        component: String,
         image: String,
         description: String,
         solution: [
           {
             name: String,
             prodImg: String,
+            cost: String,
           },
         ], //recommended products
       },

@@ -154,6 +154,41 @@ router.post("/harvest/role-admin/add", async (req, res) => {
   }
 });
 
+router.post("/irrigation/role-admin/add", async (req, res) => {
+  const {
+    irrigation = [
+      {
+        Physiological: String,
+        index: String,
+        Average: String,
+        Conditions_during: String,
+        Post_Harvest: String,
+        prevent: String,
+        images: [{ type: String }],
+      },
+    ],
+    localName,
+    scientificName,
+    csv,
+  } = req.body;
+  try {
+    if (!csv) {
+      if (!localName && !scientificName)
+        throw new Error("localName or scientificName are required");
+      const query = localName ? { localName } : { scientificName };
+      const crop = await Crop.findOne(query);
+      if (!crop) throw new Error("crop not found");
+      crop.irrigation = irrigation;
+      await crop.save();
+      res.status(201).json({ crop });
+    } else {
+      res.status(201).json({ message: "csv" });
+    }
+  } catch (e) {
+    return res.status(500).json({ msg: e.message });
+  }
+});
+
 
 router.post("/variety/add", async (req, res) => {
   const {
