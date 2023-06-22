@@ -248,7 +248,6 @@ router.post("/irrigation/role-admin/add", async (req, res) => {
   }
 });
 
-
 router.post("/variety/add", async (req, res) => {
   const {
     stages = [{ sn: 1, name: "germination", image: "url" }],
@@ -277,7 +276,7 @@ router.post("/variety/add", async (req, res) => {
 router.post("/nutrient/role-admin/add", async (req, res) => {
   const {
     nutrient = {
-      name: "Nitrogen",
+      name: String,
       role: String,
       description: String,
       Dosage: String,

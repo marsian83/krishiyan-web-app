@@ -96,8 +96,9 @@ const CropHealthAdmin = () => {
   }, []);
 
   const handleHealthSubmit = async () => {
+    console.log(process.env.REACT_APP_BACKEND_URL)
     try{
-      if(!category || !crop || !image || !description || !solution ){
+      if(!category || !crop || !image || !description || !solution){
         toast.error("Please fill in all the details", {
           position: toast.POSITION.TOP_RIGHT,
         });

@@ -1,30 +1,63 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const NatrientTableAdmin = () => {
+  const [name , setName] = useState("");
+  const [nutrientName , setNutiName] = useState("");
+  const [role , setRole] = useState("");
+  const [description , setDescription] = useState("");
+  const [dosage , setDosages] = useState("");
+  const [age , setAge] = useState("");
+  const [method , setMethod] = useState("");
+  const [loading , setLoading] = useState(false);
+  
+  const handleSubmitNutrients =async () =>{
+    try{
+      setLoading(true);
+      const body = {
+        localName : name , 
+        scientificName : name ,
+        nutrient : {
+          name : nutrientName,
+          role:"",
+          description:"",
+          Dosage:dosage,
+          age: age,
+          Method_application: method
+        }
+      }
+      const res = await fetch(process.env.REACT_APP_BACKEND_URL + 'crop/nutrient/role-admin/add',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          Authorization: 'Bearer '+ localStorage.getItem('authToken')
+        },
+        body:JSON.stringify(body)
+      })
+      const data = await res.json();
+      if(data.crop){
+        toast.success("Nutrient Added",{
+          position:toast.POSITION.TOP_RIGHT
+        })
+      }
+      else{
+        toast.error(data.msg,{
+          position:toast.POSITION.TOP_RIGHT
+          })
+      }
+    }
+    catch(err:any){
+        console.log(err);
+        toast.error(err.msg,{
+        position:toast.POSITION.TOP_RIGHT
+        })
+    }
+    finally{
+      setLoading(false);
+    }
+  }
   return (
     <div className="w-full max-w-sm mt-10 mb-5 ml-80">
-      {/* <div className="md:flex md:items-center mb-6">
-      <div className="md:w-1/3">
-        <label
-          className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-          // for="inline-password"
-        >
-          Farmer
-        </label>
-      </div>
-      <div className="md:w-2/3">
-        <select
-          id="countries"
-          className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25) border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          onChange={onChangeFarmerName}
-        >
-          <option selected>Select Farmer </option>
-          {allFarmer?.map((crop: any) => (
-            <option value={farmer}>{crop.name}</option>
-          ))}
-        </select>
-      </div>
-    </div> */}
       <div className="md:flex md:items-center mb-6">
         <div className="md:w-1/3">
           <label className="text-[#13490A] font-extrabold text-sm mx-5">
@@ -35,6 +68,7 @@ const NatrientTableAdmin = () => {
           <textarea
             placeholder="Crop"
             className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange={(e) => setName(e.target.value)}
           ></textarea>
         </div>
       </div>
@@ -51,6 +85,7 @@ const NatrientTableAdmin = () => {
           <textarea
             className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Nutrient"
+            onChange={(e) => setNutiName(e.target.value)}
           ></textarea>
         </div>
       </div>{" "}
@@ -67,6 +102,7 @@ const NatrientTableAdmin = () => {
           <textarea
             className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Dosage(Kg/acre)"
+            onChange={(e) => setDosages(e.target.value)}
           ></textarea>
         </div>
       </div>
@@ -83,6 +119,7 @@ const NatrientTableAdmin = () => {
           <textarea
             className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Age of the crop"
+            onChange={(e)=>{setAge(e.target.value)}}
           ></textarea>
         </div>
       </div>{" "}
@@ -103,14 +140,20 @@ const NatrientTableAdmin = () => {
             maxLength={50}
             placeholder="
             Method of application"
+            onChange = {(e)=>{setMethod(e.target.value)}}
           />
         </div>
       </div>
       <button
         type="submit"
         className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
+        onClick={handleSubmitNutrients}
       >
-        Submit
+        {
+          loading ?
+          `Loading....`:
+          `Submit`
+        }
       </button>
     </div>
   );
