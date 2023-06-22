@@ -72,8 +72,8 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/disease/", async (req, res) => {
-  const { localName } = req.body;
+router.get("/disease/:localName", async (req, res) => {
+  const { localName } = req.params;
   try {
     const crop = await Crop.findOne({ localName });
     if (!crop) throw new Error("crop does not exist.");
