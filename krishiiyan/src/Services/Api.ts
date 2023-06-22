@@ -1256,3 +1256,37 @@ export async function getDealerReport() {
     return [errorObject, null];
   }
 }
+
+
+
+/**********ADMIN********* */
+
+export async function adminRoleDisease(
+  localName:String , 
+  pest:String ,
+  images : String,
+  description : String ,
+  
+) {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/admin/role-admin/disease`,
+      data: {
+        localName:localName,
+        pest:pest,
+        images:images,
+        description:description,
+
+      },
+      headers: { Authorization: "Bearer " + token },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}

@@ -51,7 +51,7 @@ router.post("/", async (req, res) => {
 router.post("/role-admin/disease", async (req, res) => {
   const {
     localName, //of the crop
-    pest, //name of the pest
+    disease, //name of the pest
     images = [], //Array
     description = "", // of the pest
     solutions = [
@@ -65,7 +65,7 @@ router.post("/role-admin/disease", async (req, res) => {
     csv = {},
   } = req.body;
   try {
-    if (!csv) {
+    if (Object.keys(csv).length === 0) {
       console.log("After authentication");
       const existingDiseaseDoc = await diseaseModel.findOne({ name: disease });
       const diseaseDoc = !existingDiseaseDoc
@@ -92,7 +92,10 @@ router.post("/role-admin/disease", async (req, res) => {
       if (!crop) throw new Error({ message: "crop does not exist." });
       diseaseDoc.cropsIds.push(crop._id);
       const newDisease = await diseaseDoc.save();
-      res.status(201).json({ newDisease });
+      res.status(201).json({
+        newDisease,
+        status: "success",
+      });
     } else {
       //For handling csv uploads
       res.status(200).json({ msg: "csv file uploaded" });
@@ -115,7 +118,7 @@ router.post("/role-admin/pest", async (req, res, next) => {
   } = req.body;
   try {
     console.log("After authentication");
-    if (!csv) {
+    if (Object.keys(csv).length === 0) {
       const existingpestDoc = await pestModel.findOne({ name: pest });
       const pestDoc = !existingpestDoc
         ? new pestModel({
@@ -141,7 +144,7 @@ router.post("/role-admin/pest", async (req, res, next) => {
       if (!crop) throw new Error({ message: "crop does not exist." });
       pestDoc.cropsIds.push(crop._id);
       const newpest = await pestDoc.save();
-      res.status(201).json({ newpest });
+      res.status(201).json({ newpest, status: "success" });
     } else {
       //For handling csv uploads
       res.status(200).json({ msg: "csv file uploaded" });
@@ -163,7 +166,7 @@ router.post("/role-admin/weed", async (req, res) => {
     csv = {},
   } = req.body;
   try {
-    if (!csv) {
+    if (Object.keys(csv).length === 0) {
       const existingweedDoc = await weedModel.findOne({ name: weed });
       const weedDoc = !existingweedDoc
         ? new weedModel({
@@ -189,7 +192,7 @@ router.post("/role-admin/weed", async (req, res) => {
       if (!crop) throw new Error({ message: "crop does not exist." });
       weedDoc.cropsIds.push(crop._id);
       const newweed = await weedDoc.save();
-      res.status(201).json({ newweed });
+      res.status(201).json({ newweed, status: "success" });
     } else {
       //For handling csv uploads
       res.status(200).json({ msg: "csv file uploaded" });
