@@ -92,6 +92,7 @@ const CropHealth = () => {
           });
         }
         console.log(res, "Res");
+        console.log(res);
         setCropDetails(res?.data);
       }
 
