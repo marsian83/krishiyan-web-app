@@ -1,5 +1,5 @@
 import "./AdminPanel.css";
-import SideNav from "./Components/layouts/SideNav";
+import SideNav from "./Components/layouts/SideNavAdmin";
 import {
   BrowserRouter as Router,
   Routes,
@@ -31,6 +31,7 @@ import LoginPage from "./pages/Authentication/LoginPage";
 import SignupPage from "./pages/Authentication/SignupPage";
 import ProductBatches from "./pages/pos/ProductBatches";
 import OTPVerification from "./pages/farmer/OTPVerification";
+import AddCrop from "./pages/crop_advisory_admin/AddCrop";
 
 const AuthGuard = () => {
   const auth = localStorage.getItem("authToken");
@@ -106,10 +107,16 @@ function AdminPanel() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"crop_advisory"} submenu={"crop_library"} />
-                {
-                  
-                  <CropLibrary />
-                }
+                {<CropLibrary />}
+              </main>
+            }
+          />{" "}
+          <Route
+            path="/add_crop"
+            element={
+              <main className="h-screen w-screen grid grid-cols-[18%_82%]">
+                <SideNav menu={"crop_advisory"} submenu={"add_crop"} />
+                {<AddCrop />}
               </main>
             }
           />
