@@ -38,7 +38,7 @@ const HervestAdmin = () => {
           images : [image1 , image2 , image3 , image4]
         }
       }
-      const res = await fetch(process.env.REACT_APP_BACKEND_URL + 'crop/harvest/role-admin/add',{
+      const res = await fetch(process.env.REACT_APP_BACKEND_URL + 'crop/role-admin/harvest/add',{
         method:'POST',
         headers:{
           'Content-Type':'application/json',

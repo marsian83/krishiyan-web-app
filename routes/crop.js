@@ -211,8 +211,6 @@ router.post("/role-admin/variety/add", async (req, res) => {
   }
 });
 
-
-
 router.post("/irrigation/role-admin/add", async (req, res) => {
   const {
     irrigation = [
