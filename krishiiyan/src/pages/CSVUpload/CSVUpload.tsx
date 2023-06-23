@@ -95,7 +95,7 @@ export default function CSVReader() {
     try {
       const { window, ...resultWithoutWindow } = result; // Exclude the 'window' property
       console.log(csvData);
-      const res = await fetch('http://localhost:5001/api/crop/role-admin/harvest/add', {
+      const res = await fetch(process.env.REACT_APP_BACKEND_URL + 'crop/role-admin/harvest/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
