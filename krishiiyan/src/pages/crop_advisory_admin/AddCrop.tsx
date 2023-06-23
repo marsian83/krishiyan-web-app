@@ -12,6 +12,7 @@ const AddCrop = () => {
   const [crop, setCrop] = useState("");
   const [ScientificName, setScientificName] = useState("");
   const [image, setImage] = useState<any>();
+  const [loading , setLoading] = useState(false);
 
   const [description, setDescription] = useState("");
 
@@ -37,7 +38,7 @@ const AddCrop = () => {
     setNumber(e.target.value);
   };
   const handleHealthSubmit = async () => {
-    console.log(process.env.REACT_APP_BACKEND_URL);
+    setLoading(true);
     try {
       if (
         !ScientificName ||
@@ -73,7 +74,7 @@ const AddCrop = () => {
       const data = await res.json();
       console.log(data);
       if (data.status == "success")
-        toast.success("Crop Health Created Successfully", {
+        toast.success("Crop Created Successfully", {
           position: toast.POSITION.TOP_RIGHT,
         });
     } catch (err: any) {
@@ -81,6 +82,9 @@ const AddCrop = () => {
       toast.error(err.msg, {
         position: toast.POSITION.TOP_RIGHT,
       });
+    }
+    finally{
+      setLoading(false)
     }
   };
 
@@ -195,13 +199,19 @@ const AddCrop = () => {
               />
             </div>
           </div>
-          <button
-            type="submit"
-            onClick={handleHealthSubmit}
-            className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
-          >
+          {
+            loading ? 
+            `Loading....`:
+            (
+              <button
+              type="submit"
+              onClick={handleHealthSubmit}
+              className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
+              >
             Submit
           </button>
+              )
+          }
           OR
           <CSVReader />
         </div>

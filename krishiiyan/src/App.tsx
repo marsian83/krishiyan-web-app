@@ -13,6 +13,7 @@ import Report from "./pages/pos/Report";
 import Purchase from "./pages/pos/Purchase";
 import Accounting from "./pages/pos/Accounting";
 import CropLibrary from "./pages/crop_advisary/CropLibrary";
+import CropLibraryAdmin from "./pages/crop_advisory_admin/CropLiberaryAdmin"
 import CropCalendar from "./pages/crop_advisary/CropCalendar";
 import CropHealth from "./pages/crop_advisary/CropHealth";
 import FertiCal from "./pages/crop_advisary/FertiCal";
@@ -31,6 +32,10 @@ import LoginPage from "./pages/Authentication/LoginPage";
 import SignupPage from "./pages/Authentication/SignupPage";
 import ProductBatches from "./pages/pos/ProductBatches";
 import OTPVerification from "./pages/farmer/OTPVerification";
+import { useEffect, useState } from "react";
+import CropLibraryHandler from "./adminUserHandlers/CropLibraryHandler";
+import CropCalenderHandler from "./adminUserHandlers/CropCalenderHandler";
+import CropHealthHandler from "./adminUserHandlers/CropHealthHandler";
 
 const AuthGuard = () => {
   const auth = localStorage.getItem("authToken");
@@ -105,8 +110,9 @@ function App() {
             path="/crop_library"
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
-                <SideNav menu={"crop_advisory"} submenu={"crop_library"} />
-                <CropLibrary />
+                <SideNav menu={"crop_advisory"} submenu={"crop_library"} />{
+                  <CropLibraryHandler/>
+                }
               </main>
             }
           />
@@ -115,7 +121,7 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"crop_advisory"} submenu={"crop_calendar"} />
-                <CropCalendar />
+                <CropCalenderHandler/>
               </main>
             }
           />
@@ -124,7 +130,7 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"crop_advisory"} submenu={"crop_health"} />
-                <CropHealth />
+                <CropHealthHandler/>
               </main>
             }
           />

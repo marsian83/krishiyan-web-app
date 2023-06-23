@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import CSVReader from "../CSVUpload/CSVUpload";
 
 const IrrigationTableAdmin = () => {
-  // const [name , setName] = useState
+  const [name , setName] = useState("");
+  const [category , setCategory] = useState("");
+
   return (
     <>
       <div className="w-full max-w-sm mt-10 mb-5 ml-80">

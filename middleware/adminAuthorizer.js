@@ -13,10 +13,10 @@ exports.adminAuthorizer = async (req, res, next) => {
     if (url && url.includes("role-admin")) {
       next();
     } else {
-      res.status(200).json({ admin: true });
+      res.status(200).json({ admin: true, status: 200 });
     }
   } catch (err) {
-    res.status(401).json({ message: err.message, admin: false });
+    res.status(401).json({ message: err.message, admin: false, status: 200 });
   }
 };
 
