@@ -32,7 +32,6 @@ router.post("/role-admin/save", async (req, res) => {
     res.status(201).json({
       message: "Crop created!",
       crop: newCrop,
-      status: "success",
     });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
@@ -213,22 +212,15 @@ router.post("/role-admin/variety/add", async (req, res) => {
 });
 
 router.post("/irrigation/role-admin/add", async (req, res) => {
-  const {
-    irrigation = [
-      {
-        Physiological: String,
-        index: String,
-        Average: String,
-        Conditions_during: String,
-        Post_Harvest: String,
-        prevent: String,
-        images: [{ type: String }],
-      },
-    ],
+  let {
+    component = "String",
+    image = "String",
+    description = "String",
+    solutions= [{ name: "String", prodImg: "String", cost: "String" }], //recommended products
     localName,
     scientificName,
     csv,
-  } = req.body;
+  } = req.body; //array of [{question,answer}]
   try {
     if (!csv) {
       if (!localName && !scientificName)
@@ -236,11 +228,33 @@ router.post("/irrigation/role-admin/add", async (req, res) => {
       const query = localName ? { localName } : { scientificName };
       const crop = await Crop.findOne(query);
       if (!crop) throw new Error("crop not found");
-      crop.irrigation = irrigation;
+      const newIrrigationtechnique = {
+        component,
+        image,
+        description,
+        solutions,
+      };
+      crop.irrigation.push(newIrrigationtechnique);
       await crop.save();
       res.status(201).json({ crop });
     } else {
-      res.status(201).json({ message: "csv" });
+      csv = csv.data;
+      // for (let i = 1; i < csv.length; i++) {
+      //   let harvest = {};
+      //   let cropModel = {};
+      //   if (!csv[i][0].length) break;
+      //   for (let j = 0; j < csv[i].length; j++) {
+      //     if (j === 0) {
+      //       lName = csv[i][j];
+      //       cropModel = await Crop.findOne({ localName: lName });
+      //     } else {
+      //       harvest[csv[0][j]] = csv[i][j];
+      //     }
+      //   }
+      //   cropModel.newHarvest = harvest;
+      //   await cropModel.save();
+      // }
+      res.status(201).json({ message: "bulk uploaded " });
     }
   } catch (e) {
     return res.status(500).json({ msg: e.message });

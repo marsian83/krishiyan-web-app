@@ -681,7 +681,7 @@ const CropSchema = new mongoose.Schema(
         component: String,
         image: String,
         description: String,
-        solution: [
+        solutions: [
           {
             name: String,
             prodImg: String,
