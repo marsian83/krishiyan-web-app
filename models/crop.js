@@ -97,7 +97,7 @@ const general_Information = {
 };
 const variety = [
   {
-  name: String,
+    name: String,
     Area_Adaptation: String,
     Average_yield: String,
     Type_variety: String,

@@ -1,10 +1,26 @@
 import React, { useState } from "react";
 
+interface FaqObject {
+  question: string;
+  answer: string;
+}
+
 const Faq = (props: any) => {
-  const [data, setData] = useState(props.crop.faq.value);
+  const [data, setData] = useState(props.crop.faq);
   return (
     <div>
-      <div className="text-start">
+          {
+      data.map((faq : FaqObject, index:number) => {
+        return (
+          <div className="text-start" key={index}>
+            <span className="font-extrabold text-start">Q{index + 1}. {faq.question}</span>
+            <br />
+            Answer : {faq.answer}
+          </div>
+        );
+      })
+    }
+      {/* <div className="text-start">
         <span className="font-extrabold text-start">1. {data.value1.data}</span>
         <br />
         {data.value1.answer}
@@ -140,7 +156,7 @@ const Faq = (props: any) => {
         </span>
         <br />
         {data.value22.answer}
-      </div>
+      </div> */}
     </div>
   );
 };
