@@ -171,45 +171,6 @@ router.post("/role-admin/harvest/add", async (req, res) => {
   }
 });
 
-router.post("/role-admin/variety/add", async (req, res) => {
-  const {
-    nutrient = {
-      name: "Nitrogen",
-      role: String,
-      description: String,
-      Dosage: String,
-      age: String,
-      Method_application: String,
-    },
-    localName,
-    scientificName,
-    csv,
-  } = req.body; //array of [{question,answer}]
-  try {
-    if (!csv) {
-      if (!localName && !scientificName)
-        throw new Error("localName or scientificName are required");
-      const query = localName ? { localName } : { scientificName };
-      const crop = await Crop.findOne(query);
-      if (!crop) throw new Error("crop not found");
-      let b = 0;
-      for (let nutr of crop.nutrient) {
-        if (nutr.name == nutrient.name) {
-          nutr = { ...nutr, ...nutrient };
-          b = 1;
-          break;
-        }
-      }
-      if (!b) crop.nutrient.push(nutrient);
-      await crop.save();
-      res.status(201).json({ crop, message: "nutrient added!" });
-    } else {
-      res.status(201).json({ message: "csv" });
-    }
-  } catch (e) {
-    return res.status(500).json({ msg: e.message });
-  }
-});
 
 router.post("/irrigation/role-admin/add", async (req, res) => {
   let {
