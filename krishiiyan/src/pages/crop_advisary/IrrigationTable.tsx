@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 
 const IrrigationTable = (props: any) => {
-  const [data, setData] = useState<any>(props.crop.IrrigationMgmt);
+  const [data, setData] = useState<any>(props.crop.irrigation);
+  console.log(data)
   return (
     <>
       <table className="table-auto border-collapse border border-black font-bold text-base w-[80%] mx-auto mt-10">
@@ -9,7 +10,7 @@ const IrrigationTable = (props: any) => {
           <tr className="text-center">
             <th className="border-r border-black py-[1.2%] pl-1 pr-1">S.No</th>
             <th className="border-r border-black py-[1.2%]">Component</th>
-            <th className="border-r border-black py-[1.2%]">Discription</th>
+            <th className="border-r border-black py-[1.2%]">Description</th>
             <th className="border-r border-black py-[1.2%]">
               Cost of Component
             </th>
@@ -18,7 +19,19 @@ const IrrigationTable = (props: any) => {
         <tbody>
           {/* Stage1 */}
           {/* {oldCultivation?.map((cultivation: any, index: any) => ( */}
-          <tr className="h-10 border-b border-black">
+          {
+            data.map((irrigation :any, index:number)=>{
+              return(
+                <tr className="h-10 border-b border-black">
+                  <td className="border-r border-black font-thin">{index+1}</td>
+                  <td className="border-r border-black font-thin">{irrigation.component}</td>
+                  <td className="border-r border-black font-thin">{irrigation.description}</td>
+                  <td className="border-r border-black font-thin">{irrigation.solutions[0].cost}</td>
+                </tr>
+              )
+            })
+          }
+          {/* <tr className="h-10 border-b border-black">
             <td className="border-r border-black font-thin">1</td>
             <td className="border-r border-black font-thin">Cost Harvesting</td>
             <td className="border-r border-black font-thin">
@@ -159,7 +172,7 @@ const IrrigationTable = (props: any) => {
             <td className="border-r border-black font-thin">
               {data.cost_seed_materials.Cost_Component}
             </td>
-          </tr>
+          </tr> */}
           {/* ))} */}
         </tbody>
       </table>

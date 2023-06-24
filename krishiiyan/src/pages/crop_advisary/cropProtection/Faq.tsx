@@ -13,9 +13,9 @@ const Faq = (props: any) => {
       data.map((faq : FaqObject, index:number) => {
         return (
           <div className="text-start" key={index}>
-            <span className="font-extrabold text-start">{index + 1}. {faq.question}</span>
+            <span className="font-extrabold text-start">Q{index + 1}. {faq.question}</span>
             <br />
-            {faq.answer}
+            Answer : {faq.answer}
           </div>
         );
       })
