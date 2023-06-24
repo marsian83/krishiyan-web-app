@@ -212,6 +212,68 @@ const CropLibraryAdmin = () => {
       setLoading(false);
     }
   };
+
+  /*****Handle fetching crops********* */
+    const getCrops = async () => {
+    const [err, res] = await Api.getCrops();
+
+    if (err) {
+      toast.error(err.data, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+    if (res) {
+      setCrops(res?.data);
+    }
+    // console.log(res?.data?.data,"crops....");
+  };
+
+  const getcropName = async (localName: any, scientficCrop: any) => {
+    if (localName || scientficCrop) {
+      setLoading(true);
+      const [err, res] = await Api.getCropsbyName(localName, scientficCrop);
+      if (err) {
+        console.log(err);
+        toast.error(err.data, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+      if (res) {
+        console.log(res);
+        if (res?.data === null) {
+          toast.error("crop not found!", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+        console.log(res, "Res");
+        setCropDetails(res?.data);
+      }
+
+      setLoading(false);
+    }
+  };
+
+  const onChangePlantationType = async (e: any, value: any) => {
+    console.log(value, "value");
+    setLocalsName(value.localName);
+  };
+  const onChangeScientificName = async (e: any, value: any) => {
+    console.log(value, "value");
+    setScientificCrop(value.scientificName);
+  };
+
+  const onSubmit = async () => {
+    const res = await getcropName(localsName, scientficCrop);
+    // await getcropName();
+  };
+
+  useEffect(() => {
+    const init = async () => {
+      await getCrops();
+    };
+    init();
+  }, []);
+
   return (
     <div>
       <Header title="Crop Advisory" subtitle="Crop Library" />

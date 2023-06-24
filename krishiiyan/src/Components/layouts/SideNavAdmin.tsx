@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Menu from "./MenuAdmin";
 
-const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
+const SideNavAdmin = ({ menu, submenu }: { menu: string; submenu: string }) => {
   const [pos, setPos] = useState(true);
   const [crop, setCrop] = useState(false);
   const [farm, setFarm] = useState(false);
@@ -175,4 +175,4 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
   );
 };
 
-export default SideNav;
+export default SideNavAdmin;
