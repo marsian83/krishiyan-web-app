@@ -597,7 +597,6 @@ const CropSchema = new mongoose.Schema(
     cropCycle: { type: Number },
     cropStage: crop_stage, // bhayankar
     generalInformation: general_Information,
-    varieties: variety,
     nutrient: nutrient,
     // varieties: [
     //   varietyOption
@@ -728,7 +727,6 @@ const CropSchema = new mongoose.Schema(
     varitiesId: [
       {
         type: mongoose.Schema.ObjectId,
-        required: true,
         ref: "Varities",
       },
     ],

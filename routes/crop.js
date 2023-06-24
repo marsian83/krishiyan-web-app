@@ -10,7 +10,7 @@ const Disease = require("../models/disease");
 const Fungicide = require("../models/fungicide");
 const crop = require("../models/crop");
 const ObjectId = require("mongodb").ObjectId;
-
+const Varieties = require("../models/varities");
 // ===================================================== CROP ADVISORY =======================================================================
 
 //Create new crop
@@ -216,7 +216,7 @@ router.post("/irrigation/role-admin/add", async (req, res) => {
     component = "String",
     image = "String",
     description = "String",
-    solutions= [{ name: "String", prodImg: "String", cost: "String" }], //recommended products
+    solutions = [{ name: "String", prodImg: "String", cost: "String" }], //recommended products
     localName,
     scientificName,
     csv,
@@ -261,27 +261,64 @@ router.post("/irrigation/role-admin/add", async (req, res) => {
   }
 });
 
-router.post("/variety/add", async (req, res) => {
-  const {
-    stages = [{ sn: 1, name: "germination", image: "url" }],
-    localName,
-    scientificName,
-    csv,
-  } = req.body; //array of [{question,answer}]
+router.post("/role-admin/variety/add", async (req, res) => {
   try {
+    const {
+      nameOfvariety,
+      areaOfadadoption,
+      productCondition,
+      salientFeatures,
+      cropCycle,
+    } = req.body;
     if (!csv) {
       if (!localName && !scientificName)
         throw new Error("localName or scientificName are required");
       const query = localName ? { localName } : { scientificName };
       const crop = await Crop.findOne(query);
       if (!crop) throw new Error("crop not found");
-      crop.stages.push(...stages);
-      await crop.save();
-      res.status(201).json({ crop });
+      const cropId = crop._id;
+      const newVaritiesData = new Varieties({
+        nameOfvariety,
+        areaOfadadoption,
+        productCondition,
+        salientFeatures,
+        cropCycle,
+        cropId,
+      });
+
+      await Crop.findOneAndUpdate(
+        { _id: cropId },
+        {
+          $push: { varitiesId: newVaritiesData },
+        },
+        { new: true }
+      );
+
+      await newVaritiesData.save();
+      res.status(201).json({
+        message: "Varities created!",
+        newVaritiesData,
+      });
     } else {
-      res.status(201).json({ message: "csv" });
+      csv = csv.data;
+      // for (let i = 1; i < csv.length; i++) {
+      //   let harvest = {};
+      //   let cropModel = {};
+      //   if (!csv[i][0].length) break;
+      //   for (let j = 0; j < csv[i].length; j++) {
+      //     if (j === 0) {
+      //       lName = csv[i][j];
+      //       cropModel = await Crop.findOne({ localName: lName });
+      //     } else {
+      //       harvest[csv[0][j]] = csv[i][j];
+      //     }
+      //   }
+      //   cropModel.newHarvest = harvest;
+      //   await cropModel.save();
+      // }
+      res.status(201).json({ message: "bulk uploaded " });
     }
-  } catch (e) {
+  } catch (error) {
     return res.status(500).json({ msg: e.message });
   }
 });
