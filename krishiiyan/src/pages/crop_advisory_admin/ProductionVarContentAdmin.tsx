@@ -9,27 +9,53 @@ const ProductionVarContentAdmin = () => {
   const [variety, setVariety] = useState("");
   const [type, setType] = useState("");
   const [speciality, setSpeciality] = useState("");
+  const [condition , setCondition] = useState("");
+  const [features , setFeatures] = useState("");
+  const [cycle ,setCycle] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleVarietySubmit = async () => {
     setLoading(true);
     try {
       const res = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/production_variety",
+        process.env.REACT_APP_BACKEND_URL + "crop/role-admin/variety/add",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + localStorage.getItem("authToken"),
           },
-          body: JSON.stringify({}),
+          body: JSON.stringify({
+            nameOfvariety: variety,
+            localName: crop,
+            scientificName:crop,
+            areaOfAdaptation: area,
+            productCondition:condition,
+            salientFeatures:features,
+            cropCycle:cycle,
+          }),
         }
       );
+      const data = await res.json();
+      if (data.message=='Varities created!') {
+        toast.success("Varities added!", {
+          position: "top-right",
+        });
+      }
+      else{
+        toast.error("Error , please try again", {
+          position: "top-right",
+        });
+      }
+
     } catch (err: any) {
       console.log(err);
       toast.error(err.message, {
         position: "top-right",
       });
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -90,14 +116,14 @@ const ProductionVarContentAdmin = () => {
               className="text-[#13490A] font-extrabold text-sm mx-5"
               // for="inline-password"
             >
-              Average yield
+              Product condition
             </label>
           </div>
           <div className="md:w-2/3 ">
             <textarea
               className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="  Average yield"
-              onChange={(e) => setAvgYield(e.target.value)}
+              placeholder="Product condition"
+              onChange={(e) => setCondition(e.target.value)}
             ></textarea>
           </div>
         </div>{" "}
@@ -107,14 +133,14 @@ const ProductionVarContentAdmin = () => {
               className="text-[#13490A] font-extrabold text-sm mx-5"
               // for="inline-password"
             >
-              Type of variety
+              Salient features
             </label>
           </div>
           <div className="md:w-2/3 ">
             <textarea
               className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Type of variety"
-              onChange={(e) => setType(e.target.value)}
+              placeholder="Salient Features"
+              onChange={(e) => setFeatures(e.target.value)}
             ></textarea>
           </div>
         </div>
@@ -124,7 +150,7 @@ const ProductionVarContentAdmin = () => {
               className="text-[#13490A] font-extrabold text-sm mx-5"
               // for="inline-password"
             >
-              Speciality
+              cropCycle
             </label>
           </div>
           <div className="md:w-2/3">
@@ -133,16 +159,21 @@ const ProductionVarContentAdmin = () => {
               //   onChange={onChangeArea}
               id="inline-password"
               maxLength={50}
-              placeholder="Speciality"
-              onChange={(e) => setSpeciality(e.target.value)}
+              placeholder="Crop Cycle"
+              onChange={(e) => setCycle(e.target.value)}
             />
           </div>
         </div>
         <button
           type="submit"
           className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
+          onClick={handleVarietySubmit}
         >
-          Submit
+          {
+            loading?
+            `loading...`:
+            `Submit`
+          }
         </button>
         OR
         <CSVReader />

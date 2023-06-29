@@ -3,6 +3,12 @@ const { Schema } = require("mongoose");
 
 const varitiesSchema = new Schema(
   {
+    localName: {
+      type: String,
+    },
+    scientificName: {
+      type: String,
+    },
     nameOfvariety: {
       type: String,
     },

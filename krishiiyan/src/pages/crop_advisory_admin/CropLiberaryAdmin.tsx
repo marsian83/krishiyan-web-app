@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../Components/layouts/Header";
 import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
-import ProductionVarContent from "./ProductionVarContentAdmin";
+import ProductionVarContentAdmin from "./ProductionVarContentAdmin";
 import ProductionReqContent from "./PreSowingPractiesAdmin/PreSowingPractiesAdmin";
 import Stepper from "../../Components/themes/Stepper";
 import { Autocomplete, TextField } from "@mui/material";
@@ -787,7 +787,7 @@ const CropLibraryAdmin = () => {
 
           {varietyTab ? (
             <>
-              <ProductionVarContent />
+              <ProductionVarContentAdmin />
             </>
           ) : (
             <></>

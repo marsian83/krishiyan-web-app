@@ -3,6 +3,7 @@ import React, { useState } from "react";
 const ProductionVarContent = (props: any) => {
   console.log(props, "it is varity");
   const [data, setData] = useState<any>(props.crop.varietyInformation);
+  // console.log(props);
 
   // setData(props?.crop.varietyInformation.value.value1);
 
@@ -148,7 +149,10 @@ const ProductionVarContent = (props: any) => {
           </tr>
         </thead>
         <tbody>
-          <tr className="h-10 border-b border-black">
+          {
+
+          }
+          {/* <tr className="h-10 border-b border-black">
             <td className="border-r border-black font-thin">1</td>
             <td className="border-r border-black font-thin">
               {data.value.value1.Name}
@@ -267,7 +271,7 @@ const ProductionVarContent = (props: any) => {
             <td className="border-r border-black font-thin">
               {data.value.value6.Speciality}
             </td>
-          </tr>
+          </tr> */}
         </tbody>
       </table>
     </>

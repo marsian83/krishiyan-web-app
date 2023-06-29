@@ -171,7 +171,6 @@ router.post("/role-admin/harvest/add", async (req, res) => {
   }
 });
 
-
 router.post("/irrigation/role-admin/add", async (req, res) => {
   let {
     component = "String",
@@ -230,6 +229,9 @@ router.post("/role-admin/variety/add", async (req, res) => {
       productCondition,
       salientFeatures,
       cropCycle,
+      localName,
+      scientificName,
+      csv,
     } = req.body;
     if (!csv) {
       if (!localName && !scientificName)
@@ -280,7 +282,7 @@ router.post("/role-admin/variety/add", async (req, res) => {
       res.status(201).json({ message: "bulk uploaded " });
     }
   } catch (error) {
-    return res.status(500).json({ msg: e.message });
+    return res.status(500).json({ msg: error.message });
   }
 });
 
