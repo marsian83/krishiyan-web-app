@@ -10,7 +10,6 @@ const herbicideModel = require("../models/herbicide");
 const fungicide = require("../models/fungicide");
 const crop = require("../models/crop");
 
-
 const dbPopulateAll = async (docs, fields, projections = {}) => {
   // console.log(docs);
   for (const doc of docs) {
@@ -72,6 +71,8 @@ router.post("/", async (req, res) => {
   }
 });
 
+/**Get routes ***/
+
 router.get("/disease/:localName", async (req, res) => {
   const { localName } = req.params;
   try {
@@ -87,6 +88,44 @@ router.get("/disease/:localName", async (req, res) => {
     });
     if (!diseaseDocs) throw new Error("diseases not found");
     res.status(200).json(diseaseDocs);
+  } catch (e) {
+    res.status(500).json({ msg: e.message });
+  }
+});
+router.get("/pest/:localName", async (req, res) => {
+  const { localName } = req.params;
+  try {
+    const crop = await Crop.findOne({ localName });
+    if (!crop) throw new Error("crop does not exist.");
+    console.log(crop._id);
+    const pestDocs = await pestModel.find({
+      cropsIds: crop._id,
+    });
+    await dbPopulateAll(pestDocs, ["pesticidesIds"], {
+      pesticidesIds:
+        "name productId inventory type dosagePerAcre unit dilutionRatioPerAcre stage sprayingTime applicationType frequency",
+    });
+    if (!pestDocs) throw new Error("diseases not found");
+    res.status(200).json(pestDocs);
+  } catch (e) {
+    res.status(500).json({ msg: e.message });
+  }
+});
+router.get("/weed/:localName", async (req, res) => {
+  const { localName } = req.params;
+  try {
+    const crop = await Crop.findOne({ localName });
+    if (!crop) throw new Error("crop does not exist.");
+    console.log(crop._id);
+    const weedDocs = await weedModel.find({
+      cropsIds: crop._id,
+    });
+    await dbPopulateAll(weedDocs, ["herbicidesIds"], {
+      herbicidesIds:
+        "name productId inventory type dosagePerAcre unit dilutionRatioPerAcre stage sprayingTime applicationType frequency",
+    });
+    if (!weedDocs) throw new Error("diseases not found");
+    res.status(200).json(weedDocs);
   } catch (e) {
     res.status(500).json({ msg: e.message });
   }
