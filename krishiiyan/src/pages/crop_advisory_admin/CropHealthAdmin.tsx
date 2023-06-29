@@ -163,7 +163,7 @@ const CropHealthAdmin = () => {
               <textarea
                 placeholder="Crop"
                 className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                onChange={onChangeCrop}
+                onChange={(e) => setCrop(e.target.value)}
               ></textarea>
             </div>
           </div>

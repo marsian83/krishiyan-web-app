@@ -87,22 +87,22 @@ const FertiCal = () => {
       <section className="p-5">
         <div className="grid grid-cols-[30%_30%_30%_10%]">
           {/* <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center">
-            <label className="text-[#13490A] text-center">Type</label>
-            <input
-              placeholder="Cereal"
-              type="text"
-              className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
-            />
-          </div> */}
+<label className="text-[#13490A] text-center">Type</label>
+<input
+placeholder="Cereal"
+type="text"
+className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
+/>
+</div> */}
 
           {/* <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center">
-            <label className="text-[#13490A] text-center">Variety</label>
-            <input
-              placeholder="Variety"
-              type="text"
-              className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
-            />
-          </div> */}
+<label className="text-[#13490A] text-center">Variety</label>
+<input
+placeholder="Variety"
+type="text"
+className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
+/>
+</div> */}
         </div>
         {crops
           ?.filter((val: any) => {
@@ -117,68 +117,68 @@ const FertiCal = () => {
           ?.map((obj: any) => (
             <>
               {/* <div className="grid grid-cols-[12%_12%_12%_12%_12%] gap-[6%] mx-[10%] mt-6 mb-9">
-                <button
-                  className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
-                    openTab === "Fertilizer" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
-                  }`}
-                  onClick={() => {
-                    setOpenTab("Fertilizer");
-                    onClickFertilizer();
-                  }}
-                >
-                  Fertilizer
-                </button>
-                <button
-                  onClick={() => {
-                    onClickPesticide();
-                    setOpenTab("Pesticide");
-                  }}
-                  className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
-                    openTab === "Pesticide" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
-                  }`}
-                >
-                  Pesticide
-                </button>
-                <button
-                  onClick={() => {
-                    onClickHerbicide();
-                    setOpenTab("Herbicide");
-                  }}
-                  className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
-                    openTab === "Herbicide" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
-                  }`}
-                >
-                  Herbicide
-                </button>
-                <button
-                  onClick={() => {
-                    onClickFungicide();
-                    setOpenTab("Fungicide");
-                  }}
-                  className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
-                    openTab === "Fungicide" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
-                  }`}
-                >
-                  Fungicide
-                </button>
-                <button
-                  onClick={() => {
-                    onClickYieldTab();
-                    setOpenTab("Yield");
-                  }}
-                  className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
-                    openTab === "Yield" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
-                  }`}
-                >
-                  Yield
-                </button>
-              </div> */}
+<button
+className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
+openTab === "Fertilizer" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+}`}
+onClick={() => {
+setOpenTab("Fertilizer");
+onClickFertilizer();
+}}
+>
+Fertilizer
+</button>
+<button
+onClick={() => {
+onClickPesticide();
+setOpenTab("Pesticide");
+}}
+className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
+openTab === "Pesticide" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+}`}
+>
+Pesticide
+</button>
+<button
+onClick={() => {
+onClickHerbicide();
+setOpenTab("Herbicide");
+}}
+className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
+openTab === "Herbicide" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+}`}
+>
+Herbicide
+</button>
+<button
+onClick={() => {
+onClickFungicide();
+setOpenTab("Fungicide");
+}}
+className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
+openTab === "Fungicide" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+}`}
+>
+Fungicide
+</button>
+<button
+onClick={() => {
+onClickYieldTab();
+setOpenTab("Yield");
+}}
+className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
+openTab === "Yield" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
+}`}
+>
+Yield
+</button>
+</div> */}
               {/* Tabs */}
               {/* {fertilizerTab ? <Fertilizer crop={obj} /> : <></>}
-              {pesticideTab ? <Pesticide /> : <></>}
-              {herbicideTab ? <Herbicide /> : <></>}
-              {fungicideTab ? <Fungicide /> : <></>}
-              {yieldTab ? <Yield /> : <></>} */}
+{pesticideTab ? <Pesticide /> : <></>}
+{herbicideTab ? <Herbicide /> : <></>}
+{fungicideTab ? <Fungicide /> : <></>}
+{yieldTab ? <Yield /> : <></>} */}
             </>
           ))}
 
@@ -244,14 +244,14 @@ const FertiCal = () => {
           {fertilizerTab ? (
             <>
               {/* <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center ">
-                <label className="text-[#13490A] text-center">Crop</label>
-                <input
-                  placeholder="Crop"
-                  onChange={(e: any) => setCrop(e.target.value)}
-                  type="text"
-                  className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8 w-2/5"
-                />
-              </div>{" "} */}
+<label className="text-[#13490A] text-center">Crop</label>
+<input
+placeholder="Crop"
+onChange={(e: any) => setCrop(e.target.value)}
+type="text"
+className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8 w-2/5"
+/>
+</div>{" "} */}
               <Fertilizer />
             </>
           ) : (
