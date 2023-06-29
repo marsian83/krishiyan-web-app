@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ProductionVarContent = (props: any) => {
-  console.log(props, "it is varity");
-  const [data, setData] = useState<any>(props.crop.varietyInformation);
-  // console.log(props);
-  console.log(props)
-
-  // setData(props?.crop.varietyInformation.value.value1);
-
-  // console.log(data, "it is data");
+  const [data, setData] = useState<any>([]);
+  console.log(props.crop.varitiesId);
+  useEffect(() => {
+    const getVarieties = async (varietyIds: []) => {
+      varietyIds.map(async (id: string) => {
+        const res = await fetch(
+          process.env.REACT_APP_BACKEND_URL + "crop/getvariety/" + id,
+          {
+            method: "GET",
+          }
+        );
+        const data = await res.json();
+        console.log(data.varities);
+        setData((prevData: any) => [...prevData, data.varities]);
+      });
+    };
+    getVarieties(props.crop.varitiesId);
+  }, [props.varitiesId]);
+  console.log(data, "it is data");
   return (
     <>
       {/* <table className="border border-black border-collapse h-[60vh] w-[60%]">
@@ -140,29 +151,59 @@ const ProductionVarContent = (props: any) => {
               Name of the variety/hybrid
             </th>
             <th className="border-r border-black py-[1.2%]">
-              Area of Adaptation (Districts)
+              Product Condition
             </th>
             <th className="border-r border-black py-[1.2%]">
               Average yield (Quintal/acre)
             </th>
-            <th className="border-r border-black py-[1.2%]">Type of variety</th>
+            <th className="border-r border-black py-[1.2%]">Crop cycle</th>
             <th className="border-r border-black py-[1.2%]">Speciality</th>
           </tr>
         </thead>
         <tbody>
-          {
+          {data.map((item: any, index: number) => (
+            <tr key={index} className="h-10 border-b border-black">
+              <td className="border-r border-black font-thin">{index + 1}</td>
+              <td className="border-r border-black font-thin">
+                {item.nameOfvariety}
+              </td>
+              <td className="border-r border-black font-thin">
+                {item.productCondition}
+              </td>
+              <td className="border-r border-black font-thin">
+                {item.Yield.length === 0 ? (
+                  "0"
+                ) : (
+                  <>
+                    {item.Yield.map((eachYield: any, yieldIndex: number) => (
+                      <React.Fragment key={yieldIndex}>
+                        {eachYield}
+                      </React.Fragment>
+                    ))}
+                  </>
+                )}
+              </td>
+              <td className="border-r border-black font-thin">
+                {item.cropCycle}
+              </td>
+              <td className="border-r border-black font-thin">
+                {item.salientFeatures}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-          }
-          {/* <tr className="h-10 border-b border-black">
+      {/* <tr className="h-10 border-b border-black">
             <td className="border-r border-black font-thin">1</td>
             <td className="border-r border-black font-thin">
-              {data.value.value1.Name}
+            {data.value.value1.Name}
             </td>
-
+            
             <td className="border-r border-black font-thin">
-              {data.value.value1.Area_Adaptation}
+            {data.value.value1.Area_Adaptation}
             </td>
-
+            
             <td className="border-r border-black font-thin">
               {data.value.value1.Average_yield}
             </td>
@@ -273,8 +314,6 @@ const ProductionVarContent = (props: any) => {
               {data.value.value6.Speciality}
             </td>
           </tr> */}
-        </tbody>
-      </table>
     </>
   );
 };
