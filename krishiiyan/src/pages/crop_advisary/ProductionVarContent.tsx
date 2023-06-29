@@ -4,6 +4,7 @@ const ProductionVarContent = (props: any) => {
   console.log(props, "it is varity");
   const [data, setData] = useState<any>(props.crop.varietyInformation);
   // console.log(props);
+  console.log(props)
 
   // setData(props?.crop.varietyInformation.value.value1);
 

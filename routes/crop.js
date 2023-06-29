@@ -285,6 +285,18 @@ router.post("/role-admin/variety/add", async (req, res) => {
     return res.status(500).json({ msg: error.message });
   }
 });
+router.get("/getvariety/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const varities = await Varieties.findOne({ _id: id });
+    res.status(201).json({
+      message: "Variety found",
+      varities,
+    });
+  } catch (err) {
+    return res.status(500).json({ msg: error.message });
+  }
+});
 
 router.post("/nutrient/role-admin/add", async (req, res) => {
   const {
