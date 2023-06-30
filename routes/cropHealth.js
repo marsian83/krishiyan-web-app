@@ -76,7 +76,7 @@ router.post("/", async (req, res) => {
 router.get("/disease/:localName", async (req, res) => {
   const { localName } = req.params;
   try {
-    const crop = await Crop.findOne({ localName });
+    const crop = await Crop.findOne();
     if (!crop) throw new Error("crop does not exist.");
     console.log(crop._id);
     const diseaseDocs = await diseaseModel.find({
@@ -171,7 +171,7 @@ router.post("/role-admin/disease", async (req, res) => {
         }
       }
       diseaseDoc.fungicidesIds.push(...fungicidesIds);
-      const crop = Crop.findOne({ localName });
+      const crop = await Crop.findOne({ localName });
       if (!crop) throw new Error({ message: "crop does not exist." });
       diseaseDoc.cropsIds.push(crop._id);
       const newDisease = await diseaseDoc.save();
@@ -195,7 +195,7 @@ router.post("/role-admin/pest", async (req, res, next) => {
     images = [], //Array
     description = "", // of the pest
     solutions = [
-      { productId: 0, name: "pest", inventory: 10, type: "In-Organic" }, //array of objects
+      { productId: 0, name: "Pesticide1", inventory: 10, type: "In-Organic" }, //array of objects
     ],
     csv = {},
   } = req.body;
@@ -214,7 +214,7 @@ router.post("/role-admin/pest", async (req, res, next) => {
       for (let sol of solutions) {
         const existingPest = await pesticideModel.findOne({ name: sol.name });
         if (!existingPest) {
-          const pesticide = new fungicide(sol);
+          const pesticide = new pesticideModel(sol);
           await pesticide.save();
           pesticidesIds.push(pesticide._id);
         } else {
@@ -223,7 +223,7 @@ router.post("/role-admin/pest", async (req, res, next) => {
         }
       }
       pestDoc.pesticidesIds.push(...pesticidesIds);
-      const crop = Crop.findOne({ localName });
+      const crop = await Crop.findOne({ localName });
       if (!crop) throw new Error("crop does not exist.");
       pestDoc.cropsIds.push(crop._id);
       const newpest = await pestDoc.save();
@@ -262,7 +262,7 @@ router.post("/role-admin/weed", async (req, res) => {
       for (let sol of solutions) {
         const existingHerb = await herbicideModel.findOne({ name: sol.name });
         if (!existingHerb) {
-          const herbicide = new fungicide(sol);
+          const herbicide = new herbicideModel(sol);
           await herbicide.save();
           herbicidesIds.push(herbicide._id);
         } else {
@@ -271,7 +271,7 @@ router.post("/role-admin/weed", async (req, res) => {
         }
       }
       weedDoc.herbicidesIds.push(...herbicidesIds);
-      const crop = Crop.findOne({ localName });
+      const crop = await Crop.findOne({ localName });
       if (!crop) throw new Error({ message: "crop does not exist." });
       weedDoc.cropsIds.push(crop._id);
       const newweed = await weedDoc.save();
