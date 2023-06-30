@@ -20,7 +20,11 @@ app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
 //CORS
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(cookieParser());
 app.use(bearerToken());
 //.env
