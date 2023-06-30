@@ -6,6 +6,7 @@ import CropHealthAdmin from "../pages/crop_advisory_admin/CropHealthAdmin";
 
 function CropHealthHandler() {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
   const fetchAdminStatus = async () => {
     await fetch(process.env.REACT_APP_BACKEND_URL + "check-admin", {
       method: "GET",
@@ -28,13 +29,23 @@ function CropHealthHandler() {
         console.error(error);
         // Handle error
       });
+    setLoading(false);
+      
   };
 
   useEffect(() => {
     fetchAdminStatus();
   }, [isAdmin]);
 
-  return <div>{isAdmin ? <CropHealthAdmin /> : <CropHealth />}</div>;
+  return <div>{loading ? (
+    <div>Loading....</div>
+  ) : (
+    isAdmin ? (
+      <CropHealthAdmin />
+    ) : (
+      <CropHealth />
+    )
+  )}</div>;
 }
 
 export default CropHealthHandler;
