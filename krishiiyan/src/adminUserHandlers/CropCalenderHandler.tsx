@@ -5,6 +5,7 @@ import CropCalanderAdmin from '../pages/crop_advisory_admin/CropCalanderAdmin';
 function CropCalenderHandler
 () {
     const [isAdmin, setIsAdmin] = useState(false);
+    const [loading, setLoading] = useState(true);
     const fetchAdminStatus =async  () => {
       await fetch('check-admin', {
         method: 'GET',
@@ -27,6 +28,7 @@ function CropCalenderHandler
           console.error(error);
           // Handle error
         });
+        setLoading(false);
     };
   
     useEffect(() => {
@@ -35,12 +37,15 @@ function CropCalenderHandler
 
   return (
     <div>
-        {
-            isAdmin ?
-            <CropCalanderAdmin/>
-            :
-            <CropCalendar/>
-        }
+       {loading ? (
+        <div>Loading....</div>
+      ) : (
+        isAdmin ? (
+          <CropCalanderAdmin />
+        ) : (
+          <CropCalendar />
+        )
+      )}
     </div>
   )
 }
