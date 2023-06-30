@@ -1,7 +1,7 @@
 import * as axios from "axios";
 
 // const apiURL = "http://localhost:5001/api";
-const apiURL = "https://krishiyan-frontend.vercel.app/api";
+const apiURL = "https://krishiyan-backend.vercel.app/api";
 
 // "http://localhost:5001/api";   localhost
 //http://35.77.226.139:5001/api   Production url
