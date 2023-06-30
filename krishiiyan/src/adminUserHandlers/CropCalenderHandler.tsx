@@ -6,7 +6,7 @@ function CropCalenderHandler
 () {
     const [isAdmin, setIsAdmin] = useState(false);
     const fetchAdminStatus =async  () => {
-      await fetch(process.env.REACT_APP_BACKEND_URL + 'check-admin', {
+      await fetch('check-admin', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
