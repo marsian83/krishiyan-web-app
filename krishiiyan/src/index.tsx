@@ -16,9 +16,7 @@ root.render(
     <ThemeProvider>
       <ToastContainer />
       <BrowserRouter>
-        {/* <App/>
-         */}
-        <AdminPanel/>
+        <App/>
       </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>

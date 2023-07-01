@@ -36,6 +36,7 @@ import { useEffect, useState } from "react";
 import CropLibraryHandler from "./adminUserHandlers/CropLibraryHandler";
 import CropCalenderHandler from "./adminUserHandlers/CropCalenderHandler";
 import CropHealthHandler from "./adminUserHandlers/CropHealthHandler";
+import SideNavHandler from "./adminUserHandlers/SideNavHandler";
 
 const AuthGuard = () => {
   const auth = localStorage.getItem("authToken");
@@ -55,7 +56,7 @@ function App() {
             element={
               <>
                 <main className="h-screen w-screen grid grid-cols-[18%_82%]">
-                  <SideNav menu={"pos"} submenu={"sale"} />
+                  <SideNavHandler/>
                   <Sale />
                 </main>
               </>

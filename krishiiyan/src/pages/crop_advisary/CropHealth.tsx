@@ -30,14 +30,14 @@ const IssuesOptions = [
     value: "Diseases",
   },
   {
-    value: "Nutrient Deficiency",
-  },
-  {
     value: "Weeds",
   },
-  {
-    value: "Others",
-  },
+  // {
+  //   value: "Nutrient Deficiency",
+  // },
+  // {
+  //   value: "Others",
+  // },
 ];
 
 const CropHealth = () => {
@@ -55,10 +55,9 @@ const CropHealth = () => {
   // navigate("/support")
   const onChangePlantationType = (e: any, value: any) => {
     setLocalsName(value.localName);
-    // navigate("/support")
   };
   const onChangechooseType = (e: any, value: any) => {
-    // navigate("/support");
+    console.log(e.target.value)
   };
 
   const getCrops = async () => {
@@ -108,7 +107,16 @@ const CropHealth = () => {
   const onSubmit = async () => {
     const res = await getcropName(localsName, scientficCrop);
     console.log("onclick ...........................");
-    // await getcropName();
+    try{
+      console.log(localsName, scientficCrop);
+    }
+    catch(err:any){
+      console.log(err);
+      toast.error(err.data, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+
+    }
   };
 
   useEffect(() => {
