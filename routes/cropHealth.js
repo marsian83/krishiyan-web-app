@@ -131,6 +131,52 @@ router.get("/weed/:localName", async (req, res) => {
   }
 });
 
+router.get("/pesticide", async (req, res) => {
+  try {
+    if (
+      !req.body ||
+      !req.body.pesticideIds ||
+      !Array.isArray(req.body.pesticideIds)
+    ) {
+      return res.status(400).json({
+        msg: "Invalid request body. Please provide an array of pesticideIds.",
+      });
+    }
+
+    const pesticideIds = req.body.pesticideIds;
+    const pesticides = await pesticideModel.find({
+      _id: { $in: pesticideIds },
+    });
+
+    if (pesticides.length === 0) throw new Error("Pesticides not found");
+
+    res.status(200).json(pesticides);
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+});
+
+router.get("/fungicide/:fungicideId", async (req, res) => {
+  try {
+    const Fungicide = await pesticideModel.findById(req.params.fungicideId);
+    if (!Fungicide) throw new Error("Fungicide not found");
+    console.log(Fungicide);
+    res.status(200).json(Fungicide);
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+});
+router.get("/herbicide/:herbicideId", async (req, res) => {
+  try {
+    const Fungicide = await pesticideModel.findById(req.params.herbicdieId);
+    if (!Fungicide) throw new Error("Fungicide not found");
+    console.log(Fungicide);
+    res.status(200).json(Fungicide);
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+});
+
 router.post("/role-admin/disease", async (req, res) => {
   const {
     localName, //of the crop

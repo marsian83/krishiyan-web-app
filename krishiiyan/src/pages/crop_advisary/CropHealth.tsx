@@ -48,16 +48,31 @@ const CropHealth = () => {
   const [cropDetails, setCropDetails] = useState<any>();
   const [crop, setCrop] = useState("");
   const [variety, setVariety] = useState("");
-  const [plantationType, setPlantationType] = useState("");
+  const [selectedIssue, setSelectedIssue] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [solution , setSolution] = useState<any>();
+  const [solutionDetails , setSolutionDetails] = useState<any>();
 
   let navigate = useNavigate();
   // navigate("/support")
   const onChangePlantationType = (e: any, value: any) => {
     setLocalsName(value.localName);
   };
-  const onChangechooseType = (e: any, value: any) => {
-    console.log(e.target.value)
+  const onChangechooseType = (e: any) => {
+    console.log(e.target.value);
+    if(e.target.value == "Pest"){
+      setSelectedIssue("pest");
+      setSolution("pesticide")
+    }
+    else if(e.target.value == "Diseases"){
+      setSelectedIssue("disease");
+      setSolution("fungicide")
+    }
+    else if(e.target.value == "Weeds"){
+      setSelectedIssue("weed");
+      setSolution("herbicide")
+    }
+
   };
 
   const getCrops = async () => {
@@ -92,7 +107,7 @@ const CropHealth = () => {
         }
         console.log(res, "Res");
         console.log(res);
-        setCropDetails(res?.data);
+        // setCropDetails(res?.data);
       }
 
       setLoading(false);
@@ -107,24 +122,57 @@ const CropHealth = () => {
   const onSubmit = async () => {
     const res = await getcropName(localsName, scientficCrop);
     console.log("onclick ...........................");
-    try{
-      console.log(localsName, scientficCrop);
-    }
-    catch(err:any){
+    try {
+      const res = await fetch(process.env.REACT_APP_BACKEND_URL + `cropHealth/${selectedIssue}/${localsName}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("authToken"),
+        },
+      })
+      const data = await res.json();
+      console.log(data);
+      if (data) {
+        setCropDetails(data);
+        return;
+      }
+      else{
+        toast.error("No data found!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    } catch (err: any) {
       console.log(err);
       toast.error(err.data, {
         position: toast.POSITION.TOP_RIGHT,
       });
-
     }
   };
-
   useEffect(() => {
     const init = async () => {
       await getCrops();
     };
     init();
   }, []);
+
+  /****Solutions **** */
+  const apiUrl = `http://localhost:5001/api/cropHealth/${solution}/`;
+
+    // Function to fetch data for a specific solution (pesticide, fungicide, or herbicide)
+    const fetchSolutionData = async (solutionId : any) => {
+      try {
+        const response = await fetch(apiUrl + solutionId);
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching solution data:', error);
+      }
+    };
+    const fetchDetailsForIds = async (ids:any) => {
+      const details = await Promise.all(ids.map((id:any) => fetchSolutionData(id)));
+      return details;
+    };
+
 
   return (
     <div>
@@ -168,7 +216,7 @@ const CropHealth = () => {
             className="font-extrabold ml-10 grid grid-cols-[20%_40%] items-center"
             style={{ width: "450px" }}
           >
-            <label className="text-[#13490A] text-end mr-3">Issues</label>
+            {/* <label className="text-[#13490A] text-end mr-3">Issues</label>
             <Autocomplete
               onChange={onChangechooseType}
               id="plantation-select"
@@ -186,7 +234,27 @@ const CropHealth = () => {
                   }}
                 />
               )}
-            />
+            /> */}
+            <div
+              className="font-extrabold grid grid-cols-[50%_40%] items-center"
+              style={{ width: "550px" }}
+            >
+              <label className="text-[#13490A] text-end mr-3">
+                Select the issue:
+              </label>
+              <select
+                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring focus:ring-green-200"
+                value={selectedIssue}
+                onChange={onChangechooseType}
+              >
+                <option value="">{selectedIssue}</option>
+                {IssuesOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.value}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           <div style={{ marginRight: "25px", marginTop: "5px" }}>
             {loading ? (
@@ -211,18 +279,6 @@ const CropHealth = () => {
             )}
           </div>
         </div>
-
-        {cropDetails
-          // ?.filter((val: any) => {
-          //   if (crop === "") {
-          //     return;
-          //   } else if (
-          //     val?.localName?.toLowerCase().includes(crop.toLowerCase())
-          //   ) {
-          //     return val;
-          //   }
-          // })
-          ?.map((obj: any) => (
             <>
               <table className="table-fixed border-collapse border border-black font-bold text-base mx-auto">
                 <thead className="border-b border-black">
@@ -238,7 +294,10 @@ const CropHealth = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {obj?.pestMgmt?.map((curr: any) => {
+                  {
+                    console.log(cropDetails)
+                  }
+                  {cropDetails && cropDetails.map((curr: any) => {
                     return (
                       <tr className="border-b border-black text-center">
                         <td className="border-r border-black">{curr.name}</td>
@@ -256,13 +315,42 @@ const CropHealth = () => {
                           {curr.description}
                         </td>
                         <td className="border-r border-black flex flex-col justify-center items-center">
-                          {/* {obj?.pestMgmt?.solution?.map((o:any) =>(
-                        <>
-                        <h6>{o?.name}</h6>
-                        <h6>Fipronill</h6>
-                        </>
-                      ))} */}
-                          <h6>Fipronill</h6>
+                          {
+                            selectedIssue == "pest" &&
+                            curr.pesticidesIds.map((sol : any , index : number) =>{
+                              return (
+                                <li>
+                                  <h6>{sol.name}</h6>
+                                  <h6>{sol.inventory}</h6>
+                                  <h6>{sol.type}</h6>
+                                </li>
+                              )
+                            })
+                          }
+                          {
+                            selectedIssue == "disease" &&
+                            curr.fungicidesIds.map((sol : any , index : number) =>{
+                              return (
+                                <li>
+                                  <h6>{sol.name}</h6>
+                                  <h6>{sol.inventory}</h6>
+                                  <h6>{sol.type}</h6>
+                                </li>
+                              )
+                            })
+                          }
+                          {
+                            selectedIssue == "weed" &&
+                            curr.herbicidesIds.map((sol : any , index : number) =>{
+                              return (
+                                <li>
+                                  <h6>{sol.name}</h6>
+                                  <h6>{sol.inventory}</h6>
+                                  <h6>{sol.type}</h6>
+                                </li>
+                              )
+                            })
+                          }
                         </td>
                       </tr>
                     );
@@ -270,7 +358,6 @@ const CropHealth = () => {
                 </tbody>
               </table>
             </>
-          ))}
       </section>
     </div>
   );
