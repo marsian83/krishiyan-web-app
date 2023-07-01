@@ -12,30 +12,39 @@ import {
 } from "../../Services/Api";
 import CSVReader from "../CSVUpload/CSVUpload";
 import Header from "../../Components/layouts/Header";
+import e from "express";
 
 const CropHealthAdmin = () => {
   let col: any = 12;
   let row: any = 5;
   const [allCrops, setAllCropes] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [crop, setCrop] = useState("");
-  const [text, setText] = useState("");
-  const [farmer, setFarmer] = useState("");
-  const [allFarmer, setAllFarmer] = useState<any>([]);
-  const [category, setCategory] = useState("");
-  const [image, setImage] = useState<any>();
-  const [farmerDetail, setFarmerDetail] = useState<any>();
-  const [description, setDescription] = useState("");
-  const [farmerID, setFarmerID] = useState<any>("");
-  const [solution, setSolution] = useState("");
-  const [healthName, setHealthName] = useState("");
+  const [crop, setCrop] = useState("");  //r
+  const [category, setCategory] = useState("");  //r
+  const [image, setImage] = useState<any>(); //r
+  const [description, setDescription] = useState(""); //r
   const [name, setName] = useState("");
+  const [categorySol , setCategorySol] = useState("");
+  const [solName , setSolName] = useState("");
+  const [solInventory , setSolInventory] = useState("");
+  const [solType , setSolType] = useState("");
   const onChangeCrop = (e: any) => {
     setCrop(e.target.value);
   };
   function refreshPage() {
     window.location.reload();
   }
+
+  useEffect(() => {
+    if(category==="pest"){
+      setCategorySol("pesticides")
+    }
+    else if(category==="weed"){
+      setCategorySol("herbicides")
+    }
+    else if(category==="disease"){
+      setCategorySol("fungicides")
+    }
+  },[category])
 
   useEffect(() => {
     const setCrops = async () => {
@@ -45,62 +54,20 @@ const CropHealthAdmin = () => {
     setCrops();
   }, []);
 
-  useEffect(() => {
-    const setFarmers = async () => {
-      const farmers: any[] = await getFarmers();
-      // setAllFarmer(farmers[1].data);
-    };
-    setFarmers();
-  }, []);
-
-  const onChangeFarmerName = (e: any) => {
-    setFarmer(e.target.value);
-  };
-
-  const getFarmerById = async () => {
-    if (farmerID) {
-      const [err, res] = await Api.getFarmer(farmerID);
-      if (err) {
-        console.log(err);
-      }
-      if (res) {
-        console.log(res);
-
-        setFarmerDetail(res?.data);
-      }
-
-      setLoading(false);
-    }
-  };
-
   const onChangeCategory = (e: any) => {
     setCategory(e.target.value);
   };
   const onChangeDescription = (e: any) => {
     setDescription(e.target.value);
   };
-  const onChangeSolution = (e: any) => {
-    setSolution(e.target.value);
-  };
   const onChangeName = (e: any) => {
     setName(e.target.value);
   };
-  useEffect(() => {
-    const init = async () => {
-      await getFarmerById();
-    };
-    init();
-  }, [farmerID]);
-
-  useEffect(() => {
-    if (!localStorage.Number) return;
-    setFarmerID(localStorage.Number);
-  }, []);
 
   const handleHealthSubmit = async () => {
     console.log(process.env.REACT_APP_BACKEND_URL);
     try {
-      if (!category || !crop || !image || !description || !solution) {
+      if (!category || !crop || !image || !description) {
         toast.error("Please fill in all the details", {
           position: toast.POSITION.TOP_RIGHT,
         });
@@ -115,7 +82,18 @@ const CropHealthAdmin = () => {
       } else {
         endpoint = "disease";
       }
-
+      console.log(JSON.stringify({
+        localName: crop,
+        name: category,
+        images: [image],
+        description: description,
+        solution: {
+          productId: name,
+          name: solName,
+          inventory: solInventory,
+          type: solType,
+        },
+      }))
       const res = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}cropHealth/role-admin/${endpoint}`,
         {
@@ -129,7 +107,12 @@ const CropHealthAdmin = () => {
             name: category,
             images: [image],
             description: description,
-            solution: solution,
+            solution: {
+              productId: name,
+              name: solName,
+              inventory: solInventory,
+              type: solType,
+            },
           }),
         }
       );
@@ -139,6 +122,11 @@ const CropHealthAdmin = () => {
         toast.success("Crop Health Created Successfully", {
           position: toast.POSITION.TOP_RIGHT,
         });
+        else{
+          toast.error(data.msg, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
     } catch (err: any) {
       console.log(err);
       toast.error(err.msg, {
@@ -227,23 +215,6 @@ const CropHealthAdmin = () => {
                 className="text-[#13490A] font-extrabold text-sm mx-5"
                 // for="inline-password"
               >
-                Solution
-              </label>
-            </div>
-            <div className="md:w-2/3 ">
-              <textarea
-                className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Solution"
-                onChange={onChangeSolution}
-              ></textarea>
-            </div>
-          </div>
-          <div className="md:flex md:items-center mb-6">
-            <div className="md:w-1/3">
-              <label
-                className="text-[#13490A] font-extrabold text-sm mx-5"
-                // for="inline-password"
-              >
                 Description
               </label>
             </div>
@@ -255,6 +226,65 @@ const CropHealthAdmin = () => {
                 placeholder="Maximum Of 50 Characters"
                 onChange={onChangeDescription}
               />
+            </div>
+          </div>
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label
+                className="text-[#13490A] font-extrabold text-sm mx-5"
+                // for="inline-password"
+              >
+                Solution : {categorySol} name
+              </label>
+            </div>
+            <div className="md:w-2/3 ">
+              <textarea
+                className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Name"
+                onChange={(e)=>{
+                  setSolName(e.target.value)
+                }}
+              ></textarea>
+            </div>
+          </div>
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label
+                className="text-[#13490A] font-extrabold text-sm mx-5"
+                // for="inline-password"
+              >
+                Solution : {categorySol} Inventory
+              </label>
+            </div>
+            <div className="md:w-2/3 ">
+              <textarea
+                className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Inventory"
+                onChange={(e)=>{
+                  setSolInventory(e.target.value)
+                }
+                }
+              ></textarea>
+            </div>
+          </div>
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label
+                className="text-[#13490A] font-extrabold text-sm mx-5"
+                // for="inline-password"
+              >
+                Solution : {categorySol} Type
+              </label>
+            </div>
+            <div className="md:w-2/3 ">
+              <textarea
+                className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Type"
+                onChange={(e)=>{
+                  setSolType(e.target.value)
+                }
+                }
+              ></textarea>
             </div>
           </div>
           <button
