@@ -149,6 +149,7 @@ router.post("/role-admin/harvest/add", async (req, res) => {
       res.status(201).json({ crop });
     } else {
       csv = csv.data;
+      console.log(csv);
       for (let i = 1; i < csv.length; i++) {
         let harvest = {};
         let cropModel = {};
@@ -199,21 +200,24 @@ router.post("/irrigation/role-admin/add", async (req, res) => {
       res.status(201).json({ crop });
     } else {
       csv = csv.data;
-      // for (let i = 1; i < csv.length; i++) {
-      //   let harvest = {};
-      //   let cropModel = {};
-      //   if (!csv[i][0].length) break;
-      //   for (let j = 0; j < csv[i].length; j++) {
-      //     if (j === 0) {
-      //       lName = csv[i][j];
-      //       cropModel = await Crop.findOne({ localName: lName });
-      //     } else {
-      //       harvest[csv[0][j]] = csv[i][j];
-      //     }
-      //   }
-      //   cropModel.newHarvest = harvest;
-      //   await cropModel.save();
-      // }
+      for (let i = 1; i < csv.length; i++) {
+        let irrigationTechnique = {};
+        let cropModel = {};
+        if (!csv[i][0].length) break;
+        for (let j = 0; j < csv[i].length; j++) {
+          if (j === 0) {
+            lName = csv[i][j];
+            cropModel = await Crop.findOne({ localName: lName });
+          } else {
+            switch (j) {
+              case 1:
+            }
+            harvest[csv[0][j]] = csv[i][j];
+          }
+        }
+        cropModel.newHarvest = harvest;
+        await cropModel.save();
+      }
       res.status(201).json({ message: "bulk uploaded " });
     }
   } catch (e) {
@@ -264,21 +268,33 @@ router.post("/role-admin/variety/add", async (req, res) => {
       });
     } else {
       csv = csv.data;
-      // for (let i = 1; i < csv.length; i++) {
-      //   let harvest = {};
-      //   let cropModel = {};
-      //   if (!csv[i][0].length) break;
-      //   for (let j = 0; j < csv[i].length; j++) {
-      //     if (j === 0) {
-      //       lName = csv[i][j];
-      //       cropModel = await Crop.findOne({ localName: lName });
-      //     } else {
-      //       harvest[csv[0][j]] = csv[i][j];
-      //     }
-      //   }
-      //   cropModel.newHarvest = harvest;
-      //   await cropModel.save();
-      // }
+      for (let i = 1; i < csv.length; i++) {
+        let variety = {};
+        let cropModel = {};
+        let lName = "",
+          sName = " ";
+        if (!csv[i][0].length) break;
+        for (let j = 0; j < csv[i].length; j++) {
+          if (j === 0) {
+            lName = csv[i][j];
+            if (lName) {
+              cropModel = await Crop.findOne({ localName: lName });
+              continue;
+            }
+          } else if (j == 1) {
+            sName = csv[i][j];
+            if (sName && !lName) {
+              cropModel = await Crop.findOne({ scientificName: sName });
+              continue;
+            }
+          } else {
+            variety[csv[0][j]] = csv[i][j];
+          }
+        }
+        variety.cropId = cropModel._id;
+        const newVaritiesData = new Varieties(variety);
+        await newVaritiesData.save();
+      }
       res.status(201).json({ message: "bulk uploaded " });
     }
   } catch (error) {
