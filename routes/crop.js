@@ -108,17 +108,52 @@ router.post("/role-admin/general/add", async (req, res) => {
 });
 
 router.post("/role-admin/preSowing", async (req, res) => {
-  const { presowingPractices, localName, scientificName } = req.body;
+  const { presowingPractices, localName, scientificName, csv = "" } = req.body;
   //refer  presowingpractices field in crop model
   try {
-    if (!localName && !scientificName)
-      throw new Error("localName or scientificName are required");
-    const query = localName ? { localName } : { scientificName };
-    const crop = await Crop.findOne(query);
-    if (!crop) throw new Error("crop not found");
-    crop.presowingPractices = presowingPractices;
-    await crop.save();
-    res.status(201).json({ crop, status: 200 });
+    if (!csv) {
+      if (!localName && !scientificName)
+        throw new Error("localName or scientificName are required");
+      const query = localName ? { localName } : { scientificName };
+      const crop = await Crop.findOne(query);
+      if (!crop) throw new Error("crop not found");
+      crop.presowingPractices = presowingPractices;
+      await crop.save();
+      res.status(201).json({ crop, status: 200 });
+    } else {
+      csv = csv.data;
+      for (let i = 1; i < csv.length; i++) {
+        let cropModel = {};
+        let pre = {};
+        let lName = "",
+          sName = " ";
+        if (!csv[i][0].length) break;
+        for (let j = 0; j < csv[i].length; j++) {
+          if (j === 0) {
+            lName = csv[i][j];
+            if (lName) {
+              cropModel = await Crop.findOne({ localName: lName });
+              continue;
+            }
+          } else if (j == 1) {
+            sName = csv[i][j];
+            if (sName && !lName) {
+              cropModel = await Crop.findOne({ scientificName: sName });
+              continue;
+            }
+          } else {
+            if (csv[0][j] == "nameOfChemical") {
+              pre.Seed_treatment[csv[0][j]] = csv[i][j];
+            } else if (csv[0][j] == "Dosage") {
+              pre.Seed_treatment[csv[0][j]] = csv[i][j];
+            } else pre[csv[0][j]] = csv[i][j];
+          }
+        }
+        cropModel.presowingPractices = pre;
+        await cropModel.save();
+      }
+      res.status(201).json({ message: "bulk uploaded " });
+    }
   } catch (e) {
     return res.status(500).json({ msg: e.message });
   }
