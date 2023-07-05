@@ -46,7 +46,7 @@ router.post("/role-admin/faq/add", async (req, res) => {
     csv,
   } = req.body; //array of [{question,answer}]
   try {
-    if (!csv) {
+    if (!Object.keys(csv).length) {
       if (!localName && !scientificName)
         throw new Error("localName or scientificName are required");
       const query = localName ? { localName } : { scientificName };
@@ -56,7 +56,34 @@ router.post("/role-admin/faq/add", async (req, res) => {
       await crop.save();
       res.status(201).json({ crop });
     } else {
-      res.status(201).json({ message: "csv" });
+      csv = csv.data;
+      for (let i = 1; i < csv.length; i++) {
+        let cropModel = {};
+        let faq = {};
+        let lName = "",
+          sName = " ";
+        if (!csv[i][0].length) break;
+        for (let j = 0; j < csv[i].length; j++) {
+          if (j === 0) {
+            lName = csv[i][j];
+            if (lName) {
+              cropModel = await Crop.findOne({ localName: lName });
+              continue;
+            }
+          } else if (j == 1) {
+            sName = csv[i][j];
+            if (sName && !lName) {
+              cropModel = await Crop.findOne({ scientificName: sName });
+              continue;
+            }
+          } else {
+            faq[csv[0][j]] = csv[i][j];
+          }
+        }
+        cropModel.faq.push(faq);
+        await cropModel.save();
+      }
+      res.status(201).json({ message: "bulk uploaded " });
     }
   } catch (e) {
     return res.status(500).json({ msg: e.message });
@@ -326,7 +353,7 @@ router.post("/nutrient/role-admin/add", async (req, res) => {
     },
     localName,
     scientificName,
-    csv,
+    csv = "",
   } = req.body; //array of [{question,answer}]
   try {
     if (!csv) {
@@ -347,7 +374,34 @@ router.post("/nutrient/role-admin/add", async (req, res) => {
       await crop.save();
       res.status(201).json({ crop, message: "nutrient added!" });
     } else {
-      res.status(201).json({ message: "csv" });
+      csv = csv.data;
+      for (let i = 1; i < csv.length; i++) {
+        let cropModel = {};
+        let nutrient = {};
+        let lName = "",
+          sName = " ";
+        if (!csv[i][0].length) break;
+        for (let j = 0; j < csv[i].length; j++) {
+          if (j === 0) {
+            lName = csv[i][j];
+            if (lName) {
+              cropModel = await Crop.findOne({ localName: lName });
+              continue;
+            }
+          } else if (j == 1) {
+            sName = csv[i][j];
+            if (sName && !lName) {
+              cropModel = await Crop.findOne({ scientificName: sName });
+              continue;
+            }
+          } else {
+            nutrient[csv[0][j]] = csv[i][j];
+          }
+        }
+        cropModel.nutrient.push(nutrient);
+        await cropModel.save();
+      }
+      res.status(201).json({ message: "bulk uploaded " });
     }
   } catch (e) {
     return res.status(500).json({ msg: e.message });
