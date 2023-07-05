@@ -34,6 +34,7 @@ function SideNavHandler() {
 
   useEffect(() => {
     fetchAdminStatus();
+    console.log(isAdmin)
   }, [isAdmin]);
 
   return (
@@ -41,7 +42,7 @@ function SideNavHandler() {
       {loading ? (
         <div>Loading....</div>
       ) : isAdmin ? (
-        <SideNav menu={"pos"} submenu={"sale"}/>
+        <SideNavAdmin menu={"pos"} submenu={"sale"}/>
       ) : (
         <SideNav menu={"pos"} submenu={"sale"} />
       )}

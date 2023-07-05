@@ -37,6 +37,7 @@ import CropLibraryHandler from "./adminUserHandlers/CropLibraryHandler";
 import CropCalenderHandler from "./adminUserHandlers/CropCalenderHandler";
 import CropHealthHandler from "./adminUserHandlers/CropHealthHandler";
 import SideNavHandler from "./adminUserHandlers/SideNavHandler";
+import AddCrop from "./pages/crop_advisory_admin/AddCrop";
 
 const AuthGuard = () => {
   const auth = localStorage.getItem("authToken");
@@ -114,6 +115,15 @@ function App() {
                 <SideNav menu={"crop_advisory"} submenu={"crop_library"} />{
                   <CropLibraryHandler/>
                 }
+              </main>
+            }
+          />
+          <Route
+            path="/add_crop"
+            element={
+              <main className="h-screen w-screen grid grid-cols-[18%_82%]">
+                <SideNav menu={"crop_advisory"} submenu={"add_crop"} />
+                {<AddCrop/>}
               </main>
             }
           />
