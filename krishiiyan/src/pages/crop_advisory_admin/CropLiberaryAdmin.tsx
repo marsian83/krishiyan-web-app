@@ -14,6 +14,7 @@ import Hervest from "./cropProtectionAdmin/HervestAdmin";
 import Faq from "./cropProtectionAdmin/FaqAdmin";
 import { Toast } from "react-toastify/dist/components";
 import CSVReader from "../CSVUpload/CSVUpload";
+// import Variety from "../../CSVFiles/variety.csv";
 
 const PlantationOptions = [
   {
@@ -128,7 +129,6 @@ const CropLibraryAdmin = () => {
     setFaq(true);
   };
 
-
   /************Handling admin form********** */
   const [crop, setCrop] = useState<any>();
   const [scientificName, setScientificName] = useState<any>();
@@ -214,7 +214,7 @@ const CropLibraryAdmin = () => {
   };
 
   /*****Handle fetching crops********* */
-    const getCrops = async () => {
+  const getCrops = async () => {
     const [err, res] = await Api.getCrops();
 
     if (err) {
