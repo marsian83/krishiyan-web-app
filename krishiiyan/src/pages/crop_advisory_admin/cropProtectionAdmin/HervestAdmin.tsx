@@ -18,7 +18,7 @@ const HervestAdmin = () => {
 
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = '../../../CSVFiles/harvest.csv';
+    link.href = 'https://krishiyan-frontend.vercel.app/src/CSVFiles/harvest.csv';
     link.download = 'harvest.csv';
     document.body.appendChild(link);
     link.click();
