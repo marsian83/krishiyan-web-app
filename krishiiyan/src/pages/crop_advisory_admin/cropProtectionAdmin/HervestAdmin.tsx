@@ -16,6 +16,15 @@ const HervestAdmin = () => {
   const [image4 , setImage4] = useState<any>("");
   const [loading , setLoading] = useState<any>(false);
 
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = '../../../CSVFiles/harvest.csv';
+    link.download = 'harvest.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const handleSubmitHarvest = async () => {
     setLoading(true);
     try{
@@ -309,11 +318,17 @@ const HervestAdmin = () => {
         </button>
         OR
         <CSVReader/>
-        <a download="harvest.csv" href="../../CSVFiles/harvest.csv">
+        {/* <a download="harvest.csv" href="../../../CSVFiles/harvest.csv">
                   <button className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin">
                     Download CSV
                   </button>
-                </a>
+          </a> */}
+          <button
+      className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
+      onClick={handleDownload}
+    >
+            Download CSV
+          </button>
       </div>
     </>
   );
