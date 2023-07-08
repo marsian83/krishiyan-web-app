@@ -14,25 +14,62 @@ const Varieties = require("../models/varities");
 // ===================================================== CROP ADVISORY =======================================================================
 
 //Create new crop
-router.post("/role-admin/save", async (req, res) => {
-  const {
+router.post("/save", async (req, res) => {
+  let {
     localName,
     scientificName,
     stages = [{ sn: 1, name: "Germination", images: ["url"] }],
+    csv = {},
   } = req.body;
 
   try {
-    // const oldCrop = await Crop.findOne({ localName:localName });
-    // if (oldCrop)
-    //   return res.status(400).json({ message: "crop already exists" });
-    const newCrop = new Crop({
-      ...req.body,
-    });
-    await newCrop.save();
-    res.status(201).json({
-      message: "Crop created!",
-      crop: newCrop,
-    });
+    if (!Object.keys(csv).length) {
+      const crop = await Crop.findOne({
+        $or: [{ localName: localName }, { scientificName: scientificName }],
+      });
+      if (!crop)
+        crop = new Crop({
+          ...req.body,
+        });
+      else crop.stages.push(...stages);
+      await Crop.save();
+      res.status(201).json({
+        message: "Crop created!",
+        crop: crop,
+      });
+    } else {
+      csv = csv.data;
+      for (let i = 1; i < csv.length; i++) {
+        let cropModel = {};
+        let stages = {};
+        let lName = "",
+          sName = " ";
+        if (!csv[i][0].length) break;
+        for (let j = 0; j < csv[i].length; j++) {
+          if (j === 0) {
+            lName = csv[i][j];
+            cropModel = await Crop.findOne({ localName: lName });
+            if (!cropModel) cropModel = new Crop({ localName: lName });
+            continue;
+          } else if (j == 1) {
+            sName = csv[i][j];
+            cropModel.scientificName = sName;
+          } else if (csv[0][j] == "images") {
+            stages.images = [];
+            csv[i][j].split(",").forEach((image) => {
+              stages.images.push(image);
+            });
+          } else if (csv[0][j] == "description") {
+            cropModel.description = csv[i][j];
+          } else {
+            stages[csv[0][j]] = csv[i][j];
+          }
+        }
+        cropModel.stages.push(stages);
+        await cropModel.save();
+      }
+      res.status(201).json({ message: "bulk uploaded " });
+    }
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }

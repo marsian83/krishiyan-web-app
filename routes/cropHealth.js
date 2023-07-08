@@ -191,7 +191,7 @@ router.post("/role-admin/disease", async (req, res) => {
         type: "In-Organic",
       }, //array of objects
     ],
-    csv = {},
+    csv = "",
   } = req.body;
   try {
     if (Object.keys(csv).length === 0) {
