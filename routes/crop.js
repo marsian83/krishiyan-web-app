@@ -14,11 +14,12 @@ const Varieties = require("../models/varities");
 // ===================================================== CROP ADVISORY =======================================================================
 
 //Create new crop
-router.post("/save", async (req, res) => {
+router.post("role-admin/save", async (req, res) => {
   let {
     localName,
     scientificName,
     stages = [{ sn: 1, name: "Germination", images: ["url"] }],
+    description = "description",
     csv = {},
   } = req.body;
 
@@ -31,7 +32,10 @@ router.post("/save", async (req, res) => {
         crop = new Crop({
           ...req.body,
         });
-      else crop.stages.push(...stages);
+      else {
+        crop.stages.push(...stages);
+        crop.description = description;
+      }
       await Crop.save();
       res.status(201).json({
         message: "Crop created!",
@@ -128,17 +132,48 @@ router.post("/role-admin/faq/add", async (req, res) => {
 });
 
 router.post("/role-admin/general/add", async (req, res) => {
-  const { generalInformation, localName, scientificName } = req.body;
+  const { generalInformation, localName, scientificName, csv = {} } = req.body;
   //refer generalInformation field in crop model
   try {
-    if (!localName && !scientificName)
-      throw new Error("localName or scientificName are required");
-    const query = localName ? { localName } : { scientificName };
-    const crop = await Crop.findOne(query);
-    if (!crop) throw new Error("crop not found");
-    crop.generalInformation = generalInformation;
-    await crop.save();
-    res.status(201).json({ crop, status: 200 });
+    if (!Object.keys(csv).length) {
+      if (!localName && !scientificName)
+        throw new Error("localName or scientificName are required");
+      const query = localName ? { localName } : { scientificName };
+      const crop = await Crop.findOne(query);
+      if (!crop) throw new Error("crop not found");
+      crop.generalInformation = generalInformation;
+      await crop.save();
+      res.status(201).json({ crop, status: 200 });
+    } else {
+      csv = csv.data;
+      for (let i = 1; i < csv.length; i++) {
+        let cropModel = {};
+        let generalInformation = {};
+        let lName = "",
+          sName = " ";
+        if (!csv[i][0].length) break;
+        for (let j = 0; j < csv[i].length; j++) {
+          if (j === 0) {
+            lName = csv[i][j];
+            if (lName) {
+              cropModel = await Crop.findOne({ localName: lName });
+              continue;
+            }
+          } else if (j == 1) {
+            sName = csv[i][j];
+            if (sName && !lName) {
+              cropModel = await Crop.findOne({ scientificName: sName });
+              continue;
+            }
+          } else {
+            generalInformation[csv[0][j]] = csv[i][j];
+          }
+        }
+        cropModel.generalInformation = generalInformation;
+        await cropModel.save();
+      }
+      res.status(201).json({ message: "bulk uploaded " });
+    }
   } catch (e) {
     return res.status(500).json({ msg: e.message });
   }
