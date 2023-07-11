@@ -213,7 +213,7 @@ const AddCrop = () => {
               )
           }
           OR
-          <CSVReader />
+          <CSVReader data="addcrop"/>
         </div>
       </div>
     </>
