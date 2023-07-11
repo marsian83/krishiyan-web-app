@@ -80,7 +80,7 @@ const styles = {
   } as CSSProperties,
 };
 
-export default function CSVReader() {
+export default function CSVReader({data}:any) {
   const { CSVReader } = useCSVReader();
   const [zoneHover, setZoneHover] = useState(false);
   const [removeHoverColor, setRemoveHoverColor] = useState(
@@ -92,10 +92,20 @@ export default function CSVReader() {
   const handleCSVDataChange = async (result: any) => {
     console.log(result);
     console.log(true);
+    let apiRoute = "";
+    if(data=='addcrop'){
+      console.log('addcrop')
+      apiRoute="crop/role-admin/add"
+      console.log(apiRoute)
+    }
+    if(data=='harvest'){
+      console.log('harvest')
+      apiRoute="crop/role-admin/harvest/add"
+    }
     try {
       const { window, ...resultWithoutWindow } = result; // Exclude the 'window' property
       console.log(csvData);
-      const res = await fetch(process.env.REACT_APP_BACKEND_URL + 'crop/role-admin/harvest/add', {
+      const res = await fetch(process.env.REACT_APP_BACKEND_URL + apiRoute, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
