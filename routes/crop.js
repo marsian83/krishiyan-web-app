@@ -14,7 +14,7 @@ const Varieties = require("../models/varities");
 // ===================================================== CROP ADVISORY =======================================================================
 
 //Create new crop
-router.post("role-admin/save", async (req, res) => {
+router.post("/role-admin/save", async (req, res) => {
   let {
     localName,
     scientificName,

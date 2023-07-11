@@ -123,7 +123,7 @@ const nutrient = [
     },
     role: String,
     description: String,
-    Dosage: String,
+    Dosage: Number,
     age: String,
     Method_application: String,
   },
