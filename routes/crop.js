@@ -190,7 +190,7 @@ router.post("/role-admin/preSowing", async (req, res) => {
       csv = csv.data;
       for (let i = 1; i < csv.length; i++) {
         let cropModel = {};
-        let pre = {};
+        let pre = { Seed_treatment: {} };
         let lName = "",
           sName = " ";
         if (!csv[i][0].length) break;
