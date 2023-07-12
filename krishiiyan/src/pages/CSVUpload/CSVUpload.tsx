@@ -98,9 +98,29 @@ export default function CSVReader({data}:any) {
       apiRoute="crop/role-admin/add"
       console.log(apiRoute)
     }
-    if(data=='harvest'){
+    else if(data == "variety"){
+      console.log('variety');
+      apiRoute = "crop/role-admin/variety/add"
+    }
+    else if(data=='irrigation'){
+      console.log('irrigation')
+      apiRoute= "crop/irrigation/role-admin/add";
+    }
+    else if(data=='presowing'){
+      console.log('presowing')
+      apiRoute = "crop/role-admin/preSowing"
+    }
+    else if(data == "nutrientManagement"){
+      console.log("nutrientManagement");
+      apiRoute = "crop/nutrient/role-admin/add"
+    }
+    else if(data=='harvest'){
       console.log('harvest')
       apiRoute="crop/role-admin/harvest/add"
+    }
+    else if(data=='faq'){
+      console.log('faq')
+      apiRoute="crop/role-admin/faq/add"
     }
     try {
       const { window, ...resultWithoutWindow } = result; // Exclude the 'window' property
