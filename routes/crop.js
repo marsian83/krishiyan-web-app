@@ -80,7 +80,7 @@ router.post("/role-admin/add", async (req, res) => {
 });
 
 router.post("/role-admin/faq/add", async (req, res) => {
-  const {
+  let {
     faq = [{ question: "q1", answer: "a1" }],
     localName,
     scientificName,
@@ -105,16 +105,10 @@ router.post("/role-admin/faq/add", async (req, res) => {
           sName = " ";
         if (!csv[i][0].length) break;
         for (let j = 0; j < csv[i].length; j++) {
-          if (j === 0) {
+          if (!j) {
             lName = csv[i][j];
             if (lName) {
               cropModel = await Crop.findOne({ localName: lName });
-              continue;
-            }
-          } else if (j == 1) {
-            sName = csv[i][j];
-            if (sName && !lName) {
-              cropModel = await Crop.findOne({ scientificName: sName });
               continue;
             }
           } else {
