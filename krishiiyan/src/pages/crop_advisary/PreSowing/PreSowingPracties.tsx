@@ -117,10 +117,10 @@ const ProductionReqContent = (props: any) => {
           </span>
           <br /> 
           {
-            data.map((option :any, index:any)=>{
+            data.Intercultural_Operations.map((option :any, index:any)=>{
               return (
                 <li>
-                  {option.Intercultural_Operations}
+                  {option}
                 </li>
               )  
             })
