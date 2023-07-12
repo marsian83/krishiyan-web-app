@@ -173,7 +173,7 @@ router.post("/role-admin/general/add", async (req, res) => {
   }
 });
 
-router.post("/role-admin/preSowing", async (req, res) => {
+router.post("/preSowing", async (req, res) => {
   let { presowingPractices, localName, scientificName, csv = "" } = req.body;
   //refer  presowingpractices field in crop model
   try {
@@ -190,7 +190,7 @@ router.post("/role-admin/preSowing", async (req, res) => {
       csv = csv.data;
       for (let i = 1; i < csv.length; i++) {
         let cropModel = {};
-        let pre = { Seed_treatment: {}, Intercultural_Operations:[] };
+        let pre = { Seed_treatment: {}, Intercultural_Operations: [] };
         let lName = "",
           sName = " ";
         if (!csv[i][0].length) break;
@@ -201,7 +201,7 @@ router.post("/role-admin/preSowing", async (req, res) => {
               cropModel = await Crop.findOne({ localName: lName });
               continue;
             }
-          } else if (j == 1) {
+          } else if (csv[0][j] == "scientificName") {
             sName = csv[i][j];
             if (sName && !lName) {
               cropModel = await Crop.findOne({ scientificName: sName });
@@ -212,14 +212,13 @@ router.post("/role-admin/preSowing", async (req, res) => {
               pre.Seed_treatment[csv[0][j]] = csv[i][j];
             } else if (csv[0][j] == "Dosage") {
               pre.Seed_treatment[csv[0][j]] = csv[i][j];
-            }
-            else if (csv[0][j] == "Intercultural_Operations")
-            {
+            } else if (csv[0][j] == "Intercultural_Operations") {
               csv[i][j].split(",").forEach((image) => {
                 pre[csv[0][j]].push(image);
               });
-              }
-            else pre[csv[0][j]] = csv[i][j];
+            } else {
+              pre[csv[0][j]] = csv[i][j];
+            }
           }
         }
         cropModel.presowingPractices = pre;
