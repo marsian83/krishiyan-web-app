@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { extractCodeFromDriveLink } from "../../../handleImageCode";
 
 const Hervest = (props: any) => {
   const [data, setData] = useState(props.crop.newHarvest);
@@ -42,10 +43,15 @@ const Hervest = (props: any) => {
             </td>
             <td className="border-r border-black font-thin">{data.prevent}</td>
             <td className="border-r border-black font-thin">
-              <img src={data.images.image1} />
+              {/* <img src={data.images.image1} />
               <img src={data.images.image2} style={{ marginTop: "20px" }} />
               <img src={data.images.image3} style={{ marginTop: "20px" }} />
-              <img src={data.images.image4} style={{ marginTop: "20px" }} />
+              <img src={data.images.image4} style={{ marginTop: "20px" }} /> */}
+              {
+                data.images.map((image:any, index:any )=>{
+                    <img src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(image)}`} style={{ marginTop: "20px" ,width:"200px", height:"200px",  }} />
+                })
+              }
             </td>
           </tr>
           {/* ))} */}
