@@ -12,6 +12,7 @@ import IrrigationTable from "./IrrigationTable";
 import "./ProductReq.css";
 import Hervest from "./cropProtection/Hervest";
 import Faq from "./cropProtection/Faq";
+import { extractCodeFromDriveLink } from "../../handleImageCode";
 
 const PlantationOptions = [
   {
@@ -410,16 +411,26 @@ const CropLibrary = () => {
                           marginRight: "20px",
                         }}
                       >
-                        <figure>
-                          <img
-                            src="Images/Maize_Germination.jpg"
-                            alt="maize"
-                            width={210}
-                          />
-                          <figcaption>Germination</figcaption>
-                        </figure>
+                        {
+                          obj.stages.map((stage : any, index:any)=>{
+                            return(
+                              <figure>
+                                {
+                                  stage.images.map((image:any, index:any)=> {
+                                 return (
 
-                        <figure>
+                                   <img src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(image)}`} />
+                                   // <img src={image}/>
+                                   )
+                                  })
+                                }
+                                <figcaption>{stage.name}</figcaption>
+                              </figure>
+                            )
+                          })
+                        }
+
+                        {/* <figure>
                           <img
                             src="https://assets.thehansindia.com/hansindia-bucket/COMMERCIAL-CROPS_5889.jpg"
                             alt="maize"
@@ -444,190 +455,12 @@ const CropLibrary = () => {
                         <figure>
                           <img src={"Images/Maize_Flowering.jpg"} alt="maize" />
                           <figcaption>Fowering stage </figcaption>
-                        </figure>
+                        </figure> */}
                       </div>
 
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
                       >
-                        {/*<table
-                          className="table-auto border border-black border-collapse"
-                          style={{ width: "50%" }}
-                        >
-                          <tr className="text-[#13490A] font-normal text-sm w-auto">
-                            <td className="border border-black w-[28%] p-[10px]">
-                              <span className="text-[#13490A] font-bold text-base">
-                                Parameter
-                              </span>
-                            </td>
-                            <td className="border border-black w-[28%]">
-                              <span className="text-[#13490A] font-bold text-base p-[10px]">
-                                Speafication
-                              </span>{" "}
-                            </td>
-                          </tr>
-                          <tr className="text-[#13490A] font-normal text-sm">
-                            <td className="border border-black w-[28%] text-start">
-                              <span className="text-[#13490A] font-bold text-sm pl-2">
-                                Kharif (Sowing Month)
-                              </span>{" "}
-                            </td>
-                            <td className="border border-black">
-                              {obj.season.map((i: any) => (
-                                <>{i} , </>
-                              ))}
-                            </td>
-                          </tr>
-                          <tr className="text-[#13490A] font-normal text-sm border-collapse h-10">
-                            <td
-                              className="border border-black w-[28%]"
-                              style={{ textAlign: "start" }}
-                            >
-                              <span className="text-[#13490A] font-bold text-sm pl-2">
-                                Rabi (Sowing Month)
-                              </span>
-                            </td>
-                            <td className="border border-black" colSpan={Col}>
-                              <span className="text-[#13490A] font-bold text-sm"></span>
-                              <p>{obj.temperature} </p>
-                            </td>
-                          </tr>
-
-                          <tr className="text-[#13490A] font-normal text-sm border-collapse h-10">
-                            <td
-                              className="border border-black w-[28%]"
-                              style={{ textAlign: "start" }}
-                            >
-                              <span className="text-[#13490A] font-bold text-sm pl-2">
-                                Zaid (Sowing Month)
-                              </span>
-                            </td>
-                            <td className="border border-black" colSpan={Col}>
-                              <span className="text-[#13490A] font-bold text-sm"></span>
-                              <p>{obj.rainfall} </p>
-                            </td>
-                          </tr>
-                          <tr className="text-[#13490A] font-normal text-sm">
-                            <td
-                              className="border border-black w-[28%]"
-                              style={{ textAlign: "start" }}
-                            >
-                              <span className="text-[#13490A] font-bold text-sm pl-2">
-                                Optimum temperature ( ° C) for growing
-                              </span>{" "}
-                            </td>
-                            <td className="border border-black">
-                              <span className="text-[#13490A] font-bold text-sm"></span>
-                              <p> {obj.soil}</p>
-                            </td>
-                          </tr>
-
-                          <tr className="text-[#13490A] font-normal text-sm">
-                            <td
-                              className="border border-black w-[28%]"
-                              style={{ textAlign: "start" }}
-                            >
-                              <span className="text-[#13490A] font-bold text-sm pl-2">
-                                Rainfall requirement (mm)
-                              </span>
-                            </td>
-                            <td className="border border-black">
-                              <span className="text-[#13490A] font-bold text-sm"></span>
-                              <p>{obj.ph}</p>
-                            </td>
-                          </tr>
-
-                          <tr className="text-[#13490A] font-normal text-sm">
-                            <td
-                              className="border border-black w-[28%]"
-                              style={{ textAlign: "start" }}
-                            >
-                              <span className="text-[#13490A] font-bold text-sm pl-2">
-                                Recommended soil
-                              </span>
-                            </td>
-                            <td className="border border-black">
-                              <span className="text-[#13490A] font-bold text-sm"></span>
-                              <p>{obj.ph}</p>
-                            </td>
-                          </tr>
-
-                          <tr className="text-[#13490A] font-normal text-sm">
-                            <td
-                              className="border border-black w-[28%]"
-                              style={{ textAlign: "start" }}
-                            >
-                              <span className="text-[#13490A] font-bold text-sm pl-2">
-                                ph of the soil
-                              </span>
-                            </td>
-                            <td className="border border-black">
-                              <span className="text-[#13490A] font-bold text-sm"></span>
-                              <p>{obj.ph}</p>
-                            </td>
-                          </tr>
-
-                          <tr className="text-[#13490A] font-normal text-sm">
-                            <td
-                              className="border border-black w-[28%]"
-                              style={{ textAlign: "start" }}
-                            >
-                              <span className="text-[#13490A] font-bold text-sm pl-2">
-                                Spacing (row * plant )(cm *cm)
-                              </span>
-                            </td>
-                            <td className="border border-black">
-                              <span className="text-[#13490A] font-bold text-sm"></span>
-                              <p>{obj.ph}</p>
-                            </td>
-                          </tr>
-
-                          <tr className="text-[#13490A] font-normal text-sm">
-                            <td
-                              className="border border-black w-[28%]"
-                              style={{ textAlign: "start" }}
-                            >
-                              <span className="text-[#13490A] font-bold text-sm pl-2">
-                                Seed rate (kg/ acre)
-                              </span>
-                            </td>
-                            <td className="border border-black">
-                              <span className="text-[#13490A] font-bold text-sm"></span>
-                              <p>{obj.ph}</p>
-                            </td>
-                          </tr>
-
-                          <tr className="text-[#13490A] font-normal text-sm">
-                            <td
-                              className="border border-black w-[28%]"
-                              style={{ textAlign: "start" }}
-                            >
-                              <span className="text-[#13490A] font-bold text-sm pl-2">
-                                Average yield (Quintal /acre)
-                              </span>
-                            </td>
-                            <td className="border border-black">
-                              <span className="text-[#13490A] font-bold text-sm"></span>
-                              <p>{obj.ph}</p>
-                            </td>
-                          </tr>
-
-                          <tr className="text-[#13490A] font-normal text-sm">
-                            <td
-                              className="border border-black w-[28%]"
-                              style={{ textAlign: "start" }}
-                            >
-                              <span className="text-[black] font-bold text-sm pl-2">
-                                Intercrop details and pattern
-                              </span>
-                            </td>
-                            <td className="border border-black">
-                              <span className="text-[#13490A] font-bold text-sm"></span>
-                              <p>{obj.ph}</p>
-                            </td>
-                          </tr>
-                        </table> */}
-
                         <table className="table-auto border-collapse border border-black font-bold text-base w-[60%] mx-auto">
                           <thead className="border-b border-black">
                             <tr className="text-center">

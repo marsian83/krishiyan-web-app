@@ -14,6 +14,7 @@ import Hervest from "./cropProtectionAdmin/HervestAdmin";
 import Faq from "./cropProtectionAdmin/FaqAdmin";
 import { Toast } from "react-toastify/dist/components";
 import CSVReader from "../CSVUpload/CSVUpload";
+import CropDetailsAdmin from "./CropDetailsAdmin";
 // import Variety from "../../CSVFiles/variety.csv";
 
 const PlantationOptions = [
@@ -38,6 +39,7 @@ const CropLibraryAdmin = () => {
   const [cropDetails, setCropDetails] = useState<any>();
   const [openTab, setOpenTab] = useState("Genral");
   const [general, setGeneral] = useState(true);
+  const [addCropDetails , setAddCropDetails] = useState(false);
   const [varietyTab, setVarietyTab] = useState(false);
   const [requirement, setRequirement] = useState(false);
   const [natrient, setNatrient] = useState(false);
@@ -49,6 +51,7 @@ const CropLibraryAdmin = () => {
 
   const onClickGeneral = () => {
     setGeneral(true);
+    setAddCropDetails(false);
     setVarietyTab(false);
     setRequirement(false);
     setNatrient(false);
@@ -57,9 +60,21 @@ const CropLibraryAdmin = () => {
     setHarvest(false);
     setFaq(false);
   };
+  const addClickAddDetails = () => {
+    setGeneral(false);
+    setAddCropDetails(true);
+    setVarietyTab(false);
+    setRequirement(false);
+    setNatrient(false);
+    setCropProtection(false);
+    SetIrrigation(false);
+    setHarvest(false);
+    setFaq(false);
+  }
   const onClickvarietyTab = () => {
     setGeneral(false);
     setVarietyTab(true);
+    setAddCropDetails(false);
     setRequirement(false);
     setNatrient(false);
     setCropProtection(false);
@@ -71,6 +86,7 @@ const CropLibraryAdmin = () => {
     setGeneral(false);
     setVarietyTab(false);
     setRequirement(true);
+    setAddCropDetails(false);
     setNatrient(false);
     setCropProtection(false);
     SetIrrigation(false);
@@ -80,6 +96,7 @@ const CropLibraryAdmin = () => {
   const onClicknitrient = () => {
     setGeneral(false);
     setVarietyTab(false);
+    setAddCropDetails(false);
     setRequirement(false);
     setNatrient(true);
     setCropProtection(false);
@@ -91,6 +108,7 @@ const CropLibraryAdmin = () => {
     setGeneral(false);
     setVarietyTab(false);
     setRequirement(false);
+    setAddCropDetails(false);
     setNatrient(false);
     setCropProtection(true);
     SetIrrigation(false);
@@ -102,6 +120,7 @@ const CropLibraryAdmin = () => {
     setGeneral(false);
     setVarietyTab(false);
     setRequirement(false);
+    setAddCropDetails(false);
     setNatrient(false);
     setCropProtection(false);
     SetIrrigation(true);
@@ -112,6 +131,7 @@ const CropLibraryAdmin = () => {
     setGeneral(false);
     setVarietyTab(false);
     setRequirement(false);
+    setAddCropDetails(false);
     setNatrient(false);
     setCropProtection(false);
     SetIrrigation(false);
@@ -122,6 +142,7 @@ const CropLibraryAdmin = () => {
     setGeneral(false);
     setVarietyTab(false);
     setRequirement(false);
+    setAddCropDetails(false);
     setNatrient(false);
     setCropProtection(false);
     SetIrrigation(false);
@@ -284,13 +305,24 @@ const CropLibraryAdmin = () => {
           <button
             onClick={() => {
               onClickGeneral();
-              setOpenTab("Genral");
+              // setOpenTab("Genral");
             }}
             className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
               openTab === "Genral" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
             }`}
           >
             General
+          </button>
+          <button
+            onClick={() => {
+              addClickAddDetails();
+              setOpenTab("Add crop");
+            }}
+            className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
+              openTab === "Genral" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
+            }`}
+          >
+            Add crop details
           </button>
           <button
             onClick={() => {
@@ -784,6 +816,15 @@ const CropLibraryAdmin = () => {
           ) : (
             <></>
           )}
+        {
+          addCropDetails ? (
+            <>
+              <CropDetailsAdmin/>
+            </>
+          ):(
+            <></>
+          )
+        }
 
           {varietyTab ? (
             <>
