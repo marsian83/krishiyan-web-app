@@ -190,7 +190,7 @@ router.post("/role-admin/preSowing", async (req, res) => {
       csv = csv.data;
       for (let i = 1; i < csv.length; i++) {
         let cropModel = {};
-        let pre = { Seed_treatment: {} };
+        let pre = { Seed_treatment: {}, Intercultural_Operations:[] };
         let lName = "",
           sName = " ";
         if (!csv[i][0].length) break;
@@ -212,7 +212,14 @@ router.post("/role-admin/preSowing", async (req, res) => {
               pre.Seed_treatment[csv[0][j]] = csv[i][j];
             } else if (csv[0][j] == "Dosage") {
               pre.Seed_treatment[csv[0][j]] = csv[i][j];
-            } else pre[csv[0][j]] = csv[i][j];
+            }
+            else if (csv[0][j] == "Intercultural_Operations")
+            {
+              csv[i][j].split(",").forEach((image) => {
+                pre[csv[0][j]].push(image);
+              });
+              }
+            else pre[csv[0][j]] = csv[i][j];
           }
         }
         cropModel.presowingPractices = pre;
