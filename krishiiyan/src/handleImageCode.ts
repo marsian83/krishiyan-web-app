@@ -3,5 +3,3 @@ export function extractCodeFromDriveLink(url: string): any {
     const match = url.match(pattern);
     return match && match[1];
   }
-  
-//   \<img src={extractCodeFromDriveLink(image)} />
