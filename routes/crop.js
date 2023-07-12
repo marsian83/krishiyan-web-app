@@ -292,6 +292,11 @@ router.post("/role-admin/harvest/add", async (req, res) => {
           if (j === 0) {
             lName = csv[i][j];
             cropModel = await Crop.findOne({ localName: lName });
+          } else if (csv[0][j] == "images") {
+            harvest.images = [];
+            csv[i][j].split(",").forEach((image) => {
+              harvest.images.push(image);
+            });
           } else {
             harvest[csv[0][j]] = csv[i][j];
           }
