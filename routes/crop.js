@@ -126,7 +126,7 @@ router.post("/role-admin/faq/add", async (req, res) => {
 });
 
 router.post("/role-admin/general/add", async (req, res) => {
-  const { generalInformation, localName, scientificName, csv = {} } = req.body;
+  let { generalInformation, localName, scientificName, csv = {} } = req.body;
   //refer generalInformation field in crop model
   try {
     if (!Object.keys(csv).length) {
@@ -174,7 +174,7 @@ router.post("/role-admin/general/add", async (req, res) => {
 });
 
 router.post("/role-admin/preSowing", async (req, res) => {
-  const { presowingPractices, localName, scientificName, csv = "" } = req.body;
+  let { presowingPractices, localName, scientificName, csv = "" } = req.body;
   //refer  presowingpractices field in crop model
   try {
     if (!csv) {
@@ -226,7 +226,7 @@ router.post("/role-admin/preSowing", async (req, res) => {
 });
 
 router.post("/stage/role-admin/add", async (req, res) => {
-  const {
+  let {
     stages = [{ sn: 1, name: "germination", image: "url" }],
     localName,
     scientificName,
@@ -360,7 +360,7 @@ router.post("/irrigation/role-admin/add", async (req, res) => {
 
 router.post("/role-admin/variety/add", async (req, res) => {
   try {
-    const {
+    let {
       nameOfvariety,
       areaOfadadoption,
       productCondition,
@@ -448,7 +448,7 @@ router.get("/getvariety/:id", async (req, res, next) => {
 });
 
 router.post("/nutrient/role-admin/add", async (req, res) => {
-  const {
+  let {
     nutrient = {
       name: String,
       role: String,
@@ -515,7 +515,7 @@ router.post("/nutrient/role-admin/add", async (req, res) => {
 });
 
 router.post("/role-admin/nutrient/deficiency/add", async (req, res) => {
-  const {
+  let {
     nutrient,
     deficiency = {
       Notable_Symptoms: String,
