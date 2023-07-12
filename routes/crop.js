@@ -283,8 +283,8 @@ router.post("/role-admin/harvest/add", async (req, res) => {
       res.status(201).json({ crop });
     } else {
       csv = csv.data;
-      console.log(csv);
       for (let i = 1; i < csv.length; i++) {
+        // console.log(csv[i][0]);
         let harvest = {};
         let cropModel = {};
         if (!csv[i][0].length) break;
@@ -294,19 +294,24 @@ router.post("/role-admin/harvest/add", async (req, res) => {
             cropModel = await Crop.findOne({ localName: lName });
           } else if (csv[0][j] == "images") {
             harvest.images = [];
-            csv[i][j].split(",").forEach((image) => {
+            csv[i][j].split(/,|\n/).forEach((image) => {
               harvest.images.push(image);
             });
           } else {
             harvest[csv[0][j]] = csv[i][j];
           }
         }
-        cropModel.newHarvest = harvest;
-        await cropModel.save();
+        if (cropModel) {
+          cropModel.newHarvest = harvest;
+          await cropModel.save();
+        } else {
+          console.log(csv[i][0]);
+        }
       }
       res.status(201).json({ message: "bulk uploaded " });
     }
   } catch (e) {
+    console.log(e)
     return res.status(500).json({ msg: e.message });
   }
 });
