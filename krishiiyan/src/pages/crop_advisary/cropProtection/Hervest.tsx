@@ -3,6 +3,7 @@ import { extractCodeFromDriveLink } from "../../../handleImageCode";
 
 const Hervest = (props: any) => {
   const [data, setData] = useState(props.crop.newHarvest);
+  console.log(data)
   return (
     <>
       <table className="table-auto border-collapse border border-black font-bold text-base w-[95%] mx-auto mt-10">
@@ -49,8 +50,10 @@ const Hervest = (props: any) => {
               <img src={data.images.image4} style={{ marginTop: "20px" }} /> */}
               {
                 data.images.map((image:any, index:any )=>{
-                    <img src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(image)}`} style={{ marginTop: "20px" ,width:"200px", height:"200px",  }} />
-                })
+                  return (
+                    <img src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(image)}`} style={{ marginTop: "20px" ,width:"200px", height:"200px", objectFit:"cover" }} />
+                    )
+                  })
               }
             </td>
           </tr>
