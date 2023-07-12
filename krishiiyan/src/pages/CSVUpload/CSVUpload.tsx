@@ -142,7 +142,7 @@ export default function CSVReader({data}:any) {
       const data = await res.json();
       console.log(data);
       if (data.crop) {
-        toast.success('Harvest added successfully', {
+        toast.success('Data added successfully', {
           position: toast.POSITION.TOP_RIGHT,
         });
       } else {
@@ -230,7 +230,7 @@ export default function CSVReader({data}:any) {
             )}
           </div>
           {
-            csvData && <button onClick={handleCSVDataChange} className="bg-green-500 text-white p-2 rounded-md">Add Harvest</button>
+            csvData && <button onClick={handleCSVDataChange} className="bg-green-500 text-white p-2 rounded-md">Add CSV Data</button>
           }
         </>
       )}

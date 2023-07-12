@@ -173,7 +173,7 @@ router.post("/role-admin/general/add", async (req, res) => {
   }
 });
 
-router.post("/preSowing", async (req, res) => {
+router.post("/role-admin/preSowing", async (req, res) => {
   let { presowingPractices, localName, scientificName, csv = "" } = req.body;
   //refer  presowingpractices field in crop model
   try {
