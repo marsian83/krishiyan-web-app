@@ -632,9 +632,8 @@ router.post("/role-admin/pest/add", async (req, res, next) => {
     } else {
       for (let i = 1; i < csv.length; i++) {
         let cropModel = {};
-        let pest = {};
         let lName = "",
-          pestName = "";
+          pestManage = {};
         if (!csv[i][0].length) break;
         for (let j = 0; j < csv[i].length; j++) {
           if (j === 0) {
@@ -645,17 +644,15 @@ router.post("/role-admin/pest/add", async (req, res, next) => {
               });
               continue;
             }
-          } else if (j == 1) {
-            pestName = csv[i][j];
-            if (pestName) {
-              pest = await pestModel.findOne({ name: pestName });
-              continue;
-            }
           } else {
-            nutrient[csv[0][j]] = csv[i][j];
+            pestManage[csv[0][j]] = csv[i][j];
           }
         }
-        cropModel.nutrient.push(nutrient);
+        let pestIndex = cropModel.pestManagement.findIndex(
+            (ob) => ob.name == pestManage["name"] || ob.scientificName == pestManage["scientificName"]
+          );
+          if (pestIndex != -1) cropModel.pestManagement[pestIndex] = pestManage;
+          else cropModel.pestManagement.push(pestManage);
         await cropModel.save();
       }
       res.status(200).json({ msg: "csv file uploaded" });
