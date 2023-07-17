@@ -2,23 +2,34 @@ import React, { useEffect, useState } from "react";
 
 const ProductionVarContent = (props: any) => {
   const [data, setData] = useState<any>([]);
-  console.log(props.crop.varitiesId);
+  console.log(props.crop.localName);
   useEffect(() => {
-    const getVarieties = async (varietyIds: []) => {
-      varietyIds.map(async (id: string) => {
-        const res = await fetch(
-          process.env.REACT_APP_BACKEND_URL + "crop/getvariety/" + id,
-          {
-            method: "GET",
-          }
-        );
-        const data = await res.json();
-        console.log(data.varities);
-        setData((prevData: any) => [...prevData, data.varities]);
-      });
-    };
-    getVarieties(props.crop.varitiesId);
-  }, [props.varitiesId]);
+    // const getVarieties = async (varietyIds: []) => {
+    //   varietyIds.map(async (id: string) => {
+    //     const res = await fetch(
+    //       process.env.REACT_APP_BACKEND_URL + "crop/variety/" + props.crop.localName ,
+    //       {
+    //         method: "GET",
+    //       }
+    //     );
+    //     const data = await res.json();
+    //     console.log(data.varities);
+    //     setData((prevData: any) => [...prevData, data.varities]);
+    //   });
+    // };
+    const getVarieties = async (name: String) =>{
+      const res = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "crop/variety/" + name,
+        {
+          method: "GET",
+        }
+      );
+      const data = await res.json();
+      console.log(data.varieties);
+      setData(data.varieties);
+    }
+    getVarieties(props.crop.localName);
+  }, []);
   console.log(data, "it is data");
   return (
     <>
@@ -153,9 +164,10 @@ const ProductionVarContent = (props: any) => {
             <th className="border-r border-black py-[1.2%]">
               Product Condition
             </th>
-            <th className="border-r border-black py-[1.2%]">
+            {/* <th className="border-r border-black py-[1.2%]">
               Average yield (Quintal/acre)
-            </th>
+            </th> */}
+             <th className="border-r border-black py-[1.2%]">Area of adoption</th>
             <th className="border-r border-black py-[1.2%]">Crop cycle</th>
             <th className="border-r border-black py-[1.2%]">Speciality</th>
           </tr>
@@ -170,7 +182,7 @@ const ProductionVarContent = (props: any) => {
               <td className="border-r border-black font-thin">
                 {item.productCondition}
               </td>
-              <td className="border-r border-black font-thin">
+              {/* <td className="border-r border-black font-thin">
                 {item.Yield.length === 0 ? (
                   "0"
                 ) : (
@@ -182,6 +194,9 @@ const ProductionVarContent = (props: any) => {
                     ))}
                   </>
                 )}
+              </td> */}
+              <td className="border-r border-black font-thin">
+                {item.areaOfadadoption}
               </td>
               <td className="border-r border-black font-thin">
                 {item.cropCycle}
