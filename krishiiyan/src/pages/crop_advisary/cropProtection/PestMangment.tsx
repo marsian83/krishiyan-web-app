@@ -16,9 +16,9 @@ const PestManagement = (props: any) => {
               Name of the Pest
             </th>
             <th className="border-r border-black py-[1.2%]">Scientific Name</th>
-            <th className="border-r border-black py-[1.2%]">
+            {/* <th className="border-r border-black py-[1.2%]">
               Characteristic of the pest
-            </th>
+            </th> */}
             <th className="border-r border-black py-[1.2%]">
               Notable symptoms
             </th>
@@ -37,7 +37,7 @@ const PestManagement = (props: any) => {
             table.map((item: any, index: any) => {
               return (
                 <tr className="h-10 border-b border-black">
-                <td className="border-r border-black font-thin">1</td>
+                <td className="border-r border-black font-thin">{index+1}</td>
                 <td className="border-r border-black font-thin">
                   {/* {table.Value1.name_pest} */}
                   {
@@ -51,9 +51,9 @@ const PestManagement = (props: any) => {
 
                   }
                 </td>
-                <td className="border-r border-black font-thin">
+                {/* <td className="border-r border-black font-thin"> */}
                   {/* {table.Value1.characteristic} */}
-                </td>
+                {/* </td> */}
                 <td className="border-r border-black font-thin">
                   {/* {table.Value1.Notable_Symptoms} */}
                   {
