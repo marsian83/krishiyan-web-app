@@ -128,14 +128,16 @@ const nutrient = [
     Method_application: String,
   },
 ];
-const Pest_Management = {
-      name: String,
-      scientificName: String,
-      characteristic: String,
-      symptoms: String,
-      images: [String],
-      solutions: String,
-}
+const Pest_Management = [
+  {
+    name: String,
+    scientificName: String,
+    characteristic: String,
+    symptoms: String,
+    images: [String],
+    solutions: String,
+  },
+];
     
 const disease_Management = {
   value: {

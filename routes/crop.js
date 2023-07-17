@@ -595,7 +595,7 @@ router.post("/role-admin/nutrient/deficiency/add", async (req, res) => {
 });
 
 router.post("/role-admin/pestManage/add", async (req, res, next) => {
-  const {
+  let {
     localName, //of the crop
     pest, //name of the pest
     scientificName = "", //of the pest
@@ -638,6 +638,7 @@ router.post("/role-admin/pestManage/add", async (req, res, next) => {
         res.status(201).json({ newpest, status: "success" });
       }
     } else {
+      csv = csv.data;
       for (let i = 1; i < csv.length; i++) {
         let cropModel = {};
         let lName = "",
