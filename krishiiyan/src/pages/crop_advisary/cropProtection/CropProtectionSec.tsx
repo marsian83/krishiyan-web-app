@@ -18,7 +18,7 @@ const ProductionReqContent = (props: any) => {
   const [WeedManagement, setWeedManagement] = useState(false);
   const [weather, setWeather] = useState(false);
   const [openTab, setOpenTab] = useState("Pest Management");
-
+  console.log(props.crop);
   const onClickLand = () => {
     setLand(true);
     setSeedTab(false);
@@ -165,7 +165,7 @@ const ProductionReqContent = (props: any) => {
 
       {land ? (
         <>
-          <PestManagement data={data} />
+          <PestManagement data={props.crop} />
         </>
       ) : (
         <></>

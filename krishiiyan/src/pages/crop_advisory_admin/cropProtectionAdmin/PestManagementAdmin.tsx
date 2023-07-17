@@ -151,7 +151,7 @@ const PestManagementAdmin = () => {
           Submit
         </button>
         OR
-        <CSVReader />
+        <CSVReader data="pestManagment"/>
       </div>
     </section>
   );

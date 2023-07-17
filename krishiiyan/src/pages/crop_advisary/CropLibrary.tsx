@@ -352,7 +352,7 @@ const CropLibrary = () => {
                   >
                     Natrient Management
                   </button>
-                  {/* <button
+                  <button
                     onClick={() => {
                       onClicCropProtection();
                       setOpenTab("crop protection");
@@ -364,7 +364,7 @@ const CropLibrary = () => {
                     }`}
                   >
                     Crop Protection
-                  </button> */}
+                  </button>
                   <button
                     onClick={() => {
                       onClickIrrigation();
