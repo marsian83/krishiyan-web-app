@@ -604,13 +604,13 @@ const CropLibrary = () => {
                   ) : (
                     <></>
                   )}
-                  {/* {cropProtection ? (
+                  {cropProtection ? (
                     <>
                       <CropProtectionSec crop={obj} />
                     </>
                   ) : (
                     <></>
-                  )} */}
+                  )}
                   {harvest ? <Hervest crop={obj} /> : <></>}
                   {faq ? <Faq crop={obj} /> : <></>}
 
