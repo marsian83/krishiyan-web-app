@@ -586,7 +586,7 @@ router.post("/role-admin/nutrient/deficiency/add", async (req, res) => {
   }
 });
 
-router.post("/role-admin/pest/add", async (req, res, next) => {
+router.post("/role-admin/pestManage/add", async (req, res, next) => {
   const {
     localName, //of the crop
     pest, //name of the pest
@@ -623,7 +623,7 @@ router.post("/role-admin/pest/add", async (req, res, next) => {
           characteristics,
           scientificName,
         });
-        newpest.cropsIds.push(crop._id);
+        pestDoc.cropsIds.push(crop._id);
         crop.pestsIds.push(existingpestDoc._id);
         await crop.save();
         const newpest = await pestDoc.save();
@@ -644,15 +644,22 @@ router.post("/role-admin/pest/add", async (req, res, next) => {
               });
               continue;
             }
+          } else if (csv[0][j] == "images") {
+            pestManage[csv[0][j]] = [];
+            csv[i][j].split(/,|\n/).forEach((image) => {
+              pestManage[csv[0][j]].push(image);
+            });
           } else {
             pestManage[csv[0][j]] = csv[i][j];
           }
         }
         let pestIndex = cropModel.pestManagement.findIndex(
-            (ob) => ob.name == pestManage["name"] || ob.scientificName == pestManage["scientificName"]
-          );
-          if (pestIndex != -1) cropModel.pestManagement[pestIndex] = pestManage;
-          else cropModel.pestManagement.push(pestManage);
+          (ob) =>
+            ob.name == pestManage["name"] ||
+            ob.scientificName == pestManage["scientificName"]
+        );
+        if (pestIndex != -1) cropModel.pestManagement[pestIndex] = pestManage;
+        else cropModel.pestManagement.push(pestManage);
         await cropModel.save();
       }
       res.status(200).json({ msg: "csv file uploaded" });
