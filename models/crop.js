@@ -129,118 +129,14 @@ const nutrient = [
   },
 ];
 const Pest_Management = {
-  value: {
-    Value1: {
-      name_pest: String,
+      name: String,
       scientificName: String,
       characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-    },
-    Value2: {
-      name_pest: String,
-      scientificName: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-    },
-    Value3: {
-      name_pest: String,
-      scientificName: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-    },
-    Value4: {
-      name_pest: String,
-      scientificName: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-    },
-    Value5: {
-      name_pest: String,
-      scientificName: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-    },
-    Value6: {
-      name_pest: String,
-      scientificName: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-    },
-    Value7: {
-      name_pest: String,
-      scientificName: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-    },
-    Value8: {
-      name_pest: String,
-      scientificName: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-    },
-    Value9: {
-      name_pest: String,
-      scientificName: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-    },
-  },
-};
-
+      symptoms: String,
+      images: [String],
+      solutions: String,
+}
+    
 const disease_Management = {
   value: {
     value1: {

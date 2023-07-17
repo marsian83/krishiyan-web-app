@@ -64,7 +64,7 @@ app.get("/api/ping", (req, res) => {
 //Connect to DB.
 connectDB();
 
-//static files
+// //static files
 app.use(express.static(path.join(__dirname, "./krishiiyan/build")));
 
 app.get("*", function (req, res) {

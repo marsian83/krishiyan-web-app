@@ -6,7 +6,7 @@ const pestsSchema = new Schema(
     name: String,
     scientificName: String,
     symptoms: [{ type: String }],
-    charecteristics: String,
+    characteristics: String,
     pesticidesIds: [
       {
         type: mongoose.Schema.ObjectId,
@@ -19,6 +19,7 @@ const pestsSchema = new Schema(
         ref: "Crop",
       },
     ],
+    solutions: String,
     inventory: { type: Number, default: 0 },
     type: { type: String },
   },

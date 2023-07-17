@@ -191,11 +191,10 @@ router.post("/role-admin/disease", async (req, res) => {
         type: "In-Organic",
       }, //array of objects
     ],
-    csv = "",
+    csv = {},
   } = req.body;
   try {
     if (Object.keys(csv).length === 0) {
-      console.log("After authentication");
       const existingDiseaseDoc = await diseaseModel.findOne({ name: disease });
       const diseaseDoc = !existingDiseaseDoc
         ? new diseaseModel({

@@ -3,7 +3,7 @@ const router = express.Router();
 const moment = require("moment");
 const Crop = require("../models/crop");
 const Pesticide = require("../models/pesticide");
-const Pest = require("../models/pest");
+const pestModel = require("../models/pest");
 const Herbicide = require("../models/herbicide");
 const Weeds = require("../models/weeds");
 const Disease = require("../models/disease");
@@ -51,8 +51,10 @@ router.post("/role-admin/add", async (req, res) => {
         if (!csv[i][0].length) break;
         for (let j = 0; j < csv[i].length; j++) {
           if (j === 0) {
-            lName = csv[i][j];
-            cropModel = await Crop.findOne({ localName: lName });
+            lName = csv[i][j].trim();
+            cropModel = await Crop.findOne({
+              localName: { $regex: lName, $options: "i" },
+            });
             if (!cropModel) cropModel = new Crop({ localName: lName });
             continue;
           } else if (j == 1) {
@@ -106,9 +108,11 @@ router.post("/role-admin/faq/add", async (req, res) => {
         if (!csv[i][0].length) break;
         for (let j = 0; j < csv[i].length; j++) {
           if (!j) {
-            lName = csv[i][j];
+            lName = csv[i][j].trim();
             if (lName) {
-              cropModel = await Crop.findOne({ localName: lName });
+              cropModel = await Crop.findOne({
+                localName: { $regex: lName, $options: "i" },
+              });
               continue;
             }
           } else {
@@ -148,9 +152,11 @@ router.post("/role-admin/general/add", async (req, res) => {
         if (!csv[i][0].length) break;
         for (let j = 0; j < csv[i].length; j++) {
           if (j === 0) {
-            lName = csv[i][j];
+            lName = csv[i][j].trim();
             if (lName) {
-              cropModel = await Crop.findOne({ localName: lName });
+              cropModel = await Crop.findOne({
+                localName: { $regex: lName, $options: "i" },
+              });
               continue;
             }
           } else if (j == 1) {
@@ -196,9 +202,11 @@ router.post("/role-admin/preSowing", async (req, res) => {
         if (!csv[i][0].length) break;
         for (let j = 0; j < csv[i].length; j++) {
           if (j === 0) {
-            lName = csv[i][j];
+            lName = csv[i][j].trim();
             if (lName) {
-              cropModel = await Crop.findOne({ localName: lName });
+              cropModel = await Crop.findOne({
+                localName: { $regex: lName, $options: "i" },
+              });
               continue;
             }
           } else if (csv[0][j] == "scientificName") {
@@ -290,8 +298,10 @@ router.post("/role-admin/harvest/add", async (req, res) => {
         if (!csv[i][0].length) break;
         for (let j = 0; j < csv[i].length; j++) {
           if (j === 0) {
-            lName = csv[i][j];
-            cropModel = await Crop.findOne({ localName: lName });
+            lName = csv[i][j].trim();
+            cropModel = await Crop.findOne({
+              localName: { $regex: lName, $options: "i" },
+            });
           } else if (csv[0][j] == "images") {
             harvest.images = [];
             csv[i][j].split(/,|\n/).forEach((image) => {
@@ -311,7 +321,7 @@ router.post("/role-admin/harvest/add", async (req, res) => {
       res.status(201).json({ message: "bulk uploaded " });
     }
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return res.status(500).json({ msg: e.message });
   }
 });
@@ -350,12 +360,11 @@ router.post("/irrigation/role-admin/add", async (req, res) => {
         if (!csv[i][0].length) break;
         for (let j = 0; j < csv[i].length; j++) {
           if (j === 0) {
-            lName = csv[i][j];
-            cropModel = await Crop.findOne({ localName: lName });
-          } else {
-            switch (j) {
-              case 1:
-            }
+            lName = csv[i][j].trim();
+            cropModel = await Crop.findOne({
+              localName: { $regex: lName, $options: "i" },
+            });
+          } else if(csv[0][j] == "solutions"|| csv[0][j] == "prodImg"|| csv[0][j] == "cost") {
             harvest[csv[0][j]] = csv[i][j];
           }
         }
@@ -420,9 +429,11 @@ router.post("/role-admin/variety/add", async (req, res) => {
         if (!csv[i][0].length) break;
         for (let j = 0; j < csv[i].length; j++) {
           if (j === 0) {
-            lName = csv[i][j];
+            lName = csv[i][j].trim();
             if (lName) {
-              cropModel = await Crop.findOne({ localName: lName });
+              cropModel = await Crop.findOne({
+                localName: { $regex: lName, $options: "i" },
+              });
               continue;
             }
           } else if (j == 1) {
@@ -500,9 +511,11 @@ router.post("/nutrient/role-admin/add", async (req, res) => {
         if (!csv[i][0].length) break;
         for (let j = 0; j < csv[i].length; j++) {
           if (j === 0) {
-            lName = csv[i][j];
+            lName = csv[i][j].trim();
             if (lName) {
-              cropModel = await Crop.findOne({ localName: lName });
+              cropModel = await Crop.findOne({
+                localName: { $regex: lName, $options: "i" },
+              });
               continue;
             }
           } else if (j == 1) {
@@ -570,6 +583,104 @@ router.post("/role-admin/nutrient/deficiency/add", async (req, res) => {
     }
   } catch (e) {
     return res.status(500).json({ msg: e.message });
+  }
+});
+
+router.post("/role-admin/pest/add", async (req, res, next) => {
+  const {
+    localName, //of the crop
+    pest, //name of the pest
+    scientificName = "", //of the pest
+    characteristics = "",
+    images = [], //Array
+    description = "", // of the pest
+    solutions = "",
+    csv = {},
+  } = req.body;
+  try {
+    if (Object.keys(csv).length === 0) {
+      const crop = await Crop.findOne({ localName });
+      const existingpestDoc = await pestModel.findOne({ name: pest });
+      if (existingpestDoc) {
+        existingpestDoc.images.push(...images);
+        existingpestDoc.description = description;
+        existingpestDoc.solutions = solutions;
+        existingpestDoc.characteristics = characteristics;
+        existingpestDoc.scientificName = scientificName;
+        if (!existingpestDoc.cropsIds.includes(crop._id)) {
+          existingpestDoc.cropsIds.push(crop._id);
+          crop.pestsIds.push(existingpestDoc._id);
+        }
+        await existingpestDoc.save();
+        await crop.save();
+        res.status(201).json({ existingpestDoc, status: "success" });
+      } else {
+        const pestDoc = new pestModel({
+          name: pest,
+          images,
+          description,
+          solutions,
+          characteristics,
+          scientificName,
+        });
+        newpest.cropsIds.push(crop._id);
+        crop.pestsIds.push(existingpestDoc._id);
+        await crop.save();
+        const newpest = await pestDoc.save();
+        res.status(201).json({ newpest, status: "success" });
+      }
+    } else {
+      for (let i = 1; i < csv.length; i++) {
+        let cropModel = {};
+        let pest = {};
+        let lName = "",
+          pestName = "";
+        if (!csv[i][0].length) break;
+        for (let j = 0; j < csv[i].length; j++) {
+          if (j === 0) {
+            lName = csv[i][j].trim();
+            if (lName) {
+              cropModel = await Crop.findOne({
+                localName: { $regex: lName, $options: "i" },
+              });
+              continue;
+            }
+          } else if (j == 1) {
+            pestName = csv[i][j];
+            if (pestName) {
+              pest = await pestModel.findOne({ name: pestName });
+              continue;
+            }
+          } else {
+            nutrient[csv[0][j]] = csv[i][j];
+          }
+        }
+        cropModel.nutrient.push(nutrient);
+        await cropModel.save();
+      }
+      res.status(200).json({ msg: "csv file uploaded" });
+    }
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+});
+
+router.get("/variety/:localName", async (req, res, next) => {
+  const { localName } = req.params;
+  try {
+    const crop = await Crop.findOne({ localName });
+    if (!crop)
+      throw new Error("Crop not found with localName: " + localName);    
+    const varieties = await Varieties.find({ cropId: crop._id });
+    if (!varieties)
+      throw new Error("Varieties not found with cropId: " + crop._id);
+    res.status(201).json({
+      message: "Variety found",
+      success:true,
+      varieties,
+    });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
   }
 });
 
