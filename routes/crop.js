@@ -71,6 +71,7 @@ router.post("/role-admin/add", async (req, res) => {
             stages[csv[0][j]] = csv[i][j];
           }
         }
+        if (!cropModel) continue;
         cropModel.stages.push(stages);
         await cropModel.save();
       }
@@ -119,6 +120,7 @@ router.post("/role-admin/faq/add", async (req, res) => {
             faq[csv[0][j]] = csv[i][j];
           }
         }
+        if (!cropModel) continue;
         cropModel.faq.push(faq);
         await cropModel.save();
       }
@@ -169,6 +171,7 @@ router.post("/role-admin/general/add", async (req, res) => {
             generalInformation[csv[0][j]] = csv[i][j];
           }
         }
+        if (!cropModel) continue;
         cropModel.generalInformation = generalInformation;
         await cropModel.save();
       }
@@ -229,6 +232,7 @@ router.post("/role-admin/preSowing", async (req, res) => {
             }
           }
         }
+        if (!cropModel) continue;
         cropModel.presowingPractices = pre;
         await cropModel.save();
       }
@@ -364,7 +368,11 @@ router.post("/irrigation/role-admin/add", async (req, res) => {
             cropModel = await Crop.findOne({
               localName: { $regex: lName, $options: "i" },
             });
-          } else if(csv[0][j] == "solutions"|| csv[0][j] == "prodImg"|| csv[0][j] == "cost") {
+          } else if (
+            csv[0][j] == "solutions" ||
+            csv[0][j] == "prodImg" ||
+            csv[0][j] == "cost"
+          ) {
             harvest[csv[0][j]] = csv[i][j];
           }
         }
@@ -653,6 +661,7 @@ router.post("/role-admin/pestManage/add", async (req, res, next) => {
             pestManage[csv[0][j]] = csv[i][j];
           }
         }
+        if (!cropModel) continue;
         let pestIndex = cropModel.pestManagement.findIndex(
           (ob) =>
             ob.name == pestManage["name"] ||
