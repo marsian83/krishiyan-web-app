@@ -96,6 +96,7 @@ const Sale = () => {
   // }
 
   const dataFiltered = filterData(searchQuery, products);
+  // console.log(dataFiltered , dataFiltered);
   const cartDataFiltered = filterDataCart(searchQueryCart, cartItems);
 
   function sum_reducer(accumulator: any, currentValue: any) {
@@ -712,7 +713,7 @@ const Sale = () => {
               {/* Pesticide */}
               {productCategory === "Pesticide" ? (
                 <>
-                  {dataFiltered &&
+                  {/* {dataFiltered &&
                     dataFiltered
                       .filter((obj: any) => obj.category === "Pesticide")
                       .sort((a: any, b: any) => b.quantity - a.quantity)
@@ -752,7 +753,7 @@ const Sale = () => {
                             </button>
                           </div>
                         </>
-                      ))}
+                      ))} */}
                 </>
               ) : (
                 <></>
