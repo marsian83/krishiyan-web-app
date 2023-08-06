@@ -7,6 +7,7 @@ const diseaseModel = require("../models/disease");
 const pestModel = require("../models/pest");
 const weedModel = require("../models/weeds");
 const herbicideModel = require("../models/herbicide");
+const fungicideModel = require("../models/fungicide");
 const fungicide = require("../models/fungicide");
 const crop = require("../models/crop");
 
@@ -132,26 +133,34 @@ router.get("/weed/:localName", async (req, res) => {
   }
 });
 
-router.get("/pesticide", async (req, res) => {
+router.get("/pesticide/:pesticideId", async (req, res) => {
+  // try {
+  //   if (
+  //     !req.body ||
+  //     !req.body.pesticideIds ||
+  //     !Array.isArray(req.body.pesticideIds)
+  //   ) {
+  //     return res.status(400).json({
+  //       msg: "Invalid request body. Please provide an array of pesticideIds.",
+  //     });
+  //   }
+
+  //   const pesticideIds = req.body.pesticideIds;
+  //   const pesticides = await pesticideModel.find({
+  //     _id: { $in: pesticideIds },
+  //   });
+
+  //   if (pesticides.length === 0) throw new Error("Pesticides not found");
+
+  //   res.status(200).json(pesticides);
+  // } catch (err) {
+  //   res.status(500).json({ msg: err.message });
+  // }
   try {
-    if (
-      !req.body ||
-      !req.body.pesticideIds ||
-      !Array.isArray(req.body.pesticideIds)
-    ) {
-      return res.status(400).json({
-        msg: "Invalid request body. Please provide an array of pesticideIds.",
-      });
-    }
-
-    const pesticideIds = req.body.pesticideIds;
-    const pesticides = await pesticideModel.find({
-      _id: { $in: pesticideIds },
-    });
-
-    if (pesticides.length === 0) throw new Error("Pesticides not found");
-
-    res.status(200).json(pesticides);
+    const Pesticide = await pesticideModel.findById(req.params.fungicideId);
+    if (!Pesticide) throw new Error("Pesticide not found");
+    console.log(Pesticide);
+    res.status(200).json(Pesticide);
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
@@ -159,7 +168,7 @@ router.get("/pesticide", async (req, res) => {
 
 router.get("/fungicide/:fungicideId", async (req, res) => {
   try {
-    const Fungicide = await pesticideModel.findById(req.params.fungicideId);
+    const Fungicide = await fungicideModel.findById(req.params.fungicideId);
     if (!Fungicide) throw new Error("Fungicide not found");
     console.log(Fungicide);
     res.status(200).json(Fungicide);
@@ -169,7 +178,7 @@ router.get("/fungicide/:fungicideId", async (req, res) => {
 });
 router.get("/herbicide/:herbicideId", async (req, res) => {
   try {
-    const Herbicide = await pesticideModel.findById(req.params.herbicideId);
+    const Herbicide = await herbicideModel.findById(req.params.herbicideId);
     if (!Herbicide) throw new Error("Herbicide not found");
     res.status(200).json(Herbicide);
   } catch (err) {
