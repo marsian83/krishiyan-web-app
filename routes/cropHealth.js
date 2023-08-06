@@ -120,6 +120,7 @@ router.get("/weed/:localName", async (req, res) => {
     const weedDocs = await weedModel.find({
       cropsIds: crop._id,
     });
+    console.log(weedDocs);
     await dbPopulateAll(weedDocs, ["herbicidesIds"], {
       herbicidesIds:
         "name productId inventory type dosagePerAcre unit dilutionRatioPerAcre stage sprayingTime applicationType frequency",
@@ -168,10 +169,9 @@ router.get("/fungicide/:fungicideId", async (req, res) => {
 });
 router.get("/herbicide/:herbicideId", async (req, res) => {
   try {
-    const Fungicide = await pesticideModel.findById(req.params.herbicdieId);
-    if (!Fungicide) throw new Error("Fungicide not found");
-    console.log(Fungicide);
-    res.status(200).json(Fungicide);
+    const Herbicide = await pesticideModel.findById(req.params.herbicideId);
+    if (!Herbicide) throw new Error("Herbicide not found");
+    res.status(200).json(Herbicide);
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
