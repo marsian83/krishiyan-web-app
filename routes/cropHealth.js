@@ -187,7 +187,7 @@ router.get("/herbicide/:herbicideId", async (req, res) => {
 });
 
 router.post("/role-admin/disease", async (req, res) => {
-  const {
+  let {
     localName, //of the crop
     disease, //name of the pest
     images = [], //Array
@@ -234,9 +234,57 @@ router.post("/role-admin/disease", async (req, res) => {
         status: "success",
       });
     } else {
-      //For handling csv uploads
-      res.status(200).json({ msg: "csv file uploaded" });
-    }
+      csv = csv.data;
+      for (let i = 1; i < csv.length; i++) {
+        let cropModel = {},
+          diseaseDoc = {},
+          solution = {},
+          fungicideDoc = {};
+        let images = [];
+        if (!csv[i][0].length) break;
+        for (let j = 0; j < csv[i].length; j++) {
+          if (j === 0) {
+            lName = csv[i][j].trim();
+            if (lName) {
+              cropModel = await Crop.findOne({
+                localName: { $regex: lName, $options: "i" },
+              });
+              continue;
+            }
+          } else if (csv[0][j] == "disease") {
+            diseaseDoc = await diseaseModel.findOne({
+              name: { $regex: csv[i][j].trim(), $options: "i" },
+            });
+            if (!diseaseDoc)
+              diseaseDoc = new diseaseModel({ name: csv[i][j].trim() });
+          } else if (csv[0][j] == "images") {
+            csv[i][j].split(/,|\n/).forEach((image) => {
+              images.push(image);
+            });
+            if (diseaseDoc.images?.length) diseaseDoc.images.push(images);
+            else diseaseDoc.images = images;
+          } else if (csv[0][j] == "description")
+            diseaseDoc.description = csv[i][j];
+          else if (csv[0][j] == "name") {
+            fungicideDoc = await fungicideModel.findOne({
+              name: { $regex: csv[i][j].trim(), $options: "i" },
+            })
+            if (!fungicideDoc)
+              fungicideDoc = new fungicideModel({name:csv[i][j].trim()})
+          } else solution[csv[0][j]]= csv[i][j] };
+          if (!cropModel) continue;
+        diseaseDoc.cropIds.push(cropModel._id)
+        for (let key of Object.keys(solution))
+        {
+          fungicideDoc[key] = solution[key];
+        }
+        await fungicideDoc.save();
+        diseaseDoc.fungicidesIds.push(fungicideDoc._id)
+        await diseaseDoc.save()
+        }
+        
+        res.status(200).json({ msg: "csv file uploaded" });
+      }
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
