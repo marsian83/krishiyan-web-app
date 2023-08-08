@@ -87,12 +87,14 @@ const CropHealthAdmin = () => {
         name: category,
         images: [image],
         description: description,
-        solution: {
+        solution: [
+       {
           productId: name,
           name: solName,
           inventory: solInventory,
           type: solType,
-        },
+      }
+        ],
       }))
       const res = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}cropHealth/role-admin/${endpoint}`,

@@ -120,7 +120,7 @@ const CropHealth = () => {
   };
 
   const onSubmit = async () => {
-    const res = await getcropName(localsName, scientficCrop);
+    console.log(selectedIssue, localsName)
     console.log("onclick ...........................");
     try {
       const res = await fetch(process.env.REACT_APP_BACKEND_URL + `cropHealth/${selectedIssue}/${localsName}`, {
@@ -156,10 +156,11 @@ const CropHealth = () => {
   }, []);
 
   /****Solutions **** */
-  const apiUrl = `http://localhost:5001/api/cropHealth/${solution}/`;
+  const apiUrl = process.env.REACT_APP_BACKEND_URL+ `cropHealth/${solution}/`;
 
     // Function to fetch data for a specific solution (pesticide, fungicide, or herbicide)
     const fetchSolutionData = async (solutionId : any) => {
+      console.log(solution)
       try {
         const response = await fetch(apiUrl + solutionId);
         const data = await response.json();
