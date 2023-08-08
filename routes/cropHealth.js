@@ -268,23 +268,25 @@ router.post("/role-admin/disease", async (req, res) => {
           else if (csv[0][j] == "name") {
             fungicideDoc = await fungicideModel.findOne({
               name: { $regex: csv[i][j].trim(), $options: "i" },
-            })
+            });
             if (!fungicideDoc)
-              fungicideDoc = new fungicideModel({name:csv[i][j].trim()})
-          } else solution[csv[0][j]]= csv[i][j] };
-          if (!cropModel) continue;
-        diseaseDoc.cropIds.push(cropModel._id)
-        for (let key of Object.keys(solution))
-        {
+              fungicideDoc = new fungicideModel({ name: csv[i][j].trim() });
+          } else solution[csv[0][j]] = csv[i][j];
+        }
+        if (!cropModel) continue;
+        diseaseDoc.cropIds
+          ? diseaseDoc.cropIds.push(cropModel._id)
+          : (diseaseDoc.cropIds = [cropModel._id]);
+        for (let key of Object.keys(solution)) {
           fungicideDoc[key] = solution[key];
         }
         await fungicideDoc.save();
-        diseaseDoc.fungicidesIds.push(fungicideDoc._id)
-        await diseaseDoc.save()
-        }
-        
-        res.status(200).json({ msg: "csv file uploaded" });
+        diseaseDoc.fungicidesIds.push(fungicideDoc._id);
+        await diseaseDoc.save();
       }
+
+      res.status(200).json({ msg: "csv file uploaded" });
+    }
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }

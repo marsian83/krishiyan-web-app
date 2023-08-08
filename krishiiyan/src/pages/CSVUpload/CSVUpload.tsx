@@ -80,7 +80,7 @@ const styles = {
   } as CSSProperties,
 };
 
-export default function CSVReader({data}:any) {
+export default function CSVReader({data , category}:any) {
   const { CSVReader } = useCSVReader();
   const [zoneHover, setZoneHover] = useState(false);
   const [removeHoverColor, setRemoveHoverColor] = useState(
@@ -129,6 +129,18 @@ export default function CSVReader({data}:any) {
     else if(data=='faq'){
       console.log('faq')
       apiRoute="crop/role-admin/faq/add"
+    }
+    else if(data=='health'){
+      console.log(data , category);
+      if(category=='pest'){
+        apiRoute="cropHealth/role-admin/pest"
+      }
+      else if(category == 'disease'){
+        apiRoute="cropHealth/role-admin/disease"
+      }
+      else{
+        apiRoute="cropHealth/role-admin/weed"
+      }
     }
     try {
       const { window, ...resultWithoutWindow } = result; // Exclude the 'window' property

@@ -84,10 +84,10 @@ const CropHealthAdmin = () => {
       }
       console.log(JSON.stringify({
         localName: crop,
-        name: category,
+        [category]: name,
         images: [image],
         description: description,
-        solution: [
+        solutions: [
        {
           productId: name,
           name: solName,
@@ -106,11 +106,11 @@ const CropHealthAdmin = () => {
           },
           body: JSON.stringify({
             localName: crop,
-            name: category,
+            [category]: name,
             images: [image],
             description: description,
             solution: {
-              productId: name,
+              productId: 0,
               name: solName,
               inventory: solInventory,
               type: solType,
@@ -297,7 +297,25 @@ const CropHealthAdmin = () => {
             Submit
           </button>
           OR
-          <CSVReader />
+          <div className="md:flex md:items-center mb-6">
+            <div className="md:w-1/3">
+              <label className="text-[#13490A] font-extrabold text-sm mx-5">
+                Category
+              </label>
+            </div>
+            <div className="md:w-2/3">
+              <select
+                className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={onChangeCategory}
+              >
+                <option value="">Select a category</option>
+                <option value="pest">Pest</option>
+                <option value="weed">Weed</option>
+                <option value="disease">Disease</option>
+              </select>
+            </div>
+          </div>{" "}
+          <CSVReader data="health" category={category}/>
         </div>
       </div>
     </>
