@@ -556,10 +556,10 @@ router.post("/role-admin/nutrient/deficiency/add", async (req, res) => {
     },
     localName,
     scientificName,
-    csv,
+    csv = {},
   } = req.body; //array of [{question,answer}]
   try {
-    if (!csv) {
+    if (!Objects.keys(csv).length) {
       if (!localName && !scientificName)
         throw new Error("localName or scientificName are required");
       const query = localName ? { localName } : { scientificName };
@@ -678,6 +678,193 @@ router.post("/role-admin/pestManage/add", async (req, res, next) => {
     res.status(500).json({ msg: err.message });
   }
 });
+
+router.post("/protection/role-admin/disease/add", async (req, res, next) => {
+  let {
+    localName, //of the crop
+    disease, //name of the nutrient
+    causal = "", //of the pest
+    characteristics = "",
+    symptoms = "",
+    images = [], //Array
+    solutions = "",
+    csv = {},
+  } = req.body;
+  try {
+    if (Object.keys(csv).length === 0) {
+      const crop = await Crop.findOne({ localName });
+      if (!crop) throw new Error("Crop not found with localName: " + localName);
+      crop.diseaseManagement.push({
+        name: disease,
+        causal,
+        characteristics,
+        symptoms,
+        images,
+        solutions,
+      });
+      const savedCropDoc = await crop.save();
+      res.status(201).json({ savedCropDoc, status: "success" });
+    } else {
+      csv = csv.data;
+      for (let i = 1; i < csv.length; i++) {
+        let cropModel = {};
+        let lName = "",
+          diseaseManage = {};
+        if (!csv[i][0].length) break;
+        for (let j = 0; j < csv[i].length; j++) {
+          if (j === 0) {
+            lName = csv[i][j].trim();
+            if (lName) {
+              cropModel = await Crop.findOne({
+                localName: { $regex: lName, $options: "i" },
+              });
+              continue;
+            }
+          } else if (csv[0][j] == "images") {
+            diseaseManage[csv[0][j]] = [];
+            csv[i][j].split(/,|\n/).forEach((image) => {
+              diseaseManage[csv[0][j]].push(image);
+            });
+          } else {
+            diseaseManage[csv[0][j]] = csv[i][j];
+          }
+        }
+        if (!cropModel) continue;
+        let diseaseIndex = cropModel.diseaseManagement.findIndex(
+          (ob) => ob.name == diseaseManage["name"]
+        );
+        if (diseaseIndex != -1)
+          cropModel.diseaseManagement[diseaseIndex] = diseaseManage;
+        else cropModel.diseaseManagement.push(diseaseManage);
+        await cropModel.save();
+      }
+      res.status(200).json({ msg: "csv file uploaded" });
+    }
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+});
+
+router.post("/protection/role-admin/weedManage/add", async (req, res, next) => {
+  let {
+    localName, //of the crop
+    category,
+    weed, //name of the weed
+    scientificName = "",
+    image = "",
+    solutions = "",
+    csv = {},
+  } = req.body;
+  try {
+    if (Object.keys(csv).length === 0) {
+      const crop = await Crop.findOne({ localName });
+      if (!crop) throw new Error("Crop not found with localName: " + localName);
+      crop.weedManagement.push({
+        name: weed,
+        scientificName,
+        type: category,
+        image,
+        solutions,
+      });
+      const savedCropDoc = await crop.save();
+      res.status(201).json({ savedCropDoc, status: "success" });
+    } else {
+      csv = csv.data;
+      for (let i = 1; i < csv.length; i++) {
+        let cropModel = {};
+        let lName = "",
+          weedManage = {};
+        if (!csv[i][0].length) break;
+        for (let j = 0; j < csv[i].length; j++) {
+          if (j === 0) {
+            lName = csv[i][j].trim();
+            if (lName) {
+              cropModel = await Crop.findOne({
+                localName: { $regex: lName, $options: "i" },
+              });
+              continue;
+            }
+          } else {
+            weedManage[csv[0][j]] = csv[i][j];
+          }
+        }
+        if (!cropModel) continue;
+        let weedIndex = cropModel.weedManagement.findIndex(
+          (ob) => ob.name == weedManage["name"]
+        );
+        if (weedIndex != -1) cropModel.weedManagement[weedIndex] = weedManage;
+        else cropModel.weedManagement.push(weedManage);
+        await cropModel.save();
+      }
+      res.status(200).json({ msg: "csv file uploaded" });
+    }
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+});
+
+router.post(
+  "/protection/role-admin/weatherInjury/add",
+  async (req, res, next) => {
+    let {
+      localName, //of the crop
+      type,
+      causes = "",
+      symptoms = "",
+      image = "",
+      overcome = "",
+      csv = {},
+    } = req.body;
+    try {
+      if (Object.keys(csv).length === 0) {
+        const crop = await Crop.findOne({ localName });
+        if (!crop)
+          throw new Error("Crop not found with localName: " + localName);
+        crop.weatherInjuries.push({
+          type_injury: type,
+          causes,
+          symptoms,
+          image,
+          overcome,
+        });
+        const savedCropDoc = await crop.save();
+        res.status(201).json({ savedCropDoc, status: "success" });
+      } else {
+        csv = csv.data;
+        for (let i = 1; i < csv.length; i++) {
+          let cropModel = {};
+          let lName = "",
+            weatherInjury = {};
+          if (!csv[i][0].length) break;
+          for (let j = 0; j < csv[i].length; j++) {
+            if (j === 0) {
+              lName = csv[i][j].trim();
+              if (lName) {
+                cropModel = await Crop.findOne({
+                  localName: { $regex: lName, $options: "i" },
+                });
+                continue;
+              }
+            } else {
+              weatherInjury[csv[0][j]] = csv[i][j];
+            }
+          }
+          if (!cropModel) continue;
+          let injuryIndex = cropModel.weatherInjuries.findIndex(
+            (ob) => ob.type_injury == weatherInjury["type_injury"]
+          );
+          if (injuryIndex != -1)
+            cropModel.weatherInjuries[injuryIndex] = weatherInjury;
+          else cropModel.weatherInjuries.push(weatherInjury);
+          await cropModel.save();
+        }
+        res.status(200).json({ msg: "csv file uploaded" });
+      }
+    } catch (err) {
+      res.status(500).json({ msg: err.message });
+    }
+  }
+);
 
 router.get("/variety/:localName", async (req, res, next) => {
   const { localName } = req.params;

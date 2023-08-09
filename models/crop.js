@@ -139,143 +139,33 @@ const Pest_Management = [
   },
 ];
     
-const disease_Management = {
-  value: {
-    value1: {
-      name: String,
-      causal: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-      Method_treatment: String,
-    },
-    value2: {
-      name: String,
-      causal: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-      Method_treatment: String,
-    },
-    value3: {
-      name: String,
-      causal: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-      Method_treatment: String,
-    },
-    value4: {
-      name: String,
-      causal: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-      Method_treatment: String,
-    },
-    value5: {
-      name: String,
-      causal: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-      Method_treatment: String,
-    },
-    value6: {
-      name: String,
-      causal: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-      Method_treatment: String,
-    },
-    value7: {
-      name: String,
-      causal: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-      Method_treatment: String,
-    },
-    value8: {
-      name: String,
-      causal: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-      Method_treatment: String,
-    },
-    value9: {
-      name: String,
-      causal: String,
-      characteristic: String,
-      Notable_Symptoms: String,
-      images: {
-        image1: String,
-        image2: String,
-        image3: String,
-      },
-      Solution: String,
-      Method_treatment: String,
-    },
+const disease_Management = [
+  {
+    name: String,
+    causal: String,
+    characteristics: String,
+    symptoms: String,
+    images: [{ String }],
+    solutions: String,
+    treatmentMethod: String,
   },
-};
+];
 
-const Weed_Management = {
+const weedManagement = {
   type: String,
   name: String,
   scientificName: String,
   image: String,
-  solution: String,
+  solutions: String,
   recommendation: String,
 };
-const weather_injuries = [
+const weatherInjuries = [
   {
     type_injury: String,
     causes: String,
-    symptom: String,
+    symptoms: String,
     image: String,
-    overcom: String,
+    overcome: String,
   },
 ];
 const Harvest = {
@@ -470,8 +360,8 @@ const CropSchema = new mongoose.Schema(
     pestManagement: Pest_Management,
     diseaseManagement: disease_Management,
     // nutrientManagement: nutrient_Mgmt,
-    WeedManagement: Weed_Management,
-    weatherInjuries: weather_injuries,
+    weedManagement: weedManagement,
+    weatherInjuries: weatherInjuries,
     IrrigationMgmt: Irrigation_Mgmt,
     diseaseMgmt: [
       {
