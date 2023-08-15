@@ -707,6 +707,7 @@ router.post("/protection/role-admin/disease/add", async (req, res, next) => {
     } else {
       csv = csv.data;
       for (let i = 1; i < csv.length; i++) {
+        console.log(i)
         let cropModel = {};
         let lName = "",
           diseaseManage = {};
@@ -723,7 +724,7 @@ router.post("/protection/role-admin/disease/add", async (req, res, next) => {
           } else if (csv[0][j] == "images") {
             diseaseManage[csv[0][j]] = [];
             csv[i][j].split(/,|\n/).forEach((image) => {
-              diseaseManage[csv[0][j]].push(image);
+              diseaseManage[csv[0][j]].push(image.trim());
             });
           } else {
             diseaseManage[csv[0][j]] = csv[i][j];
@@ -736,6 +737,14 @@ router.post("/protection/role-admin/disease/add", async (req, res, next) => {
         if (diseaseIndex != -1)
           cropModel.diseaseManagement[diseaseIndex] = diseaseManage;
         else cropModel.diseaseManagement.push(diseaseManage);
+        /*
+        name: String,
+    causal: String,
+    characteristics: String,
+    symptoms: String,
+    images: [{ String }],
+    solutions: String,
+    treatmentMethod: String,  */
         await cropModel.save();
       }
       res.status(200).json({ msg: "csv file uploaded" });
@@ -762,7 +771,7 @@ router.post("/protection/role-admin/weedManage/add", async (req, res, next) => {
       crop.weedManagement.push({
         name: weed,
         scientificName,
-        type: category,
+        category,
         image,
         solutions,
       });
@@ -792,8 +801,8 @@ router.post("/protection/role-admin/weedManage/add", async (req, res, next) => {
         let weedIndex = cropModel.weedManagement.findIndex(
           (ob) => ob.name == weedManage["name"]
         );
-        if (weedIndex != -1) cropModel.weedManagement[weedIndex] = weedManage;
-        else cropModel.weedManagement.push(weedManage);
+        if (weedIndex == -1) cropModel.weedManagement.push(weedManage);
+        else cropModel.weedManagement[weedIndex] = weedManage;
         await cropModel.save();
       }
       res.status(200).json({ msg: "csv file uploaded" });

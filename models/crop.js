@@ -71,9 +71,9 @@ const crop_stage = [
     lowerLimit_age: Number,
     upperLimit_age: Number,
     description: String,
-    disease: [{ type: mongoose.Schema.ObjectId, ref: "Disease" }],
-    pest: [{ type: mongoose.Schema.ObjectId, ref: "Pest" }],
-    weed: [{ type: mongoose.Schema.ObjectId, ref: "Weed" }],
+    disease: [{ type: mongoose.Schema.Types.Mixed }],
+    pest: [{ type: mongoose.Schema.Types.Mixed }],
+    weed: [{ type: mongoose.Schema.Types.Mixed }],
     Fertilizer: {
       Data: String,
       Dosage: String,
@@ -138,21 +138,21 @@ const Pest_Management = [
     solutions: String,
   },
 ];
-    
+
 const disease_Management = [
   {
     name: String,
     causal: String,
     characteristics: String,
     symptoms: String,
-    images: [{ String }],
+    images: [String ],
     solutions: String,
     treatmentMethod: String,
   },
 ];
 
 const weedManagement = {
-  type: String,
+  category: String,
   name: String,
   scientificName: String,
   image: String,
@@ -360,7 +360,7 @@ const CropSchema = new mongoose.Schema(
     pestManagement: Pest_Management,
     diseaseManagement: disease_Management,
     // nutrientManagement: nutrient_Mgmt,
-    weedManagement: weedManagement,
+    weedManagement: [weedManagement],
     weatherInjuries: weatherInjuries,
     IrrigationMgmt: Irrigation_Mgmt,
     diseaseMgmt: [
