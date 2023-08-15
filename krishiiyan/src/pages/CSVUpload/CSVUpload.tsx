@@ -141,6 +141,10 @@ export default function CSVReader({data , category}:any) {
       else{
         apiRoute="cropHealth/role-admin/weed"
       }
+      
+    }
+    else if(data=="pestManage-disease"){
+      apiRoute="crop/protection/role-admin/disease/add"
     }
     try {
       const { window, ...resultWithoutWindow } = result; // Exclude the 'window' property

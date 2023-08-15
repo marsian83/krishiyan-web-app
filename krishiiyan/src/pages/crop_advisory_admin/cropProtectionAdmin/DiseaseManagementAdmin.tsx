@@ -151,7 +151,7 @@ const DiseaseManagementAdmin = () => {
           Submit
         </button>
         OR
-        <CSVReader />
+        <CSVReader data="pestManage-disease"/>
       </div>
     </>
   );
