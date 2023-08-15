@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { extractCodeFromDriveLink } from "../../../handleImageCode";
 
 const DiseaseManagement = (props: any) => {
-  const [table, setTable] = useState(props.data.diseaseManagement.value);
+  const [table, setTable] = useState(props.data.diseaseManagement);
+  console.log(table)
   return (
     <>
       <table className="table-auto border-collapse border border-black font-bold text-base w-[100%] mx-auto mt-10">
@@ -9,11 +11,11 @@ const DiseaseManagement = (props: any) => {
           <tr className="text-center">
             <th className="border-r border-black py-[1.2%] pl-1 pr-1">S.No</th>
             <th className="border-r border-black py-[1.2%]">
-              Name of the disease/Pest
+              Casual agent
             </th>
-            <th className="border-r border-black py-[1.2%]">Causal agent</th>
+            <th className="border-r border-black py-[1.2%]">Characteristics</th>
             <th className="border-r border-black py-[1.2%]">
-              Characteristic of the causal organism
+              Name
             </th>
             <th className="border-r border-black py-[1.2%]">
               Notable symptoms
@@ -27,100 +29,63 @@ const DiseaseManagement = (props: any) => {
           </tr>
         </thead>
         <tbody>
-          {/* Stage1 */}
-          {/* {oldCultivation?.map((cultivation: any, index: any) => ( */}
-          <tr className="h-10 border-b border-black">
-            <td className="border-r border-black font-thin">1</td>
-            <td className="border-r border-black font-thin">
-              {table.value1.name}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value1.causal}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value1.characteristic}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value1.Notable_Symptoms}
-            </td>
-            <td className="border-r border-black font-thin">
-              <img src={table.value1.images.image1} />
-              <img src={table.value1.images.image2} />
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value1.Solution}
-            </td>
-          </tr>
-          <tr className="h-10 border-b border-black">
-            <td className="border-r border-black font-thin">2</td>
-            <td className="border-r border-black font-thin">
-              {table.value2.name}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value2.causal}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value2.characteristic}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value2.Notable_Symptoms}
-            </td>
-            <td className="border-r border-black font-thin">
-              <img src={table.value2.images.image1} />
-              <img src={table.value2.images.image2} />
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value2.Solution}
-            </td>
-          </tr>
-          <tr className="h-10 border-b border-black">
-            <td className="border-r border-black font-thin">3</td>
-            <td className="border-r border-black font-thin">
-              {table.value3.name}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value3.causal}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value3.characteristic}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value3.Notable_Symptoms}
-            </td>
-            <td className="border-r border-black font-thin">
-              <img src={table.value3.images.image1} />
-              <img src={table.value3.images.image2} />
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value3.Solution}
-            </td>
-          </tr>
-          <tr className="h-10 border-b border-black">
-            <td className="border-r border-black font-thin">4</td>
-            <td className="border-r border-black font-thin">
-              {table.value4.name}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value4.causal}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value4.characteristic}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value4.Notable_Symptoms}
-            </td>
-            <td className="border-r border-black font-thin">
-              <img
-                src={table.value4.images.image1}
-                style={{ width: "900px" }}
-              />
-              <img src={table.value4.images.image2} />
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value4.Solution}
-            </td>
-          </tr>
-          {/* ))} */}
+        {
+            table.map((item: any, index: any) => {
+              return (
+                <tr className="h-10 border-b border-black">
+                <td className="border-r border-black font-thin">{index+1}</td>
+                <td className="border-r border-black font-thin">
+                  {/* {table.Value1.name_pest} */}
+                  {
+                    item.causal
+                  }
+                </td>
+                <td className="border-r border-black font-thin">
+                  {/* {table.Value1.scientificName} */}
+                  {
+                    item.characteristics
+
+                  }
+                </td>
+                <td className="border-r border-black font-thin">
+                  {/* {table.Value1.scientificName} */}
+                  {
+                    item.name
+
+                  }
+                </td>
+                {/* <td className="border-r border-black font-thin"> */}
+                  {/* {table.Value1.characteristic} */}
+                {/* </td> */}
+                <td className="border-r border-black font-thin">
+                  {/* {table.Value1.Notable_Symptoms} */}
+                  {
+                    item.symptoms
+                  }
+                </td>
+                <td className="border-r border-black font-thin">
+                  {/* <img src={table.Value1.images.image1} />
+                  <img src={table.Value1.images.image2} /> */}
+                  {/* {
+                    item.images &&
+                    item.images.map((image: any) => {
+                      return (
+                        <img src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(image)}`} style={{ marginTop: "20px" ,width:"200px", height:"200px", objectFit:"cover" }} />
+                      )
+                    })
+                  } */}
+
+                </td>
+                <td className="border-r border-black font-thin">
+                  {/* {table.Value1.Solution} */}
+                  {
+                    item.solutions
+                  }
+                </td>
+              </tr>
+              )
+            })
+          }
         </tbody>
       </table>
     </>

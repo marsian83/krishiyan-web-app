@@ -132,7 +132,7 @@ const DeficienctsymtomsAdmin = () => {
           Submit
         </button>
         OR
-        <CSVReader />
+        <CSVReader data="pestManage-disease"/>
       </div>
     </>
   );

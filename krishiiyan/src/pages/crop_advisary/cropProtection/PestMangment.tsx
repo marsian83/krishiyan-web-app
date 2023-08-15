@@ -4,7 +4,7 @@ import { extractCodeFromDriveLink } from "../../../handleImageCode";
 const PestManagement = (props: any) => {
   const [table, setTable] = useState(props.data.pestManagement
       );
-      console.log(table)
+      console.log(props)
   return (
     <section className="p-2">
       <table className="table-auto border-collapse border border-black font-bold text-base w-[100%] mx-auto mt-10">
