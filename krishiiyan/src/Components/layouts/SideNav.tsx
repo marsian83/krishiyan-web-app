@@ -30,18 +30,13 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
         });
     });
   }, []);
-
+  //was  for heading
   useEffect(() => {
     if (pos === true) {
-      setHeading("KrishiYan");
     } else if (crop === true) {
-      setHeading("KrishiYan");
     } else if (farm === true) {
-      setHeading("KrishiYan");
     } else if (manage === true) {
-      setHeading("KrishiYan");
     } else if (help === true) {
-      setHeading("KrishiYan");
     }
   }, [pos, crop, farm, manage, help]);
 
@@ -111,16 +106,16 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
 
   return (
     <div className="flex">
-      <nav className="bg-[#C6EDC0] w-[45%] lg:w-[9vw] xl:w-[45%] flex flex-col items-center h-screen h-full">
+      <nav className="bg-[#C6EDC0] w-[45%] lg:w-[9vw] xl:w-[45%] flex flex-col items-center  h-full">
         <img
           src="Images/logo.png"
           alt="Ellipse"
-          className="mb-[50%] my-5 lg:w-10 xl:w-14"
+          className="mb-[50%] my-5 lg:w-10 xl:w-20"
         />
         <ul className="text-center text-sm flex flex-col items-center gap-y-3">
           <li
             onClick={posClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[13px] cursor-pointer px-7 lg:px-5 xl:px-7 py-2 rounded-lg ${
+            className={`text-[#13490A] font-semibold font-roboto text-[20px] cursor-pointer px-7 lg:px-5 xl:px-7 py-2 rounded-lg ${
               pos === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >
@@ -128,7 +123,7 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
           </li>
           <li
             onClick={cropClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[13px] cursor-pointer px-0.5 py-2 rounded-lg ${
+            className={`text-[#13490A] font-semibold font-roboto text-[20px] cursor-pointer px-0.5 py-2 rounded-lg ${
               crop === true ? "bg-[#526D4E] mix-blend-hard-light px-1" : ""
             }`}
           >
@@ -136,7 +131,7 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
           </li>
           <li
             onClick={farmClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[13px] cursor-pointer px-3 py-2 rounded-lg ${
+            className={`text-[#13490A] font-semibold font-roboto text-[20px] cursor-pointer px-3 py-2 rounded-lg ${
               farm === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >
@@ -144,7 +139,7 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
           </li>
           <li
             onClick={manageClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[13px] cursor-pointer px-0.5 py-2 rounded-lg ${
+            className={`text-[#13490A] font-semibold font-roboto text-[20px] cursor-pointer px-0.5 py-2 rounded-lg ${
               manage === true ? "bg-[#526D4E] mix-blend-hard-light px-1" : ""
             }`}
           >
@@ -152,7 +147,7 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
           </li>
           <li
             onClick={helpClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[13px] cursor-pointer px-5 py-2 rounded-lg ${
+            className={`text-[#13490A] font-semibold font-roboto text-[20px] cursor-pointer px-5 py-2 rounded-lg ${
               help === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >

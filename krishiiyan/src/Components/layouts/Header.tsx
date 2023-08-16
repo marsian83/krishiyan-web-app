@@ -17,6 +17,7 @@ const Header = (props: any) => {
     <header
       className="bg-[#F3FFF1] w-full h-[12vh] xl:h-[14vh] flex flex-row items-center rounded-2xl ml-1 shadow-[0_8px_16px_rgba(0,0,0,0.1)] 
         pr-[1vw]"
+      style={{ position: "sticky", top: 0, zIndex: 100 }}
     >
       <div className="text-[#13490A] text-center font-roboto font-black text-lg leading-7 mt-4 flex-[6] lg:text-sm xl:text-base">
         <h1>{props?.title}</h1>
@@ -35,7 +36,11 @@ const Header = (props: any) => {
             src="https://mui.com/static/images/avatar/2.jpg"
             sx={{ width: 56, height: 56 }}
           />
-          <Button variant="contained" onClick={logout} sx={{backgroundColor:'#05AB2A'}}>
+          <Button
+            variant="contained"
+            onClick={logout}
+            sx={{ backgroundColor: "#05AB2A" }}
+          >
             <Icon
               icon="material-symbols:logout"
               height={30}

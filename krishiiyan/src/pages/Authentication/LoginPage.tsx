@@ -100,6 +100,20 @@ const LoginPage = () => {
                 </Typography>
               </Grid>
             </Grid>
+            <Grid container>
+              <Grid item>
+                <Typography variant="body2" sx={{ mt: 1 }}>
+                  Forgot Password? {""}
+                  <Link
+                    variant="subtitle2"
+                    onClick={() => navigate("/forgot-password")}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    {" Forgot Password"}
+                  </Link>
+                </Typography>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
       </Container>

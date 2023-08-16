@@ -12,14 +12,14 @@ const withMT = require("@material-tailwind/react/utils/withMT");
 //   darkMode: "class",
 // };
 
-
 module.exports = withMT({
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     fontFamily: {
-      roboto: ['Roboto']
-    }
+      roboto: ["Roboto"],
+    },
   },
+
   plugins: [],
   darkMode: "class",
 });

@@ -45,19 +45,19 @@ const ProductionReqContent = (props: any) => {
             onClickLand();
             setOpenTab("Land Prepation");
           }}
-          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
             // openTab === "Land Prepation" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
             openTab === "Land Prepation" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
         >
-          Land Prepation
+          Land Preparation
         </button>
         <button
           onClick={() => {
             onClickSeed();
             setOpenTab("Seed treatment");
           }}
-          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+          className={`  text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
             // openTab === "Seed treatment" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
             openTab === "Seed treatment" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
@@ -69,21 +69,21 @@ const ProductionReqContent = (props: any) => {
             onClickInterculteral();
             setOpenTab("Interculteral operation");
           }}
-          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+          className={`  text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
             // openTab === "Interculteral operation"? "bg-[#526D4E]": "bg-[#05AB2A]"
             openTab === "Interculteral operation"
               ? "bg-[#05AB2A]"
               : "bg-[#526D4E]"
           }`}
         >
-          Interculteral Operation
+          Intercultural Operation
         </button>
         <button
           onClick={() => {
             onClickSoiltab();
             setOpenTab("Soil condition");
           }}
-          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+          className={`  text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
             // openTab === "Soil condition" ? "bg-[#526D4E]" : "bg-[#05AB2A]"
             openTab === "Soil condition" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
@@ -95,9 +95,16 @@ const ProductionReqContent = (props: any) => {
 
       {land ? (
         <div>
-          <span className="font-extrabold mr-[4%]">Land Preparation</span>
+          <span className="font-extrabold mr-[4%] text-2xl">
+            Land Preparation
+          </span>
           <br />
-          {data?.Land_Preparation}
+
+          <div className="text-start pl-2 pr-2 text-xl mt-10">
+            <ul className="list-disc">
+              <li> {data?.Land_Preparation}</li>
+            </ul>
+          </div>
         </div>
       ) : null}
 
@@ -111,29 +118,30 @@ const ProductionReqContent = (props: any) => {
 
       {interculteral ? (
         <div>
-          <span className="font-extrabold mr-[4%]">
-            Pre-sowing operations (if any) (Pre-emergence weeding,
-            thinning,.....)
+          <span className="font-extrabold mr-[4%] text-2xl">
+            Intercultural operations
           </span>
-          <br /> 
-          {
-            data.Intercultural_Operations.map((option :any, index:any)=>{
-              return (
-                <li>
-                  {option}
-                </li>
-              )  
-            })
-          }
+          <br />
+          <div className="text-start pl-2 pr-2 text-xl mt-10 mr-12">
+            {" "}
+            {data.Intercultural_Operations.map((option: any, index: any) => {
+              return <li>{option}</li>;
+            })}
+          </div>
         </div>
       ) : null}
 
       {soil ? (
         <div>
-          <span className="font-extrabold mr-[4%]">
-            Soil Conditions (Wet, irrigated, dry)
+          <span className="font-extrabold mr-[4%] text-2xl">
+            Soil Conditions
           </span>
-          <br /> {data.Soil_Conditions}
+          <br />{" "}
+          <div className="text-start pl-2 pr-2 text-xl mt-10">
+            <ul className="list-disc">
+              <li>{data.Soil_Conditions}</li>
+            </ul>
+          </div>
         </div>
       ) : null}
     </section>

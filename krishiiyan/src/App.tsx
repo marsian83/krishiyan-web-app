@@ -13,7 +13,7 @@ import Report from "./pages/pos/Report";
 import Purchase from "./pages/pos/Purchase";
 import Accounting from "./pages/pos/Accounting";
 import CropLibrary from "./pages/crop_advisary/CropLibrary";
-import CropLibraryAdmin from "./pages/crop_advisory_admin/CropLiberaryAdmin"
+import CropLibraryAdmin from "./pages/crop_advisory_admin/CropLiberaryAdmin";
 import CropCalendar from "./pages/crop_advisary/CropCalendar";
 import CropHealth from "./pages/crop_advisary/CropHealth";
 import FertiCal from "./pages/crop_advisary/FertiCal";
@@ -30,6 +30,7 @@ import ManageAccounting from "./pages/management/Accounting";
 import FPurchase from "./pages/farmer/Purchase";
 import LoginPage from "./pages/Authentication/LoginPage";
 import SignupPage from "./pages/Authentication/SignupPage";
+import ForgotPassword from "./pages/Authentication/ForgotPassword";
 import ProductBatches from "./pages/pos/ProductBatches";
 import OTPVerification from "./pages/farmer/OTPVerification";
 import { useEffect, useState } from "react";
@@ -50,6 +51,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         {/* <Route path="/login" element={<LoginPage />} /> */}
         <Route path="/" element={<AuthGuard />}>
           <Route
@@ -57,7 +59,7 @@ function App() {
             element={
               <>
                 <main className="h-screen w-screen grid grid-cols-[18%_82%]">
-                  <SideNavHandler/>
+                  <SideNavHandler />
                   <Sale />
                 </main>
               </>
@@ -112,9 +114,8 @@ function App() {
             path="/crop_library"
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
-                <SideNav menu={"crop_advisory"} submenu={"crop_library"} />{
-                  <CropLibraryHandler/>
-                }
+                <SideNav menu={"crop_advisory"} submenu={"crop_library"} />
+                {<CropLibraryHandler />}
               </main>
             }
           />
@@ -123,7 +124,7 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"crop_advisory"} submenu={"add_crop"} />
-                {<AddCrop/>}
+                {<AddCrop />}
               </main>
             }
           />
@@ -132,7 +133,7 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"crop_advisory"} submenu={"crop_calendar"} />
-                <CropCalenderHandler/>
+                <CropCalenderHandler />
               </main>
             }
           />
@@ -141,7 +142,7 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"crop_advisory"} submenu={"crop_health"} />
-                <CropHealthHandler/>
+                <CropHealthHandler />
               </main>
             }
           />

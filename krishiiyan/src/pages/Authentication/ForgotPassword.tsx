@@ -12,19 +12,18 @@ import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const SignupPage = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate();
 
   //Handlesubmit
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    let name = data.get("name");
     let email = data.get("email");
-    let pass = data.get("password");
-    let mobile = data.get("phone");
+    let newPass = data.get("password");
+    let otp = data.get("OTP");
 
-    const [err, res] = await Api.dealerRegistration(name, email, pass, mobile);
+    const [err, res] = await Api.forgotPassword(email, newPass, otp);
 
     if (err) {
       toast.error(err.data, {
@@ -36,7 +35,7 @@ const SignupPage = () => {
       localStorage.setItem("authToken", res?.data?.token);
       localStorage.setItem("dealerName", res?.data?.result?.name);
       navigate("/");
-      toast.success("Register Success !", {
+      toast.success("Password changed  !", {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
@@ -44,11 +43,6 @@ const SignupPage = () => {
   return (
     <>
       <Container component="main" maxWidth="xs">
-        <img
-          src="Images/logo.png"
-          alt="Ellipse"
-          className="mb-[50%] my-5 lg:w-10 xl:w-14 flex flex-col items-cente"
-        />
         <Box
           sx={{
             marginTop: 8,
@@ -58,7 +52,7 @@ const SignupPage = () => {
           }}
         >
           <Typography component="h1" variant="h5">
-            Sign Up
+            Change Password
           </Typography>
           <Box
             component="form"
@@ -67,25 +61,13 @@ const SignupPage = () => {
             sx={{ mt: 1 }}
           >
             <TextField
-              type="text"
+              type="email"
               margin="normal"
               required
               fullWidth
-              id="name"
-              label="Name"
-              name="name"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              type="email"
-              margin="normal"
-              fullWidth
-              id="email"
-              label="Email Address"
               name="email"
-              autoComplete="email"
-              autoFocus
+              label="email"
+              id="email"
             />
             <TextField
               type="password"
@@ -94,20 +76,9 @@ const SignupPage = () => {
               fullWidth
               name="password"
               label="Password"
-              id="password"
-              autoComplete="current-password"
+              id="newPass"
             />
 
-            <TextField
-              type="phone"
-              margin="normal"
-              required
-              fullWidth
-              name="phone"
-              label="Phone Number (e.g +919835717655)"
-              id="phone"
-              autoComplete="current-phone"
-            />
             <TextField
               type="otp"
               margin="normal"
@@ -123,7 +94,7 @@ const SignupPage = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              submit
             </Button>
             <Grid container>
               <Grid item>
@@ -157,4 +128,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default ForgotPassword;

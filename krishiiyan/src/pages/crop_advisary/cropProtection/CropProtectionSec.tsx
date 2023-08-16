@@ -108,7 +108,7 @@ const ProductionReqContent = (props: any) => {
             onClickLand();
             setOpenTab("Pest Management");
           }}
-          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
             openTab === "Pest Management" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
         >
@@ -119,7 +119,7 @@ const ProductionReqContent = (props: any) => {
             onDisease();
             setOpenTab("Disease Management");
           }}
-          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
             openTab === "Disease Management" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
         >
@@ -130,7 +130,7 @@ const ProductionReqContent = (props: any) => {
             onDeficiency();
             setOpenTab("Deficiency Management");
           }}
-          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
             openTab === "Deficiency Management"
               ? "bg-[#05AB2A]"
               : "bg-[#526D4E]"
@@ -143,7 +143,7 @@ const ProductionReqContent = (props: any) => {
             onClickWeedManagement();
             setOpenTab("weed Management");
           }}
-          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+          className={`text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
             openTab === "weed Management" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
         >
@@ -154,11 +154,11 @@ const ProductionReqContent = (props: any) => {
             onClickWeather();
             setOpenTab("weather Injuses");
           }}
-          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+          className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
             openTab === "weather Injuses" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
           }`}
         >
-          Weather Injuses
+          Weather Injuries
         </button>
       </div>
       <br />

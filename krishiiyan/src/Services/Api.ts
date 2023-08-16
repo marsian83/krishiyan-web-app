@@ -74,6 +74,31 @@ export async function dealerRegistration(
     return [errorObject, null];
   }
 }
+
+//Forgot password
+
+export async function forgotPassword(email: any, NewPassword: any, otp: any) {
+  try {
+    console.log(email, "object");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/auth/forgot-password`,
+      data: {
+        email: email,
+        Password: NewPassword,
+        otp: otp,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    console.log(response);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
 //Login
 export async function dealerLogin(email: any, password: any) {
   try {
@@ -542,9 +567,7 @@ export async function payCredit(
 }
 
 //Update payment status
-export async function updatePaymentStatus(
-  billNumber: string,
-) {
+export async function updatePaymentStatus(billNumber: string) {
   try {
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "post",
@@ -1257,16 +1280,13 @@ export async function getDealerReport() {
   }
 }
 
-
-
 /**********ADMIN********* */
 
 export async function adminRoleDisease(
-  localName:String , 
-  pest:String ,
-  images : String,
-  description : String ,
-  
+  localName: String,
+  pest: String,
+  images: String,
+  description: String
 ) {
   try {
     let token: any = localStorage.getItem("authToken");
@@ -1274,11 +1294,10 @@ export async function adminRoleDisease(
       method: "post",
       url: `${apiURL}/admin/role-admin/disease`,
       data: {
-        localName:localName,
-        pest:pest,
-        images:images,
-        description:description,
-
+        localName: localName,
+        pest: pest,
+        images: images,
+        description: description,
       },
       headers: { Authorization: "Bearer " + token },
     };

@@ -649,15 +649,15 @@ const Menu = (props: any) => {
 
   return (
     <>
-      <menu className="bg-[#F3FFF1] w-[55%] lg:w-[12vw] xl:w-[55%] flex flex-col items-center h-screen shadow-[4px_4px_20px_rgba(0,0,0,0.1)] h-full">
+      <menu className="bg-[#F3FFF1] w-[55%] lg:w-[12vw] xl:w-[55%] flex flex-col items-center  shadow-[4px_4px_20px_rgba(0,0,0,0.1)] h-full">
         <h2
-          className="text-[#13490A] text-md xl:text-lg font-roboto font-extrabold my-[4%] leading-5 text-right
+          className="text-[#13490A] text-md xl:text-m font-roboto font-extrabold my-[4%] leading-5 text-right
         drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
         >
           {props.Heading}
         </h2>
         <div className="absolute top-16">
-          <p className="text-[#49190A] text-xs font-roboto font-extrabold text-center lg:tracking-tighter">
+          <p className="text-[#49190A] text-xl font-roboto font-extrabold  text-center lg:tracking-tighter ">
             {props.Address}
           </p>
           <p className="text-[#49190A] text-xs font-roboto font-extrabold text-center lg:tracking-tighter">
@@ -671,10 +671,10 @@ const Menu = (props: any) => {
         <div className="absolute top-28">
           {props?.pos ? (
             <>
-              <ul className="text-center text-sm flex flex-col items-center">
+              <ul className="text-center text-sm flex flex-col items-center mt-[60%]">
                 <li
                   onClick={onClickSale}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     sale === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
                   }`}
                 >
@@ -682,7 +682,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickInventory}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     inventory === true
                       ? "bg-[#526D4E] mix-blend-hard-light"
                       : ""
@@ -692,7 +692,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickReport}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     report === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
                   }`}
                 >
@@ -700,7 +700,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickPurchase}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     purchase === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
                   }`}
                 >
@@ -708,7 +708,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickAccounting}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     accounting === true
                       ? "bg-[#526D4E] mix-blend-hard-light"
                       : ""
@@ -724,10 +724,10 @@ const Menu = (props: any) => {
           {/*  Crop Advisory */}
           {props?.crop ? (
             <>
-              <ul className="text-center text-[13px] flex flex-col items-center">
+              <ul className="text-center text-[18px] flex flex-col items-center mt-[75%]">
                 <li
                   onClick={onClickProduction}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     production === true
                       ? "bg-[#526D4E] mix-blend-hard-light"
                       : ""
@@ -737,7 +737,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickCalendar}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     calendar === true
                       ? "bg-[#526D4E] mix-blend-hard-light px-1"
                       : ""
@@ -747,7 +747,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickHealth}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     health === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
                   }`}
                 >
@@ -755,7 +755,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickCalculator}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     calculator === true
                       ? "bg-[#526D4E] mix-blend-hard-light"
                       : ""
@@ -765,7 +765,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickMarket}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     market === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
                   }`}
                 >
@@ -779,10 +779,10 @@ const Menu = (props: any) => {
           {/*  Farmer */}
           {props?.farm ? (
             <>
-              <ul className="text-center text-[13px] flex flex-col items-center">
+              <ul className="text-center text-[18px] flex flex-col items-center mt-[58%]">
                 <li
                   onClick={onClickDashboard}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     dashboard === true
                       ? "bg-[#526D4E] mix-blend-hard-light"
                       : ""
@@ -792,7 +792,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickFarmPurchase}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     farmPurchase === true
                       ? "bg-[#526D4E] mix-blend-hard-light"
                       : ""
@@ -802,7 +802,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickCultivation}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     cultivation === true
                       ? "bg-[#526D4E] mix-blend-hard-light"
                       : ""
@@ -812,7 +812,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickCredit}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     credit === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
                   }`}
                 >
@@ -820,7 +820,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickSupport}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     support === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
                   }`}
                 >
@@ -828,7 +828,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickNewRegistration}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     newRegistration === true
                       ? "bg-[#526D4E] mix-blend-hard-light"
                       : ""
@@ -845,10 +845,10 @@ const Menu = (props: any) => {
           {/*  Management */}
           {props?.manage ? (
             <>
-              <ul className="text-center text-[13px] flex flex-col items-center">
+              <ul className="text-center text-[18px] flex flex-col items-center mt-[55%]">
                 <li
                   onClick={onClickManageAccounting}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     newRegistration === true
                       ? "bg-[#526D4E] mix-blend-hard-light"
                       : ""
@@ -865,10 +865,10 @@ const Menu = (props: any) => {
           {/*  Help */}
           {props?.help ? (
             <>
-              <ul className="text-center text-[13px] flex flex-col items-center">
+              <ul className="text-center text-[18px] flex flex-col items-center mt-[100%]">
                 <li
                   onClick={onClickProblem}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     problem === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
                   }`}
                 >
@@ -876,7 +876,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickExpert}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     expert === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
                   }`}
                 >
@@ -884,7 +884,7 @@ const Menu = (props: any) => {
                 </li>
                 <li
                   onClick={onClickGuide}
-                  className={`text-[#13490A] w-full font-semibold font-roboto text-[13px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
+                  className={`text-[#13490A] w-full font-semibold font-roboto text-[18px] cursor-pointer my-1 px-0.5 py-2 rounded-lg ${
                     guide === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
                   }`}
                 >

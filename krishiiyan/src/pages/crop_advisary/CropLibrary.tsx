@@ -233,7 +233,7 @@ const CropLibrary = () => {
             )}
           /> */}
           {/* <label className="text-[#13490A] text-center">Select your Crop</label> */}
-          <label className="text-[#13490A] font-roboto font-extrabold text-sm flex justify-center">
+          <label className="text-[#13490A] font-roboto font-extrabold text-m flex justify-center">
             Select your Crop
           </label>
 
@@ -260,17 +260,17 @@ const CropLibrary = () => {
               style={{ marginTop: "10px", marginLeft: "20px" }}
               type="submit"
               disabled={loading}
-              className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-full rounded text-sm font-thin"
+              className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-full rounded text-m font-thin"
             >
               {/* <Loader /> */}
               Fetching Info...
             </button>
           ) : (
             <button
-              style={{ marginTop: "8px", marginLeft: "5px", padding: "10px" }}
+              style={{ marginLeft: "20px", padding: "10px" }}
               type="submit"
               onClick={onSubmit}
-              className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
+              className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-m font-thin"
             >
               Submit
             </button>
@@ -300,64 +300,64 @@ const CropLibrary = () => {
           ?.map((obj: any) => (
             <>
               <section className="pl-3 pt-3">
-                <h2 className="mx-[30%] text-[#13490A] font-extrabold mb-3">
+                <h2 className="mx-[30%] text-[#13490A] font-extrabold mb-3 text-2xl">
                   {obj?.localName}
                 </h2>
-                <div className="flex rounded-md mb-1 gap-2 btn">
+                <div className="flex rounded-md mb-1 gap-10 btn">
                   <button
                     onClick={() => {
                       onClickGeneral();
                       setOpenTab("Genral");
                     }}
-                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
                       openTab === "Genral" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
                     }`}
                   >
-                    General
+                    General Information
                   </button>
                   <button
                     onClick={() => {
                       onClickvarietyTab();
                       setOpenTab("Variety");
                     }}
-                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-thin ${
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
                       openTab === "Variety" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
                     }`}
                   >
-                    Variety
+                    Varieties
                   </button>
                   <button
                     onClick={() => {
                       onClickrequirement();
                       setOpenTab("Pre Sowing practius");
                     }}
-                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1  rounded text-sm font-thin ${
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
                       openTab === "Pre Sowing practius"
                         ? "bg-[#05AB2A]"
                         : "bg-[#526D4E]"
                     }`}
                   >
-                    Pre Sowing Practius
+                    Pre-sowing practices
                   </button>
                   <button
                     onClick={() => {
                       onClicknitrient();
                       setOpenTab("Natrient Management");
                     }}
-                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+                    className={`  text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
                       openTab === "Natrient Management"
                         ? "bg-[#05AB2A]"
                         : "bg-[#526D4E]"
                     }`}
                   >
-                    Natrient Management
+                    Nutrient Management
                   </button>
                   <button
                     onClick={() => {
                       onClicCropProtection();
                       setOpenTab("crop protection");
                     }}
-                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
                       openTab === "crop protection"
                         ? "bg-[#05AB2A]"
                         : "bg-[#526D4E]"
@@ -370,18 +370,18 @@ const CropLibrary = () => {
                       onClickIrrigation();
                       setOpenTab("Irrigation");
                     }}
-                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+                    className={`  text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
                       openTab === "Irrigation" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
                     }`}
                   >
-                    Irrigation
+                    Irrigation Management
                   </button>
                   <button
                     onClick={() => {
                       onClickHervest();
                       setOpenTab("Harvest");
                     }}
-                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
                       openTab === "Harvest" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
                     }`}
                   >
@@ -392,11 +392,11 @@ const CropLibrary = () => {
                       onClickFaq();
                       setOpenTab("FAQ");
                     }}
-                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[6vw] rounded text-sm font-thin ${
+                    className={` text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] w-[10vw] py-1 px-3 rounded text-sm font-medium ${
                       openTab === "FAQ" ? "bg-[#05AB2A]" : "bg-[#526D4E]"
                     }`}
                   >
-                    FAQ
+                    FAQs
                   </button>
                 </div>
                 <div className="p-4">
@@ -411,24 +411,26 @@ const CropLibrary = () => {
                           marginRight: "20px",
                         }}
                       >
-                        {
-                          obj.stages.map((stage : any, index:any)=>{
-                            return(
-                              <figure>
-                                {
-                                  stage.images.map((image:any, index:any)=> {
-                                 return (
-
-                                   <img src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(image)}`} />
-                                   // <img src={image}/>
-                                   )
-                                  })
-                                }
-                                <figcaption>{stage.name}</figcaption>
-                              </figure>
-                            )
-                          })
-                        }
+                        {obj.stages.map((stage: any, index: any) => {
+                          return (
+                            <figure>
+                              {stage.images.map((image: any, index: any) => {
+                                return (
+                                  <img
+                                    style={{ width: 250, height: 250 }}
+                                    src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(
+                                      image
+                                    )}`}
+                                  />
+                                  // <img src={image}/>
+                                );
+                              })}
+                              <figcaption style={{ fontSize: 25 }}>
+                                {stage.name}
+                              </figcaption>
+                            </figure>
+                          );
+                        })}
 
                         {/* <figure>
                           <img
@@ -461,116 +463,116 @@ const CropLibrary = () => {
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
                       >
-                        <table className="table-auto border-collapse border border-black font-bold text-base w-[60%] mx-auto">
+                        <table className="table-auto border-collapse border border-black font-bold text-base w-[80%] mx-auto">
                           <thead className="border-b border-black">
                             <tr className="text-center">
-                              <th className="border-r border-black py-[1.2%] text-lg">
+                              <th className="border-r border-black py-[1.2%] text-2xl font-extrabold w-[25%]">
                                 Parameter
                               </th>
-                              <th className="border-r border-black py-[1.2%] text-lg">
-                                Speafication
+                              <th className="border-r border-black py-[1.2%] text-2xl font-extrabold">
+                                Specifications
                               </th>
                             </tr>
                           </thead>
                           <tbody>
                             {/* Stage1 */}
                             <tr className="h-10 border-b border-black">
-                              <td className="border-r border-black text-start pl-2 font-semibold pr-2 ">
+                              <td className="border-r border-black text-start pl-2 font-semibold pr-2 text-xl ">
                                 Kharif (Sowing Month)
                               </td>
 
-                              <td className="border-r border-black font-thin">
+                              <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
                                 {/* {farmerDetail?.totalLandArea || "-"} */}
                                 {obj.generalInformation.Kharif}
                               </td>
                             </tr>
                             <tr className="h-10 border-b border-black">
-                              <td className="border-r border-black text-start pl-2 pr-2">
+                              <td className="border-r border-black text-start pl-2 pr-2 text-xl">
                                 Rabi (Sowing Month)
                               </td>
 
-                              <td className="border-r border-black font-thin">
+                              <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
                                 {obj.generalInformation.Rabi}
                               </td>
                             </tr>
                             <tr className="h-10 border-b border-black">
-                              <td className="border-r border-black text-start pl-2 pr-2">
+                              <td className="border-r border-black text-start pl-2 pr-2 text-xl">
                                 Zaid (Sowing Month)
                               </td>
 
-                              <td className="border-r border-black font-thin">
+                              <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
                                 {obj.generalInformation.Zaid}
                               </td>
                             </tr>
                             <tr className="h-10 border-b border-black">
-                              <td className="border-r border-black text-start pl-2 pr-2">
+                              <td className="border-r border-black text-start pl-2 pr-2 text-xl">
                                 Optimum temperature ( ° C) for growing
                               </td>
 
-                              <td className="border-r border-black font-thin">
+                              <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
                                 {obj.generalInformation.Optimum_temperature}
                               </td>
                             </tr>
                             <tr className="h-10 border-b border-black">
-                              <td className="border-r border-black text-start pl-2 pr-2">
+                              <td className="border-r border-black text-start pl-2 pr-2 text-xl">
                                 Rainfall requirement (mm)
                               </td>
 
-                              <td className="border-r border-black font-thin pr-2">
+                              <td className="border-r border-black font-thin  text-start pl-2 pr-2 text-xl">
                                 {obj.generalInformation.Rainfall_requirement}
                               </td>
                             </tr>
                             <tr className="h-10 border-b border-black">
-                              <td className="border-r border-black text-start pl-2 pr-2">
+                              <td className="border-r border-black text-start pl-2 pr-2 text-xl ">
                                 Recommended soil
                               </td>
 
-                              <td className="border-r border-black font-thin pr-2">
+                              <td className="border-r border-black font-thin  text-start pl-2 pr-2 text-xl">
                                 {obj.generalInformation.Recommended_soil}
                               </td>
                             </tr>
                             <tr className="h-10 border-b border-black">
-                              <td className="border-r border-black text-start pl-2 pr-2">
+                              <td className="border-r border-black text-start pl-2 pr-2 text-xl">
                                 pH of the soil
                               </td>
 
-                              <td className="border-r border-black font-thin">
+                              <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
                                 {obj.generalInformation.pH_soil}
                               </td>
                             </tr>
                             <tr className="h-10 border-b border-black">
-                              <td className="border-r border-black text-start pl-2 pr-2">
+                              <td className="border-r border-black text-start pl-2 pr-2 text-xl">
                                 Spacing (row * plant )(cm *cm)
                               </td>
 
-                              <td className="border-r border-black font-thin">
+                              <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
                                 {obj.generalInformation.Spacing}
                               </td>
                             </tr>
                             <tr className="h-10 border-b border-black">
-                              <td className="border-r border-black text-start pl-2 pr-2">
+                              <td className="border-r border-black text-start pl-2 pr-2 text-xl">
                                 Seed rate (kg/ acre)
                               </td>
 
-                              <td className="border-r border-black font-thin">
+                              <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
                                 {obj.generalInformation.Seed_rate}
                               </td>
                             </tr>
                             <tr className="h-10 border-b border-black">
-                              <td className="border-r border-black text-start pl-2 pr-2">
+                              <td className="border-r border-black text-start pl-2 pr-2 text-xl">
                                 Average yield (Quintal /acre)
                               </td>
 
-                              <td className="border-r border-black font-thin">
+                              <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
                                 {obj.generalInformation.Average_yield}
                               </td>
                             </tr>
                             <tr className="h-10 border-b border-black">
-                              <td className="border-r border-black text-start pl-2 pr-2">
+                              <td className="border-r border-black text-start pl-2 pr-2 text-xl">
                                 Intercrop details and pattern
                               </td>
 
-                              <td className="border-r border-black font-thin">
+                              <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
                                 {obj.generalInformation.Intercrop}
                               </td>
                             </tr>
