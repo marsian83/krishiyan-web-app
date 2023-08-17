@@ -29,12 +29,15 @@ const CropCalendar = () => {
   const [loading, setLoading] = useState(false);
 
   const onChangePlantationType = (e: any, value: any) => {
-    setLocalsName(value.localName);
+    setLocalsName(e.target.value);
+    console.log(localsName);
   };
 
   const onChangedateOfSowing = (e: any) => {
-    let date = moment(e.target.value).toDate(); //ISO 8601 format
-    setDateOfSowing(date);
+    let date = e.target.value; //ISO 8601 forma
+    console.log(date.toString());
+    setDateOfSowing(date.toString());
+    console.log(e.target.value);
   };
 
   const getCrops = async () => {
@@ -95,6 +98,19 @@ const CropCalendar = () => {
     };
     init();
   }, []);
+
+  const getCropStages = async () => {
+    const data = await fetch(
+      process.env.REACT_APP_BASE_URL +
+        "/cropCalender/" +
+        localsName +
+        "/" +
+        dateOfSowing,
+      {
+        method: "GET",
+      }
+    );
+  };
   return (
     <div>
       <Header title="Crop Advisory" subtitle="Crop Calendar" />
