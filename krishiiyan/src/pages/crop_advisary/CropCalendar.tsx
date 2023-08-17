@@ -22,22 +22,21 @@ const PlantationOptions = [
 
 const CropCalendar = () => {
   const [crops, setCrops] = useState<any>();
-  const [localsName, setLocalsName] = useState<any>();
+  const [localsName, setLocalsName] = useState<string>("");
   const [scientficCrop, setScientificCrop] = useState<any>("");
   const [dateOfSowing, setDateOfSowing] = useState<any>("");
   const [cropDetails, setCropDetails] = useState<any>();
   const [loading, setLoading] = useState(false);
 
-  const onChangePlantationType = (e: any, value: any) => {
-    setLocalsName(e.target.value);
-    console.log(localsName);
-  };
+  const onChangePlantationType = (e: any, value: any) => {  
+  console.log(value.localName); // This should log the selected value
+  setLocalsName(value.localName);};
 
   const onChangedateOfSowing = (e: any) => {
-    let date = e.target.value; //ISO 8601 forma
-    console.log(date.toString());
-    setDateOfSowing(date.toString());
-    console.log(e.target.value);
+    let date = e.target.value;
+    const dateInString = date.toString();
+    console.log(dateInString)
+    setDateOfSowing(dateInString);
   };
 
   const getCrops = async () => {
@@ -53,44 +52,44 @@ const CropCalendar = () => {
     }
   };
 
-  const getcropCalender = async (
-    localName: any,
-    scientficCrop: any,
-    dateOfSowing: number | null = null
-  ) => {
-    if (localName || scientficCrop) {
-      setLoading(true);
-      const [err, res] = await Api.getCropsbyName(
-        localName,
-        scientficCrop,
-        dateOfSowing
-      );
+  // const getcropCalender = async (
+  //   localName: any,
+  //   scientficCrop: any,
+  //   dateOfSowing: number | null = null
+  // ) => {
+  //   if (localName || scientficCrop) {
+  //     setLoading(true);
+  //     const [err, res] = await Api.getCropsbyName(
+  //       localName,
+  //       scientficCrop,
+  //       dateOfSowing
+  //     );
 
-      if (err) {
-        console.log(err);
-        toast.error(err.data, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
-      if (res) {
-        console.log(res);
-        if (res?.data === null) {
-          toast.error("crop not found!", {
-            position: toast.POSITION.TOP_RIGHT,
-          });
-        }
-        console.log(res, "Res");
-        setCropDetails(res?.data);
-      }
+  //     if (err) {
+  //       console.log(err);
+  //       toast.error(err.data, {
+  //         position: toast.POSITION.TOP_RIGHT,
+  //       });
+  //     }
+  //     if (res) {
+  //       console.log(res);
+  //       if (res?.data === null) {
+  //         toast.error("crop not found!", {
+  //           position: toast.POSITION.TOP_RIGHT,
+  //         });
+  //       }
+  //       console.log(res, "Res");
+  //       setCropDetails(res?.data);
+  //     }
 
-      setLoading(false);
-    }
-  };
-  const onSubmit = async () => {
-    // const res = await Api.(localsName,scientficCrop );
-    const res = await getcropCalender(localsName, scientficCrop, dateOfSowing);
-    // await getcropName();
-  };
+  //     setLoading(false);
+  //   }
+  // };
+  // const onSubmit = async () => {
+  //   // const res = await Api.(localsName,scientficCrop );
+  //   const res = await getcropCalender(localsName, scientficCrop, dateOfSowing);
+  //   // await getcropName();
+  // };
 
   useEffect(() => {
     const init = async () => {
@@ -100,16 +99,29 @@ const CropCalendar = () => {
   }, []);
 
   const getCropStages = async () => {
-    const data = await fetch(
-      process.env.REACT_APP_BASE_URL +
-        "/cropCalender/" +
+    console.log(
+      process.env.REACT_APP_BACKEND_URL +
+        "cropCalendar/stage/" +
+        localsName +
+        "/" +
+        dateOfSowing)
+    const CropData = await fetch(
+      process.env.REACT_APP_BACKEND_URL +
+        "cropCalendar/stage/" +
         localsName +
         "/" +
         dateOfSowing,
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
+    console.log(CropData);
+    const CropDataJson = await CropData.json();
+    console.log(CropDataJson);
+    setCropDetails(CropDataJson.cropStages);
   };
   return (
     <div>
@@ -187,9 +199,9 @@ const CropCalendar = () => {
               <button
                 style={{ padding: "9px" }}
                 type="submit"
-                onClick={onSubmit}
+                onClick={getCropStages}
                 className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
-              >
+              >                                                                                           
                 ENTER
               </button>
             )}

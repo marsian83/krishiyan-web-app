@@ -559,7 +559,7 @@ router.post("/role-admin/nutrient/deficiency/add", async (req, res) => {
     csv = {},
   } = req.body; //array of [{question,answer}]
   try {
-    if (!Objects.keys(csv).length) {
+    if (!Object.keys(csv).length) {
       if (!localName && !scientificName)
         throw new Error("localName or scientificName are required");
       const query = localName ? { localName } : { scientificName };
@@ -587,7 +587,44 @@ router.post("/role-admin/nutrient/deficiency/add", async (req, res) => {
       await crop.save();
       res.status(201).json({ crop, message: "nutrient deficiency added!" });
     } else {
-      res.status(201).json({ message: "csv" });
+      csv = csv.data;
+      for (let i = 1; i < csv.length; i++) {
+        let cropModel = {};
+        let lName = "",
+          nutI = -1,
+          deficiency = {};
+        if (!csv[i][0].length) break;
+        for (let j = 0; j < csv[i].length; j++) {
+          if (j === 0) {
+            lName = csv[i][j].trim();
+            if (lName) {
+              cropModel = await Crop.findOne({
+                localName: { $regex: lName, $options: "i" },
+              });
+              continue;
+            }
+          } else if (csv[0][j] == "nutrient") {
+            nutI = cropModel.nutrient.findIndex(
+              (ob) => ob.name == csv[i][j].trim()
+            );
+            if (nutI == -1) {
+              cropModel.nutrient.push({
+                name: csv[i][j].trim(),
+                deficiency: {},
+              });
+              nutI = 0;
+            }
+          } else if (csv[0][j] == "role") {
+            cropModel.nutrient[nutI].role = csv[i][j];
+          } else {
+            deficiency[csv[0][j]] = csv[i][j];
+          }
+        }
+        if (!cropModel) continue;
+        cropModel.nutrient[nutI].deficiency = deficiency;
+        await cropModel.save();
+      }
+      res.status(200).json({ msg: "csv file uploaded" });
     }
   } catch (e) {
     return res.status(500).json({ msg: e.message });
