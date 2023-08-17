@@ -41,6 +41,7 @@ app.use("/api/check-superAdmin", tokenAuth, superAdminAuthorizer); // for fronte
 
 // app.use("/api/farmer", require("./routes/farmer")); //Farmer Api
 app.use("/api/crop", require("./routes/crop")); //Crop Api
+app.use("/api/cropCalendar", require("./routes/cropCalendar")); //Crop Api
 app.use("/api/varitie", require("./routes/varities")); //varities Api
 app.use("/api/pest", require("./routes/pest")); //Pest Api
 app.use("/api/pesticide", require("./routes/pesticide")); //Pesticide Api

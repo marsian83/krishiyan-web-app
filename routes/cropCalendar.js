@@ -38,7 +38,8 @@ router.post("/role-admin/stage/add", async (req, res, next) => {
       for (let i = 1; i < csv.length; i++) {
         // console.log(csv[i][0]);
         let cropModel = {};
-        let stage = {};
+        let stage = {},
+          stageIn = 0;
         if (!csv[i][0].length) break;
         for (let j = 0; j < csv[i].length; j++) {
           if (j === 0) {
@@ -51,21 +52,43 @@ router.post("/role-admin/stage/add", async (req, res, next) => {
               break;
             }
           } else if (csv[0][j] == "sn") {
-            let stageIn = cropModel.stages.findIndex((stage) => {
+            stageIn = cropModel.stages.findIndex((stage) => {
               return stage.sn == csv[i][j];
             });
             if (stageIn == -1) throw new Error("stage not found");
             stage = cropModel.stages[stageIn];
-          } else if (csv[0][j].contains("age")) {
-            stage.csv[0][j] = +csv[i][j];
+          } else if (csv[0][j].includes("age")) {
+            stage[csv[0][j]] = +csv[i][j];
+          } else if (csv[0][j] == "Fertilizer") {
+            stage["Fertilizer"].Dosage = csv[i][j];
           } else {
             stage[csv[0][j]] = csv[i][j];
           }
         }
-        if (cropModel) await cropModel.save();
+        if (cropModel) {
+          cropModel.stages[stageIn] = stage;
+          await cropModel.save();
+        }
       }
       res.status(201).json({ message: "bulk uploaded " });
     }
+  } catch (e) {
+    return res.status(500).json({ msg: e.message });
+  }
+});
+
+router.get("/stage/:localName/:date", async (req, res, next) => {
+  try {
+    const { date, localName } = req.params;
+    const dateMoment = moment(date).format("DD-MMM-YYYY");
+    const crop = await Crop.findOne({ localName }).lean();
+    const currentMoment = moment(date);
+    for (let stage of crop.stages) {
+      const dateOfStage = moment(currentMoment).format("DD-MMM-YYYY");
+      currentMoment.add(stage.upperLimit_age, "days");
+      stage.date = dateOfStage;
+    }
+    res.status(200).json({ cropStages: crop.stages });
   } catch (e) {
     return res.status(500).json({ msg: e.message });
   }
