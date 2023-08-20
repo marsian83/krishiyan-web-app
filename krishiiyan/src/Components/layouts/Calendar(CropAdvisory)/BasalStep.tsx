@@ -1,6 +1,13 @@
 import React from "react";
+import { extractCodeFromDriveLink } from "../../../handleImageCode";
 
 const BasalStep = (props: any) => {
+  console.log(props.cropDetails)
+  if(Object.keys(props.cropDetails).length === 0){
+    return <>
+      Loading...
+    </>
+  }
   return (
     <>
       <div
@@ -11,29 +18,36 @@ const BasalStep = (props: any) => {
         }}
       >
         <div>
+              <br/>
+              {
+                props?.cropDetails?.date
+              }
+              <br/>
+              <br/>
+              <br/>
           <div style={{ display: "Flex", justifyContent: "space-between" }}>
             <p>
               Name Of the Stage:
               <br />
               {
-                props?.cropDetails?.cropStage[props.stage]?.Name_of_the_Stage
-                  ?.name
+                props?.cropDetails?.name
               }
             </p>
-            <img
-              style={{ width: "200px", height: "200px", marginRight: "20px" }}
-              src={
-                props?.cropDetails?.cropStage[props.stage]?.Name_of_the_Stage
-                  ?.image
+        {
+                props?.cropDetails?.images.map((img:any , index : any)=>{
+                  return (
+                    <img src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(img)}`} style={{ marginTop: "20px" ,width:"200px", height:"200px", objectFit:"cover" }} />
+                  )
+                })
               }
-            />
+        
           </div>
 
-          <p>
+          {/* <p>
             Description:
             <br /> {props?.cropDetails?.cropStage[props.stage]?.Description}
           </p>
-          <br />
+          <br /> */}
           {/* <p>NutrientContains: </p>
           <br /> */}
           <div
@@ -45,18 +59,23 @@ const BasalStep = (props: any) => {
           >
             <p>
               Disease Infection: <br />
+              <ul>
               {
-                props?.cropDetails?.cropStage[props.stage]?.Disease_Infection
-                  ?.Data
+                props?.cropDetails?.disease.map((disease :any, i:number)=>{
+                  return (
+                    <li>{disease}</li>
+                  )
+                })
               }
+              </ul>
             </p>
-            <img
+            {/* <img
               style={{ width: "200px", height: "200px", marginRight: "20px" }}
               src={
                 props?.cropDetails?.cropStage[props.stage]?.Disease_Infection
                   ?.image
               }
-            />
+            /> */}
           </div>
 
           <br />
@@ -69,45 +88,61 @@ const BasalStep = (props: any) => {
           ></div>
           <p>
             Pest Infestation: <br />
-            {props?.cropDetails?.cropStage[props.stage]?.Pest_infestation?.Data}
+            {props?.cropDetails?.pest}
           </p>
-          <img
-            style={{ width: "200px", height: "200px", marginRight: "20px" }}
-            src={
-              props?.cropDetails?.cropStage[props.stage]?.Pest_infestation
-                ?.image
-            }
-          />
           <br />
           <p>
             Fertilizer: <br />
-            {props?.cropDetails?.cropStage[props.stage]?.Fertilizer?.Data}
+            {props?.cropDetails?.Fertilizer.Dosage}
           </p>
+           {
+                props?.cropDetails?.Fertilizer.images.map((img:any , index : any)=>{
+                  return (
+                    <img src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(img)}`} style={{ marginTop: "20px" ,width:"200px", height:"200px", objectFit:"cover" }} />
+                  )
+                })
+              }
+        
           <br />
+          <p>
+              Weed: <br />
+              <ul>
+              {
+                props?.cropDetails?.weed.map((disease :any, i:number)=>{
+                  return (
+                    <li>{disease}</li>
+                  )
+                })
+              }
+              </ul>
+            </p>
+            <br/>
+            <p>
+              Intercultutal operations: <br />
+              {
+                props?.cropDetails?.interculturalOperation
+              }
+            </p>
+          {/*
           <p>
             Weed Mangement: <br />
-            {props?.cropDetails?.cropStage[props.stage]?.Weed_mangement?.Data}
+            {props?.cropDetails?.weed.map((eachWeed : any, index:number) => {
+              return (
+                <div>{eachWeed}</div>
+              )
+            })
+            }
           </p>
           <br />
           <p>
-            Important Activity: <br />
-            {props?.cropDetails?.cultivationStage?.basal?.importantActivity}
-          </p>
-          <br />
-          {/* <p>
             DiseaseManagement:{" "}
             {props?.cropDetails?.cultivationStage?.basal?.diseaseManagement}
           </p>
           <p>
             InterculturalOperation:{" "}
             {
-              props?.cropDetails?.cultivationStage?.basal
-                ?.interculturalOperation
+              props?.cropDetails?.interculturalOperation
             }
-          </p>
-          <p>
-            SynpfomImage:{" "}
-            {props?.cropDetails?.cultivationStage?.basal?.synpfomImage}
           </p> */}
           <br />
         </div>

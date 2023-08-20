@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../Components/layouts/Header";
 import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
-import HorizontalNonLinearStepper from "../../Components/themes/Stepper";
+import HorizontalNonLinearStepper from "../Stepper";
 import "react-toastify/dist/ReactToastify.css";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -122,6 +122,7 @@ const CropCalendar = () => {
     const CropDataJson = await CropData.json();
     console.log(CropDataJson);
     setCropDetails(CropDataJson.cropStages);
+    console.log(cropDetails)
   };
   return (
     <div>
@@ -209,7 +210,7 @@ const CropCalendar = () => {
         </div>
 
         <div className="my-10">
-          {cropDetails
+          {/* {cropDetails
             // ?.filter((val: any) => {
             //   if (crop === "") {
             //     return;
@@ -223,10 +224,13 @@ const CropCalendar = () => {
               <>
                 <h2 className="text-[#13490A] font-extrabold mb-3 text-center">
                   {obj?.localName}
-                </h2>
-                <HorizontalNonLinearStepper cropDetails={obj} />
-              </>
-            ))}
+                </h2> */}
+                {
+                  cropDetails && 
+                  <HorizontalNonLinearStepper cropDetails={cropDetails} />
+                }
+              {/* </>
+            ))} */}
         </div>
       </section>
     </div>

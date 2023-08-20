@@ -62,6 +62,7 @@ export default function HorizontalNonLinearStepper(props: any) {
   const completedRef = useRef<any>();
   const stepsRef = useRef<any>();
   const { timeLine } = props?.cropDetails;
+  console.log(props.cropDetails)
 
   useEffect(() => {
     completedRef.current = completed;
@@ -76,7 +77,7 @@ export default function HorizontalNonLinearStepper(props: any) {
     let Stages = props?.cropDetails?.cropStage;
     const Steps = Object.values(Stages);
     setSteps(Steps);
-    // console.log(Steps, "it is steps");
+    console.log(Steps, "it is steps");
   }, [props?.cropDetails]);
 
   useEffect(() => {
