@@ -13,7 +13,7 @@ const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad']
 export default function HorizontalLinearStepper({cropDetails} : any) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
-  const [activeDetails , setActiveDetails] = React.useState<any>(cropDetails[0]);
+  const [activeDetails , setActiveDetails] = React.useState<any>(cropDetails[activeStep]);
     console.log(cropDetails)
   const isStepOptional = (step: number) => {
     return step === 1;
@@ -48,7 +48,7 @@ export default function HorizontalLinearStepper({cropDetails} : any) {
           );
         })}
       </Stepper>
-      {activeStep === steps.length ? (
+      {activeStep === steps.length+1 ? (
         <React.Fragment>
           <Typography sx={{ mt: 2, mb: 1 }}>
             All steps completed - you&apos;re finished
