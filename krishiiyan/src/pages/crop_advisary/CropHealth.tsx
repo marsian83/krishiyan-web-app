@@ -50,8 +50,8 @@ const CropHealth = () => {
   const [variety, setVariety] = useState("");
   const [selectedIssue, setSelectedIssue] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const [solution , setSolution] = useState<any>();
-  const [solutionDetails , setSolutionDetails] = useState<any>();
+  const [solution, setSolution] = useState<any>();
+  const [solutionDetails, setSolutionDetails] = useState<any>();
 
   let navigate = useNavigate();
   // navigate("/support")
@@ -60,19 +60,16 @@ const CropHealth = () => {
   };
   const onChangechooseType = (e: any) => {
     console.log(e.target.value);
-    if(e.target.value == "Pest"){
+    if (e.target.value == "Pest") {
       setSelectedIssue("pest");
-      setSolution("pesticide")
-    }
-    else if(e.target.value == "Diseases"){
+      setSolution("pesticide");
+    } else if (e.target.value == "Diseases") {
       setSelectedIssue("disease");
-      setSolution("fungicide")
-    }
-    else if(e.target.value == "Weeds"){
+      setSolution("fungicide");
+    } else if (e.target.value == "Weeds") {
       setSelectedIssue("weed");
-      setSolution("herbicide")
+      setSolution("herbicide");
     }
-
   };
 
   const getCrops = async () => {
@@ -120,23 +117,26 @@ const CropHealth = () => {
   };
 
   const onSubmit = async () => {
-    console.log(selectedIssue, localsName)
+    console.log(selectedIssue, localsName);
     console.log("onclick ...........................");
     try {
-      const res = await fetch(process.env.REACT_APP_BACKEND_URL + `cropHealth/${selectedIssue}/${localsName}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("authToken"),
-        },
-      })
+      const res = await fetch(
+        process.env.REACT_APP_BACKEND_URL +
+          `cropHealth/${selectedIssue}/${localsName}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("authToken"),
+          },
+        }
+      );
       const data = await res.json();
       console.log(data);
       if (data) {
         setCropDetails(data);
         return;
-      }
-      else{
+      } else {
         toast.error("No data found!", {
           position: toast.POSITION.TOP_RIGHT,
         });
@@ -156,24 +156,25 @@ const CropHealth = () => {
   }, []);
 
   /****Solutions **** */
-  const apiUrl = process.env.REACT_APP_BACKEND_URL+ `cropHealth/${solution}/`;
+  const apiUrl = process.env.REACT_APP_BACKEND_URL + `cropHealth/${solution}/`;
 
-    // Function to fetch data for a specific solution (pesticide, fungicide, or herbicide)
-    const fetchSolutionData = async (solutionId : any) => {
-      console.log(solution)
-      try {
-        const response = await fetch(apiUrl + solutionId);
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.error('Error fetching solution data:', error);
-      }
-    };
-    const fetchDetailsForIds = async (ids:any) => {
-      const details = await Promise.all(ids.map((id:any) => fetchSolutionData(id)));
-      return details;
-    };
-
+  // Function to fetch data for a specific solution (pesticide, fungicide, or herbicide)
+  const fetchSolutionData = async (solutionId: any) => {
+    console.log(solution);
+    try {
+      const response = await fetch(apiUrl + solutionId);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching solution data:", error);
+    }
+  };
+  const fetchDetailsForIds = async (ids: any) => {
+    const details = await Promise.all(
+      ids.map((id: any) => fetchSolutionData(id))
+    );
+    return details;
+  };
 
   return (
     <div>
@@ -280,85 +281,85 @@ const CropHealth = () => {
             )}
           </div>
         </div>
-            <>
-              <table className="table-fixed border-collapse border border-black font-bold text-base mx-auto">
-                <thead className="border-b border-black">
-                  <tr className="text-center">
-                    <th className="border-r border-black py-[1.2%]">Name</th>
-                    <th className="border-r border-black py-[1.2%]">Image</th>
-                    <th className="border-r border-black py-[1.2%]">
-                      Description
-                    </th>
-                    <th className="border-r border-black py-[1.2%]">
-                      Solution
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    console.log(cropDetails)
-                  }
-                  {cropDetails && cropDetails.map((curr: any) => {
-                    return (
-                      <tr className="border-b border-black text-center">
-                        <td className="border-r border-black">{curr.name}</td>
-                        <td className="border-r border-black">
-                          <div className="grid grid-cols-[50%_50%]">
-                            <img
-                              src={curr?.image}
-                              alt="Image"
-                              className="h-full"
-                            />
-                            {/* <img src={curr?.image} alt="image" className="h-full" /> */}
-                          </div>
-                        </td>
-                        <td className="border-r border-black w-[35%]">
-                          {curr.description}
-                        </td>
-                        <td className="border-r border-black flex flex-col justify-center items-center">
-                          {
-                            selectedIssue == "pest" &&
-                            curr.pesticidesIds.map((sol : any , index : number) =>{
-                              return (
-                                <li>
-                                  <h6>{sol.name}</h6>
-                                  <h6>{sol.inventory}</h6>
-                                  <h6>{sol.type}</h6>
-                                </li>
-                              )
-                            })
-                          }
-                          {
-                            selectedIssue == "disease" &&
-                            curr.fungicidesIds.map((sol : any , index : number) =>{
-                              return (
-                                <li>
-                                  <h6>{sol.name}</h6>
-                                  <h6>{sol.inventory}</h6>
-                                  <h6>{sol.type}</h6>
-                                </li>
-                              )
-                            })
-                          }
-                          {
-                            selectedIssue == "weed" &&
-                            curr.herbicidesIds.map((sol : any , index : number) =>{
-                              return (
-                                <li>
-                                  <h6>{sol.name}</h6>
-                                  <h6>{sol.inventory}</h6>
-                                  <h6>{sol.type}</h6>
-                                </li>
-                              )
-                            })
-                          }
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </>
+        <>
+          <table className="table-fixed border-collapse border border-black font-bold text-base mx-auto">
+            <thead className="border-b border-black">
+              <tr className="text-center">
+                <th className="border-r border-black py-[1.2%] text-2xl font-extrabold">
+                  Name
+                </th>
+                <th className="border-r border-black py-[1.2%] text-2xl font-extrabold">
+                  Image
+                </th>
+                <th className="border-r border-black py-[1.2%] text-2xl font-extrabold">
+                  Description
+                </th>
+                <th className="border-r border-black py-[1.2%] text-2xl font-extrabold">
+                  Solution
+                </th>
+                <th></th>
+                <th className="border-r border-black py-[1.2%] text-2xl font-extrabold">
+                  Type
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {console.log(cropDetails)}
+              {cropDetails &&
+                cropDetails.map((curr: any) => {
+                  return (
+                    <tr className="border-b border-black text-center">
+                      <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
+                        {curr.name}
+                      </td>
+                      <td className="border-r border-black">
+                        <div className="grid grid-cols-[50%_50%]">
+                          <img
+                            src={curr?.image}
+                            alt="Image"
+                            className="h-full"
+                          />
+                          {/* <img src={curr?.image} alt="image" className="h-full" /> */}
+                        </div>
+                      </td>
+                      <td className="border-r border-black w-[35%] font-thin text-start pl-2 pr-2 text-xl">
+                        {curr.description}
+                      </td>
+                      <td className="border-r border-black flex flex-col justify-left items-left font-thin text-start pl-2 pr-2 text-xl">
+                        {selectedIssue == "pest" &&
+                          curr.pesticidesIds.map((sol: any, index: number) => {
+                            return <h6>{sol.name}</h6>;
+                          })}
+                        {selectedIssue == "disease" &&
+                          curr.fungicidesIds.map((sol: any, index: number) => {
+                            return <h6>{sol.name}</h6>;
+                          })}
+                        {selectedIssue == "weed" &&
+                          curr.herbicidesIds.map((sol: any, index: number) => {
+                            return <h6>{sol.name}</h6>;
+                          })}
+                      </td>
+                      <td></td>
+                      <td className="border-r border-black flex flex-col justify-left items-left font-thin text-start pl-2 pr-2 text-xl">
+                        {selectedIssue == "pest" &&
+                          curr.pesticidesIds.map((sol: any, index: number) => {
+                            return <h6>{sol.type}</h6>;
+                          })}
+                        {selectedIssue == "disease" &&
+                          curr.fungicidesIds.map((sol: any, index: number) => {
+                            return <h6>{sol.type}</h6>;
+                          })}
+                        {selectedIssue == "weed" &&
+                          curr.herbicidesIds.map((sol: any, index: number) => {
+                            return <h6>{sol.type}</h6>;
+                          })}
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </>
       </section>
     </div>
   );
