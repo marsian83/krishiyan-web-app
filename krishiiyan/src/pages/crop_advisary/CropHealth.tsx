@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { extractCodeFromDriveLink } from "../../handleImageCode";
 
 const PlantationOptions = [
   {
@@ -314,12 +315,17 @@ const CropHealth = () => {
                       </td>
                       <td className="border-r border-black">
                         <div className="grid grid-cols-[50%_50%]">
-                          <img
-                            src={curr?.image}
-                            alt="Image"
-                            className="h-full"
-                          />
-                          {/* <img src={curr?.image} alt="image" className="h-full" /> */}
+                        {curr.images.map((image: any, index: any) => {
+                                return (
+                                  <img
+                                    style={{ width: 250, height: 250 }}
+                                    src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(
+                                      image
+                                    )}`}
+                                  />
+                                  // <img src={image}/>
+                                );
+                              })}
                         </div>
                       </td>
                       <td className="border-r border-black w-[35%] font-thin text-start pl-2 pr-2 text-xl">
