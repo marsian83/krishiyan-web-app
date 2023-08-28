@@ -2,6 +2,7 @@ import { useState } from "react";
 import { signupFields } from "../Auth/FormFields";
 import FormAction from "./FormAction";
 import Input from "./Input";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 const fields = signupFields;
 let fieldsState: any = {};
@@ -23,28 +24,32 @@ const Register = () => {
   //handle Signup API Integration here
   const createAccount = () => {
     console.log("createAccount fn");
-    
   };
   return (
-    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-      <div className="">
-        {fields.map((field) => (
-          <Input
-            key={field.id}
-            handleChange={handleChange}
-            value={signupState[field.id]}
-            labelText={field.labelText}
-            labelFor={field.labelFor}
-            id={field.id}
-            name={field.name}
-            type={field.type}
-            isRequired={field.isRequired}
-            placeholder={field.placeholder}
-          />
-        ))}
-        <FormAction handleSubmit={handleSubmit} text="Signup" type="Button" />
-      </div>
-    </form>
+    <div>
+      <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <div className="">
+          {fields.map((field) => (
+            <Input
+              key={field.id}
+              handleChange={handleChange}
+              value={signupState[field.id]}
+              labelText={field.labelText}
+              labelFor={field.labelFor}
+              id={field.id}
+              name={field.name}
+              type={field.type}
+              isRequired={field.isRequired}
+              placeholder={field.placeholder}
+            />
+          ))}
+          <FormAction handleSubmit={handleSubmit} text="Signup" type="Button" />
+          ;
+        </div>
+      </form>
+      
+      asdasdasd
+    </div>
   );
 };
 

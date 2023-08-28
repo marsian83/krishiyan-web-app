@@ -11,6 +11,7 @@ import * as Api from "../../Services/Api";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import GoogleOauthLogin from "../../Components/Auth/GoogleLogin";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -116,6 +117,7 @@ const LoginPage = () => {
             </Grid>
           </Box>
         </Box>
+        <GoogleOauthLogin />
       </Container>
       {/* <div className="min-h-full h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 w-full bg-[#50d71e]">
         <div className="max-w-md w-full">

@@ -1,7 +1,7 @@
 import * as axios from "axios";
 
-// const apiURL = "http://localhost:5001/api";
-const apiURL = "https://krishiyan-backend.vercel.app/api";
+const apiURL = "http://localhost:5001/api";
+// const apiURL = "https://krishiyan-backend.vercel.app/api";
 
 // "http://localhost:5001/api";   localhost
 //http://35.77.226.139:5001/api   Production url
@@ -110,6 +110,26 @@ export async function dealerLogin(email: any, password: any) {
         password: password,
       },
     };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Google Login
+export async function dealerGoogleLogin(credentials: string) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/auth/oauth/login`,
+      data: {
+        credentials
+      },
+    };
+    console.log(axiosConfig)
     const response = await axios.default.request(axiosConfig);
     const normalizedResponse = normalizeServerResponse(response);
     return [null, normalizedResponse];

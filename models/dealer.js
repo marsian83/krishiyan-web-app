@@ -12,17 +12,17 @@ const DealerSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      // required: true,
     },
     mobile: {
       type: Number,
       unique: true,
-      required: true,
+      // required: true,
     },
-    excel_data_download:{
-      type:Boolean,
-      default:false
-    }
+    excel_data_download: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
