@@ -99,6 +99,7 @@ const CropCalendar = () => {
   }, []);
 
   const getCropStages = async () => {
+    console.log(dateOfSowing)
     console.log(
       process.env.REACT_APP_BACKEND_URL +
         "cropCalendar/stage/" +
@@ -227,7 +228,7 @@ const CropCalendar = () => {
                 </h2> */}
                 {
                   cropDetails && 
-                  <HorizontalNonLinearStepper cropDetails={cropDetails} />
+                  <HorizontalNonLinearStepper cropDetails={cropDetails} date={dateOfSowing}/>
                 }
               {/* </>
             ))} */}

@@ -10,7 +10,7 @@ import BasalStep from '../Components/layouts/Calendar(CropAdvisory)/BasalStep';
 
 const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
 
-export default function HorizontalLinearStepper({cropDetails} : any) {
+export default function HorizontalLinearStepper({cropDetails, date} : any) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const [activeDetails , setActiveDetails] = React.useState<any>(cropDetails[activeStep]);
@@ -18,6 +18,21 @@ export default function HorizontalLinearStepper({cropDetails} : any) {
   const isStepOptional = (step: number) => {
     return step === 1;
   };
+  const handleStepCount = () => {
+    const currentDate = new Date();
+
+    for (let i = 0; i < cropDetails.length; i++) {
+      const startDate = new Date(cropDetails[i].date);
+      const endDate = new Date(cropDetails[i + 1]?.date);
+
+      if (currentDate >= startDate && (!endDate || currentDate < endDate)) {  
+        setActiveStep(i);
+        break;
+      }
+    }
+    console.log(activeStep)
+  };
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setActiveDetails(cropDetails[activeStep])
@@ -34,6 +49,7 @@ export default function HorizontalLinearStepper({cropDetails} : any) {
 
   React.useEffect(()=>{
     setActiveDetails(cropDetails[activeStep]);
+    handleStepCount();
   })
 
   return (
