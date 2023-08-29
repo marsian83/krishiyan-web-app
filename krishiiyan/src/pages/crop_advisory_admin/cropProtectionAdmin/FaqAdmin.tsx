@@ -65,7 +65,7 @@ const FaqAdmin = () => {
           <textarea
             placeholder="Crop"
             className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            onChange={(e)=>{
+            onChange={(e) => {
               setCrop(e.target.value);
             }}
           ></textarea>
@@ -87,7 +87,7 @@ const FaqAdmin = () => {
             id="inline-password"
             maxLength={50}
             placeholder="FAQ on cultivation index"
-            onChange={(e)=>{
+            onChange={(e) => {
               setQuestion(e.target.value);
             }}
           />
@@ -109,7 +109,7 @@ const FaqAdmin = () => {
             id="inline-password"
             maxLength={50}
             placeholder="Answers"
-            onChange={(e)=>{
+            onChange={(e) => {
               setAnswer(e.target.value);
             }}
           />
@@ -120,19 +120,20 @@ const FaqAdmin = () => {
         className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
         onClick={handleFaqSubmit}
       >
-        {
-          loading ?
-          `Loading...`:
-          `Submit`
-        }
+        {loading ? `Loading...` : `Submit`}
       </button>
       OR
-      <CSVReader data="faq"/>
-      <a download="faq.csv" href="../../CSVFiles/faq.csv">
-                  <button className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin">
-                    Download CSV
-                  </button>
-                </a>
+      <CSVReader data="faq" />
+      <a
+        href="https://docs.google.com/spreadsheets/d/1AcUWeZiHGH1tulkIYXJJDPjcqAgnExfZ6CitBhmGElE/edit?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <button className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px 4px 3px rgba(0, 0, 0, 0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin">
+          Open Google Sheets
+        </button>
+              
+      </a>
     </div>
   );
 };
