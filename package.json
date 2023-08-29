@@ -9,7 +9,7 @@
     "start": "node index.js",
     "server": "nodemon index.js",
     "linting": "npm run lint && node index.js",
-    "client": "npm start --prefix krishiiyan",    
+    "client": "npm start --prefix krishiiyan",
     "dev": "concurrently \"npm run server\" \"npm run client\" "
   },
   "keywords": [],
