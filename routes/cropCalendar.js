@@ -2,16 +2,20 @@ const express = require("express");
 const router = express.Router();
 const moment = require("moment");
 const Crop = require("../models/crop");
+const cropCalendar = require("../models/cropCalendar");
 
 router.post("/role-admin/stage/add", async (req, res, next) => {
   let {
     sn = 1, //stage number
+    name = "Germination", //stage name
+    description = "",
     lowerLimit_age = 15,
     upperLimit_age = 20, //if stage lasts 15 to 20 days
     disease = "", //array of objects
     pest = "", //array of objects
     weed = "", //array of objects
     Fertilizer = "", //array of objects
+    images = [],
     localName,
     csv = "",
   } = req.body;
@@ -22,16 +26,24 @@ router.post("/role-admin/stage/add", async (req, res, next) => {
       const query = { localName };
       const crop = await Crop.findOne(query);
       if (!crop) throw new Error("crop not found");
-      const stageIn = crop.stages.findIndex((stage) => stage.sn === sn);
-      if (stageIn == -1) throw new Error("stage not found");
-      let stage = crop.stages[stageIn];
+      let cropCal = await cropCalendar.findOne({ crop: crop._id });
+      if (!cropCal) cropCal = new cropCalendar({ crop: crop._id });
+      let stageIn = cropCal.stages.findIndex((stage) => stage.sn === sn);
+      if (stageIn == -1) {
+        cropCal.stages.push({ sn, name });
+        stageIn = cropCal.stages.length - 1;
+      }
+      let stage = cropCal.stages[stageIn];
       stage.lowerLimit_age = lowerLimit_age;
       stage.upperLimit_age = upperLimit_age;
       stage.disease = disease;
       stage.pest = pest;
       stage.weed = weed;
       stage.Fertilizer = Fertilizer;
-      await crop.save();
+      stage.description = description;
+      stage.images = images;
+      cropCal.stages[stageIn] = stage;
+      await cropCal.save();
       res.status(201).json({ crop });
     } else {
       csv = csv.data;
@@ -39,6 +51,8 @@ router.post("/role-admin/stage/add", async (req, res, next) => {
         // console.log(csv[i][0]);
         let cropModel = {};
         let stage = {},
+          cropCal = {},
+          lName = "",
           stageIn = 0;
         if (!csv[i][0].length) break;
         for (let j = 0; j < csv[i].length; j++) {
@@ -51,23 +65,35 @@ router.post("/role-admin/stage/add", async (req, res, next) => {
               console.log("crop not found", lName);
               break;
             }
+            cropCal = await cropCalendar.findOne({ crop: cropModel._id });
+            if (!cropCal) cropCal = new cropCalendar({ crop: cropModel._id });
           } else if (csv[0][j] == "sn") {
-            stageIn = cropModel.stages.findIndex((stage) => {
+            stageIn = cropCal.stages.findIndex((stage) => {
               return stage.sn == csv[i][j];
             });
-            if (stageIn == -1) throw new Error("stage not found");
-            stage = cropModel.stages[stageIn];
+            if (stageIn == -1) {
+              cropCal.stages.push({ sn: csv[i][j] });
+              stageIn = cropCal.stages.length - 1;
+            }
+            stage = cropCal.stages[stageIn];
           } else if (csv[0][j].includes("age")) {
             stage[csv[0][j]] = +csv[i][j];
           } else if (csv[0][j] == "Fertilizer") {
             stage["Fertilizer"].Dosage = csv[i][j];
+          } else if (csv[0][j] == "images") {
+            let images = [];
+            csv[i][j].split(/,|\n/).forEach((image) => {
+              images.push(image);
+            });
+            if (stage.images?.length) continue;
+            else stage.images = images;
           } else {
             stage[csv[0][j]] = csv[i][j];
           }
         }
-        if (cropModel) {
-          cropModel.stages[stageIn] = stage;
-          await cropModel.save();
+        if (cropModel && cropCal) {
+          cropCal.stages[stageIn] = stage;
+          await cropCal.save();
         }
       }
       res.status(201).json({ message: "bulk uploaded " });
@@ -82,13 +108,15 @@ router.get("/stage/:localName/:date", async (req, res, next) => {
     const { date, localName } = req.params;
     const dateMoment = moment(date).format("DD-MMM-YYYY");
     const crop = await Crop.findOne({ localName }).lean();
+    if (!crop) throw new Error("crop not found");
+    const cropStages = await cropCalendar.findOne({ crop: crop._id }).lean();
     const currentMoment = moment(date);
-    for (let stage of crop.stages) {
+    for (let stage of cropStages.stages) {
       const dateOfStage = moment(currentMoment).format("DD-MMM-YYYY");
       currentMoment.add(stage.upperLimit_age, "days");
       stage.date = dateOfStage;
     }
-    res.status(200).json({ cropStages: crop.stages });
+    res.status(200).json({ cropStages: cropStages.stages });
   } catch (e) {
     return res.status(500).json({ msg: e.message });
   }
