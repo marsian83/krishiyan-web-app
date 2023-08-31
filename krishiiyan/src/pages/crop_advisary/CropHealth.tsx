@@ -286,20 +286,20 @@ const CropHealth = () => {
           <table className="table-fixed border-collapse border border-black font-bold text-base mx-auto">
             <thead className="border-b border-black">
               <tr className="text-center">
-                <th className="border-r border-black py-[1.2%] text-2xl font-extrabold">
+                <th className="border-r border-black py-[1.2%] text-2xl font-extrabold w-[10%]">
                   Name
                 </th>
                 <th className="border-r border-black py-[1.2%] text-2xl font-extrabold">
                   Image
                 </th>
-                <th className="border-r border-black py-[1.2%] text-2xl font-extrabold">
+                <th className="border-r border-black py-[1.2%] text-2xl font-extrabold w-[20%]">
                   Description
                 </th>
-                <th className="border-r border-black py-[1.2%] text-2xl font-extrabold">
+                <th className="border-r border-black py-[1.2%] text-2xl font-extrabold w-[15%]">
                   Solution
                 </th>
                 <th></th>
-                <th className="border-r border-black py-[1.2%] text-2xl font-extrabold">
+                <th className="border-r border-black py-[1.2%] text-2xl font-extrabold w-[10%]">
                   Type
                 </th>
               </tr>
@@ -328,10 +328,10 @@ const CropHealth = () => {
                               })}
                         </div>
                       </td>
-                      <td className="border-r border-black w-[35%] font-thin text-start pl-2 pr-2 text-xl">
+                      <td className="border-r border-black w-[35%] font-thin text-start pl-2 pr-2 text-xl w-[20%]">
                         {curr.description}
                       </td>
-                      <td className="border-r border-black flex flex-col justify-left items-left font-thin text-start pl-2 pr-2 text-xl">
+                      <td className="border-r border-black flex flex-col justify-left items-left font-thin text-start pl-2 pr-2 text-xl ">
                         {selectedIssue == "pest" &&
                           curr.pesticidesIds.map((sol: any, index: number) => {
                             return <h6>{sol.name}</h6>;

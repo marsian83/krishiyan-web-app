@@ -819,7 +819,6 @@ const CropLibraryAdmin = () => {
                   <button className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px 4px 3px rgba(0, 0, 0, 0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin">
                     Open Google Sheets
                   </button>
-                        
                 </a>
               </div>
             </>

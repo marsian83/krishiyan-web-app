@@ -61,8 +61,20 @@ const NewRegistration = () => {
   const onChangePhone = (e: any) => {
     setMobile(e.target.value);
   };
-  const onChangeZip = (e: any) => {
+  const onChangeZip = async (e: any) => {
     setZip(e.target.value);
+    console.log(zip)
+    if(zip.length === 6){
+    const data = await fetch(`http://postalpincode.in/api/pincode/${zip}`,{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+    });
+    const res = await data.json();
+    console.log(res);
+  }
   };
   const onChangeStreet = (e: any) => {
     setStreet(e.target.value);
@@ -214,7 +226,12 @@ const NewRegistration = () => {
           </label>
           <div>
             <div className="w-73 mt-2">
-              <Input label="Pin Code" onChange={onChangeZip} />
+            <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
+              Pincode 
+              <input onChange={onChangeZip}
+              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
+               ></input>
+              </label>
             </div>
             <div className="flex w-73 mt-2 gap-2">
               <Input label="State" value={state} disabled />{" "}

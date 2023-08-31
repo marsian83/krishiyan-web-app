@@ -75,7 +75,7 @@ const Registration2Content = () => {
                         </tbody>
                     </table>
                 </div>
-                <button type='submit' className='bg-[#05AB2A] text-[#F3FFF1] ml-[35%] mt-5 shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-3 rounded mx-5 text-sm font-thin'>Submit</button>
+                <button type='submit' className='bg-[#05AB2A] text-[#F3FFF1] ml-[35%] mt-5 shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-3 rounded mx-5 text-sm font-thin'>Submitttttt</button>
             </section>
         </>
     )
