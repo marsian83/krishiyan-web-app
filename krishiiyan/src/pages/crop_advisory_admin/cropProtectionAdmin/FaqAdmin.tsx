@@ -3,56 +3,55 @@ import CSVReader from "../../CSVUpload/CSVUpload";
 import { toast } from "react-toastify";
 
 const FaqAdmin = () => {
-  const [crop , setCrop] = useState("");
-  const [question , setQuestion] = useState("");
-  const [answer , setAnswer] = useState("");
-  const [loading , setLoading ]= useState(false);
+  const [crop, setCrop] = useState("");
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleFaqSubmit = async () =>{
-    try{
+  const handleFaqSubmit = async () => {
+    try {
       setLoading(true);
-      console.log('hi')
-      const res = await fetch(process.env.REACT_APP_BACKEND_URL + 'crop/role-admin/faq/add',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization : 'Bearer ' + localStorage.getItem('authToken'),
-        },
-        body: JSON.stringify({
-          localName: crop,
-          scientificName:crop,
-          faq:[
-            {
-              question,
-              answer
-            }
-          ]
-      })
-    }
-      )
+      console.log("hi");
+      const res = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "crop/role-admin/faq/add",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("authToken"),
+          },
+          body: JSON.stringify({
+            localName: crop,
+            scientificName: crop,
+            faq: [
+              {
+                question,
+                answer,
+              },
+            ],
+          }),
+        }
+      );
       const data = await res.json();
       console.log(data);
-      if(data.crop){
-        toast.success("FAQ added successfully",{
+      if (data.crop) {
+        toast.success("FAQ added successfully", {
           position: toast.POSITION.TOP_RIGHT,
-        })
-      }
-      else{
-        toast.error("FAQ not added",{
+        });
+      } else {
+        toast.error("FAQ not added", {
           position: toast.POSITION.TOP_RIGHT,
-        })
+        });
       }
-  }
-    catch(err:any){
+    } catch (err: any) {
       console.log(err);
-      toast.error(err.message,{
+      toast.error(err.message, {
         position: toast.POSITION.TOP_RIGHT,
-      })
-    }
-    finally{
+      });
+    } finally {
       setLoading(false);
     }
-  }
+  };
   return (
     <div className="w-full max-w-sm mt-10 mb-5 ml-80">
       <div className="md:flex md:items-center mb-6">

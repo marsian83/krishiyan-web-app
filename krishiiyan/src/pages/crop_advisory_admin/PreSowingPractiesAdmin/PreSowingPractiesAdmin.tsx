@@ -204,12 +204,17 @@ const ProductionReqContent = () => {
         >
           {loading ? "Loading..." : "Submit"}
         </button>
-        <CSVReader data="presowing"/>
-        <a download="presowingconditions.csv" href="../../CSVFiles/presowing.csv">
-                  <button className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin">
-                    Download CSV
-                  </button>
-                </a>
+        <CSVReader data="presowing" />
+        <a
+          href="https://docs.google.com/spreadsheets/d/1UwZBmh85jXxgz2rO3AWrMgEh6q15WkJD16rNVI6wvow/edit?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px 4px 3px rgba(0, 0, 0, 0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin">
+            Open Google Sheets
+          </button>
+                
+        </a>
       </div>
     </section>
   );

@@ -12,7 +12,7 @@ const AddCrop = () => {
   const [crop, setCrop] = useState("");
   const [ScientificName, setScientificName] = useState("");
   const [image, setImage] = useState<any>();
-  const [loading , setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [description, setDescription] = useState("");
 
@@ -82,9 +82,8 @@ const AddCrop = () => {
       toast.error(err.msg, {
         position: toast.POSITION.TOP_RIGHT,
       });
-    }
-    finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -199,21 +198,29 @@ const AddCrop = () => {
               />
             </div>
           </div>
-          {
-            loading ? 
-            `Loading....`:
-            (
-              <button
+          {loading ? (
+            `Loading....`
+          ) : (
+            <button
               type="submit"
               onClick={handleHealthSubmit}
               className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
-              >
-            Submit
-          </button>
-              )
-          }
+            >
+              Submit
+            </button>
+          )}
           OR
-          <CSVReader data="addcrop"/>
+          <CSVReader data="addcrop" />
+          <a
+            href="https://docs.google.com/spreadsheets/d/1imdo5V10JRZ1njfuBpLu_Gl1GwWU8AX0yYzLd7RoxVY/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px 4px 3px rgba(0, 0, 0, 0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin">
+              Open Google Sheets
+            </button>
+                  
+          </a>
         </div>
       </div>
     </>

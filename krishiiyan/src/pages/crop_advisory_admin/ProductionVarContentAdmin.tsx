@@ -9,9 +9,9 @@ const ProductionVarContentAdmin = () => {
   const [variety, setVariety] = useState("");
   const [type, setType] = useState("");
   const [speciality, setSpeciality] = useState("");
-  const [condition , setCondition] = useState("");
-  const [features , setFeatures] = useState("");
-  const [cycle ,setCycle] = useState("");
+  const [condition, setCondition] = useState("");
+  const [features, setFeatures] = useState("");
+  const [cycle, setCycle] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleVarietySubmit = async () => {
@@ -28,33 +28,30 @@ const ProductionVarContentAdmin = () => {
           body: JSON.stringify({
             nameOfvariety: variety,
             localName: crop,
-            scientificName:crop,
+            scientificName: crop,
             areaOfAdaptation: area,
-            productCondition:condition,
-            salientFeatures:features,
-            cropCycle:cycle,
+            productCondition: condition,
+            salientFeatures: features,
+            cropCycle: cycle,
           }),
         }
       );
       const data = await res.json();
-      if (data.message=='Varities created!') {
+      if (data.message == "Varities created!") {
         toast.success("Varities added!", {
           position: "top-right",
         });
-      }
-      else{
+      } else {
         toast.error("Error , please try again", {
           position: "top-right",
         });
       }
-
     } catch (err: any) {
       console.log(err);
       toast.error(err.message, {
         position: "top-right",
       });
-    }
-    finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -169,19 +166,20 @@ const ProductionVarContentAdmin = () => {
           className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
           onClick={handleVarietySubmit}
         >
-          {
-            loading?
-            `loading...`:
-            `Submit`
-          }
+          {loading ? `loading...` : `Submit`}
         </button>
         OR
         <CSVReader data="variety" />
-        <a download="variety.csv" href="../../CSVFiles/variety.csv">
-                  <button className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin">
-                    Download CSV
-                  </button>
-                </a>
+        <a
+          href="https://docs.google.com/spreadsheets/d/1r4st39LuTt7o3dIXh85aavYB_qfY9zaG2akCTiJnGHw/edit?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px 4px 3px rgba(0, 0, 0, 0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin">
+            Open Google Sheets
+          </button>
+                
+        </a>
       </div>
     </>
   );

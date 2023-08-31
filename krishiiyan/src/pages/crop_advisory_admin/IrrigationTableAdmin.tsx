@@ -3,62 +3,61 @@ import CSVReader from "../CSVUpload/CSVUpload";
 import { toast } from "react-toastify";
 
 const IrrigationTableAdmin = () => {
-  const [crop , setCrop] = useState("");
-  const [component , setComponent] = useState("");
-  const [image , setImage] = useState("");
+  const [crop, setCrop] = useState("");
+  const [component, setComponent] = useState("");
+  const [image, setImage] = useState("");
   const [solName, setSolName] = useState("");
-  const [prodImg , setProdImage] = useState("");
-  const [cost , setCost] = useState("");
-  const [desc , setDesc] = useState("");
-  const [loading , setLoading] = useState(false);
- 
-  const handleSubmitBtn = async () =>{
-    try{
+  const [prodImg, setProdImage] = useState("");
+  const [cost, setCost] = useState("");
+  const [desc, setDesc] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmitBtn = async () => {
+    try {
       setLoading(true);
-      const res = await fetch(process.env.REACT_APP_BACKEND_URL + 'crop/irrigation/role-admin/add/',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization : 'Bearer ' + localStorage.getItem('authToken'),
-        },
-        body: JSON.stringify({
-          localName:crop,
-          scientificName:crop ,
-          component,
-          image,
-          description:desc,
-          solutions:[
-            {
-              name:solName,
-              prodImg : prodImg,
-              cost
-            }
-          ]
-      })
-    }
-      )
+      const res = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "crop/irrigation/role-admin/add/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("authToken"),
+          },
+          body: JSON.stringify({
+            localName: crop,
+            scientificName: crop,
+            component,
+            image,
+            description: desc,
+            solutions: [
+              {
+                name: solName,
+                prodImg: prodImg,
+                cost,
+              },
+            ],
+          }),
+        }
+      );
       const data = await res.json();
-      if(data.crop){
-        toast.success("FAQ added successfully",{
+      if (data.crop) {
+        toast.success("FAQ added successfully", {
           position: toast.POSITION.TOP_RIGHT,
-        })
-      }
-      else{
-        toast.error("FAQ not added",{
+        });
+      } else {
+        toast.error("FAQ not added", {
           position: toast.POSITION.TOP_RIGHT,
-        })
+        });
       }
-  }
-    catch(err:any){
+    } catch (err: any) {
       console.log(err);
-      toast.error(err.message,{
+      toast.error(err.message, {
         position: toast.POSITION.TOP_RIGHT,
-      })
-    }
-    finally{
+      });
+    } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <>
@@ -73,8 +72,8 @@ const IrrigationTableAdmin = () => {
             <textarea
               placeholder="Crop"
               className="bg-[#F3FFF1] shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              onChange={(e)=>{
-                setCrop(e.target.value)
+              onChange={(e) => {
+                setCrop(e.target.value);
               }}
             ></textarea>
           </div>
@@ -92,17 +91,15 @@ const IrrigationTableAdmin = () => {
             <textarea
               className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Category"
-              onChange={(e)=>{
-                setComponent(e.target.value)
+              onChange={(e) => {
+                setComponent(e.target.value);
               }}
             ></textarea>
           </div>
         </div>{" "}
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3">
-            <label
-              className="text-[#13490A] font-extrabold text-sm mx-5"
-            >
+            <label className="text-[#13490A] font-extrabold text-sm mx-5">
               Crop Irrigation Image Link
             </label>
           </div>
@@ -110,10 +107,9 @@ const IrrigationTableAdmin = () => {
             <textarea
               className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Solution Image Link"
-              onChange={(e)=>{
-                setImage(e.target.value)
-              }
-              }
+              onChange={(e) => {
+                setImage(e.target.value);
+              }}
             ></textarea>
           </div>
         </div>{" "}
@@ -123,15 +119,15 @@ const IrrigationTableAdmin = () => {
               className="text-[#13490A] font-extrabold text-sm mx-5"
               // for="inline-password"
             >
-              Solution 
+              Solution
             </label>
           </div>
           <div className="md:w-2/3 ">
             <textarea
               className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Name"
-              onChange={(e)=>{
-                setSolName(e.target.value)
+              onChange={(e) => {
+                setSolName(e.target.value);
               }}
             ></textarea>
           </div>
@@ -149,10 +145,9 @@ const IrrigationTableAdmin = () => {
             <textarea
               className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Solution Image Link"
-              onChange={(e)=>{
-                setProdImage(e.target.value)
-              }
-              }
+              onChange={(e) => {
+                setProdImage(e.target.value);
+              }}
             ></textarea>
           </div>
         </div>{" "}
@@ -169,10 +164,9 @@ const IrrigationTableAdmin = () => {
             <textarea
               className="bg-[#F3FFF1]  shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Solution Cost"
-              onChange={(e)=>{
-                setCost(e.target.value)
-              }
-              }
+              onChange={(e) => {
+                setCost(e.target.value);
+              }}
             ></textarea>
           </div>
         </div>
@@ -192,10 +186,9 @@ const IrrigationTableAdmin = () => {
               id="inline-password"
               maxLength={50}
               placeholder="Maximum Of 50 Characters"
-              onChange={(e)=>{
-                setDesc(e.target.value)
-              }
-              }
+              onChange={(e) => {
+                setDesc(e.target.value);
+              }}
             />
           </div>
         </div>
@@ -204,20 +197,20 @@ const IrrigationTableAdmin = () => {
           className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
           onClick={handleSubmitBtn}
         >
-          {
-            loading ?
-            `Loading....`
-            :
-            `Submit`
-          }
+          {loading ? `Loading....` : `Submit`}
         </button>
         OR
-        <CSVReader data="irrigation"/>
-        <a download="irrigation.csv" href="../../CSVFiles/irrigation.csv">
-                  <button className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin">
-                    Download CSV
-                  </button>
-                </a>
+        <CSVReader data="irrigation" />
+        <a
+          href="https://docs.google.com/spreadsheets/d/1epz0pgcw0dJcBCZ4obSxa8dbayyMvJYvthyRtI5JqWw/edit?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px 4px 3px rgba(0, 0, 0, 0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin">
+            Open Google Sheets
+          </button>
+                
+        </a>
       </div>
     </>
   );

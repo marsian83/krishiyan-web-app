@@ -4,22 +4,23 @@ import CSVReader from "../../CSVUpload/CSVUpload";
 
 const HervestAdmin = () => {
   const [crop, setCrop] = useState<any>();
-  const [maturity , setMaturity] = useState<any>();
-  const [index , setIndex] = useState<any>();
-  const [avgYield , setAvgYield] = useState<any>(0);
-  const [condition , setCondition] = useState<any>();
-  const [losses , setLosses] = useState<any>();
-  const [prevent , setPrevent] = useState<any>();
-  const [image1 , setImage1] = useState<any>("");
-  const [image2 , setImage2] = useState<any>("");
-  const [image3 , setImage3] = useState<any>("");
-  const [image4 , setImage4] = useState<any>("");
-  const [loading , setLoading] = useState<any>(false);
+  const [maturity, setMaturity] = useState<any>();
+  const [index, setIndex] = useState<any>();
+  const [avgYield, setAvgYield] = useState<any>(0);
+  const [condition, setCondition] = useState<any>();
+  const [losses, setLosses] = useState<any>();
+  const [prevent, setPrevent] = useState<any>();
+  const [image1, setImage1] = useState<any>("");
+  const [image2, setImage2] = useState<any>("");
+  const [image3, setImage3] = useState<any>("");
+  const [image4, setImage4] = useState<any>("");
+  const [loading, setLoading] = useState<any>(false);
 
   const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = 'https://krishiyan-frontend.vercel.app/src/CSVFiles/harvest.csv';
-    link.download = 'harvest.csv';
+    const link = document.createElement("a");
+    link.href =
+      "https://krishiyan-frontend.vercel.app/src/CSVFiles/harvest.csv";
+    link.download = "harvest.csv";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -27,57 +28,69 @@ const HervestAdmin = () => {
 
   const handleSubmitHarvest = async () => {
     setLoading(true);
-    try{
-      if(!crop || !maturity || !index || !avgYield || !condition || !losses || !prevent || !image1 || !image2 || !image3 || !image4){
-        toast.error('Please fill all the fields',{
-          position:toast.POSITION.TOP_CENTER
-        })
-        return
+    try {
+      if (
+        !crop ||
+        !maturity ||
+        !index ||
+        !avgYield ||
+        !condition ||
+        !losses ||
+        !prevent ||
+        !image1 ||
+        !image2 ||
+        !image3 ||
+        !image4
+      ) {
+        toast.error("Please fill all the fields", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return;
       }
       const body = {
-        localName : crop,
-        scientificName : crop,
+        localName: crop,
+        scientificName: crop,
         newHarvest: {
-          Physiological : maturity,
-          index : index,
-          Average : avgYield,
-          Conditions_during : condition,
-          Post_Harvest : losses,
-          prevent : prevent,
-          images : [image1 , image2 , image3 , image4]
-        }
-      }
-      const res = await fetch(process.env.REACT_APP_BACKEND_URL + 'crop/role-admin/harvest/add',{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json',
-          Authorization: 'Bearer '+ localStorage.getItem('authToken')
+          Physiological: maturity,
+          index: index,
+          Average: avgYield,
+          Conditions_during: condition,
+          Post_Harvest: losses,
+          prevent: prevent,
+          images: [image1, image2, image3, image4],
         },
-        body:JSON.stringify(body)
-      })
-      const data = await res.json()
-      if(data.crop){
-        toast.success('Harvest added successfully',{
-          position:toast.POSITION.TOP_RIGHT
-        })
+      };
+      const res = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "crop/role-admin/harvest/add",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("authToken"),
+          },
+          body: JSON.stringify(body),
+        }
+      );
+      const data = await res.json();
+      if (data.crop) {
+        toast.success("Harvest added successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        console.log(data);
+        toast.error(data.msg, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       }
-      else{
-        console.log(data)
-        toast.error(data.msg,{
-          position:toast.POSITION.TOP_RIGHT
-        })
-      }
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } finally {
+      setLoading(false);
     }
-    catch(err:any){
-      console.log(err)
-      toast.error(err.message,{
-        position:toast.POSITION.TOP_RIGHT
-      })
-    }
-    finally{
-      setLoading(false)
-    }
-  }
+  };
 
   // const handleCSVUpload = (results) => {
   //   // Perform API request using the `results` data
@@ -303,32 +316,36 @@ const HervestAdmin = () => {
             />
           </div>
         </div>
-
         <button
           type="submit"
           className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
           onClick={handleSubmitHarvest}
         >
-          {
-            loading ? 
-            `Loading....`
-            :
-            `Add Harvest`
-          }
+          {loading ? `Loading....` : `Add Harvest`}
         </button>
         OR
-        <CSVReader data="harvest"/>
+        <CSVReader data="harvest" />
         {/* <a download="harvest.csv" href="../../../CSVFiles/harvest.csv">
                   <button className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin">
                     Download CSV
                   </button>
           </a> */}
-          <button
-      className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
-      onClick={handleDownload}
-    >
-            Download CSV
+        <button
+          className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
+          onClick={handleDownload}
+        >
+          Download CSV
+        </button>
+        <a
+          href="https://docs.google.com/spreadsheets/d/1wXihJ_gIictBEm_FITzOBIyiBAm3KZRKhB6UxKFLDSg/edit?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px 4px 3px rgba(0, 0, 0, 0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin">
+            Open Google Sheets
           </button>
+                
+        </a>
       </div>
     </>
   );
