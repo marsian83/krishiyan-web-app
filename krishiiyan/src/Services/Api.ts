@@ -217,7 +217,7 @@ export async function sendSMS(
   const axios = require("axios");
   try {
     const otp = generateOTP(); // Generate OTP
-    const message = `Your OTP is: ${otp}`;
+    const message = `OTP for Farmer Registration on KrishiYan WebApp is ${otp} and valid for 10 minutes. Do not share this OTP with anyone for security reasons - Wetacre Sustainable Solutions LLP.`;
 
     const response = await axios.get(
       "http://api.bulksmsgateway.in/sendmessage.php",
@@ -227,9 +227,9 @@ export async function sendSMS(
           password: "Krishiyan2023",
           mobile: phoneNumber,
           message: message,
-          sender: "TESTKK",
+          sender: "TWSSLLP",
           type: 3,
-          template_id: "1507161717524942102",
+          template_id: "1407168745602569024",
         },
       }
     );

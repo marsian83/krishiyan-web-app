@@ -812,7 +812,7 @@ const CropLibraryAdmin = () => {
                 OR
                 <CSVReader />
                 <a
-                  href="https://docs.google.com/spreadsheets/d/1c1p-lgzzgecF19GAaYAQQxAaLHMzP0Y7AV-mJ7e4qCw/edit?usp=sharing"
+                  href="https://docs.google.com/spreadsheets/d/1ZfkJrjY45XlKhRh7e4MP2jszUrRUFo0Ln9fJSf4AvsA/edit?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

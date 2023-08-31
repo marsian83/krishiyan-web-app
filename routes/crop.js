@@ -744,7 +744,7 @@ router.post("/protection/role-admin/disease/add", async (req, res, next) => {
     } else {
       csv = csv.data;
       for (let i = 1; i < csv.length; i++) {
-        console.log(i)
+        console.log(i);
         let cropModel = {};
         let lName = "",
           diseaseManage = {};
@@ -916,14 +916,13 @@ router.get("/variety/:localName", async (req, res, next) => {
   const { localName } = req.params;
   try {
     const crop = await Crop.findOne({ localName });
-    if (!crop)
-      throw new Error("Crop not found with localName: " + localName);    
+    if (!crop) throw new Error("Crop not found with localName: " + localName);
     const varieties = await Varieties.find({ cropId: crop._id });
     if (!varieties)
       throw new Error("Varieties not found with cropId: " + crop._id);
     res.status(201).json({
       message: "Variety found",
-      success:true,
+      success: true,
       varieties,
     });
   } catch (err) {
