@@ -41,7 +41,7 @@ const PlantationType = [
   },
 ];
 const NewRegistration = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState<any>();
   const [state, setState] = useState("");
@@ -137,7 +137,7 @@ const NewRegistration = () => {
         // toast.success("New farmer created!", {
         //   position: toast.POSITION.TOP_RIGHT,
         // });
-        verifyMobile()
+        verifyMobile();
       }
     }
   };
@@ -147,21 +147,21 @@ const NewRegistration = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const verifyMobile = async() =>{
-    const [err,res] = await Api.generateOtp(mobile)
-    if(err){
+  const verifyMobile = async () => {
+    const [err, res] = await Api.sendSMS(mobile);
+    if (err) {
       toast.error(err.data.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
-    if(res){
-      console.log({res});
+    if (res) {
+      console.log({ res });
       toast.success(res?.data?.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
-    handleOpen()
-  }
+    handleOpen();
+  };
   return (
     <div>
       <Header title="Farmer" subtitle="New Registration" />
@@ -195,10 +195,8 @@ const NewRegistration = () => {
             Verify mobile
           </button>
             </div> */}
-            
           </div>
           <div className="grid grid-cols-[35%_5%] justify-items-end items-center">
-           
             <label className="text-[#13490A] font-roboto font-extrabold text-sm mx-10 ">
               Whatsapp
             </label>
@@ -207,10 +205,7 @@ const NewRegistration = () => {
               onChange={onChangeIsWhatsapp}
               inputProps={{ "aria-label": "controlled" }}
             />
-            
-          
           </div>
-          
         </div>
         <img src="Images/Line18.png" className="my-5" alt="line" />
         <div className="grid grid-cols-[25%_26%]">
@@ -309,11 +304,7 @@ const NewRegistration = () => {
           </button>
         </div>
       </section>
-      <OTPVerification
-        open={open}
-        handleClose={handleClose}
-        Phone={mobile}
-      />
+      <OTPVerification open={open} handleClose={handleClose} Phone={mobile} />
     </div>
   );
 };

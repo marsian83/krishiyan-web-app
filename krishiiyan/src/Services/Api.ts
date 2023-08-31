@@ -126,10 +126,10 @@ export async function dealerGoogleLogin(credentials: string) {
       method: "post",
       url: `${apiURL}/auth/oauth/login`,
       data: {
-        credentials
+        credentials,
       },
     };
-    console.log(axiosConfig)
+    console.log(axiosConfig);
     const response = await axios.default.request(axiosConfig);
     const normalizedResponse = normalizeServerResponse(response);
     return [null, normalizedResponse];
@@ -201,6 +201,46 @@ export async function createFarmer(
     return [errorObject, null];
   }
 }
+
+// genertae otp
+
+function generateOTP() {
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  return otp.toString();
+}
+
+//sendSms
+
+export async function sendSMS(
+  phoneNumber: any
+): Promise<[any, any] | PromiseLike<[any, any]>> {
+  const axios = require("axios");
+  try {
+    const otp = generateOTP(); // Generate OTP
+    const message = `Your OTP is: ${otp}`;
+
+    const response = await axios.get(
+      "http://api.bulksmsgateway.in/sendmessage.php",
+      {
+        params: {
+          user: "Krishiyan",
+          password: "Krishiyan2023",
+          mobile: phoneNumber,
+          message: message,
+          sender: "TESTKK",
+          type: 3,
+          template_id: "1507161717524942102",
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error("An error occurred while sending SMS");
+  }
+}
+
+// module.exports = sendSMS;
 
 //Generate otp
 export async function generateOtp(mobile: String) {
