@@ -810,7 +810,7 @@ const CropLibraryAdmin = () => {
                   {loading ? "Loading...." : "Submit"}
                 </button>
                 OR
-                <CSVReader />
+                <CSVReader data="general"/>
                 <a
                   href="https://docs.google.com/spreadsheets/d/1c1p-lgzzgecF19GAaYAQQxAaLHMzP0Y7AV-mJ7e4qCw/edit?usp=sharing"
                   target="_blank"

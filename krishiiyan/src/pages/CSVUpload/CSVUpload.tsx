@@ -98,6 +98,10 @@ export default function CSVReader({data , category}:any) {
       apiRoute="crop/role-admin/add"
       console.log(apiRoute)
     }
+    if(data=='general'){
+      console.log('general')
+      apiRoute="crop/role-admin/general/add"
+    }
     else if (data =="addDetails"){
       console.log("add crop");
       apiRoute = "crop/role-admin/general/add"
