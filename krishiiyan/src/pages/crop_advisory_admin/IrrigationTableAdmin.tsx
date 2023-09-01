@@ -16,7 +16,7 @@ const IrrigationTableAdmin = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "crop/irrigation/role-admin/add/",
+        process.env.REACT_APP_BACKEND_URL + "/crop/irrigation/role-admin/add/",
         {
           method: "POST",
           headers: {

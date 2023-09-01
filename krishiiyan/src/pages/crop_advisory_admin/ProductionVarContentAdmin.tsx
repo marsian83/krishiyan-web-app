@@ -18,7 +18,7 @@ const ProductionVarContentAdmin = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "crop/role-admin/variety/add",
+        process.env.REACT_APP_BACKEND_URL + "/crop/role-admin/variety/add",
         {
           method: "POST",
           headers: {

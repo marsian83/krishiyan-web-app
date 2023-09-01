@@ -8,7 +8,7 @@ function SideNavHandler() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const fetchAdminStatus = async () => {
-    await fetch(process.env.REACT_APP_BACKEND_URL + "check-admin", {
+    await fetch(process.env.REACT_APP_BACKEND_URL + "/check-admin", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

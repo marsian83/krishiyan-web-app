@@ -102,13 +102,13 @@ const CropCalendar = () => {
     console.log(dateOfSowing)
     console.log(
       process.env.REACT_APP_BACKEND_URL +
-        "cropCalendar/stage/" +
+        "/cropCalendar/stage/" +
         localsName +
         "/" +
         dateOfSowing)
     const CropData = await fetch(
       process.env.REACT_APP_BACKEND_URL +
-        "cropCalendar/stage/" +
+        "/cropCalendar/stage/" +
         localsName +
         "/" +
         dateOfSowing,

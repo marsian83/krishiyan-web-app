@@ -203,7 +203,7 @@ const CropLibraryAdmin = () => {
     };
     try {
       const res = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "crop/role-admin/general/add",
+        process.env.REACT_APP_BACKEND_URL + "/crop/role-admin/general/add",
         {
           method: "POST",
           headers: {

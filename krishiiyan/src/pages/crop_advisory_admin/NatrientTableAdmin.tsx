@@ -28,7 +28,7 @@ const NatrientTableAdmin = () => {
         },
       };
       const res = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "crop/nutrient/role-admin/add",
+        process.env.REACT_APP_BACKEND_URL + "/crop/nutrient/role-admin/add",
         {
           method: "POST",
           headers: {

@@ -13,7 +13,7 @@ const FaqAdmin = () => {
       setLoading(true);
       console.log("hi");
       const res = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "crop/role-admin/faq/add",
+        process.env.REACT_APP_BACKEND_URL + "/crop/role-admin/faq/add",
         {
           method: "POST",
           headers: {

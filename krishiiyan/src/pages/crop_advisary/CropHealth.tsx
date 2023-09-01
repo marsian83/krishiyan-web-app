@@ -123,7 +123,7 @@ const CropHealth = () => {
     try {
       const res = await fetch(
         process.env.REACT_APP_BACKEND_URL +
-          `cropHealth/${selectedIssue}/${localsName}`,
+          `/cropHealth/${selectedIssue}/${localsName}`,
         {
           method: "GET",
           headers: {
@@ -157,7 +157,7 @@ const CropHealth = () => {
   }, []);
 
   /****Solutions **** */
-  const apiUrl = process.env.REACT_APP_BACKEND_URL + `cropHealth/${solution}/`;
+  const apiUrl = process.env.REACT_APP_BACKEND_URL + `/cropHealth/${solution}/`;
 
   // Function to fetch data for a specific solution (pesticide, fungicide, or herbicide)
   const fetchSolutionData = async (solutionId: any) => {

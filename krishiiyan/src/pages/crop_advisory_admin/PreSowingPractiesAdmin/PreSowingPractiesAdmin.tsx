@@ -43,7 +43,7 @@ const ProductionReqContent = () => {
         },
       };
       const res = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "crop/role-admin/preSowing",
+        process.env.REACT_APP_BACKEND_URL + "/crop/role-admin/preSowing",
         {
           method: "POST",
           headers: {

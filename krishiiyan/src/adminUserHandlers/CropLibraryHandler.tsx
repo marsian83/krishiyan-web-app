@@ -7,7 +7,7 @@ function CropLibraryHandler() {
   const [loading, setLoading] = useState(true);
   const fetchAdminStatus = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_BACKEND_URL + "check-admin", {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URL + "/check-admin", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

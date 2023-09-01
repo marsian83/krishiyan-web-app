@@ -97,7 +97,7 @@ const CropHealthAdmin = () => {
         ],
       }))
       const res = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}cropHealth/role-admin/${endpoint}`,
+        `${process.env.REACT_APP_BACKEND_URL}/cropHealth/role-admin/${endpoint}`,
         {
           method: "POST",
           headers: {

@@ -19,7 +19,7 @@ const ProductionVarContent = (props: any) => {
     // };
     const getVarieties = async (name: String) => {
       const res = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "crop/variety/" + name,
+        process.env.REACT_APP_BACKEND_URL + "/crop/variety/" + name,
         {
           method: "GET",
         }
