@@ -52,7 +52,7 @@ const GoogleOauthLogin = () => {
   };
   return (
     <>
-      <GoogleOAuthProvider clientId="568794023475-7maqtsonf77a4s0hbinimvf4mv117585.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID!}>
         <GoogleLogin
           onSuccess={(credentialResponse: any) => {
             // const decoded = jwt_decode(
