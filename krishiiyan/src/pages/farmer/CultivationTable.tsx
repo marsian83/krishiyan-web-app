@@ -60,12 +60,11 @@ const CultivationTable = (props: any) => {
       </table>
 
       <div className="flex w-full items-end gap-2 mt-8 ml-2">
-        <Input
-          size="md"
-          label="Area code"
+        <input
+          placeholder="Area code"
           onChange={(e) => setAreaCode(e.target.value)}
-        />
-        <Input
+        ></input>
+        {/* <Input
           size="md"
           label="Area"
           onChange={(e) => setArea(e.target.value)}
@@ -79,7 +78,7 @@ const CultivationTable = (props: any) => {
           size="md"
           label="Major crops"
           onChange={(e) => setMajorCrops(e.target.value)}
-        />
+        /> */}
         <div className="w-full">
           <Button color="green" onClick={addRow}>
             Add

@@ -226,14 +226,15 @@ const NewRegistration = () => {
           </label>
           <div>
             <div className="w-73 mt-2">
-            <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
-              Pincode 
-              <input onChange={onChangeZip}
-              className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
-               ></input>
+              <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
+                Pincode
+                <input
+                  onChange={onChangeZip}
+                  className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
+                ></input>
               </label>
             </div>
-            <div className="flex w-73 mt-2 gap-2">
+            {/* <div className="flex w-73 mt-2 gap-2">
               <Input label="State" value={state} disabled />{" "}
               {loading ? <Loader /> : null}
             </div>
@@ -243,7 +244,7 @@ const NewRegistration = () => {
             </div>
             <div className="w-73 mt-2">
               <Input label="Area" onChange={onChangeStreet} />
-            </div>
+            </div> */}
           </div>
         </div>
 
