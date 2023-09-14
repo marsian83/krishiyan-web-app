@@ -39,6 +39,7 @@ import CropCalenderHandler from "./adminUserHandlers/CropCalenderHandler";
 import CropHealthHandler from "./adminUserHandlers/CropHealthHandler";
 import SideNavHandler from "./adminUserHandlers/SideNavHandler";
 import AddCrop from "./pages/crop_advisory_admin/AddCrop";
+import Premium from "./pages/crop_advisary/premium";
 
 const AuthGuard = () => {
   const auth = localStorage.getItem("authToken");
@@ -60,7 +61,8 @@ function App() {
               <>
                 <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                   <SideNavHandler />
-                  <Sale />
+                  {/*<Sale />*/}
+                  <Premium />
                 </main>
               </>
             }
@@ -70,7 +72,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"pos"} submenu={"inventory"} />
-                <Inventory />
+                {/* <Inventory /> */}
+                <Premium />
               </main>
             }
           />
@@ -79,7 +82,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"pos"} submenu={"product-batches"} />
-                <ProductBatches />
+                {/* <ProductBatches /> */}
+                <Premium />
               </main>
             }
           />
@@ -88,7 +92,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"pos"} submenu={"report"} />
-                <Report />
+                {/* <Report /> */}
+                <Premium />
               </main>
             }
           />
@@ -97,7 +102,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"pos"} submenu={"purchase"} />
-                <Purchase />
+                {/* <Purchase /> */}
+                <Premium />
               </main>
             }
           />
@@ -106,7 +112,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"pos"} submenu={"accounting"} />
-                <Accounting />
+                {/* <Accounting /> */}
+                <Premium />
               </main>
             }
           />
@@ -151,7 +158,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"crop_advisory"} submenu={"fertical"} />
-                <FertiCal />
+                {/* <FertiCal /> */}
+                <Premium />
               </main>
             }
           />
@@ -169,7 +177,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"frm"} submenu={"dashboard"} />
-                <Dashboard />
+                {/* <Dashboard /> */}
+                <Premium />
               </main>
             }
           />
@@ -178,7 +187,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"frm"} submenu={"farm_purchase"} />
-                <FPurchase />
+                {/* <FPurchase /> */}
+                <Premium />
               </main>
             }
           />
@@ -187,7 +197,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"frm"} submenu={"cultivation"} />
-                <Cultivation />
+                {/* <Cultivation /> */}
+                <Premium />
               </main>
             }
           />
@@ -196,7 +207,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"frm"} submenu={"credit"} />
-                <Credit />
+                {/* <Credit /> */}
+                <Premium />
               </main>
             }
           />
@@ -205,7 +217,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"frm"} submenu={"support"} />
-                <Support />
+                {/* <Support /> */}
+                <Premium />
               </main>
             }
           />
@@ -223,7 +236,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"management"} submenu={"manage_accounting"} />
-                <ManageAccounting />
+                {/* <ManageAccounting /> */}
+                <Premium />
               </main>
             }
           />
@@ -232,7 +246,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"help"} submenu={"problem"} />
-                <Problem />
+                {/* <Problem /> */}
+                <Premium />
               </main>
             }
           />
@@ -241,7 +256,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"help"} submenu={"expert"} />
-                <Expert />
+                {/* <Expert /> */}
+                <Premium />
               </main>
             }
           />
@@ -250,7 +266,8 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"help"} submenu={"guide"} />
-                <Guide />
+                {/* <Guide /> */}
+                <Premium />
               </main>
             }
           />

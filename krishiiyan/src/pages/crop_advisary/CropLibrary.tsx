@@ -198,41 +198,9 @@ const CropLibrary = () => {
     <div>
       <Header title="Crop Advisory" subtitle="Crop Library" />
       <section className="p-5 grid grid-cols-[30%_30%_30%_10%] ">
-        <div className="font-extrabold grid grid-cols-[50%_50%_50%] items-cente  ">
-          {/* <label className="text-[#13490A] text-center">Type</label>
-          <input
-            placeholder="Cereal"
-            // defaultValue={type}
-            type="text"
-            className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
-          /> */}
-        </div>
-        {/* <div className=" grid-cols-[50%_70%] items-center" */}
-        <div className="grid grid-cols-[35%_45%_15%_5%] mt-5 flex-row items-center w-full">
-          {/* <div> */}
-          {/* <label className="text-[#13490A] text-center" >
-            Select your Scientific name
-          </label>
+        <div className="font-extrabold grid grid-cols-[50%_50%_50%] items-cente  "></div>
 
-          <Autocomplete
-            onChange={onChangeScientificName}
-            id="plantation-select"
-            sx={{ width: "100%" }}
-            options={crops}
-            autoHighlight
-            getOptionLabel={(crops) => crops?.scientificName}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Choose plantation type"
-                inputProps={{
-                  ...params.inputProps,
-                  autoComplete: "new-password",
-                }}
-              />
-            )}
-          /> */}
-          {/* <label className="text-[#13490A] text-center">Select your Crop</label> */}
+        <div className="grid grid-cols-[35%_45%_15%_5%] mt-5 flex-row items-center w-full">
           <label className="text-[#13490A] font-roboto font-extrabold text-m flex justify-center">
             Select your Crop
           </label>
@@ -276,27 +244,12 @@ const CropLibrary = () => {
             </button>
           )}
         </div>
-        <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center">
-          {/* <label className="text-[#13490A] text-center">Variety</label>
-          <input
-            placeholder="Variety"
-            // defaultValue={variety}
-            type="text"
-            className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
-          /> */}
-        </div>
+        <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center"></div>
       </section>
       {cropDetails?.length > 0 &&
         cropDetails
           // ?.filter((val: any) => {
-          //   if (crop === "") {
-          //     return;
-          //   } else if (
-          //     val?.localName?.toLowerCase().includes(crop.toLowerCase())
-          //   ) {
-          //     return val;
-          //   }
-          // })
+
           ?.map((obj: any) => (
             <>
               <section className="pl-3 pt-3">
@@ -431,33 +384,6 @@ const CropLibrary = () => {
                             </figure>
                           );
                         })}
-
-                        {/* <figure>
-                          <img
-                            src="https://assets.thehansindia.com/hansindia-bucket/COMMERCIAL-CROPS_5889.jpg"
-                            alt="maize"
-                            width={210}
-                          />
-                          <figcaption>Vegetative stage </figcaption>
-                        </figure>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-evenly",
-                          flexWrap: "wrap",
-                          marginBottom: "20px",
-                          marginRight: "20px",
-                        }}
-                      >
-                        <figure>
-                          <img src="Images/Vegetative_stage.jpg" alt="maize" />
-                          <figcaption>Vegetative stage </figcaption>
-                        </figure>
-                        <figure>
-                          <img src={"Images/Maize_Flowering.jpg"} alt="maize" />
-                          <figcaption>Fowering stage </figcaption>
-                        </figure> */}
                       </div>
 
                       <div

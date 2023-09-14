@@ -61,21 +61,49 @@ const NewRegistration = () => {
   const onChangePhone = (e: any) => {
     setMobile(e.target.value);
   };
-  const onChangeZip = async (e: any) => {
-    setZip(e.target.value);
-    console.log(zip)
-    if(zip.length === 6){
-    const data = await fetch(`http://postalpincode.in/api/pincode/${zip}`,{
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
 
-    });
-    const res = await data.json();
-    console.log(res);
-  }
+  const onChangeZip = async (e: any) => {
+    const zipCode = e.target.value;
+    setZip(zipCode);
+    console.log(zipCode);
+
+    if (zipCode.length === 6) {
+      // ZIP code is 6 digits, make the API call
+      setLoading(true);
+
+      try {
+        const response = await fetch(
+          `http://postalpincode.in/api/pincode/${zipCode}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+
+          // Extract and set the state and city from the API response
+          const state = data.PostOffice[0]?.State;
+          const city = data.PostOffice[0]?.District;
+
+          setState(state);
+          setCity(city);
+        } else {
+          // Handle API error
+          console.error("API Error:", response.statusText);
+        }
+      } catch (error) {
+        console.error("API Request Failed:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
+
   const onChangeStreet = (e: any) => {
     setStreet(e.target.value);
   };
@@ -234,7 +262,7 @@ const NewRegistration = () => {
                 ></input>
               </label>
             </div>
-            {/* <div className="flex w-73 mt-2 gap-2">
+            <div className="flex w-73 mt-2 gap-2">
               <Input label="State" value={state} disabled />{" "}
               {loading ? <Loader /> : null}
             </div>
@@ -244,7 +272,7 @@ const NewRegistration = () => {
             </div>
             <div className="w-73 mt-2">
               <Input label="Area" onChange={onChangeStreet} />
-            </div> */}
+            </div>
           </div>
         </div>
 

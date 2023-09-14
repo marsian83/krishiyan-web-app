@@ -1,0 +1,28 @@
+/* Table styles */
+.table-container {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 1.2%;
+  font-weight: bold;
+  font-size: 2xl;
+  border: 1px solid black;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  th,
+  td {
+    padding: 1%;
+    font-size: xl;
+  }
+}
