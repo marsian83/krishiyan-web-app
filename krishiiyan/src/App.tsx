@@ -40,17 +40,33 @@ import CropHealthHandler from "./adminUserHandlers/CropHealthHandler";
 import SideNavHandler from "./adminUserHandlers/SideNavHandler";
 import AddCrop from "./pages/crop_advisory_admin/AddCrop";
 import Premium from "./pages/crop_advisary/premium";
+import MandiPricesHandler from "./adminUserHandlers/MandiPricesHandler";
+import MandiPricesAdmin from "./pages/crop_advisory_admin/mandiPricesAdmin";
+import Home from "./pages/Home";
+import Blog from "./pages/Blog";
+import OurTech from "./pages/OurTech";
+import Who from "./pages/Who";
+import Contact from "./pages/Contact";
+import What from "./pages/What";
+import Login from "./pages/Login";
 
 const AuthGuard = () => {
   const auth = localStorage.getItem("authToken");
-  return auth ? <Outlet /> : <Navigate to="/login" />;
+  return auth ? <Outlet /> : <Navigate to="/home" />;
 };
 
 function App() {
   return (
     <div className="App font-roboto box-border m-0 p-0">
       <Routes>
+        <Route path="/home" element={<Home />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/tech" element={<OurTech />} />
+        <Route path="/who" element={<Who />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/what" element={<What />} />
         <Route path="/login" element={<LoginPage />} />
+
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         {/* <Route path="/login" element={<LoginPage />} /> */}
@@ -62,7 +78,7 @@ function App() {
                 <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                   <SideNavHandler />
                   {/*<Sale />*/}
-                  <Premium />
+                  <CropLibraryHandler />
                 </main>
               </>
             }
@@ -168,7 +184,7 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"crop_advisory"} submenu={"mandi_prices"} />
-                <MandiPrices />
+                <MandiPricesAdmin />
               </main>
             }
           />

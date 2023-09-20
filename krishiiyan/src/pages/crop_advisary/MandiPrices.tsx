@@ -6,8 +6,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
+interface MandiPricesProps {
+  mandiPrices: string[]; // Define the type for 'mandiPrices'
+}
 
-const MandiPrices = () => {
+const MandiPricesComponent: React.FC<MandiPricesProps> = () => {
   const [prices, setPrices] = useState<any>();
   const [data, setData] = useState<any>();
   const [selectedState, setSelectedState] = useState("");
@@ -226,4 +229,4 @@ const MandiPrices = () => {
   );
 };
 
-export default MandiPrices;
+export default MandiPricesComponent;

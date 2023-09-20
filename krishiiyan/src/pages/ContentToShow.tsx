@@ -35,7 +35,7 @@ const ContentToShow = (props: any) => {
       {props?.content?.calendar ? <CropCalendar /> : <></>}
       {props?.content?.health ? <CropHealth /> : <></>}
       {props?.content?.calculator ? <FertiCal /> : <></>}
-      {props?.content?.market ? <MandiPrices /> : <></>}
+      {props?.content?.market ? <FertiCal /> : <></>}
 
       {/* Farmer Content */}
       {props?.content?.dashboard ? <Dashboard /> : <></>}

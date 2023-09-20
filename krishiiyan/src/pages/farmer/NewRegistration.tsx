@@ -62,46 +62,13 @@ const NewRegistration = () => {
     setMobile(e.target.value);
   };
 
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [messageSent, setMessageSent] = useState(false);
+
   const onChangeZip = async (e: any) => {
     const zipCode = e.target.value;
     setZip(zipCode);
     console.log(zipCode);
-
-    if (zipCode.length === 6) {
-      // ZIP code is 6 digits, make the API call
-      setLoading(true);
-
-      try {
-        const response = await fetch(
-          `http://postalpincode.in/api/pincode/${zipCode}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data);
-
-          // Extract and set the state and city from the API response
-          const state = data.PostOffice[0]?.State;
-          const city = data.PostOffice[0]?.District;
-
-          setState(state);
-          setCity(city);
-        } else {
-          // Handle API error
-          console.error("API Error:", response.statusText);
-        }
-      } catch (error) {
-        console.error("API Request Failed:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
   };
 
   const onChangeStreet = (e: any) => {
@@ -119,6 +86,11 @@ const NewRegistration = () => {
   };
   const onChangePlantationType = (e: any, value: any) => {
     setPlantation_type(value.value);
+  };
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
   };
 
   //Get farmer location
@@ -154,39 +126,28 @@ const NewRegistration = () => {
         position: toast.POSITION.BOTTOM_LEFT,
       });
     } else {
-      const [error, response] = await Api.createFarmer(
-        name,
-        mobile,
-        mobileIsWhatsapp,
-        state,
-        city,
-        zip,
-        street,
-        totalLandArea,
-        dealer_farmer_relation,
-        plantation_type
-      );
-      if (error) {
-        // console.log(error.data);
-        toast.error(error.data.message, {
-          position: toast.POSITION.TOP_RIGHT,
+      try {
+        const response = await fetch("http://localhost:5001/api/send-sms", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ phoneNumber }),
         });
-      }
-      if (response) {
-        // console.log(response);
-        // toast.success("New farmer created!", {
-        //   position: toast.POSITION.TOP_RIGHT,
-        // });
-        verifyMobile();
+
+        if (response.ok) {
+          setMessageSent(true);
+          handleOpen();
+        } else {
+          // Handle error case
+          setMessageSent(false);
+        }
+      } catch (error) {
+        console.error("Error sending SMS:", error);
       }
     }
   };
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false);
-  };
   const verifyMobile = async () => {
     const [err, res] = await Api.sendSMS(mobile);
     if (err) {
@@ -224,7 +185,8 @@ const NewRegistration = () => {
             <input
               type="text"
               className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
-              onChange={onChangePhone}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
             ></input>
             {/* <div className="ml-50">
             <button

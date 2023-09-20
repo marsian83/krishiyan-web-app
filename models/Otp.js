@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const OtpSchema = new mongoose.Schema(
   {
-    id: {
+    phoneNumber: {
       type: String,
     },
 

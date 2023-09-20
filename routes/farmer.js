@@ -30,41 +30,41 @@ function generateRandom(min, max) {
 // ========================================== NEW FARMER REGISTRATION ====================================================================
 
 //Create a farmer
-router.post("/", AuthGuard, async (req, res) => {
-  //AuthGuard
-  const {
-    name,
-    mobile,
-    mobileIsWhatsapp,
-    address,
-    totalLandArea,
-    dealer_farmer_relation,
-    plantation_type,
-  } = req.body;
-  try {
-    const oldFarmer = await Farmer.findOne({ mobile });
-    if (oldFarmer)
-      return res.status(400).json({ message: "Farmer already exists" });
-    const newFarmer = new Farmer({
-      name,
-      mobile,
-      mobileIsWhatsapp,
-      address,
-      totalLandArea,
-      dealer_farmer_relation,
-      plantation_type,
-      creditLimit: generateRandom(1, 50000),
-      createdBy: req.user,
-    });
-    const farmer = await newFarmer.save();
-    res.json(farmer);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({
-      message: err,
-    });
-  }
-});
+// router.post("/", AuthGuard, async (req, res) => {
+//   //AuthGuard
+//   const {
+//     name,
+//     mobile,
+//     mobileIsWhatsapp,
+//     address,
+//     totalLandArea,
+//     dealer_farmer_relation,
+//     plantation_type,
+//   } = req.body;
+//   try {
+//     const oldFarmer = await Farmer.findOne({ mobile });
+//     if (oldFarmer)
+//       return res.status(400).json({ message: "Farmer already exists" });
+//     const newFarmer = new Farmer({
+//       name,
+//       mobile,
+//       mobileIsWhatsapp,
+//       address,
+//       totalLandArea,
+//       dealer_farmer_relation,
+//       plantation_type,
+//       creditLimit: generateRandom(1, 50000),
+//       createdBy: req.user,
+//     });
+//     const farmer = await newFarmer.save();
+//     res.json(farmer);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).json({
+//       message: err,
+//     });
+//   }
+// });
 // router.post("/", AuthGuard, async (req, res) => {
 //   const {
 //     name,
@@ -106,24 +106,31 @@ router.post("/", AuthGuard, async (req, res) => {
 //Get farmer address by its pincode  `http://postalpincode.in/api/pincode/${pincode}`
 router.post("/address", async (req, res) => {
   const { pincode } = req.body;
-  const options = {
-    method: "GET",
-    url: `http://postalpincode.in/api/pincode/${pincode}`,
-    headers: {
-      "content-type": "application/json",
-      "Content-Type": "application/json",
-    },
-  };
-  axios
-    .request(options)
-    .then(function (response) {
-      res.send(response.data);
-    })
-    .catch(function (error) {
-      res.status(500).json({
-        message: error,
+  try {
+    const options = {
+      method: "GET",
+      url: `http://postalpincode.in/api/pincode/${pincode}`,
+      headers: {
+        "content-type": "application/json",
+        "Content-Type": "application/json",
+      },
+    };
+    axios
+      .request(options)
+      .then(function (response) {
+        res.send(response.data);
+      })
+      .catch(function (error) {
+        res.status(500).json({
+          message: error,
+        });
       });
+  } catch (error) {
+    res.status(500).json({
+      msg: error,
     });
+    console.log(error);
+  }
 });
 
 //Find farmer by mobile

@@ -30,15 +30,6 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
         });
     });
   }, []);
-  //was  for heading
-  useEffect(() => {
-    if (pos === true) {
-    } else if (crop === true) {
-    } else if (farm === true) {
-    } else if (manage === true) {
-    } else if (help === true) {
-    }
-  }, [pos, crop, farm, manage, help]);
 
   useEffect(() => {
     switch (menu) {
@@ -64,7 +55,6 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
   }, [menu, submenu]);
 
   const posClick = () => {
-    // navigate("/");
     setPos(true);
     setCrop(false);
     setFarm(false);
@@ -72,7 +62,6 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
     setHelp(false);
   };
   const cropClick = () => {
-    // navigate("/crop_library");
     setPos(false);
     setCrop(true);
     setFarm(false);
@@ -80,7 +69,6 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
     setHelp(false);
   };
   const farmClick = () => {
-    // navigate(" /dashboard");
     setPos(false);
     setCrop(false);
     setFarm(true);
@@ -88,7 +76,6 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
     setHelp(false);
   };
   const manageClick = () => {
-    // navigate("/manage_accounting");
     setPos(false);
     setCrop(false);
     setFarm(false);
@@ -96,7 +83,6 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
     setHelp(false);
   };
   const helpClick = () => {
-    // navigate("/problem");
     setPos(false);
     setCrop(false);
     setFarm(false);
@@ -105,17 +91,17 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
   };
 
   return (
-    <div className="flex">
-      <nav className="bg-[#C6EDC0] w-[45%] lg:w-[9vw] xl:w-[45%] flex flex-col items-center  h-full">
+    <div className="flex flex-row lg:flex-row">
+      <nav className="bg-[#C6EDC0] w-full lg:w-[9vw] xl:w-[45%] flex flex-col items-center h-full">
         <img
           src="Images/logo.png"
           alt="Ellipse"
-          className="mb-[50%] my-5 lg:w-10 xl:w-20"
+          className="my-5 mx-auto lg:w-10 xl:w-20"
         />
-        <ul className="text-center text-sm flex flex-col items-center gap-y-3">
+        <ul className="text-center text-sm flex flex-col lg:flex-col items-center gap-y-3 lg:gap-y-0">
           <li
             onClick={posClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[20px] cursor-pointer px-7 lg:px-5 xl:px-7 py-2 rounded-lg ${
+            className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
               pos === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >
@@ -123,15 +109,15 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
           </li>
           <li
             onClick={cropClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[20px] cursor-pointer px-0.5 py-2 rounded-lg ${
-              crop === true ? "bg-[#526D4E] mix-blend-hard-light px-1" : ""
+            className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
+              crop === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >
             Crop Advisory
           </li>
           <li
             onClick={farmClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[20px] cursor-pointer px-3 py-2 rounded-lg ${
+            className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
               farm === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >
@@ -139,15 +125,15 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
           </li>
           <li
             onClick={manageClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[20px] cursor-pointer px-0.5 py-2 rounded-lg ${
-              manage === true ? "bg-[#526D4E] mix-blend-hard-light px-1" : ""
+            className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
+              manage === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >
             Management
           </li>
           <li
             onClick={helpClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[20px] cursor-pointer px-5 py-2 rounded-lg ${
+            className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
               help === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >

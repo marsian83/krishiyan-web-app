@@ -13,6 +13,7 @@ import "./ProductReq.css";
 import Hervest from "./cropProtection/Hervest";
 import Faq from "./cropProtection/Faq";
 import { extractCodeFromDriveLink } from "../../handleImageCode";
+import Popup from "../../Components/layouts/PopUp";
 
 const PlantationOptions = [
   {
@@ -45,6 +46,15 @@ const CropLibrary = () => {
   const [plantationType, setPlantationType] = useState("");
   const [harvest, setHarvest] = useState(false);
   const [faq, setFaq] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(true);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
 
   const onClickGeneral = () => {
     setGeneral(true);
@@ -244,7 +254,7 @@ const CropLibrary = () => {
             </button>
           )}
         </div>
-        <div className="font-extrabold grid grid-cols-[30%_50%_20%] items-center"></div>
+        <div className="font-extrabold flex flex-col xl:flex-row  justify-evenly items-center"></div>
       </section>
       {cropDetails?.length > 0 &&
         cropDetails
@@ -352,7 +362,7 @@ const CropLibrary = () => {
                     FAQs
                   </button>
                 </div>
-                <div className="p-4">
+                <div className="p-4 ">
                   {general ? (
                     <>
                       <div
@@ -504,6 +514,8 @@ const CropLibrary = () => {
                             </tr>
                           </tbody>
                         </table>
+
+                        <Popup isOpen={isPopupOpen} onClose={closePopup} />
                       </div>
                     </>
                   ) : (

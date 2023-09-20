@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
+import Popup from "../../Components/layouts/PopUp"; // Adjust the import path based on your project structure
 
 const Premium = () => {
+  const [isPopupOpen, setIsPopupOpen] = useState(true);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   return (
     <div
       className="flex justify-center items-center h-screen bg-gray-100 bg-no-repeat bg-cover bg-center"
@@ -14,7 +25,16 @@ const Premium = () => {
           Locked
         </h1>
         <h3 className="text-lg text-gray-700">Premium feature</h3>
+        <button
+          className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          onClick={openPopup}
+        >
+          Open Popup
+        </button>
       </div>
+
+      {/* Call the Popup component */}
+      <Popup isOpen={isPopupOpen} onClose={closePopup} />
     </div>
   );
 };

@@ -9,8 +9,8 @@ const connectDB = async () => {
       useUnifiedTopology: true,
       useNewUrlParser: true,
     });
-    mongoose.set('strictQuery', false)
-    console.log(`Database connected!`);
+    mongoose.set("strictQuery", false);
+    console.log(`Database connected! hii from db`);
   } catch (error) {
     console.log(error);
   }

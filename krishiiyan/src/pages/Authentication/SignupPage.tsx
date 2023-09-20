@@ -70,6 +70,7 @@ const SignupPage = () => {
             sx={{ mt: 1 }}
           >
             <TextField
+              className="text-[#13490A] font-extrabold text-sm mx-5"
               type="text"
               margin="normal"
               required
@@ -81,6 +82,7 @@ const SignupPage = () => {
               autoFocus
             />
             <TextField
+              className="text-[#13490A] font-extrabold text-sm mx-5"
               type="email"
               margin="normal"
               fullWidth
@@ -91,6 +93,7 @@ const SignupPage = () => {
               autoFocus
             />
             <TextField
+              className="text-[#13490A] font-extrabold text-sm mx-5"
               type="password"
               margin="normal"
               required
@@ -102,6 +105,7 @@ const SignupPage = () => {
             />
 
             <TextField
+              className="text-[#13490A] font-extrabold text-sm mx-5"
               type="phone"
               margin="normal"
               required
@@ -112,6 +116,7 @@ const SignupPage = () => {
               autoComplete="current-phone"
             />
             <TextField
+              className="text-[#13490A] font-extrabold text-sm mx-5"
               type="otp"
               margin="normal"
               required
@@ -121,6 +126,7 @@ const SignupPage = () => {
               id="otp"
             />
             <Button
+              className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
               type="submit"
               fullWidth
               variant="contained"
@@ -128,6 +134,7 @@ const SignupPage = () => {
             >
               Sign Up
             </Button>
+
             <Grid container>
               <Grid item>
                 <Typography variant="body2" sx={{ mt: 1 }}>

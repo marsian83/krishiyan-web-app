@@ -61,6 +61,7 @@ const ForgotPassword = () => {
             sx={{ mt: 1 }}
           >
             <TextField
+              className="text-[#13490A] font-extrabold text-sm mx-5"
               type="email"
               margin="normal"
               required
@@ -70,6 +71,7 @@ const ForgotPassword = () => {
               id="email"
             />
             <TextField
+              className="text-[#13490A] font-extrabold text-sm mx-5"
               type="password"
               margin="normal"
               required
@@ -80,6 +82,7 @@ const ForgotPassword = () => {
             />
 
             <TextField
+              className="text-[#13490A] font-extrabold text-sm mx-5"
               type="otp"
               margin="normal"
               required
@@ -89,6 +92,7 @@ const ForgotPassword = () => {
               id="otp"
             />
             <Button
+              className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
               type="submit"
               fullWidth
               variant="contained"

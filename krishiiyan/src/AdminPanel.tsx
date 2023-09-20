@@ -152,7 +152,7 @@ function AdminPanel() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"crop_advisory"} submenu={"mandi_prices"} />
-                <MandiPrices />
+                {/* <MandiPrices /> */}
               </main>
             }
           />

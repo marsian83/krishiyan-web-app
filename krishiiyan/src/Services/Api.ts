@@ -338,6 +338,7 @@ export async function getFarmerLocation(pin: string) {
     return [null, normalizedResponse];
   } catch (error) {
     const errorObject = normalizeServerError(error);
+    console.log(error);
     return [errorObject, null];
   }
 }

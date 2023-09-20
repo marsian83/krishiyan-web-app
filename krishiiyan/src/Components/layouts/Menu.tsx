@@ -649,7 +649,7 @@ const Menu = (props: any) => {
 
   return (
     <>
-      <menu className="bg-[#F3FFF1] w-[55%] lg:w-[12vw] xl:w-[55%] flex flex-col items-center  shadow-[4px_4px_20px_rgba(0,0,0,0.1)] h-full">
+      <menu className="bg-[#F3FFF1] w-[55%] lg:w-[12vw] xl:w-[55%] sm:w-[38%] flex flex-col items-center  shadow-[4px_4px_20px_rgba(0,0,0,0.1)] h-full">
         <h2
           className="text-[#13490A] text-md xl:text-m font-roboto font-extrabold my-[4%] leading-5 text-right
         drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]"

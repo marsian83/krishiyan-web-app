@@ -37,6 +37,7 @@
     "react-chartjs-2": "^5.0.1",
     "react-csv": "^2.2.2",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.11.0",
     "react-live-clock-date-fns": "^1.0.0",
     "react-loader-spinner": "^5.3.4",
     "react-papaparse": "^4.1.0",

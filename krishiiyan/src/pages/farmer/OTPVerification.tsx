@@ -11,31 +11,50 @@ import * as Api from "../../Services/Api";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const OTPVerification = (props: any) => {
   const [fullWidth, setFullWidth] = useState(true);
   const [maxWidth, setMaxWidth] = useState<DialogProps["maxWidth"]>("xs");
-
+  const [verificationStatus, setVerificationStatus] = useState("");
   const [otp, setOtp] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  // State to control dialog open/close
+
+  const { open, handleClose } = props;
+
+  //   const handleClose = () => {
+  //     setOpen(false);
+  //   };
+
   const handleSubmit = async () => {
-    const [err, res] = await Api.verifyOtp(props.Phone, otp);
-    if (err) {
-      toast.error(err.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
-    if (res) {
-      console.log({ res });
-      toast.success(res?.data?.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      props.handleClose();
+    try {
+      // Send a POST request to your API to verify the OTP.
+      const response = await axios.post(
+        "http://localhost:5001/api/verify-otp",
+        {
+          phoneNumber,
+          otp,
+        }
+      );
+      if (response.data.success) {
+        setVerificationStatus("OTP verified successfully.");
+        handleClose();
+      } else {
+        setVerificationStatus("OTP verification failed.");
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      console.log(error);
+      setVerificationStatus("Error verifying OTP.");
     }
   };
+
+  // Use the 'open' state to control whether the dialog is open or closed
   return (
     <div>
       <Dialog
-        open={props.open}
+        open={open}
         // onClose={props.handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -76,6 +95,17 @@ const OTPVerification = (props: any) => {
                   autoFocus
                   onChange={(e: any) => setOtp(e.target.value)}
                 />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="mobile"
+                  label="mobile"
+                  name="mobile"
+                  autoComplete="mobile"
+                  autoFocus
+                  onChange={(e: any) => setPhoneNumber(e.target.value)}
+                />
                 <Button
                   //   type="submit"
                   fullWidth
@@ -85,7 +115,9 @@ const OTPVerification = (props: any) => {
                 >
                   Verify
                 </Button>
+                <p>{verificationStatus}</p>
               </Box>
+              {/* Add a close button here */}
             </Box>
           </Container>
         </DialogContent>

@@ -13,29 +13,26 @@ const Header = (props: any) => {
     navigate("/login");
     window.location.reload();
   };
+
   return (
-    <header
-      className="bg-[#F3FFF1] w-full h-[12vh] xl:h-[14vh] flex flex-row items-center rounded-2xl ml-1 shadow-[0_8px_16px_rgba(0,0,0,0.1)] 
-        pr-[1vw]"
-      style={{ position: "sticky", top: 0, zIndex: 100 }}
-    >
-      <div className="text-[#13490A] text-center font-roboto font-black text-lg leading-7 mt-4 flex-[6] lg:text-sm xl:text-base">
+    <header className="bg-[#F3FFF1] w-full xl:h-[14vh] flex flex-col xl:flex-row items-center rounded-2xl shadow-md">
+      <div className="text-[#13490A] text-center font-roboto font-black text-lg xl:text-base leading-7 mt-4 p-2">
         <h1>{props?.title}</h1>
         <h1>{props?.subtitle}</h1>
       </div>
-      <div className="text-[#13490A] text-center font-roboto mt-5">
+      <div className="text-[#13490A] text-center font-roboto mt-4 p-2">
         <Weather />
       </div>
-      <div className="flex items-center justify-center font-roboto flex-[2] lg:space-x-2">
-        <div className="flex items-center rounded-lg gap-3">
-          <p className="text-[#000000] font-normal text-xs lg:text-xs xl:text-sm">
-            {DealerName}
-          </p>
+      <div className="flex items-center justify-center xl:justify-end font-roboto p-2">
+        <div className="flex items-center gap-3">
           <Avatar
             alt="Remy Sharp"
             src="https://mui.com/static/images/avatar/2.jpg"
             sx={{ width: 56, height: 56 }}
           />
+          <div className="text-[#000000] font-normal text-xs xl:text-sm">
+            {DealerName}
+          </div>
           <Button
             variant="contained"
             onClick={logout}
