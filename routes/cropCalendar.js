@@ -15,6 +15,9 @@ router.post("/role-admin/stage/add", async (req, res, next) => {
     pest = "", //array of objects
     weed = "", //array of objects
     Fertilizer = "", //array of objects
+    disease_link = "",
+    weed_link = "",
+    pest_link = "",
     images = [],
     localName,
     csv = "",
@@ -42,6 +45,9 @@ router.post("/role-admin/stage/add", async (req, res, next) => {
       stage.Fertilizer = Fertilizer;
       stage.description = description;
       stage.images = images;
+      stage.disease_link = disease_link;
+      stage.weed_link = weed_link;
+      stage.pest_link = pest_link;
       cropCal.stages[stageIn] = stage;
       await cropCal.save();
       res.status(201).json({ crop });

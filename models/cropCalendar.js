@@ -11,6 +11,9 @@ const crop_stage = [
     disease: [{ type: mongoose.Schema.Types.Mixed }],
     pest: [{ type: mongoose.Schema.Types.Mixed }],
     weed: [{ type: mongoose.Schema.Types.Mixed }],
+    disease_link: String,
+    weed_link: String,
+    pest_link: String,
     Fertilizer: {
       Data: String,
       Dosage: String,
