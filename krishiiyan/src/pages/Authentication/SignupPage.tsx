@@ -11,8 +11,6 @@ import * as Api from "../../Services/Api";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import jwt_decode from "jwt-decode";
 import GoogleOauthLogin from "../../Components/Auth/GoogleLogin";
 
 const SignupPage = () => {
