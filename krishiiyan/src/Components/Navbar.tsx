@@ -8,7 +8,7 @@ const Navbar: React.FC = () => {
   return (
     <nav className="sticky top-0 bg-white p-4 sm:p-6 flex justify-between items-center transition-all duration-500 z-50 shadow-md">
       <Link to="/">
-        <img src="/logo.png" alt="Logo" className="h-12 sm:h-16" />
+        <img src="Images/logoname.png" alt="Logo" className="h-12 sm:h-16" />
       </Link>
 
       {/* Hamburger & Close Menu Icon */}

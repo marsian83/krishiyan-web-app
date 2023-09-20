@@ -10,6 +10,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { extractCodeFromDriveLink } from "../../handleImageCode";
+import Popup from "../../Components/layouts/PopUp";
 
 const PlantationOptions = [
   {
@@ -53,7 +54,15 @@ const CropHealth = () => {
   const [loading, setLoading] = useState(false);
   const [solution, setSolution] = useState<any>();
   const [solutionDetails, setSolutionDetails] = useState<any>();
+ const [isPopupOpen, setIsPopupOpen] = useState(true);
 
+ const openPopup = () => {
+   setIsPopupOpen(true);
+ };
+
+ const closePopup = () => {
+   setIsPopupOpen(false);
+ };
   let navigate = useNavigate();
   // navigate("/support")
   const onChangePlantationType = (e: any, value: any) => {
@@ -315,17 +324,17 @@ const CropHealth = () => {
                       </td>
                       <td className="border-r border-black">
                         <div className="grid grid-cols-[50%_50%]">
-                        {curr.images.map((image: any, index: any) => {
-                                return (
-                                  <img
-                                    style={{ width: 250, height: 250 }}
-                                    src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(
-                                      image
-                                    )}`}
-                                  />
-                                  // <img src={image}/>
-                                );
-                              })}
+                          {curr.images.map((image: any, index: any) => {
+                            return (
+                              <img
+                                style={{ width: 250, height: 250 }}
+                                src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(
+                                  image
+                                )}`}
+                              />
+                              // <img src={image}/>
+                            );
+                          })}
                         </div>
                       </td>
                       <td className="border-r border-black w-[35%] font-thin text-start pl-2 pr-2 text-xl w-[20%]">
@@ -367,6 +376,7 @@ const CropHealth = () => {
           </table>
         </>
       </section>
+      <Popup isOpen={isPopupOpen} onClose={closePopup} />
     </div>
   );
 };

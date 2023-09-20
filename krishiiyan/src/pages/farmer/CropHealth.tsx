@@ -24,6 +24,7 @@ const CropHealth = () => {
   const [farmerDetail, setFarmerDetail] = useState<any>();
   const [description, setDescription] = useState("");
   const [farmerID, setFarmerID] = useState<any>("");
+  
   const onChangeCrop = (e: any) => {
     setCrop(e.target.value);
   };

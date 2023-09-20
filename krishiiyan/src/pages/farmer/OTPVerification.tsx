@@ -31,7 +31,7 @@ const OTPVerification = (props: any) => {
     try {
       // Send a POST request to your API to verify the OTP.
       const response = await axios.post(
-        "http://localhost:5001/api/verify-otp",
+        `${process.env.REACT_APP_BACKEND_URL}/verify-otp`,
         {
           phoneNumber,
           otp,

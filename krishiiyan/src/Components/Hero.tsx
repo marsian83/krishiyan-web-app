@@ -51,7 +51,7 @@ const Hero = () => {
       </div>
       <div className="w-full md:w-[47%]">
         <img
-          src="../../public/home-first.png"
+          src="Images/home-first.png"
           alt="Your Hero Image Description"
           className="w-full h-full object-cover"
         />

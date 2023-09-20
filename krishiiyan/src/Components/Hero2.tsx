@@ -26,7 +26,7 @@ const Hero2 = () => {
     return (
         <section ref={hero2Ref} className={`flex flex-col md:flex-row items-center justify-between p-4 md:p-10 bg-[#d8ffd885] ${isVisible ? 'fade-in' : ''}`}>
             <div className="mb-4 md:mb-0 w-full md:w-[47%]">
-                <img src="public/home-3.png" alt="Your Hero2 Image Description" className="w-full h-full object-cover rounded-tr-[2rem]"/>
+                <img src="Images/home-3.png" alt="Your Hero2 Image Description" className="w-full h-full object-cover rounded-tr-[2rem]"/>
             </div>
 
             <div className="w-full md:w-1/2 text-center md:text-left">

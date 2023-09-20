@@ -8,7 +8,7 @@ const TechCard2 = () => {
     return (
         <div className="flex flex-col md:flex-row border p-4 sm:p-6 rounded-md shadow-md">
             <div className="w-full md:w-1/2 mb-4 md:mb-0 pr-0 md:pr-4">
-                <img src="public\our-tech.png" alt="Description" className="w-full rounded-md shadow-xl" />
+                <img src="Images\our-tech.png" alt="Description" className="w-full rounded-md shadow-xl" />
             </div>
             <div className="w-full md:w-1/2">
                 <h2 className="text-xl font-semibold mb-4">KrishiYan works closely with Agri-input dealers to provide solutions for solving:</h2>

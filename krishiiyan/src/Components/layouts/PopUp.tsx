@@ -13,13 +13,15 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       // Fetch popup data when the component is open
-      axios.get("http://localhost:5001/api/popups").then((response) => {
-        if (response.data.success) {
-          setPopupData(response.data.popups[0]); // Assuming you want to display the first popup
-        } else {
-          // Handle the case where data fetching failed
-        }
-      });
+      axios
+        .get(`${process.env.REACT_APP_BACKEND_URL}/popups`)
+        .then((response) => {
+          if (response.data.success) {
+            setPopupData(response.data.popups[0]); // Assuming you want to display the first popup
+          } else {
+            // Handle the case where data fetching failed
+          }
+        });
     }
   }, [isOpen]);
 

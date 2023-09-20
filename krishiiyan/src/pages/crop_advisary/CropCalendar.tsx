@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import moment from "moment";
+import Popup from "../../Components/layouts/PopUp";
 
 const PlantationOptions = [
   {
@@ -27,15 +28,25 @@ const CropCalendar = () => {
   const [dateOfSowing, setDateOfSowing] = useState<any>("");
   const [cropDetails, setCropDetails] = useState<any>();
   const [loading, setLoading] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(true);
 
-  const onChangePlantationType = (e: any, value: any) => {  
-  console.log(value.localName); // This should log the selected value
-  setLocalsName(value.localName);};
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+
+  const onChangePlantationType = (e: any, value: any) => {
+    console.log(value.localName); // This should log the selected value
+    setLocalsName(value.localName);
+  };
 
   const onChangedateOfSowing = (e: any) => {
     let date = e.target.value;
     const dateInString = date.toString();
-    console.log(dateInString)
+    console.log(dateInString);
     setDateOfSowing(dateInString);
   };
 
@@ -99,13 +110,14 @@ const CropCalendar = () => {
   }, []);
 
   const getCropStages = async () => {
-    console.log(dateOfSowing)
+    console.log(dateOfSowing);
     console.log(
       process.env.REACT_APP_BACKEND_URL +
         "/cropCalendar/stage/" +
         localsName +
         "/" +
-        dateOfSowing)
+        dateOfSowing
+    );
     const CropData = await fetch(
       process.env.REACT_APP_BACKEND_URL +
         "/cropCalendar/stage/" +
@@ -123,7 +135,7 @@ const CropCalendar = () => {
     const CropDataJson = await CropData.json();
     console.log(CropDataJson);
     setCropDetails(CropDataJson.cropStages);
-    console.log(cropDetails)
+    console.log(cropDetails);
   };
   return (
     <div>
@@ -203,7 +215,7 @@ const CropCalendar = () => {
                 type="submit"
                 onClick={getCropStages}
                 className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
-              >                                                                                           
+              >
                 ENTER
               </button>
             )}
@@ -226,14 +238,17 @@ const CropCalendar = () => {
                 <h2 className="text-[#13490A] font-extrabold mb-3 text-center">
                   {obj?.localName}
                 </h2> */}
-                {
-                  cropDetails && 
-                  <HorizontalNonLinearStepper cropDetails={cropDetails} date={dateOfSowing}/>
-                }
-              {/* </>
+          {cropDetails && (
+            <HorizontalNonLinearStepper
+              cropDetails={cropDetails}
+              date={dateOfSowing}
+            />
+          )}
+          {/* </>
             ))} */}
         </div>
       </section>
+      <Popup isOpen={isPopupOpen} onClose={closePopup} />
     </div>
   );
 };

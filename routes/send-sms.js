@@ -1,5 +1,5 @@
 const { exec } = require("child_process");
-const OTP = require("../models/otp");
+const OTP = require("../models/Otp");
 
 // Function to generate a random 6-digit OTP
 function generateOTP() {
