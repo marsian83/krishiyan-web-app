@@ -25,7 +25,7 @@ const Header = (props: any) => {
   };
 
   return (
-    <header className="bg-[#F3FFF1] w-full xl:h-[14vh] flex flex-col xl:flex-row items-center rounded-2xl shadow-md">
+    <header className="bg-[#F3FFF1] w-full xl:h-[14vh] flex flex-col xl:flex-row items-center rounded-2xl shadow-md mobile:w-[65vw] mobile:absolute mobile:right-0">
       <div className="text-[#13490A] text-center font-roboto font-black text-lg xl:text-base leading-7 mt-4 p-2">
         <h1>{props?.title}</h1>
         <h1>{props?.subtitle}</h1>
@@ -34,7 +34,7 @@ const Header = (props: any) => {
         <Weather />
       </div>
       <div className="flex items-center justify-center xl:justify-end font-roboto p-2">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3  mobile:flex-col">
           <Avatar
             alt="Remy Sharp"
             src="https://mui.com/static/images/avatar/2.jpg"

@@ -189,17 +189,14 @@ const CropHealth = () => {
   return (
     <div>
       <Header title="Crop Advisory" subtitle="Crop Health" />
-      <section className="p-[1%] grid gap-y-1 mt-5">
+      <section className="p-[1%] grid gap-y-1 mt-5 mobile:pt-[40rem] mobile:absolute mobile:left-0">
         <div
-          className=" "
+          className="flex mobile:flex-col mobile:gap-y-4"
           style={{
-            display: "flex",
-            justifyContent: "start",
-            flexDirection: "row",
           }}
         >
           <div
-            className="font-extrabold grid grid-cols-[50%_40%] items-center"
+            className="font-extrabold grid grid-cols-[50%_40%] items-center mobile:flex mobile:flex-col"
             style={{ width: "550px" }}
           >
             <label className="text-[#13490A] text-end mr-3">
@@ -225,7 +222,7 @@ const CropHealth = () => {
             />
           </div>
           <div
-            className="font-extrabold ml-10 grid grid-cols-[20%_40%] items-center"
+            className="font-extrabold ml-10 grid grid-cols-[20%_40%] items-center mobile:flex mobile:flex-col"
             style={{ width: "450px" }}
           >
             {/* <label className="text-[#13490A] text-end mr-3">Issues</label>
@@ -248,7 +245,7 @@ const CropHealth = () => {
               )}
             /> */}
             <div
-              className="font-extrabold grid grid-cols-[50%_40%] items-center"
+              className="font-extrabold grid grid-cols-[50%_40%] items-center mobile:flex mobile:flex-col"
               style={{ width: "550px" }}
             >
               <label className="text-[#13490A] text-end mr-3">
@@ -284,7 +281,7 @@ const CropHealth = () => {
                 style={{ padding: "10px", marginTop: "5px" }}
                 type="submit"
                 onClick={onSubmit}
-                className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
+                className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin mobile:w-max"
               >
                 Submit
               </button>

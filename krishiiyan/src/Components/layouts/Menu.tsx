@@ -668,7 +668,7 @@ const Menu = (props: any) => {
         {/* Menu Options */}
 
         {/* Pos */}
-        <div className="absolute top-28">
+        <div className="absolute top-28 mobile:left-0 mobile:top-[35vh] mobile:pl-3 mobile:text-sm">
           {props?.pos ? (
             <>
               <ul className="text-center text-sm flex flex-col items-center mt-[60%]">

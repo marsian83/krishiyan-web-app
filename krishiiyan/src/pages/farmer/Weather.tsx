@@ -45,10 +45,7 @@ const Weather = () => {
 
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-      }}
+      className="mobile:flex-col flex"
     >
       <div className="w-30 mr-6 text-start	">
         <p className="font-thin text-sm">

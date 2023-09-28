@@ -91,12 +91,12 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
   };
 
   return (
-    <div className="flex flex-row lg:flex-row">
+    <div className="flex flex-row lg:flex-row mobile:w-[50vw] mobile:h-max">
       <nav className="bg-[#C6EDC0] w-full lg:w-[9vw] xl:w-[45%] flex flex-col items-center h-full">
         <img
           src="Images/logo.png"
           alt="Ellipse"
-          className="my-5 mx-auto lg:w-10 xl:w-20"
+          className="my-5 mx-auto lg:w-10 xl:w-20 mobile:px-6"
         />
         <ul className="text-center text-sm flex flex-col lg:flex-col items-center gap-y-3 lg:gap-y-0">
           <li
@@ -109,11 +109,12 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
           </li>
           <li
             onClick={cropClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
+            className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2  rounded-lg flex-col flex ${
               crop === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
             }`}
           >
-            Crop Advisory
+              Crop
+              Advisory
           </li>
           <li
             onClick={farmClick}

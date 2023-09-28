@@ -140,21 +140,20 @@ const CropCalendar = () => {
   return (
     <div>
       <Header title="Crop Advisory" subtitle="Crop Calendar" />
-      <section className="p-[1%]">
+      <section className="p-[1%] mobile:pt-[40rem] mobile:absolute mobile:-left-16">
         {/* <div style={{width:"100%",height:"105px",backgroundColor:"red"}}>
 
         </div> */}
 
         <div
-          className=""
+          className="mobile:flex mobile:flex-col flex mobile:gap-y-4"
           style={{
             display: "flex",
             justifyContent: "center",
-            flexDirection: "row",
           }}
         >
           <div
-            className="font-extrabold grid grid-cols-[40%_40%] items-center"
+            className="font-extrabold grid grid-cols-[40%_40%] items-center mobile:flex mobile:flex-col"
             style={{ width: "550px" }}
           >
             <label className="text-[#13490A]">Select the Crop</label>
@@ -167,6 +166,7 @@ const CropCalendar = () => {
             <Autocomplete
               onChange={onChangePlantationType}
               id="plantation-select"
+              className="mobile:w-[80vw]"
               // sx={{ bgcolor: '#F3FFF1', boxShadow: '4px 4px 3px rgba(0,0,0,0.25)', borderRadius: '6px', textAlign: 'center', height: '2rem' }}
               options={crops}
               autoHighlight
@@ -184,7 +184,7 @@ const CropCalendar = () => {
             />
           </div>
           <div
-            className="font-extrabold grid grid-cols-[30%_20%] items-center"
+            className="font-extrabold grid grid-cols-[30%_20%] items-center mobile:flex mobile:flex-col"
             style={{ width: "550px" }}
           >
             <label className="text-[#13490A] text-center">Date of Sowing</label>
@@ -214,7 +214,7 @@ const CropCalendar = () => {
                 style={{ padding: "9px" }}
                 type="submit"
                 onClick={getCropStages}
-                className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin"
+                className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-[6vw] rounded text-sm font-thin mobile:w-max"
               >
                 ENTER
               </button>
