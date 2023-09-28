@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import Weather from "../../pages/farmer/Weather";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
+import Popup from "../../Components/layouts/PopUp";
 
 const Header = (props: any) => {
+  const [isPopupOpen, setIsPopupOpen] = useState(true);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
   const navigate = useNavigate();
   let DealerName = localStorage.getItem("dealerName");
   const logout = () => {
@@ -45,7 +55,21 @@ const Header = (props: any) => {
               // color="red"
             />
           </Button>
+          <button
+            className="mt-4 px-4 py-2 bg-white text-black rounded hover:bg-green-200"
+            onClick={openPopup}
+          >
+            <div className="flex flex-row">
+              <img
+                src="Images\soyabean.jpg"
+                alt="WhatsApp"
+                className="w-6 h-6"
+              />
+              <p> Today's Deal</p>
+            </div>
+          </button>
         </div>
+        <Popup isOpen={isPopupOpen} onClose={closePopup} />
       </div>
     </header>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Popup from "../../Components/layouts/PopUp"; // Adjust the import path based on your project structure
+import Popup from "../../Components/layouts/PopUp";
 
 const Premium = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(true);

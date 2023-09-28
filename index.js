@@ -59,7 +59,7 @@ app.use("/api/cropHealth", require("./routes/cropHealth"));
 app.use("/api/auth", require("./routes/authentication"));
 app.use("/api/admin", tokenAuth, require("./routes/admin"));
 app.use("/api/farmer", require("./routes/farmer"));
-app.use("/api", require("./routes/popup,js"));
+app.use("/api", require("./routes/popup.js"));
 
 app.get("/api/ping", (req, res) => {
   res.send("pong");

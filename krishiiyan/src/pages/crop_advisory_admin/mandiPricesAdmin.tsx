@@ -15,6 +15,28 @@ const FormPage: React.FC = () => {
     protein: "",
     description: "",
   });
+  const handleDeleteData = async () => {
+    try {
+      const response = await axios.delete(
+        "http://localhost:5001/api/delete-all-popups"
+      );
+
+      if (response.data.success) {
+        toast.success("All data deleted successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        toast.error("Failed to delete data", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    } catch (error) {
+      toast.error("An error occurred while deleting data", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      console.log(error);
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -165,6 +187,13 @@ const FormPage: React.FC = () => {
               onClick={handleSubmit}
             >
               Submit
+            </button>
+            <button
+              type="button"
+              className="bg-[#FF453A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
+              onClick={handleDeleteData}
+            >
+              Delete All Data
             </button>
           </form>
         </div>

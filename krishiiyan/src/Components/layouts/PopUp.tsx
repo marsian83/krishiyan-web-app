@@ -9,6 +9,9 @@ interface PopupProps {
 
 const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
   const [popupData, setPopupData] = useState<any>(null); // State to store the fetched data
+  function encodeURL(url: string): string {
+    return encodeURIComponent(url);
+  }
 
   useEffect(() => {
     if (isOpen) {
@@ -27,7 +30,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
-      <div className="relative w-full max-w-md p-6 my-6 mx-4 bg-light-green-100 rounded-lg shadow-lg">
+      <div className="relative w-full max-w-md p-6 my-6 mx-4 bg-[#F3FFF1] rounded-lg shadow-lg border border-black ">
         <button
           className="absolute top-2 right-2 p-2 text-green-700 hover:text-gray-900 rounded-full bg-gray-200 hover:bg-green-200"
           onClick={onClose}
@@ -48,28 +51,49 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
           </svg>
         </button>
 
-        <div className="p-4">
+        <div className="p-4  ">
+          <h4 className="text-xl font-medium ">Today's deal</h4>
           <h2 className="text-2xl font-bold mb-4 text-green-700 ">
             {popupData.title}
           </h2>
+          <img src="Images\soyabean.jpg" alt="popup" className="w-full" />
 
-          <h4 className="text-xl font-medium text-green-400">
+          <h4 className="text-3xl font-bold text-green-400 underline ">
             {`@${popupData.price}/- per ton`}
           </h4>
-          <h4 className="text-xl font-medium">
+          <h2 className="text-2xl font-medium">
             {`Quantity: ${popupData.quantity} tons`}
-          </h4>
+          </h2>
           <h2 className="text-2xl font-semibold mt-6 mb-4 text-green-700">
             Quality Parameters
           </h2>
-          <ul className="list-decimal pl-6">
-            <li className="mb-1">{`Moisture: ${popupData.moisture}`}</li>
-            <li className="mb-1">{`Foreign matter: ${popupData.foreignMatter}`}</li>
-            <li className="mb-1">{`Fibre: ${popupData.fibre}`}</li>
-            <li className="mb-1">{`Debris: ${popupData.debris}`}</li>
-            <li className="mb-1">{`Protein: ${popupData.protein}`}</li>
+          <ul className="list-decimal pl-6 text-start text-2xl">
+            <li className="mb-1 text-2xl">{`Moisture: ${popupData.moisture}`}</li>
+            <li className="mb-1 text-2xl">{`Foreign matter: ${popupData.foreignMatter}`}</li>
+            <li className="mb-1 text-2xl">{`Fibre: ${popupData.fibre}`}</li>
+            <li className="mb-1 text-2xl">{`Debris: ${popupData.debris}`}</li>
+            <li className="mb-1 text-2xl">{`Protein: ${popupData.protein}`}</li>
           </ul>
           <p className="mt-6 text-gray-800">{popupData.description}</p>
+          <button
+            className=" text-green-700 hover:text-gray-900 rounded-full bg-gray-200 hover:bg-green-200"
+            onClick={() => {
+              const message = `Hello,we have ${popupData.title} of price ${popupData.price} and quantity is ${popupData.quantity}. `;
+              const encodedMessage = encodeURL(message);
+              console.log(encodedMessage);
+
+              window.location.href = `https://wa.me/918055850995?text=${encodedMessage}`;
+            }}
+          >
+            <div className="flex flex-row">
+              <img
+                src="Images\whatsapp.png"
+                alt="WhatsApp"
+                className="w-6 h-6"
+              />
+              <p> Contact to supply</p>
+            </div>
+          </button>
         </div>
       </div>
     </div>
