@@ -59,6 +59,16 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
             {popupData.title}
           </h2>
           <img src="Images\soyabean.jpg" alt="popup" className="w-full" />
+          {/* {popupData.image.map((image: any, index: any) => {
+            return (
+              <img
+                style={{ width: 250, height: 250 }}
+                src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(
+                  image
+                )}`}
+              />
+            );
+          })} */}
 
           <h4 className="text-3xl font-bold text-green-400 underline ">
             {`@${popupData.price}/- per ton`}

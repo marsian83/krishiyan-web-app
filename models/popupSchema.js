@@ -11,6 +11,7 @@ const popupSchema = new mongoose.Schema({
   debris: String,
   protein: String,
   description: String,
+  image: String,
 });
 
 module.exports = mongoose.model("Popup", popupSchema);
