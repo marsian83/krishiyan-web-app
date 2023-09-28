@@ -16,7 +16,7 @@ const {
 } = require("./middleware/adminAuthorizer");
 // //Logger
 // app.use(logger("dev"));
-const OTP = require("./models/otp");
+const OTP = require("./models/Otp");
 //BodyParser
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));

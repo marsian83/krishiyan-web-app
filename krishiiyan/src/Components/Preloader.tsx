@@ -25,7 +25,7 @@ const Preloader: React.FC = () => {
 
   return (
     <div className={`fixed top-0 left-0 w-full h-full bg-white bg-opacity-100 flex justify-center items-center z-50 transition-opacity duration-500 ease-in-out ${isFadingOut ? 'opacity-0' : 'opacity-100'}`}>
-      <img src={`public/fav-icon.png`} alt="Loading..." className="w-16 h-16" />
+      <img src={`Images/fav-icon.png`} alt="Loading..." className="w-16 h-16" />
     </div>
   );
 };

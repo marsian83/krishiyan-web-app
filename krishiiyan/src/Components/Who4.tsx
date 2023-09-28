@@ -6,19 +6,19 @@ const Who4 = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
                 {[
                     {
-                        icon: 'public/icon-2.png',
+                        icon: 'Images/icon-2.png',
                         description1: 'Creating a win-win situation for',
                         description2: 'those who deal with us.',
                         number: '01'
                     },
                     {
-                        icon: 'public/icon-1.png',
+                        icon: 'Images/icon-1.png',
                         description1: 'Promoting safe food production',
                         description2: 'with good agricultural practices.',
                         number: '02'
                     },
                     {
-                        icon: 'public/hunger.png',
+                        icon: 'Images/hunger.png',
                         description1: 'We contribute to Global',
                         description2: 'Sustainable Goals - Zero Hunger.',
                         number: '03'

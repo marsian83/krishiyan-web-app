@@ -27,10 +27,10 @@ const Hero3 = () => {
             <h1 className="text-xl sm:text-3xl font-semibold mb-8 mx-auto bg-[#f3f1fe] w-[180px] sm:w-[250px] h-[48px] text-[#3bc238]">Supported By</h1>
 
             <div className="flex flex-wrap justify-center space-x-2 sm:space-x-6">
-                <img src="public\Picture1.png" alt="Image 1 Description" className="w-1/2 sm:w-[165px] lg:w-[330px] h-[70px] sm:h-[140px] mb-4"/>
-                <img src="public\Picture3.png" alt="Image 2 Description" className="w-1/2 sm:w-[165px] lg:w-[330px] h-[65px] sm:h-[130px] mb-4"/>
-                <img src="public\Picture2.png" alt="Image 3 Description" className="w-1/2 sm:w-[165px] lg:w-[330px] h-[65px] sm:h-[130px] mb-4"/>
-                <img src="public\Picture4.png" alt="Image 4 Description" className="w-1/2 sm:w-[165px] lg:w-[330px] h-[65px] sm:h-[130px] mb-4"/>
+                <img src="Images\Picture1.png" alt="Image 1 Description" className="w-1/2 sm:w-[165px] lg:w-[330px] h-[70px] sm:h-[140px] mb-4"/>
+                <img src="Images\Picture3.png" alt="Image 2 Description" className="w-1/2 sm:w-[165px] lg:w-[330px] h-[65px] sm:h-[130px] mb-4"/>
+                <img src="Images\Picture2.png" alt="Image 3 Description" className="w-1/2 sm:w-[165px] lg:w-[330px] h-[65px] sm:h-[130px] mb-4"/>
+                <img src="Images\Picture4.png" alt="Image 4 Description" className="w-1/2 sm:w-[165px] lg:w-[330px] h-[65px] sm:h-[130px] mb-4"/>
             </div>
         </section>
     );

@@ -8,8 +8,8 @@ const BlogSection = () => {
             <p className="text-lg sm:text-xl text-center mb-8">dealers in Gujarat, Maharashtra, Tamil Nadu and received positive response for our software service.</p>
 
             <div className="flex flex-col sm:flex-row justify-center space-y-6 sm:space-y-0 sm:space-x-6">
-                <img src="public/our-team-1.png" alt="Description for Image 1" className="w-full sm:w-1/3 shadow-lg rounded-3xl"/>
-                <img src="public/our-team-2.png" alt="Description for Image 2" className="w-full sm:w-1/3 shadow-lg rounded-3xl"/>
+                <img src="Images/our-team-1.png" alt="Description for Image 1" className="w-full sm:w-1/3 shadow-lg rounded-3xl"/>
+                <img src="Images/our-team-2.png" alt="Description for Image 2" className="w-full sm:w-1/3 shadow-lg rounded-3xl"/>
             </div>
         </section>
     );

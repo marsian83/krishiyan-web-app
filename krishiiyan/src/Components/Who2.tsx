@@ -8,13 +8,13 @@ const Who2 = () => {
                 </div>
 
                 <div className="w-full md:w-1/2 mt-6 md:mt-0">
-                    <img src="public\imageonline-co-compressed.jpg" alt="Description for the Image" className="w-full h-full object-cover rounded-lg shadow-md" />
+                    <img src="Images\imageonline-co-compressed.jpg" alt="Description for the Image" className="w-full h-full object-cover rounded-lg shadow-md" />
                 </div>
             </section>
 
             <section className="flex flex-col-reverse md:flex-row items-center justify-between p-10 space-y-10 md:space-y-0">
                 <div className="w-full md:w-1/2 mt-6 md:mt-0">
-                    <img src="public\imageonline-co-compressed.jpg" alt="Description for the Image" className="w-full h-full object-cover rounded-lg shadow-md" />
+                    <img src="Images\imageonline-co-compressed.jpg" alt="Description for the Image" className="w-full h-full object-cover rounded-lg shadow-md" />
                 </div>
                 <div className="w-full md:w-1/2 space-y-6">
                     <h1 className="text-4xl font-bold">About KrishiYan</h1>

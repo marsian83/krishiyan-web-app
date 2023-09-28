@@ -11,6 +11,9 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useNavigate } from "react-router-dom";
 import { log } from "console";
 import OTPVerification from "./OTPVerification";
+import Popup from "../../Components/layouts/PopUp";
+
+ 
 
 const PlantationOptions = [
   {
@@ -52,6 +55,15 @@ const NewRegistration = () => {
   const [totalLandArea, setTotalLandArea] = useState("");
   const [dealer_farmer_relation, setDealer_farmer_relation] = useState("");
   const [plantation_type, setPlantation_type] = useState("");
+   const [isPopupOpen, setIsPopupOpen] = useState(true);
+
+   const openPopup = () => {
+     setIsPopupOpen(true);
+   };
+
+   const closePopup = () => {
+     setIsPopupOpen(false);
+   };
 
   const [loading, setLoading] = useState(false);
 
@@ -127,7 +139,7 @@ const NewRegistration = () => {
       });
     } else {
       try {
-        const response = await fetch("http://localhost:5001/api/send-sms", {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/send-sms`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -313,6 +325,7 @@ const NewRegistration = () => {
         </div>
       </section>
       <OTPVerification open={open} handleClose={handleClose} Phone={mobile} />
+      <Popup isOpen={isPopupOpen} onClose={closePopup} />
     </div>
   );
 };

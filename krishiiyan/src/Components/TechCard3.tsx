@@ -15,7 +15,7 @@ const TechCard3 = () => {
             backgroundSize: 'cover',
             backgroundAttachment: 'fixed'
         }}>
-            <img src="public/our-technology.png" alt="Background" className="absolute inset-0 w-full h-full object-cover opacity-50" />
+            <img src="Images/our-technology.png" alt="Background" className="absolute inset-0 w-full h-full object-cover opacity-50" />
             <div className="text-center pt-12 pb-12">
                 <div className="container mx-auto">
                     <span className="text-4xl font-semibold mb-4 font-bold">KrishiYan Features</span>

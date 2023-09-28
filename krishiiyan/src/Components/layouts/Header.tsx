@@ -20,7 +20,7 @@ const Header = (props: any) => {
   let DealerName = localStorage.getItem("dealerName");
   const logout = () => {
     localStorage.removeItem("authToken");
-    navigate("/login");
+    navigate("/home");
     window.location.reload();
   };
 

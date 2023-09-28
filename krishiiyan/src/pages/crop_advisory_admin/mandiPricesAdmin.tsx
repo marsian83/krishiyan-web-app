@@ -49,7 +49,7 @@ const FormPage: React.FC = () => {
     try {
       // Send a POST request to your API to save the data
       const response = await axios.post(
-        "http://localhost:5001/api/create-popup",
+        `${process.env.REACT_APP_BACKEND_URL}/create-popup`,
         formData
       );
       if (response.data.success) {
