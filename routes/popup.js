@@ -1,7 +1,7 @@
 // api.js
 const express = require("express");
 const router = express.Router();
-const Popup = require("../models/popupSchema"); // Adjust the path as needed
+const Popup = require("../models/popupSchema");
 
 // POST route to save the form data to the database
 router.post("/create-popup", async (req, res) => {
@@ -16,9 +16,9 @@ router.post("/create-popup", async (req, res) => {
       debris,
       protein,
       description,
+      image,
     } = req.body;
 
-    // Create a new popup document
     const popup = new Popup({
       title,
       price,
@@ -29,9 +29,9 @@ router.post("/create-popup", async (req, res) => {
       debris,
       protein,
       description,
+      image,
     });
 
-    // Save the popup to the database
     await popup.save();
 
     if (popup._id) {

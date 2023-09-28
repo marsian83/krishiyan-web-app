@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import axios from "axios"; // Import Axios for API requests
-
+import { extractCodeFromDriveLink } from "../../handleImageCode";
 interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
@@ -58,7 +58,13 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
           <h2 className="text-2xl font-bold mb-4 text-green-700 ">
             {popupData.title}
           </h2>
-          <img src="Images\soyabean.jpg" alt="popup" className="w-full" />
+          <img
+            src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(
+              popupData.image
+            )}`}
+            alt="popup"
+            className="w-full"
+          />
 
           <h4 className="text-3xl font-bold text-green-400 underline ">
             {`@${popupData.price}/- per ton`}
