@@ -42,6 +42,11 @@ const LoginPage = () => {
   return (
     <>
       <Container component="main" maxWidth="xs">
+        <img
+          src="Images/logo.png"
+          alt="Ellipse"
+          className="mb-[50%] my-5 lg:w-10 xl:w-14 flex flex-col items-center"
+        />
         <Box
           sx={{
             marginTop: 8,
