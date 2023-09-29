@@ -178,8 +178,8 @@ const NewRegistration = () => {
   return (
     <div>
       <Header title="Farmer" subtitle="New Registration" />
-      <section>
-        <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
+      <section className="mobile:pt-[42rem]">
+        <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5 mobile:flex mobile:flex-col">
           <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
             Name
           </label>
@@ -189,8 +189,8 @@ const NewRegistration = () => {
             onChange={onChangeName}
           ></input>
         </div>
-        <div className="grid grid-cols-[50%_50%] gap-x-16">
-          <div className=" grid grid-cols-[50%_34%] items-center">
+        <div className="grid grid-cols-[50%_50%] gap-x-16 mobile:flex mobile:flex-col">
+          <div className=" grid grid-cols-[50%_34%] items-center mobile:flex mobile:flex-col">
             <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
               Mobile Number
             </label>
@@ -222,7 +222,7 @@ const NewRegistration = () => {
           </div>
         </div>
         <img src="Images/Line18.png" className="my-5" alt="line" />
-        <div className="grid grid-cols-[25%_26%]">
+        <div className="grid grid-cols-[25%_26%] mobile:flex mobile:flex-col">
           <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
             Address
           </label>
@@ -250,7 +250,7 @@ const NewRegistration = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
+        <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5 mobile:flex mobile:flex-col">
           <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
             Total Farm Area(Acre)
           </label>
@@ -261,7 +261,7 @@ const NewRegistration = () => {
           ></input>
         </div>
 
-        <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
+        <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5 mobile:flex mobile:flex-col">
           <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
             Dealer Farmer Relationship
           </label>
@@ -290,7 +290,7 @@ const NewRegistration = () => {
           ></input> */}
         </div>
 
-        <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5">
+        <div className="grid grid-cols-[25%_34%] items-center mt-6 mb-5 mobile:flex mobile:flex-col">
           <label className="text-[#13490A] font-roboto text-center font-extrabold text-sm mx-5">
             Type
           </label>
@@ -318,7 +318,7 @@ const NewRegistration = () => {
           <button
             onClick={onSubmitHandler}
             type="submit"
-            className="bg-[#05AB2A] text-[#F3FFF1] w-[8vw] h-8  mt-3 shadow-[0px_4px_3px_rgba(0,0,0,0.25)] rounded text-sm font-thin"
+            className="bg-[#05AB2A] text-[#F3FFF1] w-[8vw] h-8  mt-3 shadow-[0px_4px_3px_rgba(0,0,0,0.25)] rounded text-sm font-thin mobile:w-max"
           >
             Submit
           </button>
