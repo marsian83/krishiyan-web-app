@@ -15,7 +15,9 @@ import GoogleOauthLogin from "../../Components/Auth/GoogleLogin";
 import { useState } from "react";
 
 import OTPVerification from "../farmer/OTPVerification";
-import axios from "axios";
+
+let check = false;
+let check1 = false;
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -24,11 +26,24 @@ const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   let Phone = 0;
-  let check = false;
+
   let email1 = "";
+  const validateEmail = (email: string) => {
+    const validDomains = ["@gmail.com", "@krishiyan.com", "info@"];
+
+    for (const domain of validDomains) {
+      if (email.includes(domain)) {
+        check1 = true;
+        console.log("check 1 ", check1);
+      }
+      console.log("check 1 ", check1);
+    }
+  };
   const handleEmailChange = (event: any) => {
     email1 = event.target.value;
     console.log(email1);
+    check1 = false;
+    validateEmail(email1);
   };
   const handleMobileChange = (event: any) => {
     Phone = event.target.value;
@@ -54,45 +69,58 @@ const SignupPage = () => {
 
     console.log(Phone);
 
-    if (Phone != null) {
-      console.log("Please enter a valid phone number");
+    // if (Phone != null) {
+    //   console.log("Please enter a valid phone number");
+    //   try {
+    //     const response = await fetch(
+    //       `${process.env.REACT_APP_BACKEND_URL}/send-sms`,
+    //       {
+    //         method: "POST",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({ Phone }),
+    //       }
+    //     );
+
+    //     if (response.ok) {
+    //       console.log("SMS sent successfully!");
+    //       setMessageSent(true);
+    //       handleOpen();
+    //       check = true;
+    //       console.log(check);
+    //     } else {
+    //       // Handle error case
+    //       setMessageSent(false);
+    //     }
+    //   } catch (error) {
+    //     console.error("Error sending SMS:", error);
+    //   }
+    // }
+    if (email1 != null) {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/send-sms`,
+          `http://localhost:5001/api/send-otp-email`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ Phone }),
+            body: JSON.stringify({ email: email1 }),
           }
         );
-
         if (response.ok) {
           console.log("SMS sent successfully!");
-          setMessageSent(true);
           handleOpen();
+          console.log("check before", check);
           check = true;
-          console.log(check);
+          console.log("check after", check);
         } else {
-          // Handle error case
-          setMessageSent(false);
+          console.log("Error sending SMS: froentend from else");
         }
       } catch (error) {
         console.error("Error sending SMS:", error);
       }
-    }
-    if (email1 != null) {
-      axios
-        .post(`${process.env.REACT_APP_BACKEND_URL}/send-otp-email`, {
-          email1,
-        })
-        .then((response) => {
-          setMessage(response.data.message);
-        })
-        .catch((error) => {
-          setMessage("Error: Email could not be sent.");
-        });
     }
   };
 
@@ -115,7 +143,7 @@ const SignupPage = () => {
       });
     }
 
-    if (res && check) {
+    if (res && check && check1) {
       localStorage.setItem("authToken", res?.data?.token);
       localStorage.setItem("dealerName", res?.data?.result?.name);
       navigate("/");
@@ -176,6 +204,11 @@ const SignupPage = () => {
               autoComplete="email"
               autoFocus
               onChange={handleEmailChange}
+              inputProps={{
+                pattern: "^(\\w+@(gmail\\.com|info|krishiyan\\.com|contact))?$",
+                title:
+                  "Please enter a valid email address with domains @gmail.com, @info, or @krishiyan.com",
+              }}
             />
             <TextField
               className="text-[#13490A] font-extrabold text-sm mx-5"

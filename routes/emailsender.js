@@ -6,13 +6,14 @@ const OTP = require("../models/Otp");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "wetacre0@gmail.com",
-    pass: "givttdheycxtjlbx",
+    user: process.env.Email_Otp,
+    pass: process.env.Email_Otp_Password,
   },
 });
 
 router.post("/send-otp-email", async (req, res) => {
   const { email } = req.body;
+  console.log(email);
 
   if (!email) {
     return res.status(400).json({ error: "Email address is required." });
@@ -35,7 +36,9 @@ router.post("/send-otp-email", async (req, res) => {
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(`Error sending email to ${email}:`, error);
-      return res.status(500).json({ error: "Email could not be sent." });
+      return res
+        .status(500)
+        .json({ error: `Email could not be sent. backend ${res}` });
     } else {
       console.log(`Email sent to ${email}:`, info.response);
       return res.status(200).json({ message: "Email sent successfully." });

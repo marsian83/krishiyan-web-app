@@ -71,6 +71,7 @@ app.post("/api/send-sms", async (req, res) => {
 
   try {
     await sendSMS(phoneNumber);
+    console.log("cllaed index");
 
     res.status(200).json({ message: "SMS sent successfully" });
   } catch (error) {

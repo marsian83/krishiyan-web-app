@@ -12,8 +12,26 @@ import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GoogleOauthLogin from "../../Components/Auth/GoogleLogin";
-
+let check1 = false;
 const LoginPage = () => {
+  let email1 = "";
+  const validateEmail = (email: string) => {
+    const validDomains = ["@gmail.com", "@krishiyan.com", "info@"];
+
+    for (const domain of validDomains) {
+      if (email.includes(domain)) {
+        check1 = true;
+        console.log("check 1 ", check1);
+      }
+      console.log("check 1 ", check1);
+    }
+  };
+  const handleEmailChange = (event: any) => {
+    email1 = event.target.value;
+    console.log(email1);
+    check1 = false;
+    validateEmail(email1);
+  };
   const navigate = useNavigate();
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -29,7 +47,7 @@ const LoginPage = () => {
       });
     }
 
-    if (res) {
+    if (res && check1) {
       console.log(res);
       localStorage.setItem("authToken", res?.data?.token);
       localStorage.setItem("dealerName", res?.data?.oldUser?.name);
@@ -74,6 +92,12 @@ const LoginPage = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={handleEmailChange}
+              inputProps={{
+                pattern: "^(\\w+@(gmail\\.com|info|krishiyan\\.com|contact))?$",
+                title:
+                  "Please enter a valid email address with domains @gmail.com, @info, or @krishiyan.com",
+              }}
             />
             <TextField
               className="text-[#13490A] font-extrabold text-sm mx-5"

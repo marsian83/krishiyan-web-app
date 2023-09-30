@@ -25,7 +25,7 @@ const Header = (props: any) => {
   };
 
   return (
-    <header className="bg-[#F3FFF1] w-full xl:h-[14vh] flex flex-col xl:flex-row items-center rounded-2xl shadow-md mobile:w-[65vw] mobile:absolute mobile:right-0">
+    <header className="bg-[#F3FFF1] w-full xl:h-[14vh] flex flex-col justify-between xl:flex-row items-center rounded-2xl shadow-md mobile:w-[65vw] mobile:absolute mobile:right-0">
       <div className="text-[#13490A] text-center font-roboto font-black text-lg xl:text-base leading-7 mt-4 p-2">
         <h1>{props?.title}</h1>
         <h1>{props?.subtitle}</h1>

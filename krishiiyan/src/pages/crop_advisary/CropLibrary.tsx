@@ -442,7 +442,7 @@ const CropLibrary = () => {
                             </tr>
                             <tr className="h-10 border-b border-black">
                               <td className="border-r border-black text-start pl-2 pr-2 text-xl">
-                                Optimum temperature ( ° C) for growing
+                                Optimum temperature for growing
                               </td>
 
                               <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
@@ -451,7 +451,7 @@ const CropLibrary = () => {
                             </tr>
                             <tr className="h-10 border-b border-black">
                               <td className="border-r border-black text-start pl-2 pr-2 text-xl">
-                                Rainfall requirement (mm)
+                                Rainfall requirement
                               </td>
 
                               <td className="border-r border-black font-thin  text-start pl-2 pr-2 text-xl">
@@ -478,7 +478,7 @@ const CropLibrary = () => {
                             </tr>
                             <tr className="h-10 border-b border-black">
                               <td className="border-r border-black text-start pl-2 pr-2 text-xl">
-                                Spacing (row * plant )(cm *cm)
+                                Spacing
                               </td>
 
                               <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
@@ -487,7 +487,7 @@ const CropLibrary = () => {
                             </tr>
                             <tr className="h-10 border-b border-black">
                               <td className="border-r border-black text-start pl-2 pr-2 text-xl">
-                                Seed rate (kg/ acre)
+                                Seed rate
                               </td>
 
                               <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
@@ -496,7 +496,7 @@ const CropLibrary = () => {
                             </tr>
                             <tr className="h-10 border-b border-black">
                               <td className="border-r border-black text-start pl-2 pr-2 text-xl">
-                                Average yield (Quintal /acre)
+                                Average yield
                               </td>
 
                               <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
