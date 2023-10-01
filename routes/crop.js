@@ -42,6 +42,7 @@ router.post("/role-admin/add", async (req, res) => {
         crop: crop,
       });
     } else {
+      
       csv = csv.data;
       for (let i = 1; i < csv.length; i++) {
         let cropModel = {};
@@ -55,7 +56,7 @@ router.post("/role-admin/add", async (req, res) => {
             cropModel = await Crop.findOne({
               localName: { $regex: lName, $options: "i" },
             });
-            if (!cropModel) cropModel = new Crop({ localName: lName });
+            if (!cropModel) {cropModel = new Crop({ localName: lName });}
             continue;
           } else if (j == 1) {
             sName = csv[i][j];
