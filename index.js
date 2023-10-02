@@ -17,6 +17,8 @@ const {
 // //Logger
 // app.use(logger("dev"));
 const OTP = require("./models/Otp");
+const Crop = require("./models/crop");
+const Variety = require("./models/varities");
 //BodyParser
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
@@ -101,6 +103,20 @@ app.post("/api/verify-otp", async (req, res) => {
 
 //Connect to DB.
 connectDB();
+async function databaseAdjust() {
+  const crops = await Crop.find();
+  for (let crop of crops) {
+    // for (let n of crop.nutrient)
+    // {
+    //   n.name = n.name.split(" ")[0]
+    // }
+    // crop.weedManagement={}
+    crop.nutrient.splice(0,crop.nutrient.length);
+    await crop.save();
+    console.log("saved for crop ", crop.localName)
+  }
+}
+// databaseAdjust()
 
 // //static files
 app.use(express.static(path.join(__dirname, "./krishiiyan/build")));
