@@ -18,9 +18,9 @@ const WeedManagementT = (props: any) => {
             <th className="border-r border-black py-[1.2%] text-xl">
               Weed Name (Local)
             </th>
-            <th className="border-r border-black py-[1.2%] text-xl">
+            {/* <th className="border-r border-black py-[1.2%] text-xl">
               Scientific Name
-            </th>
+            </th> */}
 
             <th className="border-r border-black py-[1.2%] text-xl w-[20%] justify-center">
               Image of the weed
@@ -43,9 +43,9 @@ const WeedManagementT = (props: any) => {
                 <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
                   {item.name}
                 </td>
-                <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
+                {/* <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
                   {item.scientificName}
-                </td>
+                </td> */}
                 <td className="border-r border-black font-thin m">
                   <img
                     src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(

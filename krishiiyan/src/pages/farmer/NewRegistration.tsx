@@ -13,8 +13,6 @@ import { log } from "console";
 import OTPVerification from "./OTPVerification";
 import Popup from "../../Components/layouts/PopUp";
 
- 
-
 const PlantationOptions = [
   {
     value: "ORGANIC",
@@ -55,15 +53,15 @@ const NewRegistration = () => {
   const [totalLandArea, setTotalLandArea] = useState("");
   const [dealer_farmer_relation, setDealer_farmer_relation] = useState("");
   const [plantation_type, setPlantation_type] = useState("");
-   const [isPopupOpen, setIsPopupOpen] = useState(true);
+  const [isPopupOpen, setIsPopupOpen] = useState(true);
 
-   const openPopup = () => {
-     setIsPopupOpen(true);
-   };
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
 
-   const closePopup = () => {
-     setIsPopupOpen(false);
-   };
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
 
   const [loading, setLoading] = useState(false);
 
@@ -103,6 +101,7 @@ const NewRegistration = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
+    registerfarer();
   };
 
   //Get farmer location
@@ -127,6 +126,41 @@ const NewRegistration = () => {
     }
     getLoc();
   }, [zip]);
+  const registerfarer = async () => {
+    const registrationData = {
+      name,
+      mobile: phoneNumber,
+      state,
+      city,
+      zip,
+      street,
+      mobileIsWhatsapp,
+      totalLandArea,
+      dealer_farmer_relation,
+      plantation_type,
+    };
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/farmers/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(registrationData),
+        }
+      );
+
+      if (response.ok) {
+        console.log("response done ", response);
+      } else {
+        console.log("response else", response);
+      }
+    } catch (error) {
+      console.error("Error submitting registration:", error);
+    }
+  };
 
   const onSubmitHandler = async () => {
     if (
@@ -139,13 +173,16 @@ const NewRegistration = () => {
       });
     } else {
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/send-sms`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ phoneNumber }),
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/send-sms`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ phoneNumber }),
+          }
+        );
 
         if (response.ok) {
           setMessageSent(true);

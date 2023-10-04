@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
-import axios from "axios"; // Import Axios for API requests
+import axios from "axios";
+import { extractCodeFromDriveLink } from "../../handleImageCode";
 
 interface PopupProps {
   isOpen: boolean;
@@ -8,21 +9,20 @@ interface PopupProps {
 }
 
 const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
-  const [popupData, setPopupData] = useState<any>(null); // State to store the fetched data
+  const [popupData, setPopupData] = useState<any>(null);
   function encodeURL(url: string): string {
     return encodeURIComponent(url);
   }
 
   useEffect(() => {
     if (isOpen) {
-      // Fetch popup data when the component is open
       axios
         .get(`${process.env.REACT_APP_BACKEND_URL}/popups`)
         .then((response) => {
           if (response.data.success) {
-            setPopupData(response.data.popups[0]); // Assuming you want to display the first popup
+            setPopupData(response.data.popups[0]);
+            // console.log("popupData.image", popupData.image);
           } else {
-            // Handle the case where data fetching failed
           }
         });
     }
@@ -58,17 +58,15 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
           <h2 className="text-2xl font-bold mb-4 text-green-700 ">
             {popupData.title}
           </h2>
-          <img src="Images\soyabean.jpg" alt="popup" className="w-full" />
-          {/* {popupData.image.map((image: any, index: any) => {
-            return (
-              <img
-                style={{ width: 250, height: 250 }}
-                src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(
-                  image
-                )}`}
-              />
-            );
-          })} */}
+
+          <img
+            className="w-96 h-96 "
+            alt="popupImage"
+            style={{ width: 250, height: 250 }}
+            src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(
+              popupData.image
+            )}`}
+          />
 
           <h4 className="text-3xl font-bold text-green-400 underline ">
             {`@${popupData.price}/- per ton`}
