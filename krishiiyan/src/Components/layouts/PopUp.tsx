@@ -21,7 +21,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
         .then((response) => {
           if (response.data.success) {
             setPopupData(response.data.popups[0]);
-            console.log("popupData.image", popupData.image);
+            popupData? console.log("popupData.image", popupData.image) : console.log('Pop up image loading...')
           } else {
           }
         });
