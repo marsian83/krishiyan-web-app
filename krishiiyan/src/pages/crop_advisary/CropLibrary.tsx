@@ -214,26 +214,34 @@ const CropLibrary = () => {
           <label className="text-[#13490A] font-roboto font-extrabold text-m flex justify-center">
             Select your Crop
           </label>
-
           <Autocomplete
-            onChange={onChangePlantationType}
-            id="plantation-select"
-            sx={{ width: "100%" }}
-            options={crops}
-            autoHighlight
+          onChange={onChangePlantationType}
+          id="plantation-select"
+          sx={{ width: "100%" }}
+          options={crops}
+          autoHighlight
             getOptionLabel={(crops) => crops?.localName}
             renderInput={(params) => (
-              <TextField
+              <>
+              {
+                crops ?
+                <TextField
                 {...params}
                 label="Crop Name"
                 inputProps={{
                   ...params.inputProps,
-                  autoComplete: "new-password",
-                }}
+                autoComplete: "new-password",
+              }}
               />
-            )}
-          />
-          {loading ? (
+              :
+              <div>
+                Fetching crops....
+              </div>
+            }
+            </>
+              )}
+              />
+              {loading ? (
             <button
               style={{ marginTop: "10px", marginLeft: "20px" }}
               type="submit"

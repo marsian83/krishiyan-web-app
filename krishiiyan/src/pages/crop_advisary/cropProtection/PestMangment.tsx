@@ -16,15 +16,15 @@ const PestManagement = (props: any) => {
             <th className="border-r border-black py-[1.2%] text-xl">
               Name of the Pest
             </th>
-            <th className="border-r border-black py-[1.2%] text-xl">
+            {/* <th className="border-r border-black py-[1.2%] text-xl">
               Scientific Name
-            </th>
+            </th> */}
             {/* <th className="border-r border-black py-[1.2%]">
               Characteristic of the pest
             </th> */}
-            <th className="border-r border-black py-[1.2%] text-xl">
+            {/* <th className="border-r border-black py-[1.2%] text-xl">
               Notable symptoms
-            </th>
+            </th> */}
             <th className="border-r border-black py-[1.2%] text-xl w-[20%] justify-center">
               Image (Pest/Damage)
             </th>
@@ -46,17 +46,15 @@ const PestManagement = (props: any) => {
                   {/* {table.Value1.name_pest} */}
                   {item.name}
                 </td>
-                <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
-                  {/* {table.Value1.scientificName} */}
+                {/* <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
                   {item.scientificName}
-                </td>
+                </td> */}
                 {/* <td className="border-r border-black font-thin"> */}
                 {/* {table.Value1.characteristic} */}
                 {/* </td> */}
-                <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
-                  {/* {table.Value1.Notable_Symptoms} */}
+                {/* <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
                   {item.symptoms}
-                </td>
+                </td> */}
                 <td className="border-r border-black font-thin ">
                   {/* <img src={table.Value1.images.image1} />
                   <img src={table.Value1.images.image2} /> */}
