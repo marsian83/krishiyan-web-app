@@ -100,7 +100,7 @@ const SignupPage = () => {
     if (email1 != null) {
       try {
         const response = await fetch(
-          `http://localhost:5001/api/send-otp-email`,
+          `${process.env.REACT_APP_BACKEND_URL}/send-otp-email`,
           {
             method: "POST",
             headers: {

@@ -42,6 +42,7 @@ router.post("/role-admin/add", async (req, res) => {
         crop: crop,
       });
     } else {
+      
       csv = csv.data;
       for (let i = 1; i < csv.length; i++) {
         let cropModel = {};
@@ -55,7 +56,7 @@ router.post("/role-admin/add", async (req, res) => {
             cropModel = await Crop.findOne({
               localName: { $regex: lName, $options: "i" },
             });
-            if (!cropModel) cropModel = new Crop({ localName: lName });
+            if (!cropModel) {cropModel = new Crop({ localName: lName });}
             continue;
           } else if (j == 1) {
             sName = csv[i][j];
@@ -612,7 +613,7 @@ router.post("/role-admin/nutrient/deficiency/add", async (req, res) => {
                 name: csv[i][j].trim(),
                 deficiency: {},
               });
-              nutI = 0;
+              nutI = cropModel.nutrient.length - 1;
             }
           } else if (csv[0][j] == "role") {
             cropModel.nutrient[nutI].role = csv[i][j];
@@ -701,9 +702,7 @@ router.post("/role-admin/pestManage/add", async (req, res, next) => {
         }
         if (!cropModel) continue;
         let pestIndex = cropModel.pestManagement.findIndex(
-          (ob) =>
-            ob.name == pestManage["name"] ||
-            ob.scientificName == pestManage["scientificName"]
+          (ob) => ob.name == pestManage["name"]
         );
         if (pestIndex != -1) cropModel.pestManagement[pestIndex] = pestManage;
         else cropModel.pestManagement.push(pestManage);

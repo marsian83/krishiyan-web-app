@@ -19,7 +19,7 @@ const FormPage: React.FC = () => {
   const handleDeleteData = async () => {
     try {
       const response = await axios.delete(
-        "http://localhost:5001/api/delete-all-popups"
+        `${process.env.REACT_APP_BACKEND_URL}/delete-all-popups`
       );
 
       if (response.data.success) {
