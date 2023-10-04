@@ -6,13 +6,13 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-import { useNavigate } from "react-router-dom";
 import * as Api from "../../Services/Api";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GoogleOauthLogin from "../../Components/Auth/GoogleLogin";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import OTPVerification from "../farmer/OTPVerification";
 
@@ -157,32 +157,18 @@ const SignupPage = () => {
     handleClose();
   };
   return (
-    <>
-      <Container component="main" maxWidth="xs">
-        <img
-          src="Images/logo.png"
-          alt="Ellipse"
-          className="mb-[50%] my-5 lg:w-10 xl:w-14 flex flex-col items-center"
-        />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography component="h1" variant="h5">
-            Sign Up
-          </Typography>
-          <Box
-            component="form"
+    <section className="bg-gray-50 min-h-screen flex items-center justify-center">
+      <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
+        <div className="md:w-1/2 px-8 md:px-16">
+          <h2 className="font-bold text-2xl text-[#002D74]">Sign Up</h2>
+
+          <form
             onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1 }}
+            className="flex flex-col gap-4"
           >
             <TextField
-              className="text-[#13490A] font-extrabold text-sm mx-5"
+              className="p-2 mt-8 rounded-xl border"
               type="text"
               margin="normal"
               required
@@ -194,7 +180,7 @@ const SignupPage = () => {
               autoFocus
             />
             <TextField
-              className="text-[#13490A] font-extrabold text-sm mx-5"
+              className="p-2 rounded-xl border"
               type="email"
               margin="normal"
               fullWidth
@@ -211,7 +197,7 @@ const SignupPage = () => {
               }}
             />
             <TextField
-              className="text-[#13490A] font-extrabold text-sm mx-5"
+              className="p-2 rounded-xl border"
               type="password"
               margin="normal"
               required
@@ -223,8 +209,8 @@ const SignupPage = () => {
             />
 
             <TextField
-              className="text-[#13490A] font-extrabold text-sm mx-5"
-              type="phone"
+              className="p-2 rounded-xl border"
+              type="tel"
               margin="normal"
               required
               fullWidth
@@ -234,21 +220,27 @@ const SignupPage = () => {
               autoComplete="current-phone"
               onChange={handleMobileChange}
             />
-
             <Button
-              className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
+              className="bg-[#05AB2A] rounded-xl text-white py-2 hover:scale-105 duration-300 mt-5 w-full"
+              fullWidth
+              variant="contained"
+              onClick={handleOtpSubmit}
+            >
+              Send OTP
+            </Button>
+            <Button
+              className="bg-[#05AB2A] rounded-xl text-white py-2 hover:scale-105 duration-300"
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
             </Button>
 
             <Grid container>
               <Grid item>
-                <Typography variant="body2" sx={{ mt: 1 }}>
-                  Already have an account? {""}
+                <Typography variant="body2">
+                  Already have an account?{" "}
                   <Link
                     variant="subtitle2"
                     onClick={() => navigate("/login")}
@@ -259,39 +251,21 @@ const SignupPage = () => {
                 </Typography>
               </Grid>
             </Grid>
-          </Box>
-        </Box>
-        <GoogleOauthLogin />
-        <Button
-          className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={handleOtpSubmit}
-        >
-          Send OTP
-        </Button>
-
-        {/* OTP Verification Component */}
-        <OTPVerification
-          open={open}
-          handleClose={handleClose}
-          handleOTPVerified={handleOTPVerified}
-          Phone={Phone}
-        />
-      </Container>
-      {/* <div className="min-h-full h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 w-full bg-[#50d71e]">
-        <div className="max-w-md w-full">
-          <Header
-            heading="Signup to create an account"
-            paragraph="Already have an account? "
-            linkName="Login"
-            linkUrl="/login"
-          />
-          <Register />
+          </form>
         </div>
-      </div> */}
-    </>
+
+        <div className="md:block hidden w-1/2">
+          <img className="rounded-2xl" src="Images/logo.png" alt="Ellipse" />
+        </div>
+      </div>
+
+      <OTPVerification
+        open={open}
+        handleClose={handleClose}
+        handleOTPVerified={handleOTPVerified}
+        Phone={email1}
+      />
+    </section>
   );
 };
 

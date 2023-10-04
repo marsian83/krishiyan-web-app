@@ -28,7 +28,7 @@ router.post("/send-otp-email", async (req, res) => {
     text: `This is Krishiyan. The OTP for your Email verification is: ${otp}`,
   };
 
-  const otpEntry = new OTP({ email, otp });
+  const otpEntry = new OTP({ phoneNumber: email, otp });
   await otpEntry.save();
   console.log("From the send SMS");
   console.log(otpEntry);

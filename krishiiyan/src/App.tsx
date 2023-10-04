@@ -49,6 +49,7 @@ import Who from "./pages/Who";
 import Contact from "./pages/Contact";
 import What from "./pages/What";
 import Login from "./pages/Login";
+import NewRegestrationAdmin from "./pages/crop_advisory_admin/NewRegestrationAdmin";
 
 const AuthGuard = () => {
   const auth = localStorage.getItem("authToken");
@@ -184,7 +185,7 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"crop_advisory"} submenu={"mandi_prices"} />
-                <MandiPricesAdmin />
+                <MandiPricesHandler />
               </main>
             }
           />
@@ -243,7 +244,7 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"frm"} submenu={"new_registration"} />
-                <NewRegistration />
+                <NewRegestrationAdmin />
               </main>
             }
           />

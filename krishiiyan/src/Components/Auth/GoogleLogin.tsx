@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import * as Api from "../../Services/Api";
-
+import React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
@@ -51,7 +51,7 @@ const GoogleOauthLogin = () => {
     }
   };
   return (
-    <>
+    <div>
       <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID!}>
         <GoogleLogin
           onSuccess={(credentialResponse: any) => {
@@ -65,9 +65,8 @@ const GoogleOauthLogin = () => {
             console.log("Login Failed");
           }}
         />
-        ;
       </GoogleOAuthProvider>
-    </>
+    </div>
   );
 };
 

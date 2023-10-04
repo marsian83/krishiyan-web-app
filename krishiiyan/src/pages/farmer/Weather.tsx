@@ -1,14 +1,10 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Weather = () => {
   const [weather, setWeather] = useState<any>({});
   const [ctime, setctime] = useState("");
-
-  const api = {
-    key: "8cf34e0b1b25927289fe47be2864830a",
-    base: "https://api.openweathermap.org/data/2.5/weather?",
-  };
 
   useEffect(() => {
     function updateTime() {
@@ -35,25 +31,25 @@ const Weather = () => {
     navigator.geolocation.getCurrentPosition(function (position: any) {
       const lat = position.coords.latitude;
       const long = position.coords.longitude;
-      fetch(`${api.base}lat=${lat}&lon=${long}&units=metric&appid=${api.key}`)
-        .then((res) => res.json())
-        .then((result) => {
-          setWeather(result);
+      console.log(lat, long);
+
+      axios
+        .get(`http://localhost:5001/api/weather?lat=${lat}&lon=${long}`)
+        .then((response) => {
+          setWeather(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching weather data:", error);
         });
     });
   }, []);
 
   return (
-    <div
-      className="mobile:flex-col flex"
-    >
-      <div className="w-30 mr-6 text-start	">
+    <div className="mobile:flex-col flex">
+      <div className="w-30 mr-6 text-start">
         <p className="font-thin text-sm">
           Temp: {parseFloat(weather?.main?.temp).toFixed(0)}°C
         </p>
-        {/* {parseFloat(credit_details?.totalPayableAmount).toFixed(
-                          2
-                        )} */}
         <p className="font-thin text-sm">
           Humidity: {weather?.main?.humidity}%
         </p>
@@ -61,7 +57,6 @@ const Weather = () => {
           Current Weather:{" "}
           {weather?.weather?.length && weather?.weather[0]?.main}
         </p>
-        {/* <p>Location: {weather?.name}</p> */}
       </div>
       <div className="w-30 mr-2 mt-5 text-start">
         <p className="font-thin text-sm">

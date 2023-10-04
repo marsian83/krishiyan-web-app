@@ -18,18 +18,13 @@ const OTPVerification = (props: any) => {
   const [maxWidth, setMaxWidth] = useState<DialogProps["maxWidth"]>("xs");
   const [verificationStatus, setVerificationStatus] = useState("");
   const [otp, setOtp] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  // State to control dialog open/close
+
+  const [phoneNumber, setPhoneNumber] = useState(props.phone || "");
 
   const { open, handleClose } = props;
 
-  //   const handleClose = () => {
-  //     setOpen(false);
-  //   };
-
   const handleSubmit = async () => {
     try {
-      // Send a POST request to your API to verify the OTP.
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/verify-otp`,
         {
@@ -50,17 +45,9 @@ const OTPVerification = (props: any) => {
     }
   };
 
-  // Use the 'open' state to control whether the dialog is open or closed
   return (
     <div>
-      <Dialog
-        open={open}
-        // onClose={props.handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        fullWidth={fullWidth}
-        maxWidth={maxWidth}
-      >
+      <Dialog open={open} fullWidth={fullWidth} maxWidth={maxWidth}>
         <DialogTitle id="alert-dialog-title">
           <Box
             sx={{
@@ -91,23 +78,24 @@ const OTPVerification = (props: any) => {
                   id="email"
                   label="OTP"
                   name="otp"
-                  autoComplete="email"
+                  autoComplete="otp"
                   autoFocus
                   onChange={(e: any) => setOtp(e.target.value)}
                 />
+                {/* Use the 'phoneNumber' state for the value of this TextField */}
                 <TextField
                   margin="normal"
                   required
                   fullWidth
                   id="mobile"
-                  label="mobile"
+                  label="Mobile or Email"
                   name="mobile"
                   autoComplete="mobile"
                   autoFocus
+                  value={phoneNumber}
                   onChange={(e: any) => setPhoneNumber(e.target.value)}
                 />
                 <Button
-                  //   type="submit"
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
@@ -117,7 +105,6 @@ const OTPVerification = (props: any) => {
                 </Button>
                 <p>{verificationStatus}</p>
               </Box>
-              {/* Add a close button here */}
             </Box>
           </Container>
         </DialogContent>
