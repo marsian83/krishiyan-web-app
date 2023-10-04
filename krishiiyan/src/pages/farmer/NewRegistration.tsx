@@ -142,7 +142,7 @@ const NewRegistration = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5001/api/farmers/register",
+        `${process.env.REACT_APP_BACKEND_URL}/farmers/register`,
         {
           method: "POST",
           headers: {

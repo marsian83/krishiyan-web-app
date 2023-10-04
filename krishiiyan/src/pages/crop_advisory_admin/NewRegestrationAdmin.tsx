@@ -34,7 +34,7 @@ const NewRegistrationAdmin = () => {
   useEffect(() => {
     // Fetch phone numbers
     axios
-      .get("http://localhost:5001/api/farmers/phone-numbers")
+      .get(`${process.env.REACT_APP_BACKEND_URL}/farmers/phone-numbers`)
       .then((response) => {
         const mobiles = response.data;
 
@@ -51,7 +51,9 @@ const NewRegistrationAdmin = () => {
     setSelectedPhoneNumber(phoneNumber);
     // Fetch details for the selected phone number
     axios
-      .get(`http://localhost:5001/api/farmers/phoneNumbers/${phoneNumber}`)
+      .get(
+        `${process.env.REACT_APP_BACKEND_URL}/farmers/phoneNumbers/${phoneNumber}`
+      )
       .then((response) => {
         setDetails(response.data);
       })
