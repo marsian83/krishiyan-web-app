@@ -12,7 +12,7 @@ import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
 
 import GoogleOauthLogin from "../../Components/Auth/GoogleLogin";
-let check1 = true;
+let check1 = false;
 const LoginPage = () => {
   let email1 = "";
   const validateEmail = (email: string) => {
@@ -29,7 +29,7 @@ const LoginPage = () => {
   const handleEmailChange = (event: any) => {
     email1 = event.target.value;
     console.log(email1);
-    check1 = true;
+    check1 = false;
     validateEmail(email1);
   };
   const navigate = useNavigate();

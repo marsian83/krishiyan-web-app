@@ -38,6 +38,7 @@ import CropLibraryHandler from "./adminUserHandlers/CropLibraryHandler";
 import CropCalenderHandler from "./adminUserHandlers/CropCalenderHandler";
 import CropHealthHandler from "./adminUserHandlers/CropHealthHandler";
 import SideNavHandler from "./adminUserHandlers/SideNavHandler";
+import NewRegistrationHandler from "./adminUserHandlers/NewRegestration";
 import AddCrop from "./pages/crop_advisory_admin/AddCrop";
 import Premium from "./pages/crop_advisary/premium";
 import MandiPricesHandler from "./adminUserHandlers/MandiPricesHandler";
@@ -244,7 +245,7 @@ function App() {
             element={
               <main className="h-screen w-screen grid grid-cols-[18%_82%]">
                 <SideNav menu={"frm"} submenu={"new_registration"} />
-                <NewRegestrationAdmin />
+                <NewRegistrationHandler />
               </main>
             }
           />

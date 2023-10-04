@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import React from "react";
-import axios from "axios"; // Import Axios for API requests
+import axios from "axios";
 import { extractCodeFromDriveLink } from "../../handleImageCode";
 
 interface PopupProps {
@@ -21,7 +21,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
         .then((response) => {
           if (response.data.success) {
             setPopupData(response.data.popups[0]);
-            console.log("popupData.image", popupData.image);
+            // console.log("popupData.image", popupData.image);
           } else {
           }
         });
