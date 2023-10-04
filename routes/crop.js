@@ -369,15 +369,11 @@ router.post("/irrigation/role-admin/add", async (req, res) => {
             cropModel = await Crop.findOne({
               localName: { $regex: lName, $options: "i" },
             });
-          } else if (
-            csv[0][j] == "solutions" ||
-            csv[0][j] == "prodImg" ||
-            csv[0][j] == "cost"
-          ) {
-            harvest[csv[0][j]] = csv[i][j];
+          } else  {
+            irrigationTechnique[csv[0][j].trim()] = csv[i][j];
           }
         }
-        cropModel.newHarvest = harvest;
+        cropModel.irrigation.push(irrigationTechnique);
         await cropModel.save();
       }
       res.status(201).json({ message: "bulk uploaded " });

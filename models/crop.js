@@ -341,16 +341,10 @@ const CropSchema = new mongoose.Schema(
     ],
     irrigation: [
       {
-        component: String,
-        image: String,
-        description: String,
-        solutions: [
-          {
-            name: String,
-            prodImg: String,
-            cost: String,
-          },
-        ], //recommended products
+        criticalStage: String,
+        age: String,
+        methodology: String,
+        operations: String,
       },
     ],
     cultivationStage: cultivation_stage, //Cultivation Stages
