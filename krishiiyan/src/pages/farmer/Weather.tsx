@@ -34,7 +34,9 @@ const Weather = () => {
       console.log(lat, long);
 
       axios
-        .get(`http://localhost:5001/api/weather?lat=${lat}&lon=${long}`)
+        .get(
+          `${process.env.REACT_APP_BACKEND_URL}/weather?lat=${lat}&lon=${long}`
+        )
         .then((response) => {
           setWeather(response.data);
         })
