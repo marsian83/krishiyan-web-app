@@ -107,18 +107,15 @@ app.post("/api/verify-otp", async (req, res) => {
 //Connect to DB.
 connectDB();
 async function databaseAdjust() {
-  const crops = await Crop.find();
-    // {
-    //   n.name = n.name.split(" ")[0]
-    // }
-    // crop.weedManagement={}
-    varities.deleteMany({nameOfvariety:{$exists:false}})
-    // crop.nutrient.splice(0,crop.nutrient.length);
-    // await crop.save();
-    // console.log("saved for crop ", crop.localName)
-  
+  // {
+  //   n.name = n.name.split(" ")[0]
+  // }
+  await varities.deleteMany({ nameOfvariety: "" });
+  // crop.nutrient.splice(0,crop.nutrient.length);
+  // await crop.save();
+  // console.log("saved for crop ", crop.localName)
 }
-// databaseAdjust()
+// databaseAdjust();
 
 // //static files
 app.use(express.static(path.join(__dirname, "./krishiiyan/build")));

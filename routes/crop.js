@@ -272,7 +272,7 @@ router.post("/stage/role-admin/add", async (req, res) => {
 router.post("/role-admin/harvest/add", async (req, res) => {
   let {
     newHarvest = {
-      Physiological: String,
+      Maturity: String,
       index: String,
       Average: String,
       Conditions_during: String,
@@ -300,6 +300,7 @@ router.post("/role-admin/harvest/add", async (req, res) => {
         // console.log(csv[i][0]);
         let harvest = {};
         let cropModel = {};
+        let postHarvest = { images: [] };
         if (!csv[i][0].length) break;
         for (let j = 0; j < csv[i].length; j++) {
           if (j === 0) {
@@ -308,16 +309,21 @@ router.post("/role-admin/harvest/add", async (req, res) => {
               localName: { $regex: lName, $options: "i" },
             });
           } else if (csv[0][j] == "images") {
-            harvest.images = [];
+            postHarvest.images = [];
             csv[i][j].split(/,|\n/).forEach((image) => {
-              harvest.images.push(image);
+              postHarvest.images.push(image);
             });
+          } else if (csv[0][j] == "losses") {
+            postHarvest.losses = csv[i][j];
           } else {
             harvest[csv[0][j]] = csv[i][j];
           }
         }
         if (cropModel) {
+          let postHarvest1 = cropModel.newHarvest.Post_Harvest;
           cropModel.newHarvest = harvest;
+          cropModel.newHarvest.Post_Harvest = postHarvest1;
+          cropModel.newHarvest.Post_Harvest.push(postHarvest);
           await cropModel.save();
         } else {
           console.log(csv[i][0]);

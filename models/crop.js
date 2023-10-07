@@ -169,11 +169,11 @@ const weatherInjuries = [
   },
 ];
 const Harvest = {
-  Physiological: String,
+  Maturity: String,
   index: String,
   Average: String,
   Conditions_during: String,
-  Post_Harvest: String,
+  Post_Harvest: [{ losses: String, images: [String] }],
   prevent: String,
   images: [{ type: String }],
 };
