@@ -9,10 +9,11 @@ const IrrigationTable = (props: any) => {
         <thead className="border-b border-black">
           <tr className="text-center">
             <th className="border-r border-black py-[1.2%] pl-1 pr-1">S.No</th>
-            <th className="border-r border-black py-[1.2%]">Component</th>
-            <th className="border-r border-black py-[1.2%]">Description</th>
+            <th className="border-r border-black py-[1.2%] pl-1 pr-1 w-36">Age</th>
+            <th className="border-r border-black py-[1.2%]">Critical stage</th>
+            <th className="border-r border-black py-[1.2%]">Methodology</th>
             <th className="border-r border-black py-[1.2%]">
-              Cost of Component
+              Operations
             </th>
           </tr>
         </thead>
@@ -24,9 +25,10 @@ const IrrigationTable = (props: any) => {
               return(
                 <tr className="h-10 border-b border-black">
                   <td className="border-r border-black font-thin">{index+1}</td>
-                  <td className="border-r border-black font-thin">{irrigation.component}</td>
-                  <td className="border-r border-black font-thin">{irrigation.description}</td>
-                  <td className="border-r border-black font-thin">{irrigation.solutions[0].cost}</td>
+                  <td className="border-r border-black font-thin">{irrigation.age}</td>
+                  <td className="border-r border-black font-thin">{irrigation.criticalStage}</td>
+                  <td className="border-r border-black font-thin">{irrigation.methodology}</td>
+                  <td className="border-r border-black font-thin">{irrigation.operations}</td>
                 </tr>
               )
             })

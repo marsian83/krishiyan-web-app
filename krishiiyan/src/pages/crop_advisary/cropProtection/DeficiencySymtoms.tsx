@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { extractCodeFromDriveLink } from "../../../handleImageCode";
 
 const DeficiencySymtoms = (props: any) => {
-  const [table, setTable] = useState(props.data.diseaseManagement);
-
+  const [table, setTable] = useState(props.data.nutrient);
+  console.log(table)
   return (
     <>
       <table className="table-auto border-collapse border border-black font-bold text-base w-[100%] mx-auto mt-10">
@@ -10,41 +11,62 @@ const DeficiencySymtoms = (props: any) => {
           <tr className="text-center">
             <th className="border-r border-black py-[1.2%]">S.No</th>
             <th className="border-r border-black py-[1.2%]">
-              Deficiency Nutient
+              Notable symptoms
             </th>
             <th className="border-r border-black py-[1.2%]">
-              Notable Symptoms
+              Solution
             </th>
             <th className="border-r border-black py-[1.2%]">Images</th>
-            <th className="border-r border-black py-[1.2%]">
-              Solution (Product)
-            </th>
-            <th className="border-r border-black py-[1.2%]">
-              Reccomendation description
-            </th>
           </tr>
         </thead>
         <tbody>
-          {/* <tr className="h-10 border-b border-black">
-            <td className="border-r border-black font-thin">1</td>
-            <td className="border-r border-black font-thin">
-              {table.value1.Nutient1}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value1.Notable_Symptoms}
-            </td>
-            <td className="border-r border-black font-thin">
-              <img src={table.value1.image} />
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value1.Solution}
-            </td>
-            <td className="border-r border-black font-thin">
-              {table.value1.description}
-            </td>
-            </tr> */}
+        {
+  table.map((d: any, index: any) => {
+    if (
+      d.deficiency &&
+      d.deficiency.Notable_Symptoms &&
+      d.deficiency.Solution &&
+      d.deficiency.images &&
+      d.deficiency.images.length > 0
+    ) {
+      return (
+        <tr className="h-10 border-b border-black">
+          <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl w-32">
+            {index + 1}
+          </td>
+          <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl w-[200px]">
+            {d.deficiency.Notable_Symptoms}
+          </td>
+          <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl w-[500px]">
+            {d.deficiency.Solution}
+          </td>
+          <td className="border-r border-black font-thin ">
+            {d.deficiency.images.map((image: any) => {
+              return (
+                <img
+                  src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(
+                    image
+                  )}`}
+                  style={{
+                    marginTop: "20px",
+                    width: "200px",
+                    height: "200px",
+                    objectFit: "cover",
+                  }}
+                />
+              );
+            })}
+          </td>
+        </tr>
+      );
+    } else {
+      return null;
+    }
+  })
+}
+
         </tbody>
-      </table>
+        </table>
     </>
   );
 };

@@ -25,23 +25,28 @@ const NutrientTable = (props: any) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((nutrient: any, index: number) => (
-            <tr className="h-10 border-b border-black" key={index}>
-              <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
-                {nutrient.name}
-              </td>
-              <td className="border-r border-black font-thin">
-                {nutrient.Dosage}
-              </td>
-              <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
-                {nutrient.age}
-              </td>
-              <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
-                {nutrient.Method_application}
-              </td>
-            </tr>
-          ))}
-        </tbody>
+  {data.map((nutrient: any, index: number) => {
+    if (nutrient.name && nutrient.Dosage && nutrient.age && nutrient.Method_application) {
+      return (
+        <tr className="h-10 border-b border-black" key={index}>
+          <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
+            {nutrient.name}
+          </td>
+          <td className="border-r border-black font-thin">
+            {nutrient.Dosage}
+          </td>
+          <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
+            {nutrient.age}
+          </td>
+          <td className="border-r border-black font-thin text-start pl-2 pr-2 text-xl">
+            {nutrient.Method_application}
+          </td>
+        </tr>
+      );
+    }
+    return null;
+  })}
+</tbody>
       </table>
     </section>
   );
