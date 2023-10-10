@@ -31,7 +31,7 @@ const Weather = () => {
     navigator.geolocation.getCurrentPosition(function (position: any) {
       const lat = position.coords.latitude;
       const long = position.coords.longitude;
-      console.log(lat, long);
+      console.log("the loaction is ", lat, long);
 
       axios
         .get(

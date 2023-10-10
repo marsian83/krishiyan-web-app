@@ -31,7 +31,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
   if (!isOpen || !popupData) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none mobile:gap-y-4 mobile:pt-[10rem] ">
       <div className="relative w-full max-w-md p-6 my-6 mx-4 bg-[#F3FFF1] rounded-lg shadow-lg border border-black ">
         <button
           className="absolute top-2 right-2 p-2 text-green-700 hover:text-gray-900 rounded-full bg-gray-200 hover:bg-green-200"

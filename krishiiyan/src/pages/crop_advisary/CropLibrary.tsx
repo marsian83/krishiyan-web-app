@@ -208,40 +208,37 @@ const CropLibrary = () => {
     <div>
       <Header title="Crop Advisory" subtitle="Crop Library" />
       <section className="p-5 grid grid-cols-[30%_30%_30%_10%] ">
-        <div className="font-extrabold grid grid-cols-[50%_50%_50%] items-cente  "></div>
+        <div className="font-extrabold grid grid-cols-[50%_50%_50%] items-center  "></div>
 
         <div className="grid grid-cols-[35%_45%_15%_5%] mt-5 flex-row items-center w-full mobile:top-[70vh] mobile:absolute mobile:left-0 mobile:flex-col mobile:flex mobile:gap-y-4">
           <label className="text-[#13490A] font-roboto font-extrabold text-m flex justify-center">
             Select your Crop
           </label>
           <Autocomplete
-          onChange={onChangePlantationType}
-          id="plantation-select"
-          sx={{ width: "100%" }}
-          options={crops}
-          autoHighlight
+            onChange={onChangePlantationType}
+            id="plantation-select"
+            sx={{ width: "100%" }}
+            options={crops}
+            autoHighlight
             getOptionLabel={(crops) => crops?.localName}
             renderInput={(params) => (
               <>
-              {
-                crops ?
-                <TextField
-                {...params}
-                label="Crop Name"
-                inputProps={{
-                  ...params.inputProps,
-                autoComplete: "new-password",
-              }}
-              />
-              :
-              <div>
-                Fetching crops....
-              </div>
-            }
-            </>
-              )}
-              />
-              {loading ? (
+                {crops ? (
+                  <TextField
+                    {...params}
+                    label="Crop Name"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: "new-password",
+                    }}
+                  />
+                ) : (
+                  <div>Fetching crops....</div>
+                )}
+              </>
+            )}
+          />
+          {loading ? (
             <button
               style={{ marginTop: "10px", marginLeft: "20px" }}
               type="submit"

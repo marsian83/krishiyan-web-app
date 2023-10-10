@@ -5,6 +5,7 @@ const WeatherInjuses = (props: any) => {
   const [table, setTable] = useState(props.data.weatherInjuries);
 
   console.log(props.data.weatherInjuries);
+  console.log(props.data.weatherInjuries[0].image);
   return (
     <>
       <table className="table-auto border-collapse border border-black font-bold text-base w-[80%] mx-auto mt-10">
@@ -42,38 +43,33 @@ const WeatherInjuses = (props: any) => {
             </td>
           </tr> */}
           {/* ))} */}
-          {
-            table.map((item : any, index: any)=>{
-              return (
-                <tr className="h-10 border-b border-black">
+          {table.map((item: any, index: any) => {
+            return (
+              <tr className="h-10 border-b border-black">
                 <td className="border-r border-black font-thin  pl-2 pr-2 text-xl">
                   {index + 1}
                 </td>
                 <td>
-                <img
-                        src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(
-                          item.image
-                        )}`}
-                        style={{
-                          marginTop: "20px",
-                          width: "200px",
-                          height: "200px",
-                          objectFit: "cover",
-                        }}
-                      />
+                  <img
+                    src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(
+                      item.image
+                    )}`}
+                    style={{
+                      marginTop: "20px",
+                      width: "200px",
+                      height: "200px",
+                      objectFit: "cover",
+                    }}
+                  />
                 </td>
-                
-                <td className="font-thin  pl-2 pr-2 text-xl">
-                  {item.causes}
-                </td>
+
+                <td className="font-thin  pl-2 pr-2 text-xl">{item.causes}</td>
                 <td className=" font-thin  pl-2 pr-2 text-xl">
                   {item.symptoms}
                 </td>
-                </tr>
-              )
-            })
-          }
-
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </>
