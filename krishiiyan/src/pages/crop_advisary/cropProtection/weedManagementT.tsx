@@ -31,7 +31,8 @@ const WeedManagementT = (props: any) => {
           </tr>
         </thead>
         <tbody>
-          {table.map((item: any, index: any) => {
+          { table.length >0 &&table.map((item: any, index: any) => {
+            if(!item.category) return null;
             return (
               <tr className="h-10 border-b border-black">
                 <td className="border-r border-black font-thin  pl-2 pr-2 text-xl">
