@@ -26,9 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //CORS
 app.use(
-  cors({
-    origin: "*",
-  })
+  cors()
 );
 app.use(cookieParser());
 app.use(bearerToken());
@@ -110,7 +108,13 @@ async function databaseAdjust() {
   // {
   //   n.name = n.name.split(" ")[0]
   // }
-  await varities.deleteMany({ nameOfvariety: "" });
+  const crops = await Crop.find({});
+  for (let cr of crops) {
+    if (Object.keys(cr?.weedManagement[0]).length == 1) {
+      cr.weedManagement.slice(1);
+      await cr.save();
+    }
+  }
   // crop.nutrient.splice(0,crop.nutrient.length);
   // await crop.save();
   // console.log("saved for crop ", crop.localName)
