@@ -50,7 +50,9 @@ const WeatherInjuses = (props: any) => {
                   {index + 1}
                 </td>
                 <td>
-                  <img
+                  {
+                    item.image ?
+                    <img
                     src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(
                       item.image
                     )}`}
@@ -60,7 +62,12 @@ const WeatherInjuses = (props: any) => {
                       height: "200px",
                       objectFit: "cover",
                     }}
-                  />
+                    />
+                    : 
+                    <div>
+                    No image
+                    </div>
+                  }
                 </td>
 
                 <td className="font-thin  pl-2 pr-2 text-xl">{item.causes}</td>
