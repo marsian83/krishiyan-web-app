@@ -73,7 +73,7 @@ const SignupPage = () => {
     //   console.log("Please enter a valid phone number");
     //   try {
     //     const response = await fetch(
-    //       `${process.env.REACT_APP_BACKEND_URL}/send-sms`,
+    //       `${process.env.REACT_APP_BACKEND_URL}/sendsms`,
     //       {
     //         method: "POST",
     //         headers: {

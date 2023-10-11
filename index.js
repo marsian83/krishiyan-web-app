@@ -1,4 +1,4 @@
-const sendSMS = require("./routes/send-sms");
+const sendSMS = require("./routes/sendsms");
 
 const express = require("express");
 const app = express();
@@ -25,9 +25,7 @@ app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
 //CORS
-app.use(
-  cors()
-);
+app.use(cors());
 app.use(cookieParser());
 app.use(bearerToken());
 //.env
@@ -69,7 +67,7 @@ app.get("/api/ping", (req, res) => {
   res.send("pong");
 });
 // app.use("/api/pos",require("./routes/pos")) // POS module
-app.post("/api/send-sms", async (req, res) => {
+app.post("/api/sendsms", async (req, res) => {
   const { phoneNumber } = req.body;
 
   try {
@@ -133,6 +131,5 @@ const port = process.env.PORT || 5001;
 app.listen(port, () => {
   console.log(`server running at port:${port}`);
 });
-
 
 //harvest model
