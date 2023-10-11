@@ -177,6 +177,10 @@ const CropLibrary = () => {
   };
 
   const onChangePlantationType = async (e: any, value: any) => {
+    if(!value){
+      alert('Select a crop');
+      return;
+    }
     console.log(value, "value");
     setLocalsName(value.localName);
   };
