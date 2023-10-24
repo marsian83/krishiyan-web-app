@@ -14,10 +14,11 @@ export default function HorizontalLinearStepper({cropDetails, date} : any) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const [activeDetails , setActiveDetails] = React.useState<any>(cropDetails[activeStep]);
-    console.log(cropDetails)
+  console.log(cropDetails)
   const isStepOptional = (step: number) => {
     return step === 1;
   };
+  const [steps, setSteps] = React.useState<any>(cropDetails);
   const handleStepCount = () => {
     const currentDate = new Date();
 
@@ -34,6 +35,10 @@ export default function HorizontalLinearStepper({cropDetails, date} : any) {
   };
 
   const handleNext = () => {
+    if(activeStep === steps.length-1){
+      setActiveStep(0);
+      return;
+    }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setActiveDetails(cropDetails[activeStep])
     console.log(activeDetails)
@@ -51,7 +56,7 @@ export default function HorizontalLinearStepper({cropDetails, date} : any) {
     setActiveDetails(cropDetails[activeStep]);
     handleStepCount();
   })
-
+  console.log(steps.length)
   return (
     <Box sx={{ width: '100%' }}>
       <Stepper activeStep={activeStep}>

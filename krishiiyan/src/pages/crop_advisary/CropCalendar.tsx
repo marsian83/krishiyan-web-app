@@ -131,10 +131,9 @@ const CropCalendar = () => {
         },
       }
     );
-    console.log(CropData);
     const CropDataJson = await CropData.json();
-    console.log(CropDataJson);
     setCropDetails(CropDataJson.cropStages);
+    console.log("Crop Details:");
     console.log(cropDetails);
   };
   return (
