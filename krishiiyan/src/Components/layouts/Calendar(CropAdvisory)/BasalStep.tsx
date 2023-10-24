@@ -68,6 +68,10 @@ const BasalStep = (props: any) => {
                 })
               }
               </ul>
+              {
+                props.cropDetails.disease_link !=="0" &&
+                    <img src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(props?.cropDetails?.disease_link)}`} style={{ marginTop: "20px" ,width:"200px", height:"200px", objectFit:"cover" }} />
+              }
             </p>
             {/* <img
               style={{ width: "200px", height: "200px", marginRight: "20px" }}
@@ -90,6 +94,10 @@ const BasalStep = (props: any) => {
             Pest Infestation: <br />
             {props?.cropDetails?.pest}
           </p>
+          {
+            props.cropDetails.pest_link !=="0" &&
+                    <img src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(props?.cropDetails?.pest_link)}`} style={{ marginTop: "20px" ,width:"200px", height:"200px", objectFit:"cover" }} />
+              }
           <br />
           <p>
             Fertilizer: <br />
@@ -115,6 +123,10 @@ const BasalStep = (props: any) => {
                 })
               }
               </ul>
+              {
+                props.cropDetails.weed_link !=="0" &&
+                    <img src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(props?.cropDetails?.weed_link)}`} style={{ marginTop: "20px" ,width:"200px", height:"200px", objectFit:"cover" }} />
+              }
             </p>
             <br/>
             <p>
