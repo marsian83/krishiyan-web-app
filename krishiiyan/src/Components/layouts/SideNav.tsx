@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Menu from "./Menu";
+import NestedDropdown from "../NestedDropdown";
 
 const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
   const [pos, setPos] = useState(true);
@@ -89,70 +90,109 @@ const SideNav = ({ menu, submenu }: { menu: string; submenu: string }) => {
     setManage(false);
     setHelp(true);
   };
+  const menus = [
+    {
+      title: "Pos",
+      submenus: ["Sale", "Inventory", "Reports", "Product", "Sales Statement"],
+    },
+    {
+      title: "Crop Advisory",
+      submenus: [
+        "Crop Library",
+        "Crop Calender",
+        "Crop Health",
+        "FertiCal",
+        "Mandi Prices",
+      ],
+    },
+    {
+      title: "FRM",
+      submenus: [
+        "Dashboard",
+        "Purchase",
+        "Cultivation",
+        "Credit",
+        "support",
+        "New Registration",
+      ],
+    },
+    {
+      title: "Management",
+      submenus: ["Manage Accounting"],
+    },
+    {
+      title: "Help",
+      submenus: ["Problem", "Expert", "Guide"],
+    },
+  ];
 
   return (
-    <div className="flex flex-row lg:flex-row mobile:w-[50vw] mobile:h-max">
-      <nav className="bg-[#C6EDC0] w-full lg:w-[9vw] xl:w-[45%] flex flex-col items-center h-full">
-        <img
-          src="Images/logo.png"
-          alt="Ellipse"
-          className="my-5 mx-auto lg:w-10 xl:w-20 mobile:px-6"
+    <div>
+      <div className="visible md:invisible z-20 bg-[#C6EDC0] justify-end w-[100vw]">
+        <NestedDropdown menus={menus} />
+      </div>
+      <div className="flex flex-row lg:flex-row mobile:w-[50vw] mobile:h-max invisible md:visible z-0">
+        <nav className="bg-[#C6EDC0] w-full lg:w-[9vw] xl:w-[45%] flex flex-col items-center h-full">
+          <img
+            src="Images/logo.png"
+            alt="Ellipse"
+            className="my-5 mx-auto lg:w-10 xl:w-20 mobile:px-6"
+          />
+          <ul className="text-center text-sm flex flex-col lg:flex-col items-center gap-y-3 lg:gap-y-0">
+            <li
+              onClick={posClick}
+              className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
+                pos === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+              }`}
+            >
+              Pos
+            </li>
+            <li
+              onClick={cropClick}
+              className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2  rounded-lg flex-col flex ${
+                crop === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+              }`}
+            >
+              Crop Advisory
+            </li>
+            <li
+              onClick={farmClick}
+              className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
+                farm === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+              }`}
+            >
+              FRM
+            </li>
+            <li
+              onClick={manageClick}
+              className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
+                manage === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+              }`}
+            >
+              Management
+            </li>
+            <li
+              onClick={helpClick}
+              className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
+                help === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
+              }`}
+            >
+              Help
+            </li>
+          </ul>
+        </nav>
+        <Menu
+          Number="4"
+          Heading={Heading}
+          Address={weather?.name}
+          pos={pos}
+          crop={crop}
+          farm={farm}
+          manage={manage}
+          help={help}
+          submenu={submenu}
         />
-        <ul className="text-center text-sm flex flex-col lg:flex-col items-center gap-y-3 lg:gap-y-0">
-          <li
-            onClick={posClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
-              pos === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
-            }`}
-          >
-            Pos
-          </li>
-          <li
-            onClick={cropClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2  rounded-lg flex-col flex ${
-              crop === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
-            }`}
-          >
-              Crop
-              Advisory
-          </li>
-          <li
-            onClick={farmClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
-              farm === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
-            }`}
-          >
-            FRM
-          </li>
-          <li
-            onClick={manageClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
-              manage === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
-            }`}
-          >
-            Management
-          </li>
-          <li
-            onClick={helpClick}
-            className={`text-[#13490A] font-semibold font-roboto text-[16px] cursor-pointer px-4 py-2 rounded-lg ${
-              help === true ? "bg-[#526D4E] mix-blend-hard-light" : ""
-            }`}
-          >
-            Help
-          </li>
-        </ul>
-      </nav>
-      <Menu
-        Number="4"
-        Heading={Heading}
-        Address={weather?.name}
-        pos={pos}
-        crop={crop}
-        farm={farm}
-        manage={manage}
-        help={help}
-        submenu={submenu}
-      />
+      </div>
     </div>
   );
 };

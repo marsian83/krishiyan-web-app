@@ -76,7 +76,7 @@ const Hervest = (props: any) => {
           {/* ))} */}
         </tbody>
       </table>
-      <table className="m-10">
+      {/* <table className="m-10">
         <tr className="text-center">
           <th className="border-r border-black">
             Losses post-harvest
@@ -111,7 +111,35 @@ const Hervest = (props: any) => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          flexWrap: "wrap",
+          marginBottom: "20px",
+          marginRight: "20px",
+        }}
+      >
+        {data.Post_Harvest._id.map((stage: any, index: any) => {
+          return (
+            <figure>
+              {data.Post_Harvest.images.map((image: any, index: any) => {
+                return (
+                  <img
+                    style={{ width: 250, height: 250 }}
+                    src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(
+                      image
+                    )}`}
+                  />
+                  // <img src={image}/>
+                );
+              })}
+              <figcaption style={{ fontSize: 25 }}>{stage.name}</figcaption>
+            </figure>
+          );
+        })}
+      </div>
     </>
   );
 };

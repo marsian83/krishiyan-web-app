@@ -361,7 +361,11 @@ const NewRegistration = () => {
           </button>
         </div>
       </section>
-      <OTPVerification open={open} handleClose={handleClose} Phone={mobile} />
+      <OTPVerification
+        open={open}
+        handleClose={handleClose}
+        Phone={phoneNumber}
+      />
       <Popup isOpen={isPopupOpen} onClose={closePopup} />
     </div>
   );
