@@ -73,7 +73,7 @@ router.get("/check-farmer/:mobile", async (req, res) => {
 
     if (farmer) {
       res.json({ exists: true, farmer });
-    }
+    } else res.json({ exists: false });
   } catch (error) {
     console.log(error);
   }

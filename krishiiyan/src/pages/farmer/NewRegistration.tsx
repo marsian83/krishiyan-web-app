@@ -56,7 +56,7 @@ const NewRegistration = () => {
   const [plantation_type, setPlantation_type] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState("");
-  let checkphone = false;
+  const [checkphone, setCheckPhone] = useState(false);
 
   const openPopup = () => {
     setIsPopupOpen(true);
@@ -74,7 +74,6 @@ const NewRegistration = () => {
   const onChangePhone = async (e: any) => {
     const Phone = e.target.value;
     setPhoneNumber(Phone);
-    checkphone = false;
     console.log(Phone);
     console.log(checkphone);
     console.log(Phone.length);
@@ -86,9 +85,14 @@ const NewRegistration = () => {
 
       const data = await response.json();
       console.log("function called", data);
-      if (data) {
-        checkphone = true;
+      if (data?.exists == false) {
+        setCheckPhone(true);
         console.log("check of data ", checkphone);
+      } else {
+        setCheckPhone(false);
+        toast.error("Farmer Already Exists! Enter new mobile Number", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       }
     }
   };
