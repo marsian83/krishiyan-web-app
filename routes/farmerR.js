@@ -65,4 +65,18 @@ router.get("/phoneNumbers/:mobile", async (req, res) => {
   }
 });
 
+router.get("/check-farmer/:mobile", async (req, res) => {
+  const mobile = req.params.mobile;
+
+  try {
+    const farmer = await Registration.findOne({ mobile });
+
+    if (farmer) {
+      res.json({ exists: true, farmer });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;

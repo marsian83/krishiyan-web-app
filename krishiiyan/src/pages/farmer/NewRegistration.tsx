@@ -41,6 +41,7 @@ const PlantationType = [
     value: "Both",
   },
 ];
+
 const NewRegistration = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -54,6 +55,8 @@ const NewRegistration = () => {
   const [dealer_farmer_relation, setDealer_farmer_relation] = useState("");
   const [plantation_type, setPlantation_type] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(true);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  let checkphone = false;
 
   const openPopup = () => {
     setIsPopupOpen(true);
@@ -68,11 +71,28 @@ const NewRegistration = () => {
   const onChangeName = (e: any) => {
     setName(e.target.value);
   };
-  const onChangePhone = (e: any) => {
-    setMobile(e.target.value);
+  const onChangePhone = async (e: any) => {
+    const Phone = e.target.value;
+    setPhoneNumber(Phone);
+    checkphone = false;
+    console.log(Phone);
+    console.log(checkphone);
+    console.log(Phone.length);
+    if (Phone.length >= 10) {
+      console.log("check function entered");
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/farmers/check-farmer/${Phone}`
+      );
+
+      const data = await response.json();
+      console.log("function called", data);
+      if (data) {
+        checkphone = true;
+        console.log("check of data ", checkphone);
+      }
+    }
   };
 
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [messageSent, setMessageSent] = useState(false);
 
   const onChangeZip = async (e: any) => {
@@ -154,6 +174,9 @@ const NewRegistration = () => {
 
       if (response.ok) {
         console.log("response done ", response);
+        toast.error("Farmer Registered Successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       } else {
         console.log("response else", response);
       }
@@ -163,36 +186,38 @@ const NewRegistration = () => {
   };
 
   const onSubmitHandler = async () => {
-    if (
-      state === "" ||
-      (state === undefined && city === "") ||
-      city === undefined
-    ) {
-      toast.error("Please enter valid Pincode", {
-        position: toast.POSITION.BOTTOM_LEFT,
-      });
-    } else {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/sendsms`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ phoneNumber }),
-          }
-        );
+    if (checkphone) {
+      if (
+        state === "" ||
+        (state === undefined && city === "") ||
+        city === undefined
+      ) {
+        toast.error("Please enter valid Pincode", {
+          position: toast.POSITION.BOTTOM_LEFT,
+        });
+      } else {
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/sendsms`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ phoneNumber }),
+            }
+          );
 
-        if (response.ok) {
-          setMessageSent(true);
-          handleOpen();
-        } else {
-          // Handle error case
-          setMessageSent(false);
+          if (response.ok) {
+            setMessageSent(true);
+            handleOpen();
+          } else {
+            // Handle error case
+            setMessageSent(false);
+          }
+        } catch (error) {
+          console.error("Error sending SMS:", error);
         }
-      } catch (error) {
-        console.error("Error sending SMS:", error);
       }
     }
   };
@@ -235,7 +260,7 @@ const NewRegistration = () => {
               type="text"
               className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
               value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              onChange={onChangePhone}
             ></input>
             {/* <div className="ml-50">
             <button
