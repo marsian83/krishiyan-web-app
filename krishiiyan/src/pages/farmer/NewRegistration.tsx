@@ -195,6 +195,12 @@ const NewRegistration = () => {
         console.error("Error sending SMS:", error);
       }
     }
+    // console.log("Data is has been sent Successfully ");
+    alert("Thank you for filling out your information!");
+    setName("");
+    setMobile("");
+    setZip("");
+    setStreet("");
   };
 
   const verifyMobile = async () => {
