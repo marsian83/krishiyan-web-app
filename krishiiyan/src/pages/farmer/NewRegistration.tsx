@@ -178,7 +178,7 @@ const NewRegistration = () => {
 
       if (response.ok) {
         console.log("response done ", response);
-        toast.error("Farmer Registered Successfully", {
+        toast.success("Farmer Registered Successfully", {
           position: toast.POSITION.TOP_RIGHT,
         });
       } else {
