@@ -77,7 +77,7 @@ const NewRegistration = () => {
     console.log(Phone);
     console.log(checkphone);
     console.log(Phone.length);
-    if (Phone.length >= 10) {
+    if (Phone.length === 10) {
       console.log("check function entered");
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/farmers/check-farmer/${Phone}`
@@ -90,6 +90,8 @@ const NewRegistration = () => {
         console.log("check of data ", checkphone);
       } else {
         setCheckPhone(false);
+        setPhoneNumber("");
+
         toast.error("Farmer Already Exists! Enter new mobile Number", {
           position: toast.POSITION.TOP_RIGHT,
         });
@@ -178,9 +180,18 @@ const NewRegistration = () => {
 
       if (response.ok) {
         console.log("response done ", response);
-        toast.error("Farmer Registered Successfully", {
+        toast.success("Farmer Registered Successfully", {
           position: toast.POSITION.TOP_RIGHT,
         });
+        window.location.reload();
+        setPhoneNumber("");
+        setName("");
+        setMobileIsWhatsapp(false);
+        setZip("");
+        setStreet("");
+        setTotalLandArea("");
+        setDealer_farmer_relation("");
+        setPlantation_type("");
       } else {
         console.log("response else", response);
       }
