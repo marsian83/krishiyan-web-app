@@ -39,7 +39,7 @@ const SignupPage = () => {
         if (check1) {
           console.log("check function entered");
           const response = await fetch(
-            `${process.env.REACT_APP_BACKEND_URL}/farmers/check-farmer/${Phone}`
+            `${process.env.REACT_APP_BACKEND_URL}/farmers/check-farmer/${email}`
           );
 
           const data = await response.json();
@@ -118,7 +118,7 @@ const SignupPage = () => {
     //     console.error("Error sending SMS:", error);
     //   }
     // }
-    if (email1 != null) {
+    if (email1 != null && checkemail) {
       try {
         const response = await fetch(
           `${process.env.REACT_APP_BACKEND_URL}/send-otp-email`,

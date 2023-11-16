@@ -20,6 +20,7 @@ const NestedDropdown: React.FC<NestedDropdownProps> = ({ menus }) => {
 
   const handleSubmenuClick = (submenu: string) => {
     switch (submenu) {
+      //crop liberary
       case "Crop Calender":
         navigate(`/crop_calendar`);
         break;
@@ -35,9 +36,66 @@ const NestedDropdown: React.FC<NestedDropdownProps> = ({ menus }) => {
       case "Mandi Prices":
         navigate(`/mandi_prices`);
         break;
-      // Add more cases as needed for other submenus
+
+      //pos
+
+      case "Sale":
+        navigate(``);
+        break;
+      case "Inventory":
+        navigate(`/inventory`);
+        break;
+      case "Reports":
+        navigate(`/report`);
+        break;
+      case "Product":
+        navigate(`/purchase`);
+        break;
+      case "Sales Statement":
+        navigate(`/accounting`);
+        break;
+
+      // FRM
+
+      case "Dashboard":
+        navigate(`/dashboard`);
+        break;
+      case "Purchase":
+        navigate(`/farm_purchase`);
+        break;
+      case "Cultivation":
+        navigate(`/cultivation`);
+        break;
+      case "Credit":
+        navigate(`/credit`);
+        break;
+      case "support":
+        navigate(`/support`);
+        break;
+      case "New Registration":
+        navigate(`/new_registration`);
+        break;
+
+      //Management
+
+      case "Management":
+        navigate(`/problem`);
+        break;
+
+      //Help
+
+      case "Problem":
+        navigate(`/problem`);
+        break;
+      case "Expert":
+        navigate(`/expert`);
+        break;
+      case "Guide":
+        navigate(`/mandi_prices`);
+        break;
+
       default:
-        // Handle default case or do nothing
+        navigate(`/guide`);
         break;
     }
   };
