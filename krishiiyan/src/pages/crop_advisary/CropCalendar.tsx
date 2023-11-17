@@ -110,14 +110,6 @@ const CropCalendar = () => {
   }, []);
 
   const getCropStages = async () => {
-    console.log(dateOfSowing);
-    console.log(
-      process.env.REACT_APP_BACKEND_URL +
-        "/cropCalendar/stage/" +
-        localsName +
-        "/" +
-        dateOfSowing
-    );
     const CropData = await fetch(
       process.env.REACT_APP_BACKEND_URL +
         "/cropCalendar/stage/" +
@@ -133,8 +125,6 @@ const CropCalendar = () => {
     );
     const CropDataJson = await CropData.json();
     setCropDetails(CropDataJson.cropStages);
-    console.log("Crop Details:");
-    console.log(cropDetails);
   };
   return (
     <div>

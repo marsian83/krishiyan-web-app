@@ -8,16 +8,14 @@ import Typography from '@mui/material/Typography';
 import StepDetails from './StepDetails';
 import BasalStep from '../Components/layouts/Calendar(CropAdvisory)/BasalStep';
 
-const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
-
 export default function HorizontalLinearStepper({cropDetails, date} : any) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const [activeDetails , setActiveDetails] = React.useState<any>(cropDetails[activeStep]);
+  // const isStepOptional = (step: number) => {
+  //   return step === 1;
+  // };
   console.log(cropDetails)
-  const isStepOptional = (step: number) => {
-    return step === 1;
-  };
   const [steps, setSteps] = React.useState<any>(cropDetails);
   const handleStepCount = () => {
     const currentDate = new Date();
@@ -31,17 +29,19 @@ export default function HorizontalLinearStepper({cropDetails, date} : any) {
         break;
       }
     }
-    console.log(activeStep)
   };
-
+  // console.log(cropDetails)
   const handleNext = () => {
+    console.log(activeStep)
     if(activeStep === steps.length-1){
       setActiveStep(0);
       return;
     }
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    console.log("acctiveState before:", activeStep)
+    let newStep = activeStep+1;
+    setActiveStep(newStep)
+    console.log("activeStyate after:", activeStep);
     setActiveDetails(cropDetails[activeStep])
-    console.log(activeDetails)
 };
 
   const handleBack = () => {
@@ -54,9 +54,11 @@ export default function HorizontalLinearStepper({cropDetails, date} : any) {
 
   React.useEffect(()=>{
     setActiveDetails(cropDetails[activeStep]);
-    handleStepCount();
-  })
-  console.log(steps.length)
+    if(activeStep == 0){
+      handleStepCount();
+    }
+  },[])
+
   return (
     <Box sx={{ width: '100%' }}>
       <Stepper activeStep={activeStep}>
