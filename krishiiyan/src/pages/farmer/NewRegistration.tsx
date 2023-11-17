@@ -96,6 +96,16 @@ const NewRegistration = () => {
           position: toast.POSITION.TOP_RIGHT,
         });
       }
+    } else {
+      if (Phone.length > 10) {
+        setPhoneNumber("");
+        toast.error(
+          "Phone number should be 10 digits ! Enter new mobile Number",
+          {
+            position: toast.POSITION.TOP_RIGHT,
+          }
+        );
+      }
     }
   };
 
@@ -194,6 +204,9 @@ const NewRegistration = () => {
         setPlantation_type("");
       } else {
         console.log("response else", response);
+        toast.error("Registration failed , Try Again", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       }
     } catch (error) {
       console.error("Error submitting registration:", error);
