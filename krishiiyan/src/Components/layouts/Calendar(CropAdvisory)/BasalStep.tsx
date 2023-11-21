@@ -2,7 +2,6 @@ import React from "react";
 import { extractCodeFromDriveLink } from "../../../handleImageCode";
 
 const BasalStep = (props: any) => {
-  console.log(props.cropDetails)
   if(Object.keys(props.cropDetails).length === 0){
     return <>
       Loading...

@@ -37,7 +37,7 @@ const Header = (props: any) => {
         <div className="flex items-center gap-3  mobile:flex-col">
           <Avatar
             alt="Remy Sharp"
-            src="https://mui.com/static/images/avatar/2.jpg"
+            src="Images\farmer.jpeg"
             sx={{ width: 56, height: 56 }}
           />
           <div className="text-[#000000] font-normal text-xs xl:text-sm">
@@ -56,12 +56,16 @@ const Header = (props: any) => {
             />
           </Button>
           <button
-            className="mt-4 px-4 py-2 bg-white text-black rounded hover:bg-green-200"
+            className="mt-4 px-4 py-2  border-4 border-blue-600  hover:border-blue-400 bg-blue-600  rounded hover:bg-blue-200 animate-bounce"
             onClick={openPopup}
           >
             <div className="flex flex-row">
-              <img src="Images\chat.png" alt="WhatsApp" className="w-6 h-6" />
-              <p> Today's Deal</p>
+              <img
+                src="Images\chat.png"
+                alt="WhatsApp"
+                className="w-8 h-8 invert"
+              />
+              <p className="text-white text-2xl text-bold"> Today's Deal</p>
             </div>
           </button>
         </div>

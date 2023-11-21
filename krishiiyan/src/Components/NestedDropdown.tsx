@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import CropCalendar from "../pages/crop_advisary/CropCalendar";
+import CropHealth from "../pages/farmer/CropHealth";
+import CropLibrary from "../pages/crop_advisary/CropLibrary";
 type NestedDropdownProps = {
   menus: Array<{ title: string; submenus: string[] }>;
 };
@@ -17,8 +19,85 @@ const NestedDropdown: React.FC<NestedDropdownProps> = ({ menus }) => {
   };
 
   const handleSubmenuClick = (submenu: string) => {
-    setSelectedSubmenu(submenu);
-    navigate(`/your-route-path/${selectedMenu}/${submenu}`);
+    switch (submenu) {
+      //crop liberary
+      case "Crop Calender":
+        navigate(`/crop_calendar`);
+        break;
+      case "Crop Health":
+        navigate(`/crop_health`);
+        break;
+      case "Crop Library":
+        navigate(`/crop_library`);
+        break;
+      case "FertiCal":
+        navigate(`/fertical`);
+        break;
+      case "Mandi Prices":
+        navigate(`/mandi_prices`);
+        break;
+
+      //pos
+
+      case "Sale":
+        navigate(``);
+        break;
+      case "Inventory":
+        navigate(`/inventory`);
+        break;
+      case "Reports":
+        navigate(`/report`);
+        break;
+      case "Product":
+        navigate(`/purchase`);
+        break;
+      case "Sales Statement":
+        navigate(`/accounting`);
+        break;
+
+      // FRM
+
+      case "Dashboard":
+        navigate(`/dashboard`);
+        break;
+      case "Purchase":
+        navigate(`/farm_purchase`);
+        break;
+      case "Cultivation":
+        navigate(`/cultivation`);
+        break;
+      case "Credit":
+        navigate(`/credit`);
+        break;
+      case "support":
+        navigate(`/support`);
+        break;
+      case "New Registration":
+        navigate(`/new_registration`);
+        break;
+
+      //Management
+
+      case "Management":
+        navigate(`/problem`);
+        break;
+
+      //Help
+
+      case "Problem":
+        navigate(`/problem`);
+        break;
+      case "Expert":
+        navigate(`/expert`);
+        break;
+      case "Guide":
+        navigate(`/mandi_prices`);
+        break;
+
+      default:
+        navigate(`/guide`);
+        break;
+    }
   };
 
   const handleButtonClick = () => {

@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/dealer");
-const {tokenAuth} = require("../middleware/tokenAuth");
+const { tokenAuth } = require("../middleware/tokenAuth");
 const base64url = require("base64url");
 
 function decodeJwt(jwtToken) {
@@ -19,7 +19,7 @@ function decodeJwt(jwtToken) {
     atob(parts[1].replace(/-/g, "+").replace(/_/g, "/"))
   );
 
-  return decodedPayload ;
+  return decodedPayload;
 }
 
 //Register
@@ -116,6 +116,24 @@ router.post("/oauth/login", async (req, res, next) => {
   }
 });
 
+// Check Dealer API by Email
+router.get("/check-dealer/:email", async (req, res) => {
+  const email = req.params.email;
+
+  try {
+    const dealer = await Dealer.findOne({ email });
+
+    if (dealer) {
+      res.json({ exists: true, dealer });
+    } else {
+      res.json({ exists: false });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // Me {Profile}
 router.get("/me", tokenAuth, async (req, res) => {
   try {
@@ -126,6 +144,5 @@ router.get("/me", tokenAuth, async (req, res) => {
     return res.status(500).json({ msg: err.message });
   }
 });
-
 
 module.exports = router;

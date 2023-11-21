@@ -60,7 +60,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
           </h2>
 
           <img
-            className="w-96 h-96 "
+            className="w-96 h-96 ml-[16%] "
             alt="popupImage"
             style={{ width: 250, height: 250 }}
             src={`https://drive.google.com/uc?export=view&id=${extractCodeFromDriveLink(

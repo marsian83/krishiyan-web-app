@@ -36,6 +36,7 @@ const GoogleOauthLogin = () => {
   };
   const handleGoogleLogin = async (credentials: string) => {
     const [err, res] = await Api.dealerGoogleLogin(credentials);
+    console.log(credentials);
     if (err) {
       toast.error(err.data, {
         position: toast.POSITION.TOP_RIGHT,
@@ -52,7 +53,11 @@ const GoogleOauthLogin = () => {
   };
   return (
     <div>
-      <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID!}>
+      <GoogleOAuthProvider
+        clientId={
+          "568794023475-7maqtsonf77a4s0hbinimvf4mv117585.apps.googleusercontent.com"
+        }
+      >
         <GoogleLogin
           onSuccess={(credentialResponse: any) => {
             // const decoded = jwt_decode(

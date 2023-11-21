@@ -25,16 +25,37 @@ const SignupPage = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [checkemail, setCheckEmail] = useState(false);
   let Phone = 0;
 
   let email1 = "";
-  const validateEmail = (email: string) => {
+  const validateEmail = async (email: string) => {
     const validDomains = ["@gmail.com", "@krishiyan.com", "info@"];
 
     for (const domain of validDomains) {
       if (email.includes(domain)) {
         check1 = true;
         console.log("check 1 ", check1);
+        if (check1) {
+          console.log("check function entered");
+          const response = await fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/farmers/check-farmer/${email}`
+          );
+
+          const data = await response.json();
+          console.log("function called", data);
+          if (data?.exists == false) {
+            setCheckEmail(true);
+            console.log("check of data ", email);
+          } else {
+            setCheckEmail(false);
+            setEmail("");
+
+            toast.error("User Already Exists! Enter new email", {
+              position: toast.POSITION.TOP_RIGHT,
+            });
+          }
+        }
       }
       console.log("check 1 ", check1);
     }
@@ -97,7 +118,7 @@ const SignupPage = () => {
     //     console.error("Error sending SMS:", error);
     //   }
     // }
-    if (email1 != null) {
+    if (email1 != null && checkemail) {
       try {
         const response = await fetch(
           `${process.env.REACT_APP_BACKEND_URL}/send-otp-email`,

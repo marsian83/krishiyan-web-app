@@ -41,6 +41,7 @@ const PlantationType = [
     value: "Both",
   },
 ];
+
 const NewRegistration = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -54,6 +55,8 @@ const NewRegistration = () => {
   const [dealer_farmer_relation, setDealer_farmer_relation] = useState("");
   const [plantation_type, setPlantation_type] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(true);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [checkphone, setCheckPhone] = useState(false);
 
   const openPopup = () => {
     setIsPopupOpen(true);
@@ -68,11 +71,44 @@ const NewRegistration = () => {
   const onChangeName = (e: any) => {
     setName(e.target.value);
   };
-  const onChangePhone = (e: any) => {
-    setMobile(e.target.value);
+  const onChangePhone = async (e: any) => {
+    const Phone = e.target.value;
+    setPhoneNumber(Phone);
+    console.log(Phone);
+    console.log(checkphone);
+    console.log(Phone.length);
+    if (Phone.length === 10) {
+      console.log("check function entered");
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/farmers/check-farmer/${Phone}`
+      );
+
+      const data = await response.json();
+      console.log("function called", data);
+      if (data?.exists == false) {
+        setCheckPhone(true);
+        console.log("check of data ", checkphone);
+      } else {
+        setCheckPhone(false);
+        setPhoneNumber("");
+
+        toast.error("Farmer Already Exists! Enter new mobile Number", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    } else {
+      if (Phone.length > 10) {
+        setPhoneNumber("");
+        toast.error(
+          "Phone number should be 10 digits ! Enter new mobile Number",
+          {
+            position: toast.POSITION.TOP_RIGHT,
+          }
+        );
+      }
+    }
   };
 
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [messageSent, setMessageSent] = useState(false);
 
   const onChangeZip = async (e: any) => {
@@ -154,8 +190,23 @@ const NewRegistration = () => {
 
       if (response.ok) {
         console.log("response done ", response);
+        toast.success("Farmer Registered Successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        window.location.reload();
+        setPhoneNumber("");
+        setName("");
+        setMobileIsWhatsapp(false);
+        setZip("");
+        setStreet("");
+        setTotalLandArea("");
+        setDealer_farmer_relation("");
+        setPlantation_type("");
       } else {
         console.log("response else", response);
+        toast.error("Registration failed , Try Again", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       }
     } catch (error) {
       console.error("Error submitting registration:", error);
@@ -163,36 +214,38 @@ const NewRegistration = () => {
   };
 
   const onSubmitHandler = async () => {
-    if (
-      state === "" ||
-      (state === undefined && city === "") ||
-      city === undefined
-    ) {
-      toast.error("Please enter valid Pincode", {
-        position: toast.POSITION.BOTTOM_LEFT,
-      });
-    } else {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/sendsms`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ phoneNumber }),
-          }
-        );
+    if (checkphone) {
+      if (
+        state === "" ||
+        (state === undefined && city === "") ||
+        city === undefined
+      ) {
+        toast.error("Please enter valid Pincode", {
+          position: toast.POSITION.BOTTOM_LEFT,
+        });
+      } else {
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/sendsms`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ phoneNumber }),
+            }
+          );
 
-        if (response.ok) {
-          setMessageSent(true);
-          handleOpen();
-        } else {
-          // Handle error case
-          setMessageSent(false);
+          if (response.ok) {
+            setMessageSent(true);
+            handleOpen();
+          } else {
+            // Handle error case
+            setMessageSent(false);
+          }
+        } catch (error) {
+          console.error("Error sending SMS:", error);
         }
-      } catch (error) {
-        console.error("Error sending SMS:", error);
       }
     }
       alert("Thank you for filling out your information!");
@@ -240,7 +293,7 @@ const NewRegistration = () => {
               type="text"
               className="bg-[#F3FFF1] h-8 w-80 shadow-[4px_4px_4px_rgba(0,0,0,0.25)] rounded-md pl-3"
               value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              onChange={onChangePhone}
             ></input>
             {/* <div className="ml-50">
             <button
