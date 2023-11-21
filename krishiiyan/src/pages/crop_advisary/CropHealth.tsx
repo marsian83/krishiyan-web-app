@@ -10,7 +10,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { extractCodeFromDriveLink } from "../../handleImageCode";
-import Popup from "../../Components/layouts/PopUp";
+
 
 const PlantationOptions = [
   {
@@ -54,15 +54,8 @@ const CropHealth = () => {
   const [loading, setLoading] = useState(false);
   const [solution, setSolution] = useState<any>();
   const [solutionDetails, setSolutionDetails] = useState<any>();
- const [isPopupOpen, setIsPopupOpen] = useState(true);
+  const [isPopupOpen, setIsPopupOpen] = useState(true);
 
- const openPopup = () => {
-   setIsPopupOpen(true);
- };
-
- const closePopup = () => {
-   setIsPopupOpen(false);
- };
   let navigate = useNavigate();
   // navigate("/support")
   const onChangePlantationType = (e: any, value: any) => {
@@ -190,11 +183,7 @@ const CropHealth = () => {
     <div>
       <Header title="Crop Advisory" subtitle="Crop Health" />
       <section className="p-[1%] grid gap-y-1 mt-5 mobile:pt-[40rem] mobile:absolute mobile:left-0">
-        <div
-          className="flex mobile:flex-col mobile:gap-y-4"
-          style={{
-          }}
-        >
+        <div className="flex mobile:flex-col mobile:gap-y-4" style={{}}>
           <div
             className="font-extrabold grid grid-cols-[50%_40%] items-center mobile:flex mobile:flex-col"
             style={{ width: "550px" }}
@@ -373,7 +362,6 @@ const CropHealth = () => {
           </table>
         </>
       </section>
-      <Popup isOpen={isPopupOpen} onClose={closePopup} />
     </div>
   );
 };
