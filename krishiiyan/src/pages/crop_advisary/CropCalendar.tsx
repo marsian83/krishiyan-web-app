@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import moment from "moment";
-import Popup from "../../Components/layouts/PopUp";
+
 
 const PlantationOptions = [
   {
@@ -30,13 +30,6 @@ const CropCalendar = () => {
   const [loading, setLoading] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(true);
 
-  const openPopup = () => {
-    setIsPopupOpen(true);
-  };
-
-  const closePopup = () => {
-    setIsPopupOpen(false);
-  };
 
   const onChangePlantationType = (e: any, value: any) => {
     console.log(value.localName); // This should log the selected value
@@ -237,7 +230,7 @@ const CropCalendar = () => {
             ))} */}
         </div>
       </section>
-      <Popup isOpen={isPopupOpen} onClose={closePopup} />
+     
     </div>
   );
 };
