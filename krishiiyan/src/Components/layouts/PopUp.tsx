@@ -10,26 +10,58 @@ interface PopupProps {
 
 const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
   const [popupData, setPopupData] = useState<any>(null);
+
+  const hasPopupBeenShown = () => {
+    return localStorage.getItem("popupShown") === "true";
+  };
+
+  const setPopupShown = () => {
+    localStorage.setItem("popupShown", "true");
+  };
+
+  const resetPopupShownOnUnload = () => {
+    localStorage.setItem("popupShown", "false");
+  };
+
   function encodeURL(url: string): string {
     return encodeURIComponent(url);
   }
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !hasPopupBeenShown()) {
       axios
         .get(`${process.env.REACT_APP_BACKEND_URL}/popups`)
         .then((response) => {
           if (response.data.success) {
             setPopupData(response.data.popups[0]);
-            // console.log("popupData.image", popupData.image);
           } else {
+            console.log("error while loading pop up data");
           }
         });
     }
   }, [isOpen]);
 
-  if (!isOpen || !popupData) return null;
+  useEffect(() => {
+    if (!hasPopupBeenShown() && popupData) {
+      setPopupShown();
+    }
+  }, [popupData]);
 
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      resetPopupShownOnUnload();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  if (!isOpen || !popupData) {
+    return null;
+  }
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none mobile:gap-y-4 mobile:pt-[10rem] ">
       <div className="relative w-full max-w-md p-6 my-6 mx-4 bg-[#F3FFF1] rounded-lg shadow-lg border border-black ">
