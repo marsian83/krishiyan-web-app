@@ -87,9 +87,12 @@ router.post("/oauth/login", async (req, res, next) => {
   const { credentials } = req.body;
   try {
     const decoded = decodeJwt(credentials);
+    console.log("inside oauth");
     console.log(decoded);
     let user = {};
     const existingUser = await User.findOne({ email: decoded.email });
+    console.log(existingUser);
+    
     if (existingUser) {
       user = existingUser;
     } else {
