@@ -13,10 +13,16 @@ function decodeJwt(jwtToken) {
   }
 
   const decodedHeader = JSON.parse(
-    atob(parts[0].replace(/-/g, "+").replace(/_/g, "/"))
+    Buffer.from(
+      parts[0].replace(/-/g, "+").replace(/_/g, "/"),
+      "base64"
+    ).toString("utf8")
   );
   const decodedPayload = JSON.parse(
-    atob(parts[1].replace(/-/g, "+").replace(/_/g, "/"))
+    Buffer.from(
+      parts[1].replace(/-/g, "+").replace(/_/g, "/"),
+      "base64"
+    ).toString("utf8")
   );
 
   return decodedPayload;
@@ -115,6 +121,7 @@ router.post("/oauth/login", async (req, res, next) => {
     res.cookie("token", token);
     res.status(200).json({ user, token, msg: "Login successful!" });
   } catch (err) {
+
     res.status(500).json({ message: "Something went wrong" });
   }
 });
