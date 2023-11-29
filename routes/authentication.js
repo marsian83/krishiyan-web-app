@@ -98,7 +98,7 @@ router.post("/oauth/login", async (req, res, next) => {
     let user = {};
     const existingUser = await User.findOne({ email: decoded.email });
     console.log(existingUser);
-    
+
     if (existingUser) {
       user = existingUser;
     } else {
@@ -121,7 +121,6 @@ router.post("/oauth/login", async (req, res, next) => {
     res.cookie("token", token);
     res.status(200).json({ user, token, msg: "Login successful!" });
   } catch (err) {
-
     res.status(500).json({ message: "Something went wrong" });
   }
 });
@@ -143,6 +142,37 @@ router.get("/check-dealer/:email", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+//forgot - password
+
+router.post("/reset-password", async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    const dealer = await Dealer.findOne({ email });
+
+    if (!dealer) {
+      console.log("email not found");
+      return res.status(404).json({ message: "Email not found" });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+    dealer.password = hashedPassword;
+    await dealer.save();
+    console.log("hashed password ::", hashedPassword);
+
+    res.json({ message: "Password reset successfully" });
+    console.log("password reset sucessfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+    console.log("internal server error ::", error);
+  }
+});
+
+module.exports = router;
 
 // Me {Profile}
 router.get("/me", tokenAuth, async (req, res) => {

@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
@@ -11,33 +12,61 @@ import * as Api from "../../Services/Api";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   //Handlesubmit
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    let email = data.get("email");
-    let newPass = data.get("password");
-    let otp = data.get("OTP");
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/auth/reset-password`,
+        {
+          email,
+          newPassword,
+        }
+      );
 
-    const [err, res] = await Api.forgotPassword(email, newPass, otp);
+      if (response.data.success) {
+        setMessage(response.data.message);
 
-    if (err) {
-      toast.error(err.data, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
+        navigate("/login");
+      } else {
+        setMessage("Error resetting password. Please try again later.");
+        toast.error("Error resetting password. Please try again later.", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    } catch (error: any) {
+      console.error(error);
 
-    if (res) {
-      localStorage.setItem("authToken", res?.data?.token);
-      localStorage.setItem("dealerName", res?.data?.result?.name);
-      navigate("/");
-      toast.success("Password changed  !", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
+      if (error.response) {
+        if (error.response.status === 404) {
+          setMessage("Email not found");
+          toast.error("Email not found", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        } else {
+          setMessage("Error resetting password. Please try again later.");
+          toast.error("Error resetting password. Please try again later.", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+      } else if (error.request) {
+        setMessage("No response from the server. Please try again later.");
+        toast.error("No response from the server. Please try again later.", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        setMessage("An unexpected error occurred. Please try again later.");
+        toast.error("An unexpected error occurred. Please try again later.", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
     }
   };
   return (
@@ -81,16 +110,6 @@ const ForgotPassword = () => {
               id="newPass"
             />
 
-            <TextField
-              className="text-[#13490A] font-extrabold text-sm mx-5"
-              type="otp"
-              margin="normal"
-              required
-              fullWidth
-              name="otp"
-              label="otp"
-              id="otp"
-            />
             <Button
               className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
               type="submit"
@@ -117,17 +136,6 @@ const ForgotPassword = () => {
           </Box>
         </Box>
       </Container>
-      {/* <div className="min-h-full h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 w-full bg-[#50d71e]">
-        <div className="max-w-md w-full">
-          <Header
-            heading="Signup to create an account"
-            paragraph="Already have an account? "
-            linkName="Login"
-            linkUrl="/login"
-          />
-          <Register />
-        </div>
-      </div> */}
     </>
   );
 };
