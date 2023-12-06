@@ -150,7 +150,7 @@ router.post("/reset-password", async (req, res) => {
   try {
     const { email, newPassword } = req.body;
 
-    const dealer = await Dealer.findOne({ email });
+    const dealer = await User.findOne({ email });
 
     if (!dealer) {
       console.log("email not found");
