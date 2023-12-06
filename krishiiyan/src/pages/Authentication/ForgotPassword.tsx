@@ -21,7 +21,10 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState("");
 
   //Handlesubmit
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+
+    console.log("handle submit called");
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/auth/reset-password`,
@@ -67,6 +70,7 @@ const ForgotPassword = () => {
           position: toast.POSITION.TOP_RIGHT,
         });
       }
+      console.log(message);
     }
   };
   return (

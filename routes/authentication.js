@@ -146,6 +146,7 @@ router.get("/check-dealer/:email", async (req, res) => {
 //forgot - password
 
 router.post("/reset-password", async (req, res) => {
+  console.log("forgot password server side hitting");
   try {
     const { email, newPassword } = req.body;
 
@@ -171,8 +172,6 @@ router.post("/reset-password", async (req, res) => {
     console.log("internal server error ::", error);
   }
 });
-
-module.exports = router;
 
 // Me {Profile}
 router.get("/me", tokenAuth, async (req, res) => {
