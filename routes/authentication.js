@@ -6,6 +6,7 @@ const CryptoJS = require("crypto-js");
 const User = require("../models/dealer");
 const { tokenAuth } = require("../middleware/tokenAuth");
 const base64url = require("base64url");
+const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
