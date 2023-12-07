@@ -225,13 +225,9 @@ router.post("/send-reset-password-link", async (req, res) => {
   // Encrypt the email for the reset link
   const encryptedEmail = encryptEmail(email, encryptionKey);
 
-  const resetLink =
-    `http://localhost:5000/Password-reset?email=${encodeURIComponent(
-      encryptedEmail
-    )}` ||
-    `https://www.krishiyan.com/Passsword-reset?email=${encodeURIComponent(
-      encryptedEmail
-    )}`;
+  const resetLink = `https://www.krishiyan.com/Passsword-reset?email=${encodeURIComponent(
+    encryptedEmail
+  )}`;
 
   const mailOptions = {
     from: "wetacre0@gmail.com",
