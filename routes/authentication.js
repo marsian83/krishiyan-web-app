@@ -2,9 +2,37 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 const User = require("../models/dealer");
 const { tokenAuth } = require("../middleware/tokenAuth");
 const base64url = require("base64url");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.Email_Otp,
+    pass: process.env.Email_Otp_Password,
+  },
+});
+
+// Encryption function
+const encryptEmail = (email) => {
+  const cipher = crypto.createCipher("aes-256-cbc", process.env.ENCRYPTION_KEY);
+  let encryptedEmail = cipher.update(email, "utf-8", "hex");
+  encryptedEmail += cipher.final("hex");
+  return encryptedEmail;
+};
+
+// Decryption function
+const decryptEmail = (encryptedEmail) => {
+  const decipher = crypto.createDecipher(
+    "aes-256-cbc",
+    process.env.ENCRYPTION_KEY
+  );
+  let decryptedEmail = decipher.update(encryptedEmail, "hex", "utf-8");
+  decryptedEmail += decipher.final("utf-8");
+  return decryptedEmail;
+};
 
 function decodeJwt(jwtToken) {
   const parts = jwtToken.split(".");
@@ -181,6 +209,65 @@ router.get("/me", tokenAuth, async (req, res) => {
   } catch (error) {
     return res.status(500).json({ msg: err.message });
   }
+});
+
+router.post("/send-reset-password-link", async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: "Email address is required." });
+  }
+
+  // Check if the email exists in your database
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({ error: "User not found with this email." });
+  }
+
+  // Encrypt the email for the reset link
+  const encryptedEmail = encryptEmail(email);
+
+  const resetLink =
+    `http://localhost:5000/Password-reset?email=${encodeURIComponent(
+      encryptedEmail
+    )}` ||
+    `https://www.krishiyan.com/Passsword-reset?email=${encodeURIComponent(
+      encryptedEmail
+    )}`;
+
+  const mailOptions = {
+    from: "wetacre0@gmail.com",
+    to: email,
+    subject: "Reset Password",
+    html: `<p>Click the following link to reset your password:</p><a href="${resetLink}">${resetLink}</a>`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(`Error sending email to ${email}:`, error);
+      return res
+        .status(500)
+        .json({ error: `Email could not be sent. Backend error: ${error}` });
+    } else {
+      console.log(`Email sent to ${email}:`, info.response);
+      return res
+        .status(200)
+        .json({ message: "Reset password email sent successfully." });
+    }
+  });
+});
+
+router.get("/reset-password", (req, res) => {
+  const encryptedEmail = req.query.email;
+
+  if (!encryptedEmail) {
+    return res.status(400).json({ error: "Invalid reset link." });
+  }
+
+  const email = decryptEmail(encryptedEmail);
+
+  res.render("reset-password", { email });
 });
 
 module.exports = router;

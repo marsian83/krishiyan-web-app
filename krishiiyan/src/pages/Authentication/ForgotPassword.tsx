@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
@@ -6,25 +6,38 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-
 import { useNavigate } from "react-router-dom";
-import * as Api from "../../Services/Api";
-
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import CryptoJS from "crypto-js";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
+  const encryptionKey: string = process.env.REACT_APP_ENCRYPTION_KEY || "";
 
-  //Handlesubmit
+  useEffect(() => {
+    // Get the decrypted email from the URL query parameters
+    const searchParams = new URLSearchParams(window.location.search);
+    const encryptedEmail = searchParams.get("email");
+
+    if (encryptedEmail) {
+      // Decrypt the email using crypto-js
+      const decryptedEmail = CryptoJS.AES.decrypt(
+        encryptedEmail,
+        encryptionKey
+      ).toString(CryptoJS.enc.Utf8);
+
+      // Set the email state with the decrypted email
+      setEmail(decryptedEmail);
+    }
+  }, []);
+
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    console.log("handle submit called");
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/auth/reset-password`,
@@ -36,6 +49,9 @@ const ForgotPassword = () => {
 
       if (response.data.success) {
         setMessage(response.data.message);
+        toast.success("Password reset successful", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
 
         navigate("/login");
       } else {
@@ -70,9 +86,9 @@ const ForgotPassword = () => {
           position: toast.POSITION.TOP_RIGHT,
         });
       }
-      console.log(message);
     }
   };
+
   return (
     <>
       <Container component="main" maxWidth="xs">
@@ -100,8 +116,10 @@ const ForgotPassword = () => {
               required
               fullWidth
               name="email"
-              label="email"
+              label="Email"
               id="email"
+              value={email}
+              disabled
             />
             <TextField
               className="text-[#13490A] font-extrabold text-sm mx-5"
@@ -112,6 +130,7 @@ const ForgotPassword = () => {
               name="password"
               label="Password"
               id="newPass"
+              onChange={(e) => setNewPassword(e.target.value)}
             />
 
             <Button
@@ -121,7 +140,7 @@ const ForgotPassword = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              submit
+              Submit
             </Button>
             <Grid container>
               <Grid item>
