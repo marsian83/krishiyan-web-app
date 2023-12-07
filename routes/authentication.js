@@ -251,16 +251,4 @@ router.post("/send-reset-password-link", async (req, res) => {
   });
 });
 
-router.get("/reset-password", (req, res) => {
-  const encryptedEmail = req.query.email;
-
-  if (!encryptedEmail) {
-    return res.status(400).json({ error: "Invalid reset link." });
-  }
-
-  const email = decryptEmail(encryptedEmail, encryptionKey);
-
-  res.render("reset-password", { email });
-});
-
 module.exports = router;
