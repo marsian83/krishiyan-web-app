@@ -16,7 +16,9 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
-  const encryptionKey: string = process.env.REACT_APP_ENCRYPTION_KEY || "";
+  //const encryptionKey: string = process.env.REACT_APP_ENCRYPTION_KEY || "";
+  const encryptionKey =
+    "c10a2499a46c1921688c6bf5f19b746f2eb4398b1d3c4d1c1f2e4a6c8b6a4f8c";
 
   useEffect(() => {
     // Get the decrypted email from the URL query parameters
@@ -25,14 +27,15 @@ const ForgotPassword = () => {
 
     if (encryptedEmail) {
       // Decrypt the email using crypto-js
-      const decryptedEmail = CryptoJS.AES.decrypt(
+
+      const decryptedBytes = CryptoJS.AES.decrypt(
         encryptedEmail,
         encryptionKey
-      ).toString(CryptoJS.enc.Utf8);
+      );
+      const decryptedEmail = decryptedBytes.toString(CryptoJS.enc.Utf8);
 
       // Set the email state with the decrypted email
       setEmail(decryptedEmail);
-      console.log(encryptedEmail);
     }
   }, []);
 
