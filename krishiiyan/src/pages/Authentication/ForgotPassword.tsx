@@ -51,7 +51,7 @@ const ForgotPassword = () => {
         }
       );
 
-      if (response.data.success) {
+      if (response.data.message === "success") {
         setMessage(response.data.message);
         toast.success("Password reset successful", {
           position: toast.POSITION.TOP_RIGHT,

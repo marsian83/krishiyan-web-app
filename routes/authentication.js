@@ -188,7 +188,7 @@ router.post("/reset-password", async (req, res) => {
     await user.save();
     console.log("hashed password ::", hashedPassword);
 
-    res.json({ message: "Password reset successfully" });
+    res.json({ message: "success" });
     console.log("password reset sucessfully");
   } catch (error) {
     console.error(error);
@@ -225,9 +225,13 @@ router.post("/send-reset-password-link", async (req, res) => {
   // Encrypt the email for the reset link
   const encryptedEmail = encryptEmail(email, encryptionKey);
 
-  const resetLink = `https://www.krishiyan.com/Passsword-reset?email=${encodeURIComponent(
-    encryptedEmail
-  )}`;
+  const resetLink =
+    `http://localhost:5000/Password-reset?email=${encodeURIComponent(
+      encryptedEmail
+    )}` ||
+    `https://www.krishiyan.com/Passsword-reset?email=${encodeURIComponent(
+      encryptedEmail
+    )}`;
 
   const mailOptions = {
     from: "wetacre0@gmail.com",
