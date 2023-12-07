@@ -32,6 +32,7 @@ const ForgotPassword = () => {
 
       // Set the email state with the decrypted email
       setEmail(decryptedEmail);
+      console.log(encryptedEmail);
     }
   }, []);
 

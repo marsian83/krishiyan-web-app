@@ -16,7 +16,7 @@ const SendEmailPage = () => {
 
       await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/auth/send-reset-password-link`,
-        { email: encryptedEmail }
+        { email: email }
       );
 
       toast.success("Reset password link sent sucessfully!", {
