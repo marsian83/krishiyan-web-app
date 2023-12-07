@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
+const CryptoJS = require("crypto-js");
 const User = require("../models/dealer");
 const { tokenAuth } = require("../middleware/tokenAuth");
 const base64url = require("base64url");
@@ -15,22 +15,17 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+const encryptionKey = process.env.Encryption_key;
 // Encryption function
-const encryptEmail = (email) => {
-  const cipher = crypto.createCipher("aes-256-cbc", process.env.ENCRYPTION_KEY);
-  let encryptedEmail = cipher.update(email, "utf-8", "hex");
-  encryptedEmail += cipher.final("hex");
+const encryptEmail = (email, encryptionKey) => {
+  const encryptedEmail = CryptoJS.AES.encrypt(email, encryptionKey).toString();
   return encryptedEmail;
 };
 
 // Decryption function
-const decryptEmail = (encryptedEmail) => {
-  const decipher = crypto.createDecipher(
-    "aes-256-cbc",
-    process.env.ENCRYPTION_KEY
-  );
-  let decryptedEmail = decipher.update(encryptedEmail, "hex", "utf-8");
-  decryptedEmail += decipher.final("utf-8");
+const decryptEmail = (encryptedEmail, encryptionKey) => {
+  const decryptedBytes = CryptoJS.AES.decrypt(encryptedEmail, encryptionKey);
+  const decryptedEmail = decryptedBytes.toString(CryptoJS.enc.Utf8);
   return decryptedEmail;
 };
 
@@ -226,7 +221,7 @@ router.post("/send-reset-password-link", async (req, res) => {
   }
 
   // Encrypt the email for the reset link
-  const encryptedEmail = encryptEmail(email);
+  const encryptedEmail = encryptEmail(email, encryptionKey);
 
   const resetLink =
     `http://localhost:5000/Password-reset?email=${encodeURIComponent(
@@ -265,7 +260,7 @@ router.get("/reset-password", (req, res) => {
     return res.status(400).json({ error: "Invalid reset link." });
   }
 
-  const email = decryptEmail(encryptedEmail);
+  const email = decryptEmail(encryptedEmail, encryptionKey);
 
   res.render("reset-password", { email });
 });
