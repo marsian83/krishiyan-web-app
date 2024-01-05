@@ -39,7 +39,7 @@ const ProductionReqContent = (props: any) => {
   let Col: any = 2;
   return (
     <section>
-      <div className="flex rounded-md mb-1 gap-2 btn">
+      <div className="flex rounded-md mb-1 gap-10 btn mobile:flex mobile:flex-wrap">
         <button
           onClick={() => {
             onClickLand();

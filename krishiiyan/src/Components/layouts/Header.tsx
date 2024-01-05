@@ -27,6 +27,22 @@ const Header = (props: any) => {
     window.location.reload();
   };
 
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    localStorage.getItem("selectedLanguage") || "en"
+  );
+
+  const handleLanguageChange = (language: string) => {
+    console.log(language);
+    localStorage.setItem("selectedLanguage", language);
+    console.log(
+      "heacder laocl thing",
+      localStorage.getItem("selectedLanguage")
+    );
+
+    // Handle language change logic here
+    setSelectedLanguage(language);
+  };
+
   useEffect(() => {
     console.log("effect being called");
     axios
@@ -40,6 +56,43 @@ const Header = (props: any) => {
       });
   }, []);
 
+  useEffect(() => {
+    // Check if the Google Translate script has already been loaded
+    if (!document.getElementById("google-translate-script")) {
+      // Load the Google Translate script dynamically
+      const script = document.createElement("script");
+      script.src =
+        "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      script.async = true;
+      script.id = "google-translate-script"; // Set a unique ID for the script
+      document.head.appendChild(script);
+
+      // Cleanup script on component unmount
+      return () => {
+        document.head.removeChild(script);
+      };
+    }
+  }, []);
+
+  // Function to initialize Google Translate element
+  function googleTranslateElementInit() {
+    // Explicitly define the 'google' property on the window object
+    interface WindowWithGoogle extends Window {
+      google: any; // Adjust the type as needed
+    }
+
+    const windowWithGoogle = window as unknown as WindowWithGoogle;
+
+    new windowWithGoogle.google.translate.TranslateElement(
+      {
+        pageLanguage: "en",
+        includedLanguages:
+          "en,as,ar,bn,bho,	zh-CN,zh-TW,doi,fr,de,gu,hi,ja,kn,ml,mr,ne,or,pa,ru,sa,sd,si,es,ta,te,ur",
+      },
+      "google_translate_element"
+    );
+  }
+
   return (
     <header className="bg-[#F3FFF1] invisible md:visible w-full xl:h-[14vh] flex flex-col justify-between xl:flex-row items-center rounded-2xl shadow-md mobile:w-[65vw] mobile:absolute mobile:right-0 ">
       <div className="text-[#13490A] ml-[20vw] text-center font-roboto font-black text-lg xl:text-base leading-7 mt-4 p-2">
@@ -49,6 +102,7 @@ const Header = (props: any) => {
       <div className="text-[#13490A] text-center font-roboto mt-4 p-2">
         <Weather />
       </div>
+      <div id="google_translate_element"></div>
       <div className="flex items-center justify-center xl:justify-end font-roboto p-2">
         <div className="flex items-center gap-3  mobile:flex-col">
           <Avatar

@@ -1,4 +1,6 @@
 import Button from "@mui/material/Button";
+import zxcvbn from "zxcvbn";
+
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
@@ -60,6 +62,35 @@ const SignupPage = () => {
       console.log("check 1 ", check1);
     }
   };
+
+  const handlePasswordChange = (event: { target: { value: any } }) => {
+    const password = event.target.value;
+    const result = zxcvbn(password);
+
+    const passwordStrengthScore = result.score;
+
+    switch (passwordStrengthScore) {
+      case 0:
+        setMessage("Password: Very Weak");
+        break;
+      case 1:
+        setMessage("Password: Weak");
+        break;
+      case 2:
+        setMessage("Password: Fair");
+        break;
+      case 3:
+        setMessage("Password: Strong");
+        break;
+      case 4:
+        setMessage("Password: Very Strong");
+        break;
+      default:
+        setMessage("");
+        break;
+    }
+  };
+
   const handleEmailChange = (event: any) => {
     email1 = event.target.value;
     console.log(email1);
@@ -90,34 +121,6 @@ const SignupPage = () => {
 
     console.log(Phone);
 
-    // if (Phone != null) {
-    //   console.log("Please enter a valid phone number");
-    //   try {
-    //     const response = await fetch(
-    //       `${process.env.REACT_APP_BACKEND_URL}/sendsms`,
-    //       {
-    //         method: "POST",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({ Phone }),
-    //       }
-    //     );
-
-    //     if (response.ok) {
-    //       console.log("SMS sent successfully!");
-    //       setMessageSent(true);
-    //       handleOpen();
-    //       check = true;
-    //       console.log(check);
-    //     } else {
-    //       // Handle error case
-    //       setMessageSent(false);
-    //     }
-    //   } catch (error) {
-    //     console.error("Error sending SMS:", error);
-    //   }
-    // }
     if (email1 != null && checkemail) {
       try {
         const response = await fetch(
@@ -227,7 +230,11 @@ const SignupPage = () => {
               label="Password"
               id="password"
               autoComplete="current-password"
+              onChange={(event) => {
+                handlePasswordChange(event);
+              }}
             />
+            <p className="text-sm text-gray-500">{message}</p>
 
             <TextField
               className="p-2 rounded-xl border"

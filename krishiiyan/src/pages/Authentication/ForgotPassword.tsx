@@ -94,62 +94,50 @@ const ForgotPassword = () => {
   };
 
   return (
-    <>
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography component="h1" variant="h5">
-            Change Password
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+    <section className="bg-gray-50 min-h-screen flex items-center justify-center">
+      <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
+        <div className="md:w-1/2 px-8 md:px-16">
+          <h2 className="font-bold text-2xl text-[#002D74]">Change Password</h2>
+          <p className="text-xs mt-4 text-[#002D74]">
+            If you forgot your password, reset it here.
+          </p>
+
+          <form onSubmit={handleSubmit} noValidate>
             <TextField
-              className="text-[#13490A] font-extrabold text-sm mx-5"
-              type="email"
               margin="normal"
               required
               fullWidth
-              name="email"
-              label="Email"
               id="email"
-              value={email}
-              disabled
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
-              className="text-[#13490A] font-extrabold text-sm mx-5"
-              type="password"
               margin="normal"
               required
               fullWidth
               name="password"
-              label="Password"
+              label="New Password"
+              type="password"
               id="newPass"
               onChange={(e) => setNewPassword(e.target.value)}
             />
 
             <Button
-              className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
             >
               Submit
             </Button>
             <Grid container>
               <Grid item>
                 <Typography variant="body2" sx={{ mt: 1 }}>
-                  Already have an account? {""}
+                  Click here to Login {""}
                   <Link
                     variant="subtitle2"
                     onClick={() => navigate("/login")}
@@ -160,10 +148,14 @@ const ForgotPassword = () => {
                 </Typography>
               </Grid>
             </Grid>
-          </Box>
-        </Box>
-      </Container>
-    </>
+          </form>
+        </div>
+
+        <div className="md:block hidden w-1/2 ">
+          <img className="rounded-2xl" src="Images/login.webp" alt="Login" />
+        </div>
+      </div>
+    </section>
   );
 };
 

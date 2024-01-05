@@ -15,6 +15,8 @@ import Faq from "./cropProtection/Faq";
 import { extractCodeFromDriveLink } from "../../handleImageCode";
 import Popup from "../../Components/layouts/PopUp";
 
+import DotSpinner from "../../Components/loader";
+
 const PlantationOptions = [
   {
     value: "Creals",
@@ -177,8 +179,8 @@ const CropLibrary = () => {
   };
 
   const onChangePlantationType = async (e: any, value: any) => {
-    if(!value){
-      alert('Select a crop');
+    if (!value) {
+      alert("Select a crop");
       return;
     }
     console.log(value, "value");
@@ -214,14 +216,14 @@ const CropLibrary = () => {
       <section className="p-5 grid grid-cols-[30%_30%_30%_10%] ">
         <div className="font-extrabold grid grid-cols-[50%_50%_50%] items-center  "></div>
 
-        <div className="grid grid-cols-[35%_45%_15%_5%] mt-5 flex-row items-center w-full mobile:top-[70vh] mobile:absolute mobile:left-0 mobile:flex-col mobile:flex mobile:gap-y-4">
+        <div className="grid grid-cols-[35%_45%_15%_5%] mt-5 flex-row items-center w-full mobile:top-[17vh] mobile:absolute mobile:left-0 mobile:flex-col mobile:flex mobile:gap-y-4">
           <label className="text-[#13490A] font-roboto font-extrabold text-m flex justify-center">
             Select your Crop
           </label>
           <Autocomplete
             onChange={onChangePlantationType}
             id="plantation-select"
-            sx={{ width: "100%" }}
+            sx={{ width: "90%" }}
             options={crops}
             autoHighlight
             getOptionLabel={(crops) => crops?.localName}
@@ -243,15 +245,7 @@ const CropLibrary = () => {
             )}
           />
           {loading ? (
-            <button
-              style={{ marginTop: "10px", marginLeft: "20px" }}
-              type="submit"
-              disabled={loading}
-              className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-full rounded text-m font-thin "
-            >
-              {/* <Loader /> */}
-              Fetching Info...
-            </button>
+            <DotSpinner />
           ) : (
             <button
               style={{ marginLeft: "20px", padding: "10px" }}
@@ -271,8 +265,8 @@ const CropLibrary = () => {
 
           ?.map((obj: any) => (
             <>
-              <section className="pl-3 pt-3 mobile:pt-[52rem] mobile:pl-0 mobile:-ml-10">
-                <h2 className="mx-[30%] text-[#13490A] font-extrabold mb-3 text-2xl">
+              <section className="pl-3 pt-3 mobile:pt-[20rem] mobile:pl-0 mobile:-ml-10">
+                <h2 className="mx-[30%] text-[#13490A] font-extrabold mb-10 text-2xl">
                   {obj?.localName}
                 </h2>
                 <div className="flex rounded-md mb-1 gap-10 btn mobile:flex mobile:flex-wrap">

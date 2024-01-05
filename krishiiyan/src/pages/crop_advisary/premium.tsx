@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 const Premium = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(true);
 
