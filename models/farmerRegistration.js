@@ -24,9 +24,22 @@ const registrationSchema = new mongoose.Schema({
 
   plantation_type: {
     type: String,
-    enum: ["Organic", "In Organic", "Both"],
+
     default: "NON-ORGANIC",
   },
+  dealer_mobile: {
+    type: String,
+    required: true,
+    default: "0000000000",
+  },
+  crops: [
+    {
+      cropName: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 
 module.exports = mongoose.model("Registration", registrationSchema);

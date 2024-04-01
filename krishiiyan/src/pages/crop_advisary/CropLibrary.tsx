@@ -177,8 +177,8 @@ const CropLibrary = () => {
   };
 
   const onChangePlantationType = async (e: any, value: any) => {
-    if(!value){
-      alert('Select a crop');
+    if (!value) {
+      alert("Select a crop");
       return;
     }
     console.log(value, "value");
@@ -208,6 +208,7 @@ const CropLibrary = () => {
   //   });
 
   console.log("");
+
   return (
     <div>
       <Header title="Crop Advisory" subtitle="Crop Library" />

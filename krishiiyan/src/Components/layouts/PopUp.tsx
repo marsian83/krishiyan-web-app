@@ -10,25 +10,42 @@ interface PopupProps {
 
 const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
   const [popupData, setPopupData] = useState<any>(null);
+
+  const hasPopupBeenShown = () => {
+    return localStorage.getItem("popupShown") === "true";
+  };
+
+  const setPopupShown = () => {
+    localStorage.setItem("popupShown", "true");
+  };
+
   function encodeURL(url: string): string {
     return encodeURIComponent(url);
   }
 
   useEffect(() => {
+    if (hasPopupBeenShown()) {
+      return;
+    }
+
     if (isOpen) {
       axios
         .get(`${process.env.REACT_APP_BACKEND_URL}/popups`)
         .then((response) => {
           if (response.data.success) {
             setPopupData(response.data.popups[0]);
-            // console.log("popupData.image", popupData.image);
           } else {
+            console.log("something went wrong in popup");
           }
         });
     }
   }, [isOpen]);
 
-  if (!isOpen || !popupData) return null;
+  if (hasPopupBeenShown() || !isOpen || !popupData) {
+    return null;
+  }
+
+  setPopupShown();
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none mobile:gap-y-4 mobile:pt-[10rem] ">

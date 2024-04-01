@@ -69,7 +69,7 @@ const MandiPricesComponent: React.FC<MandiPricesProps> = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${api.base}?api-key=${api.key}&format=json&filters[state]=${selectedState}&filters[district]=${selectedDistrict}&filters[commodity]=${selectedCommodity}&limit=10000`
+        `${api.base}?api-key=${api.key}&format=json&filters[state]=${selectedState}&filters[district]=${selectedDistrict}&filters[commodity]=${selectedCommodity}&limit=10`
       );
       const data = await response.json();
       setData(data.records);

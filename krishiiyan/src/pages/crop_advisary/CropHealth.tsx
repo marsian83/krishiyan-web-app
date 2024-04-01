@@ -11,7 +11,7 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { extractCodeFromDriveLink } from "../../handleImageCode";
 import Popup from "../../Components/layouts/PopUp";
-
+import { Helmet } from "react-helmet-async";
 const PlantationOptions = [
   {
     value: "Creals",
@@ -54,15 +54,15 @@ const CropHealth = () => {
   const [loading, setLoading] = useState(false);
   const [solution, setSolution] = useState<any>();
   const [solutionDetails, setSolutionDetails] = useState<any>();
- const [isPopupOpen, setIsPopupOpen] = useState(true);
+  const [isPopupOpen, setIsPopupOpen] = useState(true);
 
- const openPopup = () => {
-   setIsPopupOpen(true);
- };
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
 
- const closePopup = () => {
-   setIsPopupOpen(false);
- };
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
   let navigate = useNavigate();
   // navigate("/support")
   const onChangePlantationType = (e: any, value: any) => {
@@ -186,15 +186,40 @@ const CropHealth = () => {
     return details;
   };
 
+  useEffect(() => {
+    const init = async () => {
+      await getCrops();
+    };
+    init();
+
+    const script = document.createElement("script");
+    script.src =
+      "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    script.async = true;
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
   return (
     <div>
+      <Helmet>
+        <script>
+          {`
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement(
+                { pageLanguage: "en" },
+                "google_translate_element"
+              );
+            }
+          `}
+        </script>
+      </Helmet>
       <Header title="Crop Advisory" subtitle="Crop Health" />
       <section className="p-[1%] grid gap-y-1 mt-5 mobile:pt-[40rem] mobile:absolute mobile:left-0">
-        <div
-          className="flex mobile:flex-col mobile:gap-y-4"
-          style={{
-          }}
-        >
+        <div className="flex mobile:flex-col mobile:gap-y-4" style={{}}>
           <div
             className="font-extrabold grid grid-cols-[50%_40%] items-center mobile:flex mobile:flex-col"
             style={{ width: "550px" }}

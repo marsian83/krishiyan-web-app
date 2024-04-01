@@ -42,6 +42,7 @@ const WeatherInjuses = (props: any) => {
                         height: "200px",
                         objectFit: "cover",
                       }}
+                      className="border-r border-black py-[1.2%] text-xl w-[20%] justify-center"
                     />
                   ) : (
                     <div>No image</div>
