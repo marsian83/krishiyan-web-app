@@ -103,29 +103,6 @@ const LoginPage = () => {
                 viewBox="0 0 16 16"
               ></svg>
             </div>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item>
-                <Typography variant="body2" sx={{ mt: 1 }}>
-                  Don't have an account? {""}
-                  <Link
-                    variant="subtitle2"
-                    onClick={() => navigate("/signup")}
-                    sx={{ cursor: "pointer" }}
-                  >
-                    {" Sign Up"}
-                  </Link>
-                </Typography>
-              </Grid>
-            </Grid>
             <Grid container>
               <Grid item>
                 <Typography variant="body2" sx={{ mt: 1 }}>
@@ -140,11 +117,41 @@ const LoginPage = () => {
                 </Typography>
               </Grid>
             </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
+            >
+              Sign In
+            </Button>
+            <div className="inline-flex items-center justify-center w-full">
+              <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700" />
+              <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 dark:bg-gray-900">
+                <h2 className="w-4 h-4 text-gray-700 dark:text-gray-300">OR</h2>
+              </div>
+            </div>
+
             <Grid container>
               <Grid item>
                 <Typography variant="body2" sx={{ mt: 1 }}>
                   Login with Google : {""}
                   <GoogleOauthLogin />
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid item>
+                <Typography variant="body2" sx={{ mt: 1 }}>
+                  Don't have an account? {""}
+                  <Link
+                    variant="subtitle2"
+                    onClick={() => navigate("/signup")}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    {" Sign Up"}
+                  </Link>
                 </Typography>
               </Grid>
             </Grid>

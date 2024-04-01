@@ -30,7 +30,8 @@ import ManageAccounting from "./pages/management/Accounting";
 import FPurchase from "./pages/farmer/Purchase";
 import LoginPage from "./pages/Authentication/LoginPage";
 import SignupPage from "./pages/Authentication/SignupPage";
-import ForgotPassword from "./pages/Authentication/ForgotPassword";
+import ForgotPassword from "./pages/Authentication/callForgotPAssword";
+import ForgotPasswordLink from "./pages/Authentication/ForgotPassword";
 import ProductBatches from "./pages/pos/ProductBatches";
 import OTPVerification from "./pages/farmer/OTPVerification";
 import { useEffect, useState } from "react";
@@ -71,6 +72,7 @@ function App() {
 
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/Password-reset" element={<ForgotPasswordLink />} />
         {/* <Route path="/login" element={<LoginPage />} /> */}
         <Route path="/" element={<AuthGuard />}>
           <Route

@@ -62,6 +62,7 @@ app.use("/api", require("./routes/popup.js"));
 app.use("/api", require("./routes/emailsender.js"));
 app.use("/api/farmers", require("./routes/farmerR.js"));
 app.use("/api", require("./routes/Weather.js"));
+app.use("/api", require("./routes/MandiPrices.js"));
 
 app.get("/api/ping", (req, res) => {
   res.send("pong");

@@ -1,22 +1,49 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../Components/layouts/Header";
-import indianState from "./indianState";
 import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
-
-import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
+import * as Api from "../../Services/Api";
+
 interface MandiPricesProps {
   mandiPrices: string[]; // Define the type for 'mandiPrices'
+}
+
+interface DistrictOption {
+  commodities: string[];
+}
+
+interface StateOption {
+  [key: string]: {
+    [key: string]: DistrictOption;
+  };
 }
 
 const MandiPricesComponent: React.FC<MandiPricesProps> = () => {
   const [prices, setPrices] = useState<any>();
   const [data, setData] = useState<any>();
+  const [filterOptions, setFilterOptions] = useState<StateOption>({});
   const [selectedState, setSelectedState] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedCommodity, setSelectedCommodity] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchFilterOptions = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/filter-options`
+        );
+        const filterOptions = await response.json();
+        setFilterOptions(filterOptions);
+      } catch (error) {
+        console.error(error);
+        toast.error("An error occurred while fetching filter options");
+      }
+    };
+
+    fetchFilterOptions();
+  }, []);
 
   const handleStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedState(event.target.value);
@@ -28,53 +55,36 @@ const MandiPricesComponent: React.FC<MandiPricesProps> = () => {
   ) => {
     setSelectedDistrict(event.target.value);
   };
+
   const handleCommodityChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setSelectedCommodity(event.target.value);
   };
 
-  const api = {
-    key: "579b464db66ec23bdd000001d9143fc81ac74bce7ad727abc2705a8a",
-    base: "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070",
-  };
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `${api.base}?api-key=${api.key}&format=json&filters[state]=${selectedState}&filters[district]=${selectedDistrict}&filters[commodity]=Potato&limit=10000`
-  //       );
-  //       const data = await response.json();
-  //       setData(data.records);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [selectedState, selectedDistrict]);
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${api.base}?api-key=${api.key}&format=json&filters[state]=${selectedState}&filters[district]=${selectedDistrict}&filters[commodity]=${selectedCommodity}&limit=10000`
-  //     );
-  //     const data = await response.json();
-  //     setData(data.records);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   const fetchData = async () => {
     setIsLoading(true);
+    console.log("fetching mandi data frontend hit");
     try {
       const response = await fetch(
+<<<<<<< HEAD
         `${api.base}?api-key=${api.key}&format=json&filters[state]=${selectedState}&filters[district]=${selectedDistrict}&filters[commodity]=${selectedCommodity}&limit=10`
+=======
+        `${process.env.REACT_APP_BACKEND_URL}/mandi-prices?state=${selectedState}&district=${selectedDistrict}&commodity=${selectedCommodity}`
+>>>>>>> f2a147186de0426802cd4312aa9cfea635d3799c
       );
+
       const data = await response.json();
-      setData(data.records);
+      console.log(data);
+      if (!data || data.length === 0) {
+        console.log("Empty response received");
+        toast.warn("No data found for the selected criteria");
+      } else {
+        setData(data);
+        console.log("setdats hit ", data);
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("An error occurred while fetching data");
     } finally {
       setIsLoading(false);
@@ -95,7 +105,7 @@ const MandiPricesComponent: React.FC<MandiPricesProps> = () => {
           }}
         >
           <div className="md:w-1/3">
-            <label className="text-[#13490A] font-extrabold text-sm mr-2 ">
+            <label className="text-[#13490A] font-extrabold text-sm mr-2  ">
               State
             </label>
             <select
@@ -105,8 +115,10 @@ const MandiPricesComponent: React.FC<MandiPricesProps> = () => {
               className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
             >
               <option value="">Select a state</option>
-              {indianState?.states?.map((state) => (
-                <option className="text-start pl-2">{state.state}</option>
+              {Object.keys(filterOptions).map((state: string) => (
+                <option key={state} value={state} className="text-start pl-2">
+                  {state}
+                </option>
               ))}
             </select>
           </div>
@@ -122,9 +134,8 @@ const MandiPricesComponent: React.FC<MandiPricesProps> = () => {
             >
               <option value="">Select a district</option>
               {selectedState &&
-                indianState?.states
-                  .find((state) => state.state === selectedState)
-                  ?.districts.map((district) => (
+                Object.keys(filterOptions[selectedState] || {}).map(
+                  (district) => (
                     <option
                       key={district}
                       value={district}
@@ -132,7 +143,8 @@ const MandiPricesComponent: React.FC<MandiPricesProps> = () => {
                     >
                       {district}
                     </option>
-                  ))}
+                  )
+                )}
             </select>
           </div>
           <div className="md:w-1/3">
@@ -146,9 +158,19 @@ const MandiPricesComponent: React.FC<MandiPricesProps> = () => {
               className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
             >
               <option value="">Select a commodity</option>
-              {indianState?.commodity?.map((commodity) => (
-                <option className="text-start ml-2">{commodity}</option>
-              ))}
+              {selectedState &&
+                selectedDistrict &&
+                filterOptions[selectedState]?.[
+                  selectedDistrict
+                ]?.commodities?.map((commodity, mapIndex) => (
+                  <option
+                    key={`${commodity}-${mapIndex}`}
+                    value={commodity}
+                    className="text-start ml-2"
+                  >
+                    {commodity}
+                  </option>
+                ))}
             </select>
           </div>
           <button

@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import moment from "moment";
-import Popup from "../../Components/layouts/PopUp";
 
 const PlantationOptions = [
   {
@@ -29,14 +28,6 @@ const CropCalendar = () => {
   const [cropDetails, setCropDetails] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(true);
-
-  const openPopup = () => {
-    setIsPopupOpen(true);
-  };
-
-  const closePopup = () => {
-    setIsPopupOpen(false);
-  };
 
   const onChangePlantationType = (e: any, value: any) => {
     console.log(value.localName); // This should log the selected value
@@ -62,45 +53,6 @@ const CropCalendar = () => {
       setCrops(res?.data);
     }
   };
-
-  // const getcropCalender = async (
-  //   localName: any,
-  //   scientficCrop: any,
-  //   dateOfSowing: number | null = null
-  // ) => {
-  //   if (localName || scientficCrop) {
-  //     setLoading(true);
-  //     const [err, res] = await Api.getCropsbyName(
-  //       localName,
-  //       scientficCrop,
-  //       dateOfSowing
-  //     );
-
-  //     if (err) {
-  //       console.log(err);
-  //       toast.error(err.data, {
-  //         position: toast.POSITION.TOP_RIGHT,
-  //       });
-  //     }
-  //     if (res) {
-  //       console.log(res);
-  //       if (res?.data === null) {
-  //         toast.error("crop not found!", {
-  //           position: toast.POSITION.TOP_RIGHT,
-  //         });
-  //       }
-  //       console.log(res, "Res");
-  //       setCropDetails(res?.data);
-  //     }
-
-  //     setLoading(false);
-  //   }
-  // };
-  // const onSubmit = async () => {
-  //   // const res = await Api.(localsName,scientficCrop );
-  //   const res = await getcropCalender(localsName, scientficCrop, dateOfSowing);
-  //   // await getcropName();
-  // };
 
   useEffect(() => {
     const init = async () => {
@@ -146,29 +98,37 @@ const CropCalendar = () => {
             style={{ width: "550px" }}
           >
             <label className="text-[#13490A]">Select the Crop</label>
-            {/* <input
-              placeholder="Crop"
-              onChange={(e: any) => setCrop(e.target.value)}
-              type="text"
-              className="bg-[#F3FFF1] shadow-[4px_4px_3px_rgba(0,0,0,0.25)] rounded-md text-center h-8"
-            /> */}
+
             <Autocomplete
               onChange={onChangePlantationType}
               id="plantation-select"
               className="mobile:w-[80vw]"
-              // sx={{ bgcolor: '#F3FFF1', boxShadow: '4px 4px 3px rgba(0,0,0,0.25)', borderRadius: '6px', textAlign: 'center', height: '2rem' }}
               options={crops}
               autoHighlight
               getOptionLabel={(crops) => crops?.localName}
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Crop Name"
-                  inputProps={{
-                    ...params.inputProps,
-                    autoComplete: "new-password",
-                  }}
-                />
+                // <TextField
+                //   {...params}
+                //   label="Crop Name"
+                //   inputProps={{
+                //     ...params.inputProps,
+                //     autoComplete: "new-password",
+                //   }}
+                // />
+                <>
+                {crops ? (
+                  <TextField
+                    {...params}
+                    label="Crop Name"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: "new-password",
+                    }}
+                  />
+                ) : (
+                  <div>Fetching crops....</div>
+                )}
+              </>
               )}
             />
           </div>
@@ -212,32 +172,14 @@ const CropCalendar = () => {
         </div>
 
         <div className="my-10">
-          {/* {cropDetails
-            // ?.filter((val: any) => {
-            //   if (crop === "") {
-            //     return;
-            //   } else if (
-            //     val?.localName?.toLowerCase().includes(crop.toLowerCase())
-            //   ) {
-            //     return val;
-            //   }
-            // })
-            ?.map((obj: any) => (
-              <>
-                <h2 className="text-[#13490A] font-extrabold mb-3 text-center">
-                  {obj?.localName}
-                </h2> */}
           {cropDetails && (
             <HorizontalNonLinearStepper
               cropDetails={cropDetails}
               date={dateOfSowing}
             />
           )}
-          {/* </>
-            ))} */}
         </div>
       </section>
-      <Popup isOpen={isPopupOpen} onClose={closePopup} />
     </div>
   );
 };

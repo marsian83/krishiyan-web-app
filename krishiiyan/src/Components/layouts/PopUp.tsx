@@ -19,34 +19,72 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
     localStorage.setItem("popupShown", "true");
   };
 
+<<<<<<< HEAD
+=======
+  const resetPopupShownOnUnload = () => {
+    localStorage.setItem("popupShown", "false");
+  };
+
+>>>>>>> f2a147186de0426802cd4312aa9cfea635d3799c
   function encodeURL(url: string): string {
     return encodeURIComponent(url);
   }
 
   useEffect(() => {
+<<<<<<< HEAD
     if (hasPopupBeenShown()) {
       return;
     }
 
     if (isOpen) {
+=======
+    if (isOpen && !hasPopupBeenShown()) {
+>>>>>>> f2a147186de0426802cd4312aa9cfea635d3799c
       axios
         .get(`${process.env.REACT_APP_BACKEND_URL}/popups`)
         .then((response) => {
           if (response.data.success) {
             setPopupData(response.data.popups[0]);
           } else {
+<<<<<<< HEAD
             console.log("something went wrong in popup");
+=======
+            console.log("error while loading pop up data");
+>>>>>>> f2a147186de0426802cd4312aa9cfea635d3799c
           }
         });
     }
   }, [isOpen]);
 
+<<<<<<< HEAD
   if (hasPopupBeenShown() || !isOpen || !popupData) {
     return null;
   }
 
   setPopupShown();
+=======
+  useEffect(() => {
+    if (!hasPopupBeenShown() && popupData) {
+      setPopupShown();
+    }
+  }, [popupData]);
+>>>>>>> f2a147186de0426802cd4312aa9cfea635d3799c
 
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      resetPopupShownOnUnload();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  if (!isOpen || !popupData) {
+    return null;
+  }
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none mobile:gap-y-4 mobile:pt-[10rem] ">
       <div className="relative w-full max-w-md p-6 my-6 mx-4 bg-[#F3FFF1] rounded-lg shadow-lg border border-black ">

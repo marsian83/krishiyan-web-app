@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import CropCalendar from "../pages/crop_advisary/CropCalendar";
-import CropHealth from "../pages/farmer/CropHealth";
-import CropLibrary from "../pages/crop_advisary/CropLibrary";
+
 type NestedDropdownProps = {
   menus: Array<{ title: string; submenus: string[] }>;
 };
@@ -98,6 +96,7 @@ const NestedDropdown: React.FC<NestedDropdownProps> = ({ menus }) => {
         navigate(`/guide`);
         break;
     }
+    setIsOpen(false);
   };
 
   const handleButtonClick = () => {
@@ -121,46 +120,47 @@ const NestedDropdown: React.FC<NestedDropdownProps> = ({ menus }) => {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="flex flex-row justify-between z-20">
+      <img
+        className="w-8 h-8 mt-1 mb-1 ml-1"
+        src="Images/logo.png"
+        alt="Logo"
+      />
       <button
         onClick={handleButtonClick}
-        className="p-2 text-gray-600 bg-black"
+        className="btn relative focus:outline-none flex items-center"
       >
-        {isOpen ? (
+        <span className="icon absolute h-10 w-16 flex justify-center items-center transition-all duration-500">
           <svg
+            viewBox="0 0 175 80"
+            width="40"
+            height="40"
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
+            className={`transition-all duration-500 ${
+              isOpen
+                ? "translate-x-full opacity-0"
+                : "translate-x-0 opacity-100"
+            }`}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M5 15l7-7 7 7"
-            ></path>
+            <rect width="80" height="15" fill="#f0f0f0" rx="10"></rect>
+            <rect y="30" width="80" height="15" fill="#f0f0f0" rx="10"></rect>
+            <rect y="60" width="80" height="15" fill="#f0f0f0" rx="10"></rect>
           </svg>
-        ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M19 9l-7 7-7-7"
-            ></path>
-          </svg>
-        )}
+        </span>
+        <span
+          className={`text transition-all duration-500 ${
+            isOpen ? "opacity-0" : "opacity-0"
+          }`}
+        >
+          MENU
+        </span>
       </button>
-
       {isOpen && (
         <div
           ref={(node) => (dropdownRef.current = node)}
-          className="absolute mt-2 left-0 bg-white border border-gray-300 rounded-lg shadow-md z-10 w-[100vw]"
+          className={`absolute mt-10 left-0 bg-white border border-gray-300 rounded-lg shadow-md z-10 w-[100vw] transition-transform duration-5000 ease-in-out ${
+            isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
+          }`}
         >
           <div className="p-4">
             <ul className="text-center text-sm">

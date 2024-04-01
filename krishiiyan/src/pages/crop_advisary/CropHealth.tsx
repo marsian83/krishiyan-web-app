@@ -10,8 +10,13 @@ import Autocomplete from "@mui/material/Autocomplete";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { extractCodeFromDriveLink } from "../../handleImageCode";
+<<<<<<< HEAD
 import Popup from "../../Components/layouts/PopUp";
 import { Helmet } from "react-helmet-async";
+=======
+import DotSpinner from "../../Components/loader";
+
+>>>>>>> f2a147186de0426802cd4312aa9cfea635d3799c
 const PlantationOptions = [
   {
     value: "Creals",
@@ -56,6 +61,7 @@ const CropHealth = () => {
   const [solutionDetails, setSolutionDetails] = useState<any>();
   const [isPopupOpen, setIsPopupOpen] = useState(true);
 
+<<<<<<< HEAD
   const openPopup = () => {
     setIsPopupOpen(true);
   };
@@ -63,6 +69,8 @@ const CropHealth = () => {
   const closePopup = () => {
     setIsPopupOpen(false);
   };
+=======
+>>>>>>> f2a147186de0426802cd4312aa9cfea635d3799c
   let navigate = useNavigate();
   // navigate("/support")
   const onChangePlantationType = (e: any, value: any) => {
@@ -218,6 +226,7 @@ const CropHealth = () => {
         </script>
       </Helmet>
       <Header title="Crop Advisory" subtitle="Crop Health" />
+<<<<<<< HEAD
       <section className="p-[1%] grid gap-y-1 mt-5 mobile:pt-[40rem] mobile:absolute mobile:left-0">
         <div className="flex mobile:flex-col mobile:gap-y-4" style={{}}>
           <div
@@ -246,29 +255,42 @@ const CropHealth = () => {
               )}
             />
           </div>
+=======
+      <section className="p-[1%] grid gap-y-1 mt-5 mobile:pt-[8rem] mobile:absolute mobile:left-0">
+        <div className="flex mobile:flex-col mobile:gap-y-4" style={{}}>
+          {crops && (
+            <div
+              className="font-extrabold grid grid-cols-[50%_40%] items-center mobile:flex mobile:flex-col"
+              style={{ width: "550px" }}
+            >
+              <label className="text-[#13490A] text-end mr-3">
+                Select your Crop
+              </label>
+              <Autocomplete
+                onChange={onChangePlantationType}
+                id="plantation-select"
+                sx={{ width: "90%" }}
+                options={crops || []}
+                autoHighlight
+                getOptionLabel={(crops) => crops?.localName}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Choose plantation type"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: "new-password",
+                    }}
+                  />
+                )}
+              />
+            </div>
+          )}
+>>>>>>> f2a147186de0426802cd4312aa9cfea635d3799c
           <div
             className="font-extrabold ml-10 grid grid-cols-[20%_40%] items-center mobile:flex mobile:flex-col"
             style={{ width: "450px" }}
           >
-            {/* <label className="text-[#13490A] text-end mr-3">Issues</label>
-            <Autocomplete
-              onChange={onChangechooseType}
-              id="plantation-select"
-              // sx={{ bgcolor: '#F3FFF1', boxShadow: '4px 4px 3px rgba(0,0,0,0.25)', borderRadius: '6px', textAlign: 'center', height: '2rem' }}
-              options={IssuesOptions}
-              autoHighlight
-              getOptionLabel={(option) => option.value}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Choose issue type"
-                  inputProps={{
-                    ...params.inputProps,
-                    autoComplete: "new-password",
-                  }}
-                />
-              )}
-            /> */}
             <div
               className="font-extrabold grid grid-cols-[50%_40%] items-center mobile:flex mobile:flex-col"
               style={{ width: "550px" }}
@@ -277,7 +299,7 @@ const CropHealth = () => {
                 Select the issue:
               </label>
               <select
-                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring focus:ring-green-200"
+                className="w-[90%] px-4 py-2 rounded-md border border-gray-300 focus:ring focus:ring-green-200"
                 value={selectedIssue}
                 onChange={onChangechooseType}
               >
@@ -292,15 +314,7 @@ const CropHealth = () => {
           </div>
           <div style={{ marginRight: "25px", marginTop: "5px" }}>
             {loading ? (
-              <button
-                style={{ marginLeft: "20px" }}
-                type="submit"
-                disabled={loading}
-                className="bg-[#05AB2A] text-[#F3FFF1] shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 w-full rounded text-sm font-thin"
-              >
-                {/* <Loader /> */}
-                Fetching Info...
-              </button>
+              <DotSpinner />
             ) : (
               <button
                 style={{ padding: "10px", marginTop: "5px" }}
@@ -354,7 +368,6 @@ const CropHealth = () => {
                                   image
                                 )}`}
                               />
-                              // <img src={image}/>
                             );
                           })}
                         </div>
@@ -363,30 +376,30 @@ const CropHealth = () => {
                         {curr.description}
                       </td>
                       <td className="border-r border-black flex flex-col justify-left items-left font-thin text-start pl-2 pr-2 text-xl ">
-                        {selectedIssue == "pest" &&
+                        {selectedIssue === "pest" &&
                           curr.pesticidesIds.map((sol: any, index: number) => {
                             return <h6>{sol.name}</h6>;
                           })}
-                        {selectedIssue == "disease" &&
+                        {selectedIssue === "disease" &&
                           curr.fungicidesIds.map((sol: any, index: number) => {
                             return <h6>{sol.name}</h6>;
                           })}
-                        {selectedIssue == "weed" &&
+                        {selectedIssue === "weed" &&
                           curr.herbicidesIds.map((sol: any, index: number) => {
                             return <h6>{sol.name}</h6>;
                           })}
                       </td>
                       <td></td>
                       <td className="border-r border-black flex flex-col justify-left items-left font-thin text-start pl-2 pr-2 text-xl">
-                        {selectedIssue == "pest" &&
+                        {selectedIssue === "pest" &&
                           curr.pesticidesIds.map((sol: any, index: number) => {
                             return <h6>{sol.type}</h6>;
                           })}
-                        {selectedIssue == "disease" &&
+                        {selectedIssue === "disease" &&
                           curr.fungicidesIds.map((sol: any, index: number) => {
                             return <h6>{sol.type}</h6>;
                           })}
-                        {selectedIssue == "weed" &&
+                        {selectedIssue === "weed" &&
                           curr.herbicidesIds.map((sol: any, index: number) => {
                             return <h6>{sol.type}</h6>;
                           })}
@@ -398,7 +411,6 @@ const CropHealth = () => {
           </table>
         </>
       </section>
-      <Popup isOpen={isPopupOpen} onClose={closePopup} />
     </div>
   );
 };

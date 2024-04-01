@@ -2,9 +2,34 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const CryptoJS = require("crypto-js");
 const User = require("../models/dealer");
 const { tokenAuth } = require("../middleware/tokenAuth");
 const base64url = require("base64url");
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.Email_Otp,
+    pass: process.env.Email_Otp_Password,
+  },
+});
+
+const encryptionKey = process.env.Encryption_key;
+// Encryption function
+const encryptEmail = (email, encryptionKey) => {
+  const encryptedEmail = CryptoJS.AES.encrypt(email, encryptionKey).toString();
+  console.log(encryptEmail);
+  return encryptedEmail;
+};
+
+// Decryption function
+const decryptEmail = (encryptedEmail, encryptionKey) => {
+  const decryptedBytes = CryptoJS.AES.decrypt(encryptedEmail, encryptionKey);
+  const decryptedEmail = decryptedBytes.toString(CryptoJS.enc.Utf8);
+  return decryptedEmail;
+};
 
 function decodeJwt(jwtToken) {
   const parts = jwtToken.split(".");
@@ -13,10 +38,16 @@ function decodeJwt(jwtToken) {
   }
 
   const decodedHeader = JSON.parse(
-    atob(parts[0].replace(/-/g, "+").replace(/_/g, "/"))
+    Buffer.from(
+      parts[0].replace(/-/g, "+").replace(/_/g, "/"),
+      "base64"
+    ).toString("utf8")
   );
   const decodedPayload = JSON.parse(
-    atob(parts[1].replace(/-/g, "+").replace(/_/g, "/"))
+    Buffer.from(
+      parts[1].replace(/-/g, "+").replace(/_/g, "/"),
+      "base64"
+    ).toString("utf8")
   );
 
   return decodedPayload;
@@ -87,9 +118,12 @@ router.post("/oauth/login", async (req, res, next) => {
   const { credentials } = req.body;
   try {
     const decoded = decodeJwt(credentials);
+    console.log("inside oauth");
     console.log(decoded);
     let user = {};
     const existingUser = await User.findOne({ email: decoded.email });
+    console.log(existingUser);
+
     if (existingUser) {
       user = existingUser;
     } else {
@@ -134,6 +168,35 @@ router.get("/check-dealer/:email", async (req, res) => {
   }
 });
 
+//forgot - password
+
+router.post("/reset-password", async (req, res) => {
+  console.log("forgot password server side hitting");
+  try {
+    const { email, newPassword } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      console.log("email not found");
+      return res.status(404).json({ message: "Email not found" });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+    user.password = hashedPassword;
+    await user.save();
+    console.log("hashed password ::", hashedPassword);
+
+    res.json({ message: "success" });
+    console.log("password reset sucessfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+    console.log("internal server error ::", error);
+  }
+});
+
 // Me {Profile}
 router.get("/me", tokenAuth, async (req, res) => {
   try {
@@ -143,6 +206,49 @@ router.get("/me", tokenAuth, async (req, res) => {
   } catch (error) {
     return res.status(500).json({ msg: err.message });
   }
+});
+
+router.post("/send-reset-password-link", async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: "Email address is required." });
+  }
+
+  // Check if the email exists in your database
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({ error: "User not found with this email." });
+  }
+
+  // Encrypt the email for the reset link
+  const encryptedEmail = encryptEmail(email, encryptionKey);
+
+  const resetLink = `https://www.krishiyan.com/Passsword-reset?email=${encodeURIComponent(
+    encryptedEmail
+  )}`;
+
+  const mailOptions = {
+    from: "wetacre0@gmail.com",
+    to: email,
+    subject: "Reset Password",
+    html: `<p>Click the following link to reset your password:</p><a href="${resetLink}">${resetLink}</a>`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(`Error sending email to ${email}:`, error);
+      return res
+        .status(500)
+        .json({ error: `Email could not be sent. Backend error: ${error}` });
+    } else {
+      console.log(`Email sent to ${email}:`, info.response);
+      return res
+        .status(200)
+        .json({ message: "Reset password email sent successfully." });
+    }
+  });
 });
 
 module.exports = router;
