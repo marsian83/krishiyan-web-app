@@ -1,22 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const DataModel = require("../models/DataModel");
+const FpoRegistration = require("../models/DataModel");
 
 // Route to store data
 router.post("/store-data", async (req, res) => {
   try {
-    const newData = new DataModel(req.body);
-    const savedData = await newData.save();
-    res.status(201).json(savedData);
+    const newRegistration = new FpoRegistration(req.body);
+    await newRegistration.save();
+    res.status(201).json({ message: "FPO registration successful!" });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: "Error during registration!" });
   }
 });
 
 // Route to retrieve and show data
 router.get("/show-data", async (req, res) => {
   try {
-    const data = await DataModel.find();
+    const data = await FpoRegistration.find();
     res.json(data);
   } catch (error) {
     res.status(500).json({ message: error.message });
