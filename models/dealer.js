@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const DealerSchema = new mongoose.Schema(
   {
+    type: {
+      type: String,
+    },
     name: {
       type: String,
       required: true,

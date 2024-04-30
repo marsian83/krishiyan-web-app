@@ -21,11 +21,24 @@ router.post("/send-otp-email", async (req, res) => {
 
   const otp = Math.floor(100000 + Math.random() * 900000);
 
+  // Add custom HTML styling to the email
   const mailOptions = {
     from: "wetacre0@gmail.com",
     to: email,
     subject: "Email Verification",
-    text: `This is Krishiyan. The OTP for your Email verification is: ${otp}`,
+    html: `
+      <div style="font-family: Arial, sans-serif;">
+        <p style="font-size: 18px; color: #333; font-weight: bold;">
+          This is Krishiyan
+        </p>
+        <p style="font-size: 14px; color: #333;">
+          The OTP for your verification is:
+        </p>
+        <p style="font-size: 28px; color: green; font-weight: bold;">
+          ${otp}
+        </p>
+      </div>
+    `,
   };
 
   const otpEntry = new OTP({ phoneNumber: email, otp });

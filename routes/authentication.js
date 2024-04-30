@@ -56,7 +56,8 @@ function decodeJwt(jwtToken) {
 //Register
 router.post("/register", async (req, res) => {
   console.log("inside register");
-  const { name, email, password, mobile } = req.body;
+  const { type, name, email, password, mobile } = req.body;
+  console.log("type :", type);
   try {
     const oldUser = await User.findOne({ email });
 
@@ -66,6 +67,7 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const result = await User.create({
+      type,
       name,
       email,
       password: hashedPassword,
@@ -156,6 +158,24 @@ router.get("/check-dealer/:email", async (req, res) => {
 
   try {
     const dealer = await Dealer.findOne({ email });
+
+    if (dealer) {
+      res.json({ exists: true, dealer });
+    } else {
+      res.json({ exists: false });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Check Dealer API by Email
+router.get("/check-dealer/:name", async (req, res) => {
+  const email = req.params.name;
+
+  try {
+    const dealer = await Dealer.findOne({ name });
 
     if (dealer) {
       res.json({ exists: true, dealer });

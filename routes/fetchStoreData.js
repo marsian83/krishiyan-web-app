@@ -5,6 +5,10 @@ const axios = require("axios");
 
 const MandiPrice = require("../models/mandiPrices");
 
+const isValidNumber = (value) => {
+  return !isNaN(value) && value !== "NA";
+};
+
 const fetchDataAndStoreInDB = async () => {
   try {
     const response = await axios.get(
@@ -16,6 +20,15 @@ const fetchDataAndStoreInDB = async () => {
     // Iterate through each record
     for (const record of records) {
       // Update or insert into the MandiPrice collection
+      if (
+        !isValidNumber(record.min_price) ||
+        !isValidNumber(record.max_price)
+      ) {
+        // Skip this record if min_price or max_price is not a valid number
+
+        continue;
+      }
+
       const filter = {
         state: record.state,
         district: record.district,
