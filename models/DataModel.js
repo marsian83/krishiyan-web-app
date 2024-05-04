@@ -39,13 +39,30 @@ const FpoRegistrationSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  registeredAs: {
+    type: String,
+  },
+  dateOfRegistration: {
+    type: String,
+  },
+  facilitatingInstitutions: {
+    type: String,
+  },
+  numVillagesCovered: {
+    type: Number,
+  },
+  numGramPanchayatBlocksCovered: {
+    type: Number,
+  },
+  otherRegisteredAs: {
+    type: String,
+  },
+
   primaryProducts: {
     type: String,
-    required: true,
   },
   operationalDuration: {
     type: String,
-    required: true,
   },
   annualProduction: {
     type: Number,
