@@ -14,6 +14,35 @@ router.post("/store-data", async (req, res) => {
   }
 });
 
+//email check
+router.post("/check-email", async (req, res) => {
+  console.log("function check email entered");
+  try {
+    // Extract the email from the request body
+    const { email } = req.body;
+
+    // Query the database to check if an email already exists
+    const existingFpo = await FpoRegistration.findOne({ emailAddress: email });
+
+    // If an FPO with the provided email address is found
+    if (existingFpo) {
+      console.log("response gu=iven");
+      return res
+        .status(200)
+        .json({ exists: true, message: "Email already exists." });
+    } else {
+      // If no FPO with the provided email address is found
+      return res
+        .status(200)
+        .json({ exists: false, message: "Email does not exist." });
+    }
+  } catch (error) {
+    // Handle any errors that occur during the query
+    console.error("Error checking email:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // Route to retrieve and show data
 router.get("/show-data", async (req, res) => {
   try {
