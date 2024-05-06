@@ -57,6 +57,10 @@ const FpoRegistrationSchema = new mongoose.Schema({
   otherRegisteredAs: {
     type: String,
   },
+  otherFacilitatingInstitution: {
+    type: String,
+    default: "not provided",
+  },
 
   primaryProducts: {
     type: String,
