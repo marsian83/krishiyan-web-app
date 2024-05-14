@@ -13,15 +13,30 @@ const DealerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    fullAddress: {
+      type: String,
+    },
+    numberOfFarmers: {
+      type: Number,
+    },
     password: {
       type: String,
       // required: true,
     },
     mobile: {
       type: Number,
-      unique: true,
+      required: true,
       // required: true,
     },
+    organizationName: {
+      type: String,
+    },
+    crops: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
     excel_data_download: {
       type: Boolean,
       default: false,

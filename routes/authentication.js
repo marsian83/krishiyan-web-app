@@ -170,12 +170,12 @@ router.get("/check-dealer/:email", async (req, res) => {
   }
 });
 
-// Check Dealer API by Email
+// Check Dealer API by NAME
 router.get("/check-dealer/:name", async (req, res) => {
   const email = req.params.name;
 
   try {
-    const dealer = await Dealer.findOne({ name });
+    const dealer = await User.findOne({ name });
 
     if (dealer) {
       res.json({ exists: true, dealer });
@@ -214,6 +214,65 @@ router.post("/reset-password", async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
     console.log("internal server error ::", error);
+  }
+});
+
+//search by mail
+
+router.post("/get-dealer-by-email", async (req, res) => {
+  const { email } = req.body;
+  console.log(email);
+
+  try {
+    // Find the dealer associated with the provided email
+    console.log("entered try block");
+    const dealer = await User.findOne({ email });
+    if (dealer) {
+      return res.json(dealer);
+    } else {
+      return res
+        .status(404)
+        .json({ message: "Dealer not found for the provided email." });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error." });
+  }
+});
+
+// Route to update dealer information
+router.put("/update-dealer/:dealerEmail", async (req, res) => {
+  const dealerEmail = req.params.dealerEmail;
+  const updatedInfo = req.body;
+  console.log("update email", dealerEmail);
+  console.log("updated ingo from backedn", updatedInfo);
+
+  try {
+    // Find the dealer by email
+    const dealer = await User.findOne({ email: dealerEmail });
+
+    if (!dealer) {
+      return res.status(404).json({ error: "Dealer not found" });
+    }
+
+    // Update dealer information directly in the retrieved document
+    dealer.name = updatedInfo.name;
+    dealer.fullAddress = updatedInfo.address;
+    dealer.type = updatedInfo.type;
+    dealer.mobile = updatedInfo.primaryContactNumber;
+    dealer.numberOfFarmers = updatedInfo.numberOfFarmers;
+    dealer.organizationName = updatedInfo.organizationName;
+    dealer.crops = updatedInfo.crops;
+    // Save the updated dealer object
+    await dealer.save();
+
+    // Respond with success message
+    return res
+      .status(200)
+      .json({ message: "Dealer information updated successfully" });
+  } catch (error) {
+    console.error("Error updating dealer:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 
