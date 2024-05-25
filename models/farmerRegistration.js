@@ -34,10 +34,8 @@ const registrationSchema = new mongoose.Schema({
   },
   crops: [
     {
-      cropName: {
-        type: String,
-        required: true,
-      },
+      type: String,
+      required: true,
     },
   ],
 });
