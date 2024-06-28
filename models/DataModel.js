@@ -1,5 +1,20 @@
 const mongoose = require("mongoose");
 
+const participantSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  contact: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+});
+
 const FpoRegistrationSchema = new mongoose.Schema({
   // Personal Information
   fullName: {
@@ -134,6 +149,9 @@ const FpoRegistrationSchema = new mongoose.Schema({
   additionalInfo: {
     type: String,
   },
+
+  // Participants
+  participants: [participantSchema],
 
   // Timestamps for record keeping (optional)
   createdAt: {
