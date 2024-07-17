@@ -127,7 +127,6 @@ const FpoRegistrationSchema = new mongoose.Schema({
   // Conference Attendance
   conferenceAttended: {
     type: String,
-    required: true,
   },
   conferenceDetails: {
     type: String,
