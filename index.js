@@ -65,6 +65,9 @@ app.use("/api", require("./routes/Weather.js"));
 app.use("/api", require("./routes/MandiPrices.js"));
 app.use("/api", require("./routes/DataModel.js"));
 
+//App routes
+app.use("/api", require("./routes/fpoRoutes"));
+
 app.get("/api/ping", (req, res) => {
   res.send("pong");
 });
