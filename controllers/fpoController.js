@@ -1,5 +1,5 @@
 const FpoOrganization = require("../models/appFPOUser");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // Replace this with your actual secret key
