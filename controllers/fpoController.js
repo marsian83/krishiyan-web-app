@@ -10,12 +10,21 @@ exports.createFpo = async (req, res) => {
   try {
     const { password, contactNumber, ...otherDetails } = req.body;
 
+    // Debug log to print request body
+    console.log("Received request body:", req.body);
+
+    // Check if contactNumber is present
+    if (!contactNumber) {
+      throw new Error("contactNumber is required");
+    }
+
     // Hash the password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new FPO organization with the hashed password
+    // Create a new FPO organization with the hashed password and contact number
     const fpoOrganization = new FpoOrganization({
       ...otherDetails,
+      contactNumber,
       password: hashedPassword,
     });
 

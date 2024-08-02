@@ -15,11 +15,9 @@ const FpoOrganizationSchema = new mongoose.Schema({
   },
   dateOfFpo: {
     type: Date,
-    required: true,
   },
   organizationalEmail: {
     type: String,
-    required: true,
   },
   contactNumber: {
     type: String,
@@ -27,7 +25,6 @@ const FpoOrganizationSchema = new mongoose.Schema({
   },
   promoterName: {
     type: String,
-    required: true,
   },
   password: {
     type: String,
