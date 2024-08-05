@@ -15,7 +15,14 @@ exports.createFpo = async (req, res) => {
 
     // Check if contactNumber is present
     if (!contactNumber) {
-      throw new Error("contactNumber is required");
+      return res.status(400).send({
+        success: false,
+        message: "Contact number is required",
+        error: {
+          code: "CONTACT_NUMBER_REQUIRED",
+          description: "The contact number field is missing in the request.",
+        },
+      });
     }
 
     // Hash the password before saving
@@ -36,12 +43,24 @@ exports.createFpo = async (req, res) => {
       JWT_SECRET
     );
 
-    res.status(201).send({ fpoOrganization, token });
+    res.status(201).send({
+      success: true,
+      message: "FPO organization created successfully",
+      data: { fpoOrganization, token },
+    });
   } catch (error) {
     console.error("Error creating FPO:", error);
-    res.status(400).send({ error: "Error creating FPO" });
+    res.status(400).send({
+      success: false,
+      message: "Error creating FPO",
+      error: {
+        code: "FPO_CREATION_ERROR",
+        description: error.message,
+      },
+    });
   }
 };
+
 // Sign in
 
 exports.signIn = async (req, res) => {
@@ -52,17 +71,31 @@ exports.signIn = async (req, res) => {
     const fpoOrganization = await FpoOrganization.findOne({ contactNumber });
 
     if (!fpoOrganization) {
-      return res.status(401).send({ error: "Invalid login credentials" });
+      return res.status(401).send({
+        success: false,
+        message: "Invalid login credentials",
+        error: {
+          code: "INVALID_CREDENTIALS",
+          description: "The provided contact number is not registered.",
+        },
+      });
     }
 
     // Compare the provided password with the stored hash
     const isMatch = await bcrypt.compare(password, fpoOrganization.password);
 
     if (!isMatch) {
-      return res.status(401).send({ error: "Invalid login credentials" });
+      return res.status(401).send({
+        success: false,
+        message: "Invalid login credentials",
+        error: {
+          code: "INVALID_CREDENTIALS",
+          description: "The provided password is incorrect.",
+        },
+      });
     }
 
-    // Generate a token with the mobile number and password
+    // Generate a token with the contact number and password
     const token = jwt.sign(
       {
         contactNumber: fpoOrganization.contactNumber,
@@ -71,11 +104,23 @@ exports.signIn = async (req, res) => {
       JWT_SECRET
     );
 
-    res.send({ fpoOrganization, token });
+    res.send({
+      success: true,
+      message: "Login successful",
+      data: { fpoOrganization, token },
+    });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send({
+      success: false,
+      message: "Error during sign in",
+      error: {
+        code: "SIGNIN_ERROR",
+        description: error.message,
+      },
+    });
   }
 };
+
 // Get all FPOs
 exports.getAllFpos = async (req, res) => {
   try {
