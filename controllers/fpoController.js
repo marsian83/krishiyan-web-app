@@ -65,7 +65,7 @@ exports.createFpo = async (req, res) => {
 
 exports.signIn = async (req, res) => {
   const { contactNumber, password } = req.body;
-
+  console.log("inside sign up");
   try {
     // Find the user by contact number
     const fpoOrganization = await FpoOrganization.findOne({ contactNumber });
