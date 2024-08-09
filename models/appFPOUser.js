@@ -22,6 +22,7 @@ const FpoOrganizationSchema = new mongoose.Schema({
   contactNumber: {
     type: String,
     required: true,
+    unique: true,
   },
   promoterName: {
     type: String,

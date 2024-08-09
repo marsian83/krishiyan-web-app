@@ -25,6 +25,20 @@ exports.createFpo = async (req, res) => {
       });
     }
 
+    // Check if the contact number already exists in the database
+    const existingFpo = await FpoOrganization.findOne({ contactNumber });
+    if (existingFpo) {
+      return res.status(400).send({
+        success: false,
+        message: "Contact number already in use",
+        error: {
+          code: "DUPLICATE_CONTACT_NUMBER",
+          description:
+            "The contact number provided is already associated with another FPO.",
+        },
+      });
+    }
+
     // Hash the password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
 
