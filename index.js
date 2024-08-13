@@ -67,6 +67,7 @@ app.use("/api", require("./routes/DataModel.js"));
 
 //App routes
 app.use("/api", require("./routes/fpoRoutes"));
+app.use("/api/appFarmer", require("./routes/appFarmerRoutes.js"));
 
 app.get("/api/ping", (req, res) => {
   res.send("pong");
