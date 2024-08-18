@@ -72,6 +72,8 @@ app.use("/api", require("./routes/appEditaddress.js"));
 app.use("/api", require("./routes/appEditProfile.js"));
 app.use("/api", require("./routes/appBankDetails.js"));
 app.use("/api", require("./routes/appOtherDetails.js"));
+app.use("/api", require("./routes/appEnqiry.js"));
+app.use("/api", require("./routes/appCropRoutes.js"));
 
 app.get("/api/ping", (req, res) => {
   res.send("pong");
