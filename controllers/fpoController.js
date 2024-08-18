@@ -8,12 +8,31 @@ const JWT_SECRET = "your_secret_key";
 // Create a new FPO
 exports.createFpo = async (req, res) => {
   try {
-    const { password, contactNumber, ...otherDetails } = req.body;
+    const {
+      typeOfOrganization,
+      nameOfFpo,
+      typeOfFpo,
+      password,
+      contactNumber,
+      ...otherDetails
+    } = req.body;
 
     // Debug log to print request body
     console.log("Received request body:", req.body);
 
-    // Check if contactNumber is present
+    // Check for required fields
+    if (!typeOfOrganization || !nameOfFpo || !typeOfFpo) {
+      return res.status(400).send({
+        success: false,
+        message: "Missing required fields",
+        error: {
+          code: "MISSING_REQUIRED_FIELDS",
+          description:
+            "Please provide typeOfOrganization, nameOfFpo, and typeOfFpo.",
+        },
+      });
+    }
+
     if (!contactNumber) {
       return res.status(400).send({
         success: false,
@@ -42,11 +61,14 @@ exports.createFpo = async (req, res) => {
     // Hash the password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new FPO organization with the hashed password and contact number
+    // Create a new FPO organization with the required fields
     const fpoOrganization = new FpoOrganization({
-      ...otherDetails,
+      typeOfOrganization,
+      nameOfFpo,
+      typeOfFpo,
       contactNumber,
       password: hashedPassword,
+      ...otherDetails,
     });
 
     await fpoOrganization.save();
