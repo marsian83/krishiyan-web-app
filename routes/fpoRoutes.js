@@ -4,6 +4,7 @@ const fpoController = require("../controllers/fpoController");
 
 router.post("/fpo", fpoController.createFpo);
 router.post("/sign-in", fpoController.signIn);
+router.post("/app/reset-password", fpoController.resetPassword);
 
 router.get("/fpo", fpoController.getAllFpos);
 

@@ -209,3 +209,45 @@ exports.deleteFpoById = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
+exports.resetPassword = async (req, res) => {
+  const { contactNumber, newPassword } = req.body;
+
+  try {
+    // Find the FPO by contact number
+    const fpoOrganization = await FpoOrganization.findOne({ contactNumber });
+
+    if (!fpoOrganization) {
+      return res.status(404).send({
+        success: false,
+        message: "FPO organization not found",
+        error: {
+          code: "FPO_NOT_FOUND",
+          description:
+            "The contact number is not associated with any FPO organization.",
+        },
+      });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the password in the database
+    fpoOrganization.password = hashedPassword;
+    await fpoOrganization.save();
+
+    res.send({
+      success: true,
+      message: "Password reset successfully",
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: "Error resetting password",
+      error: {
+        code: "PASSWORD_RESET_ERROR",
+        description: error.message,
+      },
+    });
+  }
+};
