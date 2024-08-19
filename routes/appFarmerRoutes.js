@@ -37,9 +37,14 @@ router.get(
   "/farmers/cultivation/:typeOfCultivationPractice/dealer/:dealerNumber",
   farmerController.getFarmersByCultivationAndDealer
 );
+
 // Route to get farmer data by dealer number and village name
 router.get(
   "/data/:dealerNumber/:village",
   farmerController.getFarmerDataByDealerAndVillage
 );
+
+// Route to search farmers by dealer number and WhatsApp number
+router.get("/farmer/search", farmerController.searchFarmersByDealerAndWhatsApp);
+
 module.exports = router;

@@ -482,3 +482,45 @@ exports.getFarmersByCultivationAndDealer = async (req, res) => {
     });
   }
 };
+
+// Controller function to search farmers by dealer number and WhatsApp number
+exports.searchFarmersByDealerAndWhatsApp = async (req, res) => {
+  try {
+    const { dealerNumber, whatsappNumber } = req.query;
+
+    // Build the query object based on provided parameters
+    const query = {};
+    if (dealerNumber) {
+      query.dealerNumber = dealerNumber;
+    }
+    if (whatsappNumber) {
+      query.whatsappNumber = whatsappNumber;
+    }
+
+    // Perform the search in the appFarmer collection
+    const farmers = await appFarmer.find(query);
+
+    if (farmers.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No farmers found for the given criteria",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Farmers retrieved successfully",
+      data: farmers,
+    });
+  } catch (error) {
+    console.error("Error searching farmers:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error searching farmers",
+      error: {
+        code: "FARMER_SEARCH_ERROR",
+        description: error.message,
+      },
+    });
+  }
+};
