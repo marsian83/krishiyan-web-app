@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const CropCultivationSchema = new mongoose.Schema({
+  dealerNumber: {
+    type: String,
+    required: true,
+  },
   fid: {
     type: String,
     required: true,
@@ -9,12 +13,10 @@ const CropCultivationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  crops: [
-    {
-      type: String,
-      required: true,
-    },
-  ],
+  crops: {
+    type: String,
+    required: true,
+  },
   variety: {
     type: String,
     required: true,

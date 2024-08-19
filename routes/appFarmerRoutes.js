@@ -22,4 +22,24 @@ router.get("/names/:dealerNumber", farmerController.getFarmerNamesByDealer);
 // Route to get all farmer data by dealer number
 router.get("/data/:dealerNumber", farmerController.getFarmerDataByDealer);
 
+// Route to get all unique village names by dealer number
+router.get("/villages/:dealerNumber", farmerController.getVillagesByDealer);
+
+router.get("/crops/:dealerNumber", farmerController.getCropsByDealerNumber);
+// Route to get farmers based on dealer number, village, and crop
+router.get(
+  "/farmers/:dealerNumber/:village?/:crop",
+  farmerController.getFarmersByCriteria
+);
+
+// Route to get farmers based on type of cultivation practice and dealer number
+router.get(
+  "/farmers/cultivation/:typeOfCultivationPractice/dealer/:dealerNumber",
+  farmerController.getFarmersByCultivationAndDealer
+);
+// Route to get farmer data by dealer number and village name
+router.get(
+  "/data/:dealerNumber/:village",
+  farmerController.getFarmerDataByDealerAndVillage
+);
 module.exports = router;
