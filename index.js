@@ -39,7 +39,9 @@ app.use("/api/check-admin", tokenAuth, adminAuthorizer); // for frontend check
 app.use("/api/check-superAdmin", tokenAuth, superAdminAuthorizer); // for frontend check
 
 //Routes
-
+app.use("/api", require("./routes/proField.js"));
+app.use("/api", require("./routes/proSensor.js"));
+app.use("/api", require("./routes/proUser.js"));
 // app.use("/api/farmer", require("./routes/farmer")); //Farmer Api
 app.use("/api/crop", require("./routes/crop")); //Crop Api
 app.use("/api/cropCalendar", require("./routes/cropCalendar")); //Crop Api
