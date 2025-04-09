@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import * as Api from "../../Services/Api";
 import { toast } from "react-toastify";
+import EllipseImage from './Images/Ellipse 1.png';
 
 import GoogleOauthLogin from "../../Components/Auth/GoogleLogin";
 let check1 = false;
@@ -124,16 +125,18 @@ const LoginPage = () => {
               sx={{ mt: 3, mb: 2 }}
               className="bg-[#05AB2A] text-[#F3FFF1] flex shadow-[0px_4px_3px_rgba(0,0,0,0.25)] py-1 px-4 rounded mx-60 my-8 text-sm font-thin"
             >
-              Sign In
+              Login
             </Button>
-            <div className="inline-flex items-center justify-center w-full">
-              <hr className="w-64 h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700" />
-              <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2 dark:bg-gray-900">
-                <h2 className="w-4 h-4 text-gray-700 dark:text-gray-300">OR</h2>
-              </div>
+            <div className="flex items-center justify-center w-full">
+                <div className="flex items-center">
+                  <div className="w-32 h-1 my-4 bg-gray-200 border-0 rounded dark:bg-gray-700"></div>
+                  <div className="mx-4 text-gray-700 dark:text-gray-300">OR</div>
+                  <div className="w-32 h-1 my-4 bg-gray-200 border-0 rounded dark:bg-gray-700"></div>
+                </div>
             </div>
 
-            <Grid container>
+
+            <Grid container justifyContent="center" alignItems="center">
               <Grid item>
                 <Typography variant="body2" sx={{ mt: 1 }}>
                   Login with Google : {""}
@@ -141,7 +144,7 @@ const LoginPage = () => {
                 </Typography>
               </Grid>
             </Grid>
-            <Grid container>
+            <Grid container justifyContent="center" alignItems="center" marginTop={2}>
               <Grid item>
                 <Typography variant="body2" sx={{ mt: 1 }}>
                   Don't have an account? {""}
@@ -158,9 +161,19 @@ const LoginPage = () => {
           </form>
         </div>
 
-        <div className="md:block hidden w-1/2 ">
+        {/* <div className="md:block hidden w-1/2 ">
           <img className="rounded-2xl" src="Images/login.webp" alt="Login" />
+        </div> */}
+        <div className="relative">
+           <img className="rounded-2xl ml-auto mix-blend-multiply" src="Images/Ellipse_1.png" alt="Logo" />
+
+          <div className="">
+            <div className="md:block hidden mt-12">
+              <img className="rounded-2xl" src="Images/login.webp" alt="Login" />
+            </div>
+          </div>
         </div>
+
       </div>
     </section>
   );
